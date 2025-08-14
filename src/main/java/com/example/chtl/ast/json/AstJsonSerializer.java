@@ -1,6 +1,7 @@
 package com.example.chtl.ast.json;
 
 import com.example.chtl.ast.chtl.*;
+import com.example.chtl.core.config.NameGroup;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -9,6 +10,29 @@ public class AstJsonSerializer {
 	public static String toJson(ChtlDocument doc) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("{\n  \"type\": \"Document\",\n  \"start\": ").append(doc.startOffset()).append(", \"end\": ").append(doc.endOffset()).append(",\n");
+		sb.append("  \"items\": [\n");
+		for (int i = 0; i < doc.items().size(); i++) {
+			sb.append(indent(2)).append(serializeNode(doc.items().get(i), 2));
+			if (i < doc.items().size() - 1) sb.append(',');
+			sb.append('\n');
+		}
+		sb.append("  ]\n}");
+		return sb.toString();
+	}
+
+	public static String toJson(ChtlDocument doc, NameGroup ng) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("{\n  \"type\": \"Document\",\n  \"start\": ").append(doc.startOffset()).append(", \"end\": ").append(doc.endOffset()).append(",\n");
+		sb.append("  \"nameGroup\": {");
+		sb.append("\"KEYWORD_ORIGIN\": [");
+		for (int i=0;i<ng.KEYWORD_ORIGIN.size();i++){ if(i>0) sb.append(','); sb.append(quote(ng.KEYWORD_ORIGIN.get(i))); }
+		sb.append("], \"ORIGIN_STYLE\": ").append(quote(ng.ORIGIN_STYLE));
+		sb.append(", \"ORIGIN_JAVASCRIPT\": ").append(quote(ng.ORIGIN_JAVASCRIPT));
+		sb.append(", \"ORIGIN_HTML\": ").append(quote(ng.ORIGIN_HTML));
+		sb.append(", \"KEYWORD_STYLE\": ").append(quote(ng.KEYWORD_STYLE));
+		sb.append(", \"KEYWORD_SCRIPT\": ").append(quote(ng.KEYWORD_SCRIPT));
+		sb.append(", \"KEYWORD_TEXT\": ").append(quote(ng.KEYWORD_TEXT));
+		sb.append("},\n");
 		sb.append("  \"items\": [\n");
 		for (int i = 0; i < doc.items().size(); i++) {
 			sb.append(indent(2)).append(serializeNode(doc.items().get(i), 2));
