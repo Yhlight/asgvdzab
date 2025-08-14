@@ -27,7 +27,7 @@ public class ChtlCli implements Runnable {
     @CommandLine.Option(names = "--dump-fragments", description = "打印扫描片段列表")
     private boolean dumpFragments;
 
-    @CommandLine.Option(names = "--dump-ast", description = "打印 AST 详细 JSON 概要")
+    @CommandLine.Option(names = "--dump-ast", description = "打印 CHTL AST 概要(JSON)")
     private boolean dumpAst;
 
     @Override
@@ -38,21 +38,26 @@ public class ChtlCli implements Runnable {
             ScanResult scanResult = scanner.scan(source);
 
             if (dumpFragments) {
-                System.out.println("== Fragments ==");
-                for (var f : scanResult.getFragments()) {
-                    System.out.printf("%-10s %6d-%-6d (%s)\n", f.type(), f.startOffset(), f.endOffset(), f.origin());
+                System.out.println("{\n  \"fragments\": [");
+                for (int i=0;i<scanResult.getFragments().size();i++) {
+                    var f = scanResult.getFragments().get(i);
+                    System.out.printf("    {\"type\":\"%s\",\"start\":%d,\"end\":%d,\"origin\":\"%s\"}%s\n",
+                            f.type(), f.startOffset(), f.endOffset(), escape(f.origin()), (i==scanResult.getFragments().size()-1?"":" ,"));
                 }
+                System.out.println("  ]\n}");
             }
 
             CompilerDispatcher dispatcher = new CompilerDispatcher();
             var compileResult = dispatcher.dispatch(scanResult);
 
             if (dumpAst) {
-                String json = "{" +
-                        "\"htmlLen\":" + compileResult.getHtmlBody().length() + "," +
-                        "\"cssLen\":" + compileResult.getGlobalCss().length() + "," +
-                        "\"jsLen\":" + compileResult.getGlobalJs().length() +
-                        "}";
+                String json = String.format("{\n  \"htmlLen\": %d,\n  \"cssLen\": %d,\n  \"jsLen\": %d,\n  \"htmlHead\": \"%s\",\n  \"cssHead\": \"%s\",\n  \"jsHead\": \"%s\"\n}",
+                        compileResult.getHtmlBody().length(),
+                        compileResult.getGlobalCss().length(),
+                        compileResult.getGlobalJs().length(),
+                        escape(head(compileResult.getHtmlBody())),
+                        escape(head(compileResult.getGlobalCss())),
+                        escape(head(compileResult.getGlobalJs())));
                 System.out.println(json);
             }
 
@@ -66,6 +71,9 @@ public class ChtlCli implements Runnable {
             throw new RuntimeException("IO 错误: " + e.getMessage(), e);
         }
     }
+
+    private static String head(String s){ return s==null?"":s.substring(0, Math.min(80, s.length())).replace("\n"," "); }
+    private static String escape(String s){ return s==null?"":s.replace("\\","\\\\").replace("\"","\\\""); }
 
     public static void main(String[] args) {
         int exit = new CommandLine(new ChtlCli()).execute(args);
