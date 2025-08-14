@@ -245,26 +245,105 @@ public class ChtlParser {
 		while (!check(ChtlTokenType.RBRACE) && !isAtEnd()) {
 			if (check(ChtlTokenType.IDENT)) {
 				ChtlToken ident = consume(ChtlTokenType.IDENT);
-				if (check(ChtlTokenType.COLON) || check(ChtlTokenType.EQUAL)) { advance(); String value = parseValueUntilSemicolon(); consumeOpt(ChtlTokenType.SEMICOLON); el.addAttribute(new AttributeNode(ident.start, currentEnd(), ident.lexeme, value)); }
+				if (check(ChtlTokenType.COLON) || check(ChtlTokenType.EQUAL)) { advance(); String value = parseValueUntilSemicolon(); consume(ChtlTokenType.SEMICOLON); el.addAttribute(new AttributeNode(ident.start, currentEnd(), ident.lexeme, value)); }
 				else if (check(ChtlTokenType.LBRACE)) { unread(); el.addChild(parseElement()); }
-				else {
-					// 未知语法，严格模式下报错
-					if (strict) error("无效的属性或子元素语法: " + ident.lexeme);
-					else advance();
-				}
+				else { if (strict) error("无效的属性或子元素语法: " + ident.lexeme); else advance(); }
 			} else if (matchKw(ChtlTokenType.KW_TEXT)) { el.addChild(parseText()); }
 			else if (matchKw(ChtlTokenType.KW_STYLE)) { el.addChild(parseStyleBlock(el)); }
 			else if (matchKw(ChtlTokenType.KW_SCRIPT)) { el.addChild(parseScriptBlock()); }
 			else if (check(ChtlTokenType.KW_EXCEPT)) { advance(); ImportNode.ConstraintNode c = new ImportNode.ConstraintNode(peek().start, peek().end); while (!isAtEnd() && !check(ChtlTokenType.SEMICOLON) && !check(ChtlTokenType.RBRACE)) { if (check(ChtlTokenType.LBRACKET)) { consume(ChtlTokenType.LBRACKET); c.addTarget("[" + consume(ChtlTokenType.IDENT).lexeme + "]"); consume(ChtlTokenType.RBRACKET); } else if (check(ChtlTokenType.AT)) { advance(); c.addTarget("@" + consume(ChtlTokenType.IDENT).lexeme); } else if (check(ChtlTokenType.IDENT)) { c.addTarget(consume(ChtlTokenType.IDENT).lexeme); } if (check(ChtlTokenType.COMMA)) advance(); } consumeOpt(ChtlTokenType.SEMICOLON); el.addConstraint(c); constraintStack.peek().addAll(c.targets()); }
-			else if (check(ChtlTokenType.AT)) { advance(); String type = consume(ChtlTokenType.IDENT).lexeme; if (isForbiddenTypeUsage(type)) error("命中约束，禁止 @"+type+" 使用"); if (type.equals("Element")) { String name = consume(ChtlTokenType.IDENT).lexeme; String ns = null; if (match(ChtlTokenType.KW_FROM)) ns = consume(ChtlTokenType.IDENT).lexeme; consumeOpt(ChtlTokenType.SEMICOLON); TemplateNodes.ElementTemplate tpl = elementTemplates.get(ns==null? fq(name) : ns+"."+name); if (tpl != null) { for (ChtlNode n : tpl.body()) el.addChild(n); } } else { while (!isAtEnd() && !check(ChtlTokenType.SEMICOLON) && !check(ChtlTokenType.RBRACE)) advance(); consumeOpt(ChtlTokenType.SEMICOLON); } }
+			else if (check(ChtlTokenType.AT)) {
+				advance(); String type = consume(ChtlTokenType.IDENT).lexeme; if (isForbiddenTypeUsage(type)) error("命中约束，禁止 @"+type+" 使用");
+				if (type.equals("Element")) {
+					String name = consume(ChtlTokenType.IDENT).lexeme; String ns = null; if (match(ChtlTokenType.KW_FROM)) ns = consume(ChtlTokenType.IDENT).lexeme;
+					TemplateNodes.ElementTemplate tpl = elementTemplates.get(ns==null? fq(name) : ns+"."+name);
+					if (tpl != null) {
+						List<ChtlNode> cloned = deepCloneList(tpl.body());
+						Map<ChtlNode,String> origin = new IdentityHashMap<>(); markOrigin(cloned, name, origin);
+						if (check(ChtlTokenType.LBRACE)) {
+							consume(ChtlTokenType.LBRACE);
+							applySpecialization(cloned, origin);
+							consume(ChtlTokenType.RBRACE);
+						} else {
+							consumeOpt(ChtlTokenType.SEMICOLON);
+						}
+						for (ChtlNode n : cloned) el.addChild(n);
+					} else { if (strict) error("未找到元素模板: "+name); else { while (!isAtEnd() && !check(ChtlTokenType.SEMICOLON) && !check(ChtlTokenType.RBRACE)) advance(); consumeOpt(ChtlTokenType.SEMICOLON);} }
+				} else { while (!isAtEnd() && !check(ChtlTokenType.SEMICOLON) && !check(ChtlTokenType.RBRACE)) advance(); consumeOpt(ChtlTokenType.SEMICOLON); }
+			}
 			else if (check(ChtlTokenType.LBRACKET)) { ChtlNode def = parseBracketDirective(); if (def != null) el.addChild(def); }
 			else { advance(); }
 		}
 		consume(ChtlTokenType.RBRACE);
-		state.elementStack.pop();
-		constraintStack.pop();
+		state.elementStack.pop(); constraintStack.pop();
 		return new ElementNode(start, currentEnd(), tag) {{ for (AttributeNode a : el.attributes()) addAttribute(a); for (ChtlNode c : el.children()) addChild(c); for (ImportNode.ConstraintNode c : el.constraints()) addConstraint(c); }};
 	}
+
+	private void applySpecialization(List<ChtlNode> cloned, Map<ChtlNode,String> origin){
+		while (!isAtEnd() && !check(ChtlTokenType.RBRACE)) {
+			if (check(ChtlTokenType.KW_INSERT)) {
+				advance();
+				String mode = "after";
+				if (check(ChtlTokenType.KW_AFTER)) { advance(); mode = "after"; }
+				else if (check(ChtlTokenType.KW_BEFORE)) { advance(); mode = "before"; }
+				else if (check(ChtlTokenType.KW_REPLACE)) { advance(); mode = "replace"; }
+				else if (check(ChtlTokenType.IDENT) && peek().lexeme.equals("at")) {
+					advance(); ChtlToken t = consume(ChtlTokenType.IDENT); mode = t.lexeme.equals("top")?"at_top":"at_bottom";
+				}
+				Integer targetIndex = null; String targetTag = null;
+				if (mode.equals("after") || mode.equals("before") || mode.equals("replace")) {
+					targetTag = consume(ChtlTokenType.IDENT).lexeme;
+					if (match(ChtlTokenType.LBRACKET)) { String num = consume(ChtlTokenType.NUMBER).lexeme; consume(ChtlTokenType.RBRACKET); try{ targetIndex = Integer.parseInt(num.split("\\.")[0]); }catch(Exception ignored){} }
+				}
+				consume(ChtlTokenType.LBRACE);
+				List<ChtlNode> payload = new ArrayList<>();
+				while (!check(ChtlTokenType.RBRACE) && !isAtEnd()) { ChtlNode n = parseTopLevel(); if (n!=null) payload.add(n); else advance(); }
+				consume(ChtlTokenType.RBRACE);
+				applyInsert(cloned, mode, targetTag, targetIndex, payload);
+			} else if (check(ChtlTokenType.KW_DELETE)) {
+				advance();
+				if (check(ChtlTokenType.AT)) { // delete @Element Name;
+					advance(); String what = consume(ChtlTokenType.IDENT).lexeme; if (what.equals("Element")) { String delName = consume(ChtlTokenType.IDENT).lexeme; deleteByOrigin(cloned, delName, origin); }
+					consumeOpt(ChtlTokenType.SEMICOLON);
+				} else {
+					String tag = consume(ChtlTokenType.IDENT).lexeme; Integer idx=null; if (match(ChtlTokenType.LBRACKET)) { String n = consume(ChtlTokenType.NUMBER).lexeme; consume(ChtlTokenType.RBRACKET); try{ idx=Integer.parseInt(n.split("\\.")[0]); }catch(Exception ignored){} }
+					consumeOpt(ChtlTokenType.SEMICOLON);
+					deleteByTagIndex(cloned, tag, idx);
+				}
+			} else if (check(ChtlTokenType.IDENT)) {
+				// target element styling: tag[optionalIndex] { style{...} }
+				String tag = consume(ChtlTokenType.IDENT).lexeme; Integer idx=null; if (match(ChtlTokenType.LBRACKET)) { String n = consume(ChtlTokenType.NUMBER).lexeme; consume(ChtlTokenType.RBRACKET); try{ idx=Integer.parseInt(n.split("\\.")[0]); }catch(Exception ignored){} }
+				consume(ChtlTokenType.LBRACE);
+				ElementNode target = findTarget(cloned, tag, idx);
+				while (!check(ChtlTokenType.RBRACE) && !isAtEnd()) {
+					if (matchKw(ChtlTokenType.KW_STYLE)) { parseStyleBlock(target); }
+					else advance();
+				}
+				consume(ChtlTokenType.RBRACE);
+			} else { advance(); }
+		}
+	}
+
+	private void applyInsert(List<ChtlNode> cloned, String mode, String tag, Integer idx, List<ChtlNode> payload){
+		if (mode.equals("at_top")) { cloned.addAll(0, payload); return; }
+		if (mode.equals("at_bottom")) { cloned.addAll(payload); return; }
+		int pos = findIndex(cloned, tag, idx);
+		if (pos<0) return; // 无目标，忽略（严格模式可改为报错）
+		switch (mode) {
+			case "before" -> cloned.addAll(pos, payload);
+			case "after" -> cloned.addAll(pos+1, payload);
+			case "replace" -> { cloned.remove(pos); cloned.addAll(pos, payload); }
+		}
+	}
+
+	private void deleteByOrigin(List<ChtlNode> cloned, String tpl, Map<ChtlNode,String> origin){ cloned.removeIf(n -> tpl.equals(origin.get(n))); }
+	private void deleteByTagIndex(List<ChtlNode> cloned, String tag, Integer idx){ int i=-1; for (int p=0;p<cloned.size();p++){ ChtlNode n=cloned.get(p); if (n instanceof ElementNode en && en.tagName().equals(tag)) { i++; if (idx==null || i==idx){ cloned.remove(p); return; } } } }
+	private ElementNode findTarget(List<ChtlNode> cloned, String tag, Integer idx){ int i=-1; for (ChtlNode n:cloned){ if (n instanceof ElementNode en && en.tagName().equals(tag)){ i++; if (idx==null || i==idx) return en; } } return null; }
+	private int findIndex(List<ChtlNode> cloned, String tag, Integer idx){ int i=-1; for (int p=0;p<cloned.size();p++){ ChtlNode n=cloned.get(p); if (n instanceof ElementNode en && en.tagName().equals(tag)){ i++; if (idx==null || i==idx) return p; } } return -1; }
+	private void markOrigin(List<ChtlNode> list, String name, Map<ChtlNode,String> origin){ for (ChtlNode n:list){ origin.put(n,name); if (n instanceof ElementNode en){ markOrigin(en.children(), name, origin);} } }
+
+	private List<ChtlNode> deepCloneList(List<ChtlNode> list){ List<ChtlNode> out=new ArrayList<>(); for (ChtlNode n:list) out.add(deepClone(n)); return out; }
+	private ChtlNode deepClone(ChtlNode n){ if (n instanceof ElementNode el){ ElementNode c=new ElementNode(el.startOffset(), el.endOffset(), el.tagName()); for (AttributeNode a:el.attributes()) c.addAttribute(new AttributeNode(a.startOffset(), a.endOffset(), a.name(), a.value())); for (ChtlNode ch:el.children()) c.addChild(deepClone(ch)); return c;} else if (n instanceof TextNode t){ return new TextNode(t.startOffset(), t.endOffset(), t.text()); } else if (n instanceof StyleBlockNode sb){ StyleBlockNode d=new StyleBlockNode(sb.startOffset(), sb.endOffset()); for (StyleRuleNode r: sb.globalRules()){ StyleRuleNode rr=new StyleRuleNode(r.startOffset(), r.endOffset(), r.selector()); for (AttributeNode a:r.declarations()) rr.addDecl(new AttributeNode(a.startOffset(), a.endOffset(), a.name(), a.value())); d.addRule(rr);} return d;} else if (n instanceof ScriptBlockNode sc){ return new ScriptBlockNode(sc.startOffset(), sc.endOffset(), sc.code()); } return n; }
 
 	private boolean isForbiddenType(String kw){ Set<String> s = getActiveConstraintTargets(); return s.contains("[Template]") && (kw.equalsIgnoreCase("Template")) || s.contains("[Custom]") && (kw.equalsIgnoreCase("Custom")); }
 	private boolean isForbiddenTypeUsage(String type){ Set<String> s = getActiveConstraintTargets(); if (s.isEmpty()) return false; if (type.equalsIgnoreCase("Element") && (s.contains("[Template]") || s.contains("@Element"))) return true; return false; }
