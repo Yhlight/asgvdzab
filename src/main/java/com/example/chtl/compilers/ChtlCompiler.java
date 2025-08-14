@@ -9,6 +9,10 @@ import com.example.chtl.parsers.chtl.ChtlParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.nio.file.Path;
+import java.util.HashSet;
+import java.util.Set;
+
 public class ChtlCompiler {
 	private static final Logger log = LoggerFactory.getLogger(ChtlCompiler.class);
 
@@ -25,45 +29,53 @@ public class ChtlCompiler {
 	}
 
 	public Output compile(String chtlSource) {
-		log.debug("开始编译 CHTL 源，长度={} 字符", chtlSource.length());
+		return compile(chtlSource, null);
+	}
+
+	public Output compile(String chtlSource, Path baseDir) {
 		var lexer = new ChtlLexer(chtlSource);
 		var tokens = lexer.lex();
-		var parser = new ChtlParser(chtlSource, tokens);
+		var parser = new ChtlParser(chtlSource, tokens, new ChtlState(), baseDir);
 		ChtlContext ctx = new ChtlContext(new ChtlGlobalMap(), new ChtlState());
 		try {
 			ChtlDocument doc = parser.parseDocument();
 			StringBuilder html = new StringBuilder();
 			StringBuilder globalCss = new StringBuilder();
-			for (ChtlNode n : doc.items()) {
-				renderNode(n, html, globalCss);
-			}
+			for (ChtlNode n : doc.items()) { renderNode(n, html, globalCss, new HashSet<>()); }
 			return new Output(html.toString(), globalCss.toString(), ctx.globals.getGlobalJs());
 		} catch (RuntimeException ex) {
-			// 解析失败时回退到占位输出，避免影响整体管线
 			log.warn("CHTL 解析失败，使用占位输出: {}", ex.getMessage());
 			String htmlBody = "<!-- CHTL 编译占位输出（解析失败回退） -->";
 			return new Output(htmlBody, "", ctx.globals.getGlobalJs());
 		}
 	}
 
-	private void renderNode(ChtlNode node, StringBuilder html, StringBuilder globalCss) {
+	private void renderNode(ChtlNode node, StringBuilder html, StringBuilder globalCss, Set<String> except) {
+		if (node instanceof ImportNode.NamespaceNode ns) {
+			for (var item : ns.body()) renderNode(item, html, globalCss, new HashSet<>(except));
+			return;
+		}
 		if (node instanceof ElementNode el) {
+			// except 静态检查：如果当前元素或其子元素在父 except 集合内，跳过
+			for (var c : el.constraints()) for (var t : c.targets()) except.add(t);
+			if (except.contains(el.tagName()) || except.contains("@Html") || except.contains("[Template]") || except.contains("[Custom]")) return;
 			html.append('<').append(el.tagName());
 			for (AttributeNode a : el.attributes()) {
 				html.append(' ').append(a.name()).append("=\"").append(escapeHtml(a.value())).append("\"");
 			}
 			html.append('>').append('\n');
-			for (ChtlNode c : el.children()) renderNode(c, html, globalCss);
+			for (ChtlNode c : el.children()) renderNode(c, html, globalCss, new HashSet<>(except));
 			html.append("</").append(el.tagName()).append('>').append('\n');
 		} else if (node instanceof TextNode t) {
 			html.append(escapeHtml(t.text())).append('\n');
 		} else if (node instanceof StyleBlockNode s) {
-			// 内联作为 style 属性已在 AST 层表现，这里简单拼接到 style 标签（简化）
-			if (!s.inlineStyles().isEmpty()) {
-				StringBuilder inline = new StringBuilder();
-				for (AttributeNode a : s.inlineStyles()) inline.append(a.name()).append(':').append(a.value()).append(';');
-				html.append("<style>").append(inline).append("</style>\n");
+			// inline 去重并渲染
+			Set<String> seen = new HashSet<>();
+			StringBuilder inline = new StringBuilder();
+			for (AttributeNode a : s.inlineStyles()) {
+				if (seen.add(a.name())) inline.append(a.name()).append(':').append(a.value()).append(';');
 			}
+			if (inline.length() > 0) html.append("<style>").append(inline).append("</style>\n");
 			for (StyleRuleNode r : s.globalRules()) {
 				globalCss.append(r.selector()).append("{\n");
 				for (AttributeNode a : r.declarations()) globalCss.append(a.name()).append(':').append(a.value()).append(';').append('\n');

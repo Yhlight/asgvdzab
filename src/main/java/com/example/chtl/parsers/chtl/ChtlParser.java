@@ -5,6 +5,9 @@ import com.example.chtl.compilers.chtl.ChtlToken;
 import com.example.chtl.compilers.chtl.ChtlTokenType;
 import com.example.chtl.compilers.chtl.ChtlState;
 
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 
 public class ChtlParser {
@@ -12,14 +15,16 @@ public class ChtlParser {
 	private final List<ChtlToken> tokens;
 	private int pos = 0;
 	private final ChtlState state;
+	private final Path baseDir;
 
 	// 模板与自定义注册表（支持命名空间前缀）
 	private final Map<String, TemplateNodes.StyleTemplate> styleTemplates = new HashMap<>();
 	private final Map<String, TemplateNodes.ElementTemplate> elementTemplates = new HashMap<>();
 	private final Map<String, TemplateNodes.VarTemplate> varTemplates = new HashMap<>();
 
-	public ChtlParser(String source, List<ChtlToken> tokens){ this(source, tokens, new ChtlState()); }
-	public ChtlParser(String source, List<ChtlToken> tokens, ChtlState state){ this.source=source; this.tokens=tokens; this.state=state; }
+	public ChtlParser(String source, List<ChtlToken> tokens){ this(source, tokens, new ChtlState(), null); }
+	public ChtlParser(String source, List<ChtlToken> tokens, ChtlState state){ this(source, tokens, state, null); }
+	public ChtlParser(String source, List<ChtlToken> tokens, ChtlState state, Path baseDir){ this.source=source; this.tokens=tokens; this.state=state; this.baseDir=baseDir; }
 
 	public ChtlDocument parseDocument(){
 		ChtlDocument doc = new ChtlDocument(0, source.length());
@@ -155,12 +160,30 @@ public class ChtlParser {
 	}
 
 	private ChtlNode parseImportDirective(){
-		// [Import] ... 语法多样，这里仅记录到 AST，不做加载
+		// 支持基本文件导入：形如 @Chtl from path; 或 @Html/@Style/@JavaScript 忽略
 		int s = peek().start;
-		StringBuilder sb = new StringBuilder();
-		while (!isAtEnd() && !check(ChtlTokenType.LBRACE) && !check(ChtlTokenType.SEMICOLON) && !check(ChtlTokenType.RBRACE)) {
-			sb.append(tokenToText(advance())).append(' ');
+		if (check(ChtlTokenType.AT)) {
+			advance();
+			String target = consume(ChtlTokenType.IDENT).lexeme; // Chtl/Html/Style/JavaScript 等
+			if (match(ChtlTokenType.KW_FROM)) {
+				String pathToken = consume(ChtlTokenType.IDENT).lexeme;
+				consumeOpt(ChtlTokenType.SEMICOLON);
+				if (target.equals("Chtl") && baseDir != null) {
+					try {
+						Path p = baseDir.resolve(pathToken);
+						String src = Files.readString(p, StandardCharsets.UTF_8);
+						var sub = new ChtlParser(src, new com.example.chtl.compilers.chtl.ChtlLexer(src).lex(), state, p.getParent()).parseDocument();
+						// 合并：将子文档项加入一个命名空间节点中
+						ImportNode.NamespaceNode ns = new ImportNode.NamespaceNode(s, currentEnd(), p.getFileName().toString());
+						for (var item : sub.items()) ns.add(item);
+						return ns;
+					} catch (Exception ignored) {}
+				}
+			}
 		}
+		// 回退为原始记录
+		StringBuilder sb = new StringBuilder();
+		while (!isAtEnd() && !check(ChtlTokenType.SEMICOLON) && !check(ChtlTokenType.RBRACE)) sb.append(tokenToText(advance())).append(' ');
 		consumeOpt(ChtlTokenType.SEMICOLON);
 		return new ImportNode(s, currentEnd(), "raw", sb.toString().trim(), null);
 	}
@@ -193,6 +216,24 @@ public class ChtlParser {
 				el.addChild(parseStyleBlock(el));
 			} else if (matchKw(ChtlTokenType.KW_SCRIPT)) {
 				el.addChild(parseScriptBlock());
+			} else if (check(ChtlTokenType.KW_EXCEPT)) {
+				// except 约束：except xxx, [Template] @Var; 仅收集为静态约束
+				advance();
+				ImportNode.ConstraintNode c = new ImportNode.ConstraintNode(peek().start, peek().end);
+				while (!isAtEnd() && !check(ChtlTokenType.SEMICOLON) && !check(ChtlTokenType.RBRACE)) {
+					if (check(ChtlTokenType.LBRACKET)) { // 类型级
+						consume(ChtlTokenType.LBRACKET);
+						c.addTarget("[" + consume(ChtlTokenType.IDENT).lexeme + "]");
+						consume(ChtlTokenType.RBRACKET);
+					} else if (check(ChtlTokenType.AT)) {
+						advance(); c.addTarget("@" + consume(ChtlTokenType.IDENT).lexeme);
+					} else if (check(ChtlTokenType.IDENT)) {
+						c.addTarget(consume(ChtlTokenType.IDENT).lexeme);
+					}
+					if (check(ChtlTokenType.COMMA)) advance();
+				}
+				consumeOpt(ChtlTokenType.SEMICOLON);
+				el.addConstraint(c);
 			} else if (check(ChtlTokenType.AT)) {
 				// @Element/@Style 等用法
 				advance();
@@ -226,6 +267,7 @@ public class ChtlParser {
 		return new ElementNode(start, currentEnd(), tag) {{
 			for (AttributeNode a : el.attributes()) addAttribute(a);
 			for (ChtlNode c : el.children()) addChild(c);
+			for (ImportNode.ConstraintNode c : el.constraints()) addConstraint(c);
 		}};
 	}
 
@@ -251,6 +293,14 @@ public class ChtlParser {
 					consumeOpt(ChtlTokenType.SEMICOLON);
 					node.addInline(new AttributeNode(prop.start, currentEnd(), prop.lexeme, value));
 				}
+			} else if (check(ChtlTokenType.KW_DELETE)) {
+				// delete 属性1, 属性2;
+				advance();
+				while (!isAtEnd() && !check(ChtlTokenType.SEMICOLON) && !check(ChtlTokenType.RBRACE)) {
+					if (check(ChtlTokenType.IDENT)) node.deleteInline(consume(ChtlTokenType.IDENT).lexeme);
+					if (check(ChtlTokenType.COMMA)) advance(); else break;
+				}
+				consumeOpt(ChtlTokenType.SEMICOLON);
 			} else if (check(ChtlTokenType.AT)) {
 				advance();
 				String atType = consume(ChtlTokenType.IDENT).lexeme; // Style
@@ -313,6 +363,10 @@ public class ChtlParser {
 			} else { advance(); }
 		}
 		consume(ChtlTokenType.RBRACE);
+		// 应用 delete 语义：从 inline 中剔除对应属性
+		if (!node.deletedInlineProps().isEmpty()) {
+			node.inlineStyles().removeIf(a -> node.deletedInlineProps().contains(a.name()));
+		}
 		if (ownerAutoClass != null && owner.attributes().stream().noneMatch(a->a.name().equals("class"))) owner.addAttribute(new AttributeNode(node.startOffset(), node.endOffset(), "class", ownerAutoClass));
 		return new StyleBlockNode(node.startOffset(), currentEnd()) {{ for (var a : node.inlineStyles()) addInline(a); for (var r : node.globalRules()) addRule(r); }};
 	}
