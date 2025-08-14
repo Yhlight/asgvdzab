@@ -9,6 +9,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ChtlParser {
 	private final String source;
@@ -316,7 +317,7 @@ public class ChtlParser {
 	private boolean matchKw(ChtlTokenType t){ return match(t); }
 	private boolean match(ChtlTokenType t){ if (check(t)) { advance(); return true; } return false; }
 	private boolean check(ChtlTokenType t){ if (isAtEnd()) return false; return peek().type == t; }
-	private ChtlToken consume(ChtlTokenType t){ if (!check(t)) throw new RuntimeException("期待:"+t+" 实际:"+peek().type); return advance(); }
+	private ChtlToken consume(ChtlTokenType t){ if (!check(t)) { if (strict) throw new RuntimeException("期待:"+t+" 实际:"+peek().type); else return new ChtlToken(t, "", peek().start, peek().end, peek().line, peek().column); } return advance(); }
 	private void consumeOpt(ChtlTokenType t){ if (check(t)) advance(); }
 	private void skipUntil(ChtlTokenType... types){ outer: while (!isAtEnd()) { for (ChtlTokenType tp : types) if (check(tp)) break outer; advance(); } }
 	private ChtlToken advance(){ if (!isAtEnd()) pos++; return previous(); }
@@ -448,9 +449,12 @@ public class ChtlParser {
 	}
 
 	private String ensureExt(String name, String ext){ return name.endsWith(ext)? name : name + ext; }
-	private String safeRead(Path p){ try { return Files.readString(p, StandardCharsets.UTF_8); } catch (Exception e) { return null; } }
+	private static final Map<Path,String> FILE_CACHE = new ConcurrentHashMap<>();
+	private String safeRead(Path p){ try { return FILE_CACHE.computeIfAbsent(p.toAbsolutePath().normalize(), k -> {
+		try { return Files.readString(k, StandardCharsets.UTF_8); } catch (Exception e) { return null; }
+	}); } catch (Exception e) { return null; } }
 
-	private void importChtlFile(Path file, String alias){ if (file == null) return; if (visitedImports.contains(file)) return; visitedImports.add(file); String key = file.toAbsolutePath().normalize().toString(); if (!importedKeys.add(key)) return; try { String src = Files.readString(file, StandardCharsets.UTF_8); var sub = new ChtlParser(src, new com.example.chtl.compilers.chtl.ChtlLexer(src).lex(), state, file.getParent(), strict).parseDocument(); String nsName = alias != null ? alias : (file.getParent()!=null? file.getParent().getFileName().toString() : stripExt(file.getFileName().toString())); mergeDocWithNs(sub, nsName); } catch (Exception e) { if (strict) throw new RuntimeException("Import 失败: "+file+": "+e.getMessage(), e); } }
+	private void importChtlFile(Path file, String alias){ if (file == null) return; if (visitedImports.contains(file)) return; visitedImports.add(file); String key = file.toAbsolutePath().normalize().toString(); if (!importedKeys.add(key)) return; try { String src = safeRead(file); if (src==null) { if (strict) error("资源未找到: "+file.toString()); return; } var sub = new ChtlParser(src, new com.example.chtl.compilers.chtl.ChtlLexer(src).lex(), state, file.getParent(), strict).parseDocument(); String nsName = alias != null ? alias : (file.getParent()!=null? file.getParent().getFileName().toString() : stripExt(file.getFileName().toString())); mergeDocWithNs(sub, nsName); } catch (Exception e) { if (strict) throw new RuntimeException("Import 失败: "+file+": "+e.getMessage(), e); } }
 	private void importCjmodFile(Path file, String alias){ // cjmod: 假定为纯 JS 模块，作为命名空间下的原始 JS 注入占位
 		if (file == null) return; if (visitedImports.contains(file)) return; visitedImports.add(file); String key = file.toAbsolutePath().normalize().toString(); if (!importedKeys.add(key)) return; String nsName = alias != null ? alias : stripExt(file.getFileName().toString()); String js = safeRead(file); if (js == null) return; ImportNode.NamespaceNode ns = new ImportNode.NamespaceNode(0,0,nsName); ns.add(new OriginNodes.OriginJavaScriptNode(0,0, nsName, js)); }
 	private String stripExt(String n){ int i=n.lastIndexOf('.'); return i>=0? n.substring(0,i) : n; }

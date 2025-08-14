@@ -90,3 +90,36 @@ java -jar target/chtl-compiler-0.1.0-SNAPSHOT-shaded.jar --strict -o out.html in
 - 错误提示（严格模式）
   - 资源未找到 / 路径为目录 / 路径不含文件信息：精确报错并定位。
   - 模板命名冲突：列出冲突名与命名空间。
+
+## CLI 示例
+
+```bash
+# 严格模式 + 输出到 out.html
+java -jar target/chtl-compiler-0.1.0-SNAPSHOT-shaded.jar --strict -o out.html input.chtl
+
+# 打印扫描片段
+java -jar target/chtl-compiler-0.1.0-SNAPSHOT-shaded.jar --dump-fragments -o out.html input.chtl
+
+# 动态关键字（在 input.chtl 顶部添加）
+# [Configuration] @NameGroup{ KEYWORD_ORIGIN: Or,H; ORIGIN_HTML: @H; }
+```
+
+## 常见错误与修复
+
+- 资源未找到
+  - 现象：严格模式报错 “资源未找到: <path> @line:col”。
+  - 原因：路径不含文件信息或文件不存在。
+  - 修复：确保提供具体文件，或按规则放置在 module/ 或当前目录。
+
+- 路径是目录
+  - 现象：严格模式报错 “路径不含文件信息: <path>”。
+  - 修复：改为具体文件，或使用通配 `*.cmod`/`*.chtl`。
+
+- 模板命名冲突
+  - 现象：严格模式报错 “命名冲突: <namespace.template>”。
+  - 原因：通配导入多个文件中定义了同名模板。
+  - 修复：重命名模板或划分命名空间；或在导入时使用 alias。
+
+- 循环导入
+  - 现象：未死循环但内容重复或被跳过。
+  - 修复：检查导入链路；工具已做去重与循环保护，避免重复导入同一路径。
