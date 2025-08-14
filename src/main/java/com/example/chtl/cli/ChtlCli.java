@@ -14,10 +14,11 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.concurrent.Callable;
 
 @CommandLine.Command(name = "chtl", mixinStandardHelpOptions = true, version = "0.1.0",
         description = "CHTL -> HTML 编译器 (Scanner + Dispatcher + Compilers + Merger)")
-public class ChtlCli implements Runnable {
+public class ChtlCli implements Callable<Integer> {
     private static final Logger log = LoggerFactory.getLogger(ChtlCli.class);
 
     @CommandLine.Parameters(index = "0", description = "输入 CHTL 源文件路径")
@@ -36,7 +37,7 @@ public class ChtlCli implements Runnable {
     private boolean strict;
 
     @Override
-    public void run() {
+    public Integer call() {
         try {
             String source = Files.readString(input, StandardCharsets.UTF_8);
             CHTLUnifiedScanner scanner = new CHTLUnifiedScanner();
@@ -62,8 +63,7 @@ public class ChtlCli implements Runnable {
                 } catch (RuntimeException ex) {
                     if (strict) {
                         System.err.println("解析错误: " + ex.getMessage());
-                        System.exit(2);
-                        return;
+                        return 2;
                     } else {
                         log.warn("解析警告: {}", ex.getMessage());
                     }
@@ -79,6 +79,7 @@ public class ChtlCli implements Runnable {
             }
             Files.writeString(output, html, StandardCharsets.UTF_8);
             log.info("编译完成: {} -> {}", input, output);
+            return 0;
         } catch (IOException e) {
             throw new RuntimeException("IO 错误: " + e.getMessage(), e);
         }
