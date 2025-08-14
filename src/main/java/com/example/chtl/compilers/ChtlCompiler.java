@@ -37,17 +37,11 @@ public class ChtlCompiler {
 		var tokens = lexer.lex();
 		var parser = new ChtlParser(chtlSource, tokens, new ChtlState(), baseDir);
 		ChtlContext ctx = new ChtlContext(new ChtlGlobalMap(), new ChtlState());
-		try {
-			ChtlDocument doc = parser.parseDocument();
-			StringBuilder html = new StringBuilder();
-			StringBuilder globalCss = new StringBuilder();
-			for (ChtlNode n : doc.items()) { renderNode(n, html, globalCss, new HashSet<>()); }
-			return new Output(html.toString(), globalCss.toString(), ctx.globals.getGlobalJs());
-		} catch (RuntimeException ex) {
-			log.warn("CHTL 解析失败，使用占位输出: {}", ex.getMessage());
-			String htmlBody = "<!-- CHTL 编译占位输出（解析失败回退） -->";
-			return new Output(htmlBody, "", ctx.globals.getGlobalJs());
-		}
+		ChtlDocument doc = parser.parseDocument();
+		StringBuilder html = new StringBuilder();
+		StringBuilder globalCss = new StringBuilder();
+		for (ChtlNode n : doc.items()) { renderNode(n, html, globalCss, new HashSet<>()); }
+		return new Output(html.toString(), globalCss.toString(), ctx.globals.getGlobalJs());
 	}
 
 	private void renderNode(ChtlNode node, StringBuilder html, StringBuilder globalCss, Set<String> except) {
@@ -89,9 +83,6 @@ public class ChtlCompiler {
 			globalCss.append(os.css()).append('\n');
 		} else if (node instanceof OriginNodes.OriginJavaScriptNode oj) {
 			// 作为全局 JS 注入
-			// 注意 ResultMerger 负责包裹 script 标签
-			// 这里只是累积 JS 源码
-			// 由于当前类没有直接持有全局 JS 缓冲区，这里简单地插入到 html 中的 <script> 块以不破坏现有输出路径
 			html.append("<script>\n").append(oj.js()).append("\n</script>\n");
 		}
 	}
