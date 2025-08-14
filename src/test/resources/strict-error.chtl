@@ -1,0 +1,11 @@
+[Template] @Element Base {
+	div{ text{ok} }
+}
+
+body{
+	@Element Base {
+		insert after span {
+			p{ text{should not appear} }
+		}
+	}
+}
