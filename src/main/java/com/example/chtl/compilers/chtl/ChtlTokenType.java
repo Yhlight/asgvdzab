@@ -3,7 +3,7 @@ package com.example.chtl.compilers.chtl;
 public enum ChtlTokenType {
 	// 界符
 	LBRACE, RBRACE, LBRACKET, RBRACKET, LPAREN, RPAREN,
-	COLON, EQUAL, SEMICOLON, COMMA, DOT, HASH, AT,
+	COLON, EQUAL, SEMICOLON, COMMA, DOT, HASH, AT, AMP,
 
 	// 文字
 	IDENT, STRING, NUMBER,

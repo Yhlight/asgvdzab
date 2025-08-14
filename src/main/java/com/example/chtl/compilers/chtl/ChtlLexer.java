@@ -38,6 +38,7 @@ public class ChtlLexer {
 				case '.': tokens.add(tok(ChtlTokenType.DOT, consumeStr(1), start, startLine, startCol)); break;
 				case '#': tokens.add(tok(ChtlTokenType.HASH, consumeStr(1), start, startLine, startCol)); break;
 				case '@': tokens.add(tok(ChtlTokenType.AT, consumeStr(1), start, startLine, startCol)); break;
+				case '&': tokens.add(tok(ChtlTokenType.AMP, consumeStr(1), start, startLine, startCol)); break;
 				case '\'': tokens.add(readString('\'')); break;
 				case '"': tokens.add(readString('"')); break;
 				default:

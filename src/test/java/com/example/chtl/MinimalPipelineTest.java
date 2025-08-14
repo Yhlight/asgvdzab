@@ -17,5 +17,6 @@ public class MinimalPipelineTest {
 		String html = ResultMerger.mergeToHtmlDocument(r);
 		Assertions.assertTrue(html.contains("<style>"));
 		Assertions.assertTrue(html.contains("<script>"));
+		Assertions.assertTrue(html.contains("<!DOCTYPE html>"));
 	}
 }
