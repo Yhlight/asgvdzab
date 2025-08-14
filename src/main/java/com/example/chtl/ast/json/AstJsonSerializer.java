@@ -44,6 +44,15 @@ public class AstJsonSerializer {
 		if (n instanceof TemplateNodes.VarTemplate vt) return indent(level) + obj(
 				"type", "TemplateVar", "name", escape(vt.name())
 		);
+		if (n instanceof TemplateNodes.CustomStyle cs) return indent(level) + obj(
+				"type", "CustomStyle", "name", escape(cs.name())
+		);
+		if (n instanceof TemplateNodes.CustomElement ce) return indent(level) + obj(
+				"type", "CustomElement", "name", escape(ce.name())
+		);
+		if (n instanceof TemplateNodes.CustomVar cv) return indent(level) + obj(
+				"type", "CustomVar", "name", escape(cv.name())
+		);
 		if (n instanceof ImportNode.NamespaceNode ns) {
 			StringBuilder sb = new StringBuilder();
 			sb.append(indent(level)).append("{ \"type\": \"Namespace\", \"name\": \"").append(escape(ns.name())).append("\", \"items\": [\n");
@@ -56,7 +65,9 @@ public class AstJsonSerializer {
 			sb.append(indent(level)).append("] }");
 			return sb.toString();
 		}
-		if (n instanceof ImportNode) return indent(level) + obj("type", "Import");
+		if (n instanceof ImportNode imp) return indent(level) + obj(
+				"type", "Import", "target", escape(imp.targetType()), "path", escape(imp.path()), "alias", escape(imp.alias())
+		);
 		return indent(level) + obj("type", n.getClass().getSimpleName());
 	}
 
@@ -65,6 +76,8 @@ public class AstJsonSerializer {
 		sb.append(indent(level)).append("{ \"type\": \"Element\", \"tag\": \"").append(escape(el.tagName())).append("\",");
 		sb.append(" \"attrs\": [");
 		sb.append(el.attributes().stream().map(a -> "{\\\"name\\\":\\\"" + escape(a.name()) + "\\\",\\\"value\\\":\\\"" + escape(a.value()) + "\\\"}").collect(Collectors.joining(",")));
+		sb.append("], \"constraints\": [");
+		sb.append(el.constraints().stream().map(c -> "{\\\"targets\\\":[" + c.targets().stream().map(AstJsonSerializer::quote).collect(Collectors.joining(",")) + "]}").collect(Collectors.joining(",")));
 		sb.append("], \"children\": [\n");
 		for (int i=0;i<el.children().size();i++) {
 			sb.append(serializeNode(el.children().get(i), level+2));
@@ -79,6 +92,8 @@ public class AstJsonSerializer {
 		StringBuilder sb = new StringBuilder();
 		sb.append(indent(level)).append("{ \"type\": \"StyleBlock\", \"inline\": [");
 		sb.append(s.inlineStyles().stream().map(a -> "{\\\"name\\\":\\\"" + escape(a.name()) + "\\\",\\\"value\\\":\\\"" + escape(a.value()) + "\\\"}").collect(Collectors.joining(",")));
+		sb.append("], \"deleted\": [");
+		sb.append(s.deletedInlineProps().stream().map(AstJsonSerializer::quote).collect(Collectors.joining(",")));
 		sb.append("], \"rules\": [\n");
 		for (int i=0;i<s.globalRules().size();i++) {
 			sb.append(serializeStyleRule(s.globalRules().get(i), level+2));
@@ -110,6 +125,7 @@ public class AstJsonSerializer {
 		return sb.toString();
 	}
 
+	private static String quote(String s){ return "\"" + escape(s) + "\""; }
 	private static boolean isNumeric(String s){ try { Double.parseDouble(s); return true; } catch (Exception e){ return false; } }
 	private static String escape(String s){ if (s==null) return ""; return s.replace("\\","\\\\").replace("\"","\\\"").replace("\n","\\n"); }
 	private static String indent(int n){ return "  ".repeat(n); }
