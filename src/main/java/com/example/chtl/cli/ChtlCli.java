@@ -15,6 +15,9 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.concurrent.Callable;
+import com.example.chtl.core.config.ConfigPreprocessor;
+import com.example.chtl.core.config.Configuration;
+import com.example.chtl.core.scanner.ScannerConfig;
 
 @CommandLine.Command(name = "chtl", mixinStandardHelpOptions = true, version = "0.1.0",
         description = "CHTL -> HTML 编译器 (Scanner + Dispatcher + Compilers + Merger)")
@@ -40,7 +43,11 @@ public class ChtlCli implements Callable<Integer> {
     public Integer call() {
         try {
             String source = Files.readString(input, StandardCharsets.UTF_8);
-            CHTLUnifiedScanner scanner = new CHTLUnifiedScanner();
+            // 根据 [Configuration] 动态关键字映射
+            var nameGroup = ConfigPreprocessor.extractNameGroup(source);
+            Configuration cfg = Configuration.defaults();
+            cfg.nameGroup = nameGroup;
+            CHTLUnifiedScanner scanner = new CHTLUnifiedScanner(new ScannerConfig(cfg));
             ScanResult scanResult = scanner.scan(source);
 
             if (dumpFragments) {
