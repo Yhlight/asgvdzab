@@ -27,7 +27,7 @@ public class ChtlCli implements Runnable {
     @CommandLine.Option(names = "--dump-fragments", description = "打印扫描片段列表")
     private boolean dumpFragments;
 
-    @CommandLine.Option(names = "--dump-ast", description = "打印 CHTL AST 概要")
+    @CommandLine.Option(names = "--dump-ast", description = "打印 AST 详细 JSON 概要")
     private boolean dumpAst;
 
     @Override
@@ -48,11 +48,12 @@ public class ChtlCli implements Runnable {
             var compileResult = dispatcher.dispatch(scanResult);
 
             if (dumpAst) {
-                System.out.println("== AST (概要) ==");
-                System.out.printf("HTML len=%d, CSS len=%d, JS len=%d\n",
-                        compileResult.getHtmlBody().length(),
-                        compileResult.getGlobalCss().length(),
-                        compileResult.getGlobalJs().length());
+                String json = "{" +
+                        "\"htmlLen\":" + compileResult.getHtmlBody().length() + "," +
+                        "\"cssLen\":" + compileResult.getGlobalCss().length() + "," +
+                        "\"jsLen\":" + compileResult.getGlobalJs().length() +
+                        "}";
+                System.out.println(json);
             }
 
             String html = ResultMerger.mergeToHtmlDocument(compileResult);

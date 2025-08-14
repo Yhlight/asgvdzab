@@ -15,6 +15,8 @@ public class ChtlState {
 	private int autoClassCounter;
 	private int autoIdCounter;
 
+	public ChtlGlobalMap globals;
+
 	public ChtlState(){
 		this(Configuration.defaults());
 	}
@@ -24,6 +26,12 @@ public class ChtlState {
 		this.autoClassCounter = configuration.INDEX_INITIAL_COUNT;
 		this.autoIdCounter = configuration.INDEX_INITIAL_COUNT;
 		this.debugMode = configuration.DEBUG_MODE;
+		this.globals = new ChtlGlobalMap();
+	}
+
+	public ChtlState(ChtlGlobalMap globals){
+		this(Configuration.defaults());
+		this.globals = globals;
 	}
 
 	public String nextAutoClass(){ return "auto-c" + (autoClassCounter++); }
