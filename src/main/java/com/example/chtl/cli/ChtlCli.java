@@ -32,6 +32,9 @@ public class ChtlCli implements Runnable {
     @CommandLine.Option(names = "--dump-ast", description = "打印 CHTL AST JSON")
     private boolean dumpAst;
 
+    @CommandLine.Option(names = "--strict", description = "严格模式，解析或约束错误立即失败")
+    private boolean strict;
+
     @Override
     public void run() {
         try {
@@ -49,13 +52,22 @@ public class ChtlCli implements Runnable {
                 System.out.println("  ]\n}");
             }
 
-            // 生成 AST JSON
-            if (dumpAst) {
+            if (dumpAst || strict) {
                 var lexer = new com.example.chtl.compilers.chtl.ChtlLexer(source);
                 var tokens = lexer.lex();
-                var parser = new com.example.chtl.parsers.chtl.ChtlParser(source, tokens, new com.example.chtl.compilers.chtl.ChtlState(), input.getParent());
-                var doc = parser.parseDocument();
-                System.out.println(AstJsonSerializer.toJson(doc));
+                try {
+                    var parser = new com.example.chtl.parsers.chtl.ChtlParser(source, tokens, new com.example.chtl.compilers.chtl.ChtlState(), input.getParent(), strict);
+                    var doc = parser.parseDocument();
+                    if (dumpAst) System.out.println(AstJsonSerializer.toJson(doc));
+                } catch (RuntimeException ex) {
+                    if (strict) {
+                        System.err.println("解析错误: " + ex.getMessage());
+                        System.exit(2);
+                        return;
+                    } else {
+                        log.warn("解析警告: {}", ex.getMessage());
+                    }
+                }
             }
 
             CompilerDispatcher dispatcher = new CompilerDispatcher();

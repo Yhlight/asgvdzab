@@ -16,15 +16,19 @@ public class ChtlParser {
 	private int pos = 0;
 	private final ChtlState state;
 	private final Path baseDir;
+	private final boolean strict;
 
 	// 模板与自定义注册表（支持命名空间前缀）
 	private final Map<String, TemplateNodes.StyleTemplate> styleTemplates = new HashMap<>();
 	private final Map<String, TemplateNodes.ElementTemplate> elementTemplates = new HashMap<>();
 	private final Map<String, TemplateNodes.VarTemplate> varTemplates = new HashMap<>();
 
-	public ChtlParser(String source, List<ChtlToken> tokens){ this(source, tokens, new ChtlState(), null); }
-	public ChtlParser(String source, List<ChtlToken> tokens, ChtlState state){ this(source, tokens, state, null); }
-	public ChtlParser(String source, List<ChtlToken> tokens, ChtlState state, Path baseDir){ this.source=source; this.tokens=tokens; this.state=state; this.baseDir=baseDir; }
+	private final Deque<List<String>> constraintStack = new ArrayDeque<>();
+
+	public ChtlParser(String source, List<ChtlToken> tokens){ this(source, tokens, new ChtlState(), null, false); }
+	public ChtlParser(String source, List<ChtlToken> tokens, ChtlState state){ this(source, tokens, state, null, false); }
+	public ChtlParser(String source, List<ChtlToken> tokens, ChtlState state, Path baseDir){ this(source, tokens, state, baseDir, false); }
+	public ChtlParser(String source, List<ChtlToken> tokens, ChtlState state, Path baseDir, boolean strict){ this.source=source; this.tokens=tokens; this.state=state; this.baseDir=baseDir; this.strict=strict; }
 
 	public ChtlDocument parseDocument(){
 		ChtlDocument doc = new ChtlDocument(0, source.length());
@@ -55,6 +59,7 @@ public class ChtlParser {
 			case KW_IMPORT -> kw = "Import";
 			default -> kw = head.lexeme;
 		}
+		if (isForbiddenType(kw)) error("命中约束，禁止使用类型: " + kw);
 		return switch (kw) {
 			case "Template", "template" -> parseTemplateDirective();
 			case "Custom", "custom" -> parseCustomDirective();
@@ -160,116 +165,110 @@ public class ChtlParser {
 	}
 
 	private ChtlNode parseImportDirective(){
-		// 支持基本文件导入：形如 @Chtl from path; 或 @Html/@Style/@JavaScript 忽略
+		// 支持 [Import] [Template]/[Custom]/[Var] @Kind Name from path as Alias;
 		int s = peek().start;
-		if (check(ChtlTokenType.AT)) {
-			advance();
-			String target = consume(ChtlTokenType.IDENT).lexeme; // Chtl/Html/Style/JavaScript 等
-			if (match(ChtlTokenType.KW_FROM)) {
-				String pathToken = consume(ChtlTokenType.IDENT).lexeme;
-				consumeOpt(ChtlTokenType.SEMICOLON);
-				if (target.equals("Chtl") && baseDir != null) {
-					try {
-						Path p = baseDir.resolve(pathToken);
-						String src = Files.readString(p, StandardCharsets.UTF_8);
-						var sub = new ChtlParser(src, new com.example.chtl.compilers.chtl.ChtlLexer(src).lex(), state, p.getParent()).parseDocument();
-						// 合并：将子文档项加入一个命名空间节点中
-						ImportNode.NamespaceNode ns = new ImportNode.NamespaceNode(s, currentEnd(), p.getFileName().toString());
-						for (var item : sub.items()) ns.add(item);
-						return ns;
-					} catch (Exception ignored) {}
-				}
+		if (check(ChtlTokenType.LBRACKET)) {
+			consume(ChtlTokenType.LBRACKET);
+			String cat = consume(ChtlTokenType.IDENT).lexeme; // Template/Custom/Var
+			consume(ChtlTokenType.RBRACKET);
+			consume(ChtlTokenType.AT);
+			String kind = consume(ChtlTokenType.IDENT).lexeme; // Style/Element/Var
+			String name = consume(ChtlTokenType.IDENT).lexeme;
+			String alias = null; String pathToken = null;
+			if (match(ChtlTokenType.KW_FROM)) pathToken = consume(ChtlTokenType.IDENT).lexeme;
+			if (match(ChtlTokenType.KW_AS)) alias = consume(ChtlTokenType.IDENT).lexeme;
+			consumeOpt(ChtlTokenType.SEMICOLON);
+			if (baseDir != null && pathToken != null) {
+				importOne(cat, kind, name, alias, baseDir.resolve(pathToken));
 			}
+			return new ImportNode(s, currentEnd(), cat+"/"+kind, pathToken, alias);
 		}
-		// 回退为原始记录
+		// 回退 @Chtl from path;
+		if (check(ChtlTokenType.AT)) {
+			advance(); String target = consume(ChtlTokenType.IDENT).lexeme; String pathToken = null; String alias = null;
+			if (match(ChtlTokenType.KW_FROM)) pathToken = consume(ChtlTokenType.IDENT).lexeme;
+			if (match(ChtlTokenType.KW_AS)) alias = consume(ChtlTokenType.IDENT).lexeme;
+			consumeOpt(ChtlTokenType.SEMICOLON);
+			if ("Chtl".equals(target) && baseDir != null && pathToken != null) {
+				try {
+					Path p = baseDir.resolve(pathToken);
+					String src = Files.readString(p, StandardCharsets.UTF_8);
+					var sub = new ChtlParser(src, new com.example.chtl.compilers.chtl.ChtlLexer(src).lex(), state, p.getParent(), strict).parseDocument();
+					mergeDoc(sub, alias != null ? alias : p.getFileName().toString());
+				} catch (Exception e) { if (strict) throw new RuntimeException("Import 失败: "+e.getMessage(), e); }
+			}
+			return new ImportNode(s, currentEnd(), target, pathToken, alias);
+		}
+		// 原始记录
 		StringBuilder sb = new StringBuilder();
 		while (!isAtEnd() && !check(ChtlTokenType.SEMICOLON) && !check(ChtlTokenType.RBRACE)) sb.append(tokenToText(advance())).append(' ');
 		consumeOpt(ChtlTokenType.SEMICOLON);
 		return new ImportNode(s, currentEnd(), "raw", sb.toString().trim(), null);
 	}
 
-	private ElementNode parseElement(){
-		int start = peek().start; String tag = consume(ChtlTokenType.IDENT).lexeme;
-		consume(ChtlTokenType.LBRACE);
+	private void importOne(String cat, String kind, String name, String alias, Path path) {
+		try {
+			String src = Files.readString(path, StandardCharsets.UTF_8);
+			var sub = new ChtlParser(src, new com.example.chtl.compilers.chtl.ChtlLexer(src).lex(), state, path.getParent(), strict).parseDocument();
+			String fqName = alias != null ? fq(alias) : fq(name);
+			if ("Template".equalsIgnoreCase(cat)) {
+				if ("Style".equalsIgnoreCase(kind)) {
+					TemplateNodes.StyleTemplate t = collectOneStyleTemplate(sub, name);
+					putNoConflict(styleTemplates, fqName, t);
+				} else if ("Element".equalsIgnoreCase(kind)) {
+					TemplateNodes.ElementTemplate t = collectOneElementTemplate(sub, name);
+					putNoConflict(elementTemplates, fqName, t);
+				} else if ("Var".equalsIgnoreCase(kind)) {
+					TemplateNodes.VarTemplate t = collectOneVarTemplate(sub, name);
+					putNoConflict(varTemplates, fqName, t);
+				}
+			}
+		} catch (Exception e) { if (strict) throw new RuntimeException("Import 精确引入失败: "+e.getMessage(), e); }
+	}
+
+	private TemplateNodes.StyleTemplate collectOneStyleTemplate(ChtlDocument doc, String name){
+		for (var it : doc.items()) if (it instanceof TemplateNodes.StyleTemplate st && st.name().endsWith(name)) return st; return null;
+	}
+	private TemplateNodes.ElementTemplate collectOneElementTemplate(ChtlDocument doc, String name){
+		for (var it : doc.items()) if (it instanceof TemplateNodes.ElementTemplate st && st.name().endsWith(name)) return st; return null;
+	}
+	private TemplateNodes.VarTemplate collectOneVarTemplate(ChtlDocument doc, String name){
+		for (var it : doc.items()) if (it instanceof TemplateNodes.VarTemplate st && st.name().endsWith(name)) return st; return null;
+	}
+	private <T> void putNoConflict(Map<String,T> map, String key, T val){ if (val==null) return; if (map.containsKey(key)) { if (strict) throw new RuntimeException("命名冲突: "+key); } else { map.put(key, val); } }
+
+	private ChtlNode parseElement(){
+		int start = peek().start; String tag = consume(ChtlTokenType.IDENT).lexeme; consume(ChtlTokenType.LBRACE);
+		constraintStack.push(new ArrayList<>());
 		state.elementStack.push(tag);
 		ElementNode el = new ElementNode(start, start, tag);
 		while (!check(ChtlTokenType.RBRACE) && !isAtEnd()) {
 			if (check(ChtlTokenType.IDENT)) {
 				ChtlToken ident = consume(ChtlTokenType.IDENT);
-				// lookahead: 如果紧接的是 ':'/'=' 视为属性，否则如果后面是 '{' 视为子元素，否则尝试属性（兼容无分号）
-				if (check(ChtlTokenType.COLON) || check(ChtlTokenType.EQUAL)) {
-					advance();
-					String value = parseValueUntilSemicolon();
-					consumeOpt(ChtlTokenType.SEMICOLON);
-					el.addAttribute(new AttributeNode(ident.start, currentEnd(), ident.lexeme, value));
-				} else if (check(ChtlTokenType.LBRACE)) {
-					// 子元素
-					unread();
-					el.addChild(parseElement());
-				} else {
-					// 尝试属性行，不存在则忽略
-					el.addAttribute(new AttributeNode(ident.start, currentEnd(), ident.lexeme, ""));
-				}
-			} else if (matchKw(ChtlTokenType.KW_TEXT)) {
-				el.addChild(parseText());
-			} else if (matchKw(ChtlTokenType.KW_STYLE)) {
-				el.addChild(parseStyleBlock(el));
-			} else if (matchKw(ChtlTokenType.KW_SCRIPT)) {
-				el.addChild(parseScriptBlock());
-			} else if (check(ChtlTokenType.KW_EXCEPT)) {
-				// except 约束：except xxx, [Template] @Var; 仅收集为静态约束
-				advance();
-				ImportNode.ConstraintNode c = new ImportNode.ConstraintNode(peek().start, peek().end);
-				while (!isAtEnd() && !check(ChtlTokenType.SEMICOLON) && !check(ChtlTokenType.RBRACE)) {
-					if (check(ChtlTokenType.LBRACKET)) { // 类型级
-						consume(ChtlTokenType.LBRACKET);
-						c.addTarget("[" + consume(ChtlTokenType.IDENT).lexeme + "]");
-						consume(ChtlTokenType.RBRACKET);
-					} else if (check(ChtlTokenType.AT)) {
-						advance(); c.addTarget("@" + consume(ChtlTokenType.IDENT).lexeme);
-					} else if (check(ChtlTokenType.IDENT)) {
-						c.addTarget(consume(ChtlTokenType.IDENT).lexeme);
-					}
-					if (check(ChtlTokenType.COMMA)) advance();
-				}
-				consumeOpt(ChtlTokenType.SEMICOLON);
-				el.addConstraint(c);
-			} else if (check(ChtlTokenType.AT)) {
-				// @Element/@Style 等用法
-				advance();
-				String type = consume(ChtlTokenType.IDENT).lexeme;
-				if (type.equals("Element")) {
-					String name = consume(ChtlTokenType.IDENT).lexeme;
-					String ns = null;
-					if (match(ChtlTokenType.KW_FROM)) { // from 命名空间
-						ns = consume(ChtlTokenType.IDENT).lexeme;
-					}
-					consumeOpt(ChtlTokenType.SEMICOLON);
-					TemplateNodes.ElementTemplate tpl = elementTemplates.get(ns==null? fq(name) : ns+"."+name);
-					if (tpl != null) {
-						for (ChtlNode n : tpl.body()) el.addChild(n);
-					}
-				} else {
-					// 其他 @ 指令忽略
-					while (!isAtEnd() && !check(ChtlTokenType.SEMICOLON) && !check(ChtlTokenType.RBRACE)) advance();
-					consumeOpt(ChtlTokenType.SEMICOLON);
-				}
-			} else if (check(ChtlTokenType.LBRACKET)) {
-				// 允许内嵌模板/自定义定义
-				ChtlNode def = parseBracketDirective();
-				if (def != null) el.addChild(def);
-			} else {
-				advance();
-			}
+				if (check(ChtlTokenType.COLON) || check(ChtlTokenType.EQUAL)) { advance(); String value = parseValueUntilSemicolon(); consumeOpt(ChtlTokenType.SEMICOLON); el.addAttribute(new AttributeNode(ident.start, currentEnd(), ident.lexeme, value)); }
+				else if (check(ChtlTokenType.LBRACE)) { unread(); el.addChild(parseElement()); }
+				else { el.addAttribute(new AttributeNode(ident.start, currentEnd(), ident.lexeme, "")); }
+			} else if (matchKw(ChtlTokenType.KW_TEXT)) { el.addChild(parseText()); }
+			else if (matchKw(ChtlTokenType.KW_STYLE)) { el.addChild(parseStyleBlock(el)); }
+			else if (matchKw(ChtlTokenType.KW_SCRIPT)) { el.addChild(parseScriptBlock()); }
+			else if (check(ChtlTokenType.KW_EXCEPT)) { advance(); ImportNode.ConstraintNode c = new ImportNode.ConstraintNode(peek().start, peek().end); while (!isAtEnd() && !check(ChtlTokenType.SEMICOLON) && !check(ChtlTokenType.RBRACE)) { if (check(ChtlTokenType.LBRACKET)) { consume(ChtlTokenType.LBRACKET); c.addTarget("[" + consume(ChtlTokenType.IDENT).lexeme + "]"); consume(ChtlTokenType.RBRACKET); } else if (check(ChtlTokenType.AT)) { advance(); c.addTarget("@" + consume(ChtlTokenType.IDENT).lexeme); } else if (check(ChtlTokenType.IDENT)) { c.addTarget(consume(ChtlTokenType.IDENT).lexeme); } if (check(ChtlTokenType.COMMA)) advance(); } consumeOpt(ChtlTokenType.SEMICOLON); el.addConstraint(c); constraintStack.peek().addAll(c.targets()); }
+			else if (check(ChtlTokenType.AT)) { advance(); String type = consume(ChtlTokenType.IDENT).lexeme; if (isForbiddenTypeUsage(type)) error("命中约束，禁止 @"+type+" 使用"); if (type.equals("Element")) { String name = consume(ChtlTokenType.IDENT).lexeme; String ns = null; if (match(ChtlTokenType.KW_FROM)) ns = consume(ChtlTokenType.IDENT).lexeme; consumeOpt(ChtlTokenType.SEMICOLON); TemplateNodes.ElementTemplate tpl = elementTemplates.get(ns==null? fq(name) : ns+"."+name); if (tpl != null) { for (ChtlNode n : tpl.body()) el.addChild(n); } } else { while (!isAtEnd() && !check(ChtlTokenType.SEMICOLON) && !check(ChtlTokenType.RBRACE)) advance(); consumeOpt(ChtlTokenType.SEMICOLON); } }
+			else if (check(ChtlTokenType.LBRACKET)) { ChtlNode def = parseBracketDirective(); if (def != null) el.addChild(def); }
+			else { advance(); }
 		}
 		consume(ChtlTokenType.RBRACE);
 		state.elementStack.pop();
-		return new ElementNode(start, currentEnd(), tag) {{
-			for (AttributeNode a : el.attributes()) addAttribute(a);
-			for (ChtlNode c : el.children()) addChild(c);
-			for (ImportNode.ConstraintNode c : el.constraints()) addConstraint(c);
-		}};
+		constraintStack.pop();
+		return new ElementNode(start, currentEnd(), tag) {{ for (AttributeNode a : el.attributes()) addAttribute(a); for (ChtlNode c : el.children()) addChild(c); for (ImportNode.ConstraintNode c : el.constraints()) addConstraint(c); }};
 	}
+
+	private boolean isForbiddenType(String kw){ Set<String> s = getActiveConstraintTargets(); return s.contains("[Template]") && (kw.equalsIgnoreCase("Template")) || s.contains("[Custom]") && (kw.equalsIgnoreCase("Custom")); }
+	private boolean isForbiddenTypeUsage(String type){ Set<String> s = getActiveConstraintTargets(); if (s.isEmpty()) return false; if (type.equalsIgnoreCase("Element") && (s.contains("[Template]") || s.contains("@Element"))) return true; return false; }
+	private Set<String> getActiveConstraintTargets(){ Set<String> out = new HashSet<>(); for (var l : constraintStack) out.addAll(l); return out; }
+
+	private void mergeDoc(ChtlDocument sub, String nsName){ ImportNode.NamespaceNode ns = new ImportNode.NamespaceNode(0,0,nsName); for (var i : sub.items()) ns.add(i); /* 直接注入到模板表，避免名称冲突 */ for (var it : sub.items()) { if (it instanceof TemplateNodes.StyleTemplate st) putNoConflict(styleTemplates, st.name(), st); if (it instanceof TemplateNodes.ElementTemplate et) putNoConflict(elementTemplates, et.name(), et); if (it instanceof TemplateNodes.VarTemplate vt) putNoConflict(varTemplates, vt.name(), vt); } }
+
+	private void error(String msg){ if (strict) throw new RuntimeException(msg + " @pos=" + peek().start); }
 
 	private TextNode parseText(){
 		consume(ChtlTokenType.LBRACE);
