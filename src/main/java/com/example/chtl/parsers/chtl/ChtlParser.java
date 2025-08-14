@@ -360,10 +360,9 @@ public class ChtlParser {
 		}
 		// 名称
 		if (isWildcard) {
-			String base = token.substring(0, token.length()-2);
-			out.addAll(globFiles(official.resolve(base), ".cmod", ".chtl")); if (!out.isEmpty()) return out;
-			out.addAll(globFiles(localMod.resolve(base), ".cmod", ".chtl")); if (!out.isEmpty()) return out;
-			out.addAll(globFiles(baseDir.resolve(base), ".cmod", ".chtl")); return out;
+			out.addAll(globFiles(official.resolve(token), ".cmod", ".chtl")); if (!out.isEmpty()) return out;
+			out.addAll(globFiles(localMod.resolve(token), ".cmod", ".chtl")); if (!out.isEmpty()) return out;
+			out.addAll(globFiles(baseDir.resolve(token), ".cmod", ".chtl")); return out;
 		}
 		if (hasExt) {
 			Path p = official.resolve(token); if (Files.isRegularFile(p)) { out.add(p); return out; }

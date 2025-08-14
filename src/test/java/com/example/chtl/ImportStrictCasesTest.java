@@ -48,7 +48,7 @@ public class ImportStrictCasesTest {
 		Files.writeString(mod.resolve("a.chtl"), "[Template] @Element A { div{} }", StandardCharsets.UTF_8);
 		Files.writeString(mod.resolve("b.chtl"), "[Template] @Element B { span{} }", StandardCharsets.UTF_8);
 		Path input = tmp.resolve("main.chtl");
-		Files.writeString(input, "[Import] @Chtl from MyNs/*.chtl; body{ @Element A; @Element B; }", StandardCharsets.UTF_8);
+		Files.writeString(input, "[Import] @Chtl from MyNs/*.chtl; body{ @Element A from MyNs; @Element B from MyNs; }", StandardCharsets.UTF_8);
 		int code = new CommandLine(new ChtlCli()).execute("-o", tmp.resolve("out.html").toString(), input.toString());
 		Assertions.assertEquals(0, code);
 		String out = Files.readString(tmp.resolve("out.html"), StandardCharsets.UTF_8);
