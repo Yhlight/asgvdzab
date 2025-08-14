@@ -32,6 +32,10 @@ public class ChtlParser {
 
 	private final Deque<List<String>> constraintStack = new ArrayDeque<>();
 
+	// Import 防重复与循环检测
+	private final Set<Path> visitedImports = new HashSet<>();
+	private final Set<String> importedKeys = new HashSet<>();
+
 	public ChtlParser(String source, List<ChtlToken> tokens){ this(source, tokens, new ChtlState(), null, false); }
 	public ChtlParser(String source, List<ChtlToken> tokens, ChtlState state){ this(source, tokens, state, null, false); }
 	public ChtlParser(String source, List<ChtlToken> tokens, ChtlState state, Path baseDir){ this(source, tokens, state, baseDir, false); }
@@ -147,7 +151,47 @@ public class ChtlParser {
 
 	private ChtlNode parseNamespaceDirective(){ String name = consume(ChtlTokenType.IDENT).lexeme; boolean hasBlock = check(ChtlTokenType.LBRACE); state.namespaceStack.push(name); state.currentNamespace = String.join(".", state.namespaceStack); ImportNode.NamespaceNode node = new ImportNode.NamespaceNode(peek().start, peek().end, state.currentNamespace); if (hasBlock) { consume(ChtlTokenType.LBRACE); while (!check(ChtlTokenType.RBRACE) && !isAtEnd()) { ChtlNode n = parseTopLevel(); if (n != null) node.add(n); else advance(); } consume(ChtlTokenType.RBRACE);} state.namespaceStack.pop(); state.currentNamespace = String.join(".", state.namespaceStack); return node; }
 
-	private ChtlNode parseImportDirective(){ int s = peek().start; if (check(ChtlTokenType.LBRACKET)) { consume(ChtlTokenType.LBRACKET); String cat = consume(ChtlTokenType.IDENT).lexeme; consume(ChtlTokenType.RBRACKET); consume(ChtlTokenType.AT); String kind = consume(ChtlTokenType.IDENT).lexeme; String name = consume(ChtlTokenType.IDENT).lexeme; String alias = null; String pathToken = null; if (match(ChtlTokenType.KW_FROM)) pathToken = consume(ChtlTokenType.IDENT).lexeme; if (match(ChtlTokenType.KW_AS)) alias = consume(ChtlTokenType.IDENT).lexeme; consumeOpt(ChtlTokenType.SEMICOLON); if (baseDir != null && pathToken != null) { importOne(cat, kind, name, alias, baseDir.resolve(pathToken)); } return new ImportNode(s, currentEnd(), cat+"/"+kind, pathToken, alias); } if (check(ChtlTokenType.AT)) { advance(); String target = consume(ChtlTokenType.IDENT).lexeme; String pathToken = null; String alias = null; if (match(ChtlTokenType.KW_FROM)) pathToken = consume(ChtlTokenType.IDENT).lexeme; if (match(ChtlTokenType.KW_AS)) alias = consume(ChtlTokenType.IDENT).lexeme; consumeOpt(ChtlTokenType.SEMICOLON); if ("Chtl".equals(target) && baseDir != null && pathToken != null) { try { Path p = baseDir.resolve(pathToken); String src = Files.readString(p, StandardCharsets.UTF_8); var sub = new ChtlParser(src, new com.example.chtl.compilers.chtl.ChtlLexer(src).lex(), state, p.getParent(), strict).parseDocument(); mergeDoc(sub, alias != null ? alias : p.getFileName().toString()); } catch (Exception e) { if (strict) throw new RuntimeException("Import 失败: "+e.getMessage(), e); } } return new ImportNode(s, currentEnd(), target, pathToken, alias);} StringBuilder sb = new StringBuilder(); while (!isAtEnd() && !check(ChtlTokenType.SEMICOLON) && !check(ChtlTokenType.RBRACE)) sb.append(tokenToText(advance())).append(' '); consumeOpt(ChtlTokenType.SEMICOLON); return new ImportNode(s, currentEnd(), "raw", sb.toString().trim(), null); }
+	private ChtlNode parseImportDirective(){
+		int s = peek().start;
+		if (!check(ChtlTokenType.AT) && !check(ChtlTokenType.LBRACKET)) {
+			// 原样保留未知导入语法
+			StringBuilder sb = new StringBuilder();
+			while (!isAtEnd() && !check(ChtlTokenType.SEMICOLON) && !check(ChtlTokenType.RBRACE)) sb.append(tokenToText(advance()));
+			consumeOpt(ChtlTokenType.SEMICOLON);
+			return new ImportNode(s, currentEnd(), "raw", sb.toString().trim(), null);
+		}
+		if (check(ChtlTokenType.AT)) {
+			advance(); String target = consume(ChtlTokenType.IDENT).lexeme; String pathToken = null; String alias = null;
+			if (match(ChtlTokenType.KW_FROM)) pathToken = consume(ChtlTokenType.IDENT).lexeme;
+			if (match(ChtlTokenType.KW_AS)) alias = consume(ChtlTokenType.IDENT).lexeme;
+			consumeOpt(ChtlTokenType.SEMICOLON);
+			if (pathToken == null) return new ImportNode(s, currentEnd(), target, null, alias);
+			// @Html/@Style/@JavaScript 导入：无 as 则跳过；有 as 则创建原始嵌入节点
+			if (target.equals("Html") || target.equals("Style") || target.equals("JavaScript")) {
+				if (alias == null) return new ImportNode(s, currentEnd(), target, pathToken, null);
+				String content = resolveSimpleAsset(target, pathToken);
+				if (content == null) { if (strict) error("资源未找到: "+pathToken); return new ImportNode(s, currentEnd(), target, pathToken, alias); }
+				if (target.equals("Html")) return new OriginNodes.OriginHtmlNode(s, currentEnd(), alias, content);
+				if (target.equals("Style")) return new OriginNodes.OriginStyleNode(s, currentEnd(), alias, content);
+				return new OriginNodes.OriginJavaScriptNode(s, currentEnd(), alias, content);
+			}
+			// @Chtl 导入
+			if (target.equals("Chtl")) {
+				List<Path> files = resolveChtlPaths(pathToken);
+				for (Path f : files) importChtlFile(f, alias);
+				return new ImportNode(s, currentEnd(), target, pathToken, alias);
+			}
+			// @CJmod 导入
+			if (target.equals("CJmod")) {
+				List<Path> files = resolveCjmodPaths(pathToken);
+				for (Path f : files) importCjmodFile(f, alias);
+				return new ImportNode(s, currentEnd(), target, pathToken, alias);
+			}
+			return new ImportNode(s, currentEnd(), target, pathToken, alias);
+		}
+		// 旧式 [Import] [Template] ... 精确引入保留
+		consume(ChtlTokenType.LBRACKET); String cat = consume(ChtlTokenType.IDENT).lexeme; consume(ChtlTokenType.RBRACKET); consume(ChtlTokenType.AT); String kind = consume(ChtlTokenType.IDENT).lexeme; String name = consume(ChtlTokenType.IDENT).lexeme; String alias = null; String pathToken = null; if (match(ChtlTokenType.KW_FROM)) pathToken = consume(ChtlTokenType.IDENT).lexeme; if (match(ChtlTokenType.KW_AS)) alias = consume(ChtlTokenType.IDENT).lexeme; consumeOpt(ChtlTokenType.SEMICOLON); if (baseDir != null && pathToken != null) { importOne(cat, kind, name, alias, baseDir.resolve(pathToken)); } return new ImportNode(s, currentEnd(), cat+"/"+kind, pathToken, alias);
+	}
 
 	private void importOne(String cat, String kind, String name, String alias, Path path) { try { String src = Files.readString(path, StandardCharsets.UTF_8); var sub = new ChtlParser(src, new com.example.chtl.compilers.chtl.ChtlLexer(src).lex(), state, path.getParent(), strict).parseDocument(); String fqName = alias != null ? fq(alias) : fq(name); if ("Template".equalsIgnoreCase(cat)) { if ("Style".equalsIgnoreCase(kind)) { TemplateNodes.StyleTemplate t = collectOneStyleTemplate(sub, name); putNoConflict(styleTemplates, fqName, t); } else if ("Element".equalsIgnoreCase(kind)) { TemplateNodes.ElementTemplate t = collectOneElementTemplate(sub, name); putNoConflict(elementTemplates, fqName, t); } else if ("Var".equalsIgnoreCase(kind)) { TemplateNodes.VarTemplate t = collectOneVarTemplate(sub, name); putNoConflict(varTemplates, fqName, t); } } } catch (Exception e) { if (strict) throw new RuntimeException("Import 精确引入失败: "+e.getMessage(), e); } }
 
@@ -269,4 +313,126 @@ public class ChtlParser {
 	private ChtlToken peek(){ return tokens.get(pos); }
 	private ChtlToken previous(){ return tokens.get(pos-1); }
 	private int currentEnd(){ return previous().end; }
+
+	// ==== Import 扩展实现 ====
+	private String resolveSimpleAsset(String target, String pathToken){ if (baseDir == null) return null; // 文件名无后缀：按类型搜索
+		String ext = target.equals("Html")? ".html" : target.equals("Style")? ".css" : ".js";
+		Path dir = baseDir;
+		if (pathToken.contains("/") || pathToken.contains("\\")) {
+			Path p = baseDir.resolve(pathToken);
+			if (Files.isDirectory(p)) { if (strict) error("路径是文件夹: "+pathToken); return null; }
+			if (Files.isRegularFile(p)) return safeRead(p);
+			return null;
+		}
+		// 名称，可带或不带后缀
+		Path withExt = dir.resolve(ensureExt(pathToken, ext));
+		if (Files.isRegularFile(withExt)) return safeRead(withExt);
+		// 不深入递归，仅当前目录
+		return null;
+	}
+
+	private List<Path> resolveChtlPaths(String token){
+		List<Path> out = new ArrayList<>(); if (baseDir == null || token == null) return out;
+		boolean isWildcard = token.endsWith(".*") || token.endsWith("/*") || token.endsWith("*.cmod") || token.endsWith("/*.cmod") || token.endsWith("*.chtl") || token.endsWith("/*.chtl");
+		boolean hasExt = token.endsWith(".cmod") || token.endsWith(".chtl");
+		Path official = Path.of("module"); Path localMod = baseDir.resolve("module");
+		if (token.contains("/") || token.contains("\\")) {
+			Path p = baseDir.resolve(token.replace(".*","/*").replace(".*/","/*/").replace(".cmod",".cmod").replace(".chtl",".chtl"));
+			if (isWildcard) out.addAll(globFiles(p, ".cmod", ".chtl"));
+			else if (Files.isRegularFile(p)) out.add(p);
+			else if (!hasExt) { // 具体路径但无文件信息 -> 报错
+				if (strict) error("路径不含文件信息: "+token);
+			}
+			return out;
+		}
+		// 名称
+		if (isWildcard) {
+			String base = token.substring(0, token.length()-2);
+			out.addAll(globFiles(official.resolve(base), ".cmod", ".chtl")); if (!out.isEmpty()) return out;
+			out.addAll(globFiles(localMod.resolve(base), ".cmod", ".chtl")); if (!out.isEmpty()) return out;
+			out.addAll(globFiles(baseDir.resolve(base), ".cmod", ".chtl")); return out;
+		}
+		if (hasExt) {
+			Path p = official.resolve(token); if (Files.isRegularFile(p)) { out.add(p); return out; }
+			p = localMod.resolve(token); if (Files.isRegularFile(p)) { out.add(p); return out; }
+			p = baseDir.resolve(token); if (Files.isRegularFile(p)) { out.add(p); return out; }
+			return out;
+		}
+		// 无后缀：优先 cmod，再 chtl
+		Path p = official.resolve(token + ".cmod"); if (Files.isRegularFile(p)) { out.add(p); return out; }
+		p = official.resolve(token + ".chtl"); if (Files.isRegularFile(p)) { out.add(p); return out; }
+		p = localMod.resolve(token + ".cmod"); if (Files.isRegularFile(p)) { out.add(p); return out; }
+		p = localMod.resolve(token + ".chtl"); if (Files.isRegularFile(p)) { out.add(p); return out; }
+		p = baseDir.resolve(token + ".cmod"); if (Files.isRegularFile(p)) { out.add(p); return out; }
+		p = baseDir.resolve(token + ".chtl"); if (Files.isRegularFile(p)) { out.add(p); return out; }
+		return out;
+	}
+
+	private List<Path> resolveCjmodPaths(String token){
+		List<Path> out = new ArrayList<>(); if (baseDir == null || token == null) return out;
+		Path official = Path.of("module"); Path localMod = baseDir.resolve("module");
+		if (token.contains("/") || token.contains("\\")) {
+			Path p = baseDir.resolve(token);
+			if (Files.isDirectory(p)) { if (strict) error("路径不含文件信息: "+token); return out; }
+			if (Files.isRegularFile(p)) { out.add(p); return out; }
+			return out;
+		}
+		boolean hasExt = token.endsWith(".cjmod");
+		if (hasExt) {
+			Path p = official.resolve(token); if (Files.isRegularFile(p)) { out.add(p); return out; }
+			p = localMod.resolve(token); if (Files.isRegularFile(p)) { out.add(p); return out; }
+			p = baseDir.resolve(token); if (Files.isRegularFile(p)) { out.add(p); return out; }
+			return out;
+		}
+		// 无后缀：优先官方，其次本地 module，再当前目录
+		Path p = official.resolve(token + ".cjmod"); if (Files.isRegularFile(p)) { out.add(p); return out; }
+		p = localMod.resolve(token + ".cjmod"); if (Files.isRegularFile(p)) { out.add(p); return out; }
+		p = baseDir.resolve(token + ".cjmod"); if (Files.isRegularFile(p)) { out.add(p); return out; }
+		return out;
+	}
+
+	private List<Path> globFiles(Path dirOrPattern, String... exts){
+		List<Path> list = new ArrayList<>();
+		try {
+			java.nio.file.Path dir = dirOrPattern;
+			boolean hasPattern = dirOrPattern.toString().contains("*");
+			final String pat = hasPattern ? dirOrPattern.getFileName().toString() : null;
+			if (hasPattern) dir = dirOrPattern.getParent();
+			if (dir == null) return list;
+			final String[] extsFinal = exts;
+			java.nio.file.DirectoryStream.Filter<java.nio.file.Path> filter = entry -> {
+				String n = entry.getFileName().toString();
+				if (pat != null) {
+					String regex = pat.replace(".", "\\.").replace("*", ".*");
+					if (!n.matches(regex)) return false;
+				}
+				if (extsFinal.length==0) return true;
+				for (String e : extsFinal) if (n.endsWith(e)) return true;
+				return false;
+			};
+			try (java.nio.file.DirectoryStream<java.nio.file.Path> ds = java.nio.file.Files.newDirectoryStream(dir, filter)) {
+				for (java.nio.file.Path p : ds) if (java.nio.file.Files.isRegularFile(p)) list.add(p);
+			}
+		} catch (Exception ignored) {}
+		return list;
+	}
+
+	private String ensureExt(String name, String ext){ return name.endsWith(ext)? name : name + ext; }
+	private String safeRead(Path p){ try { return Files.readString(p, StandardCharsets.UTF_8); } catch (Exception e) { return null; } }
+
+	private void importChtlFile(Path file, String alias){ if (file == null) return; if (visitedImports.contains(file)) return; visitedImports.add(file); String key = file.toAbsolutePath().normalize().toString(); if (!importedKeys.add(key)) return; try { String src = Files.readString(file, StandardCharsets.UTF_8); var sub = new ChtlParser(src, new com.example.chtl.compilers.chtl.ChtlLexer(src).lex(), state, file.getParent(), strict).parseDocument(); String nsName = alias != null ? alias : stripExt(file.getFileName().toString()); mergeDocWithNs(sub, nsName); } catch (Exception e) { if (strict) throw new RuntimeException("Import 失败: "+file+": "+e.getMessage(), e); } }
+	private void importCjmodFile(Path file, String alias){ // cjmod: 假定为纯 JS 模块，作为命名空间下的原始 JS 注入占位
+		if (file == null) return; if (visitedImports.contains(file)) return; visitedImports.add(file); String key = file.toAbsolutePath().normalize().toString(); if (!importedKeys.add(key)) return; String nsName = alias != null ? alias : stripExt(file.getFileName().toString()); String js = safeRead(file); if (js == null) return; ImportNode.NamespaceNode ns = new ImportNode.NamespaceNode(0,0,nsName); ns.add(new OriginNodes.OriginJavaScriptNode(0,0, nsName, js)); }
+	private String stripExt(String n){ int i=n.lastIndexOf('.'); return i>=0? n.substring(0,i) : n; }
+
+	private void mergeDocWithNs(ChtlDocument sub, String nsName){ if (nsName == null || nsName.isBlank()) { mergeDoc(sub, ""); return; } // 同名命名空间合并
+		ImportNode.NamespaceNode ns = new ImportNode.NamespaceNode(0,0,nsName);
+		for (var i : sub.items()) ns.add(i);
+		// 注入模板表，冲突检测
+		for (var it : sub.items()) {
+			if (it instanceof TemplateNodes.StyleTemplate st) putNoConflict(styleTemplates, st.name(), st);
+			if (it instanceof TemplateNodes.ElementTemplate et) putNoConflict(elementTemplates, et.name(), et);
+			if (it instanceof TemplateNodes.VarTemplate vt) putNoConflict(varTemplates, vt.name(), vt);
+		}
+	}
 }

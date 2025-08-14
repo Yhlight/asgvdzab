@@ -83,6 +83,16 @@ public class ChtlCompiler {
 			}
 		} else if (node instanceof ScriptBlockNode sb) {
 			html.append("<script>\n").append(sb.code()).append("\n</script>\n");
+		} else if (node instanceof OriginNodes.OriginHtmlNode oh) {
+			html.append(oh.html()).append('\n');
+		} else if (node instanceof OriginNodes.OriginStyleNode os) {
+			globalCss.append(os.css()).append('\n');
+		} else if (node instanceof OriginNodes.OriginJavaScriptNode oj) {
+			// 作为全局 JS 注入
+			// 注意 ResultMerger 负责包裹 script 标签
+			// 这里只是累积 JS 源码
+			// 由于当前类没有直接持有全局 JS 缓冲区，这里简单地插入到 html 中的 <script> 块以不破坏现有输出路径
+			html.append("<script>\n").append(oj.js()).append("\n</script>\n");
 		}
 	}
 
