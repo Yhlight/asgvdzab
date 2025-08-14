@@ -1,0 +1,25 @@
+body
+{
+	style
+	{
+		.box
+		{
+			width: 100px;
+		}
+	}
+
+	script
+	{
+		{{box}}->textContent();
+	}
+
+	[Origin] @Style
+	{
+		:root { --c: red; }
+	}
+
+	[Origin] @JavaScript
+	{
+		console.log('origin');
+	}
+}
