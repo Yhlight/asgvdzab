@@ -1,0 +1,12 @@
+package com.example.chtl.compilers.chtljs;
+
+public enum ChtlJsTokenType {
+	SELECTOR_OPEN, // {{
+	SELECTOR_CLOSE, // }}
+	ARROW, // ->
+	LBRACE, RBRACE, LBRACKET, RBRACKET, LPAREN, RPAREN,
+	DOT, HASH, COLON, COMMA, SEMICOLON,
+	IDENT, STRING, NUMBER,
+	KW_LISTEN, KW_DELEGATE, KW_ANIMATE,
+	EOF
+}
