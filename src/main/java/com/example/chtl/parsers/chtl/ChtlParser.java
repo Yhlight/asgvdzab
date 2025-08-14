@@ -333,6 +333,16 @@ public class ChtlParser {
 
 	private List<Path> resolveChtlPaths(String token){
 		List<Path> out = new ArrayList<>(); if (baseDir == null || token == null) return out;
+		// 模块名点号映射到路径分隔：Chtholly.Space -> Chtholly/Space, Chtholly.* -> Chtholly/*
+		if (!token.contains("/") && !token.contains("\\")) {
+			if (token.endsWith(".*")) token = token.substring(0, token.length()-2).replace('.', '/') + "/*";
+			else if (token.endsWith(".cmod") || token.endsWith(".chtl")) {
+				int d = token.lastIndexOf('.'); String base = token.substring(0,d).replace('.', '/'); String ext = token.substring(d);
+				token = base + ext;
+			} else {
+				token = token.replace('.', '/');
+			}
+		}
 		boolean isWildcard = token.endsWith(".*") || token.endsWith("/*") || token.endsWith("*.cmod") || token.endsWith("/*.cmod") || token.endsWith("*.chtl") || token.endsWith("/*.chtl");
 		boolean hasExt = token.endsWith(".cmod") || token.endsWith(".chtl");
 		Path official = Path.of("module"); Path localMod = baseDir.resolve("module");
@@ -370,6 +380,15 @@ public class ChtlParser {
 
 	private List<Path> resolveCjmodPaths(String token){
 		List<Path> out = new ArrayList<>(); if (baseDir == null || token == null) return out;
+		// 模块名点号映射到路径分隔：Chtholly.Space -> Chtholly/Space, Chtholly.*（对 cjmod 无通配示例，这里不处理 *）
+		if (!token.contains("/") && !token.contains("\\")) {
+			if (token.endsWith(".cjmod")) {
+				int d = token.lastIndexOf('.'); String base = token.substring(0,d).replace('.', '/'); String ext = token.substring(d);
+				token = base + ext;
+			} else {
+				token = token.replace('.', '/');
+			}
+		}
 		Path official = Path.of("module"); Path localMod = baseDir.resolve("module");
 		if (token.contains("/") || token.contains("\\")) {
 			Path p = baseDir.resolve(token);

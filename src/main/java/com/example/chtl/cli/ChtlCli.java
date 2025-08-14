@@ -71,7 +71,7 @@ public class ChtlCli implements Callable<Integer> {
             }
 
             CompilerDispatcher dispatcher = new CompilerDispatcher();
-            var compileResult = dispatcher.dispatch(scanResult);
+            var compileResult = dispatcher.dispatch(scanResult, input.getParent());
 
             String html = ResultMerger.mergeToHtmlDocument(compileResult);
             if (output.getParent() != null) {
