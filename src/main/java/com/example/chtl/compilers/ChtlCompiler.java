@@ -35,7 +35,7 @@ public class ChtlCompiler {
 	public Output compile(String chtlSource, Path baseDir) {
 		var lexer = new ChtlLexer(chtlSource);
 		var tokens = lexer.lex();
-		var parser = new ChtlParser(chtlSource, tokens, new ChtlState(), baseDir);
+		var parser = new ChtlParser(chtlSource, tokens, new ChtlState());
 		ChtlContext ctx = new ChtlContext(new ChtlGlobalMap(), new ChtlState());
 		ChtlDocument doc = parser.parseDocument();
 		StringBuilder html = new StringBuilder();
