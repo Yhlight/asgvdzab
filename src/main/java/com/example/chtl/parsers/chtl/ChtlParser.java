@@ -23,6 +23,10 @@ public class ChtlParser {
 	private final Map<String, TemplateNodes.ElementTemplate> elementTemplates = new HashMap<>();
 	private final Map<String, TemplateNodes.VarTemplate> varTemplates = new HashMap<>();
 
+	// 样式模板操作序列：DECL/INCLUDE/INHERIT/DELETE
+	private static class StyleOp { enum Kind { DECL, INCLUDE, INHERIT, DELETE } Kind kind; String prop; String value; String refName; List<String> deletes; StyleOp(Kind k){ this.kind=k; } }
+	private final Map<String, List<StyleOp>> styleTemplateOps = new HashMap<>();
+
 	private final Deque<List<String>> constraintStack = new ArrayDeque<>();
 
 	public ChtlParser(String source, List<ChtlToken> tokens){ this(source, tokens, new ChtlState(), null, false); }
@@ -77,164 +81,63 @@ public class ChtlParser {
 		int bodyStart = previous().start;
 		if (type.equals("Style")) {
 			TemplateNodes.StyleTemplate t = new TemplateNodes.StyleTemplate(bodyStart, bodyStart, fq(name));
+			List<StyleOp> ops = new ArrayList<>();
 			while (!check(ChtlTokenType.RBRACE) && !isAtEnd()) {
 				if (check(ChtlTokenType.IDENT)) {
 					ChtlToken p = consume(ChtlTokenType.IDENT);
 					if (match(ChtlTokenType.COLON) || match(ChtlTokenType.EQUAL)) {
-						String v = parseValueUntilSemicolon();
-						consumeOpt(ChtlTokenType.SEMICOLON);
+						String v = parseValueUntilSemicolon(); consumeOpt(ChtlTokenType.SEMICOLON);
+						StyleOp op = new StyleOp(StyleOp.Kind.DECL); op.prop = p.lexeme; op.value = v; ops.add(op);
 						t.addDecl(new AttributeNode(p.start, currentEnd(), p.lexeme, v));
 					}
+				} else if (check(ChtlTokenType.AT)) {
+					advance(); String atType = consume(ChtlTokenType.IDENT).lexeme;
+					if (atType.equals("Style")) { String ref = consume(ChtlTokenType.IDENT).lexeme; consumeOpt(ChtlTokenType.SEMICOLON); StyleOp op = new StyleOp(StyleOp.Kind.INCLUDE); op.refName=fq(ref); ops.add(op); }
+					else { while (!isAtEnd() && !check(ChtlTokenType.SEMICOLON) && !check(ChtlTokenType.RBRACE)) advance(); consumeOpt(ChtlTokenType.SEMICOLON); }
+				} else if (check(ChtlTokenType.KW_INHERIT)) {
+					advance(); consume(ChtlTokenType.AT); String atType = consume(ChtlTokenType.IDENT).lexeme; if (!atType.equals("Style")) { if (strict) error("inherit 仅支持 @Style"); }
+					String ref = consume(ChtlTokenType.IDENT).lexeme; consumeOpt(ChtlTokenType.SEMICOLON); StyleOp op = new StyleOp(StyleOp.Kind.INHERIT); op.refName=fq(ref); ops.add(op);
+				} else if (check(ChtlTokenType.KW_DELETE)) {
+					advance(); List<String> dels = new ArrayList<>();
+					while (!isAtEnd() && !check(ChtlTokenType.SEMICOLON) && !check(ChtlTokenType.RBRACE)) { if (check(ChtlTokenType.IDENT)) dels.add(consume(ChtlTokenType.IDENT).lexeme); if (check(ChtlTokenType.COMMA)) advance(); else break; }
+					consumeOpt(ChtlTokenType.SEMICOLON); StyleOp op = new StyleOp(StyleOp.Kind.DELETE); op.deletes=dels; ops.add(op);
 				} else advance();
 			}
 			consume(ChtlTokenType.RBRACE);
 			styleTemplates.put(fq(name), t);
+			styleTemplateOps.put(fq(name), ops);
 			return t;
 		} else if (type.equals("Element")) {
 			TemplateNodes.ElementTemplate t = new TemplateNodes.ElementTemplate(bodyStart, bodyStart, fq(name));
-			while (!check(ChtlTokenType.RBRACE) && !isAtEnd()) {
-				ChtlNode n = parseTopLevel();
-				if (n != null) t.add(n); else advance();
-			}
-			consume(ChtlTokenType.RBRACE);
-			elementTemplates.put(fq(name), t);
-			return t;
+			while (!check(ChtlTokenType.RBRACE) && !isAtEnd()) { ChtlNode n = parseTopLevel(); if (n != null) t.add(n); else advance(); }
+			consume(ChtlTokenType.RBRACE); elementTemplates.put(fq(name), t); return t;
 		} else if (type.equals("Var")) {
 			TemplateNodes.VarTemplate t = new TemplateNodes.VarTemplate(bodyStart, bodyStart, fq(name));
-			while (!check(ChtlTokenType.RBRACE) && !isAtEnd()) {
-				if (check(ChtlTokenType.IDENT)) {
-					ChtlToken k = consume(ChtlTokenType.IDENT);
-					if (match(ChtlTokenType.COLON) || match(ChtlTokenType.EQUAL)) {
-						String v = parseValueUntilSemicolon();
-						consumeOpt(ChtlTokenType.SEMICOLON);
-						t.add(new AttributeNode(k.start, currentEnd(), k.lexeme, v));
-					}
-				} else advance();
-			}
-			consume(ChtlTokenType.RBRACE);
-			varTemplates.put(fq(name), t);
-			return t;
+			while (!check(ChtlTokenType.RBRACE) && !isAtEnd()) { if (check(ChtlTokenType.IDENT)) { ChtlToken k = consume(ChtlTokenType.IDENT); if (match(ChtlTokenType.COLON) || match(ChtlTokenType.EQUAL)) { String v = parseValueUntilSemicolon(); consumeOpt(ChtlTokenType.SEMICOLON); t.add(new AttributeNode(k.start, currentEnd(), k.lexeme, v)); } } else advance(); }
+			consume(ChtlTokenType.RBRACE); varTemplates.put(fq(name), t); return t;
 		}
 		return null;
 	}
 
 	private ChtlNode parseCustomDirective(){
-		// 先解析到类型与名称，然后解析体为占位（保留到 AST），但不做复杂语义，后续可扩展
 		consume(ChtlTokenType.AT);
-		String type = consume(ChtlTokenType.IDENT).lexeme; // Style/Element/Var
-		String name = consume(ChtlTokenType.IDENT).lexeme;
-		consume(ChtlTokenType.LBRACE);
+		String type = consume(ChtlTokenType.IDENT).lexeme; String name = consume(ChtlTokenType.IDENT).lexeme; consume(ChtlTokenType.LBRACE);
 		int bodyStart = previous().start;
-		if (type.equals("Style")) {
-			TemplateNodes.CustomStyle n = new TemplateNodes.CustomStyle(bodyStart, bodyStart, fq(name));
-			while (!check(ChtlTokenType.RBRACE) && !isAtEnd()) advance();
-			consume(ChtlTokenType.RBRACE);
-			return n;
-		} else if (type.equals("Element")) {
-			TemplateNodes.CustomElement n = new TemplateNodes.CustomElement(bodyStart, bodyStart, fq(name));
-			while (!check(ChtlTokenType.RBRACE) && !isAtEnd()) advance();
-			consume(ChtlTokenType.RBRACE);
-			return n;
-		} else if (type.equals("Var")) {
-			TemplateNodes.CustomVar n = new TemplateNodes.CustomVar(bodyStart, bodyStart, fq(name));
-			while (!check(ChtlTokenType.RBRACE) && !isAtEnd()) advance();
-			consume(ChtlTokenType.RBRACE);
-			return n;
-		}
+		if (type.equals("Style")) { TemplateNodes.CustomStyle n = new TemplateNodes.CustomStyle(bodyStart, bodyStart, fq(name)); while (!check(ChtlTokenType.RBRACE) && !isAtEnd()) advance(); consume(ChtlTokenType.RBRACE); return n; }
+		else if (type.equals("Element")) { TemplateNodes.CustomElement n = new TemplateNodes.CustomElement(bodyStart, bodyStart, fq(name)); while (!check(ChtlTokenType.RBRACE) && !isAtEnd()) advance(); consume(ChtlTokenType.RBRACE); return n; }
+		else if (type.equals("Var")) { TemplateNodes.CustomVar n = new TemplateNodes.CustomVar(bodyStart, bodyStart, fq(name)); while (!check(ChtlTokenType.RBRACE) && !isAtEnd()) advance(); consume(ChtlTokenType.RBRACE); return n; }
 		return null;
 	}
 
-	private ChtlNode parseNamespaceDirective(){
-		String name = consume(ChtlTokenType.IDENT).lexeme;
-		boolean hasBlock = check(ChtlTokenType.LBRACE);
-		TemplateNodes.ElementTemplate marker = null;
-		state.namespaceStack.push(name);
-		state.currentNamespace = String.join(".", state.namespaceStack);
-		ImportNode.NamespaceNode node = new ImportNode.NamespaceNode(peek().start, peek().end, state.currentNamespace);
-		if (hasBlock) {
-			consume(ChtlTokenType.LBRACE);
-			while (!check(ChtlTokenType.RBRACE) && !isAtEnd()) {
-				ChtlNode n = parseTopLevel();
-				if (n != null) node.add(n); else advance();
-			}
-			consume(ChtlTokenType.RBRACE);
-		}
-		state.namespaceStack.pop();
-		state.currentNamespace = String.join(".", state.namespaceStack);
-		return node;
-	}
+	private ChtlNode parseNamespaceDirective(){ String name = consume(ChtlTokenType.IDENT).lexeme; boolean hasBlock = check(ChtlTokenType.LBRACE); state.namespaceStack.push(name); state.currentNamespace = String.join(".", state.namespaceStack); ImportNode.NamespaceNode node = new ImportNode.NamespaceNode(peek().start, peek().end, state.currentNamespace); if (hasBlock) { consume(ChtlTokenType.LBRACE); while (!check(ChtlTokenType.RBRACE) && !isAtEnd()) { ChtlNode n = parseTopLevel(); if (n != null) node.add(n); else advance(); } consume(ChtlTokenType.RBRACE);} state.namespaceStack.pop(); state.currentNamespace = String.join(".", state.namespaceStack); return node; }
 
-	private ChtlNode parseImportDirective(){
-		// 支持 [Import] [Template]/[Custom]/[Var] @Kind Name from path as Alias;
-		int s = peek().start;
-		if (check(ChtlTokenType.LBRACKET)) {
-			consume(ChtlTokenType.LBRACKET);
-			String cat = consume(ChtlTokenType.IDENT).lexeme; // Template/Custom/Var
-			consume(ChtlTokenType.RBRACKET);
-			consume(ChtlTokenType.AT);
-			String kind = consume(ChtlTokenType.IDENT).lexeme; // Style/Element/Var
-			String name = consume(ChtlTokenType.IDENT).lexeme;
-			String alias = null; String pathToken = null;
-			if (match(ChtlTokenType.KW_FROM)) pathToken = consume(ChtlTokenType.IDENT).lexeme;
-			if (match(ChtlTokenType.KW_AS)) alias = consume(ChtlTokenType.IDENT).lexeme;
-			consumeOpt(ChtlTokenType.SEMICOLON);
-			if (baseDir != null && pathToken != null) {
-				importOne(cat, kind, name, alias, baseDir.resolve(pathToken));
-			}
-			return new ImportNode(s, currentEnd(), cat+"/"+kind, pathToken, alias);
-		}
-		// 回退 @Chtl from path;
-		if (check(ChtlTokenType.AT)) {
-			advance(); String target = consume(ChtlTokenType.IDENT).lexeme; String pathToken = null; String alias = null;
-			if (match(ChtlTokenType.KW_FROM)) pathToken = consume(ChtlTokenType.IDENT).lexeme;
-			if (match(ChtlTokenType.KW_AS)) alias = consume(ChtlTokenType.IDENT).lexeme;
-			consumeOpt(ChtlTokenType.SEMICOLON);
-			if ("Chtl".equals(target) && baseDir != null && pathToken != null) {
-				try {
-					Path p = baseDir.resolve(pathToken);
-					String src = Files.readString(p, StandardCharsets.UTF_8);
-					var sub = new ChtlParser(src, new com.example.chtl.compilers.chtl.ChtlLexer(src).lex(), state, p.getParent(), strict).parseDocument();
-					mergeDoc(sub, alias != null ? alias : p.getFileName().toString());
-				} catch (Exception e) { if (strict) throw new RuntimeException("Import 失败: "+e.getMessage(), e); }
-			}
-			return new ImportNode(s, currentEnd(), target, pathToken, alias);
-		}
-		// 原始记录
-		StringBuilder sb = new StringBuilder();
-		while (!isAtEnd() && !check(ChtlTokenType.SEMICOLON) && !check(ChtlTokenType.RBRACE)) sb.append(tokenToText(advance())).append(' ');
-		consumeOpt(ChtlTokenType.SEMICOLON);
-		return new ImportNode(s, currentEnd(), "raw", sb.toString().trim(), null);
-	}
+	private ChtlNode parseImportDirective(){ int s = peek().start; if (check(ChtlTokenType.LBRACKET)) { consume(ChtlTokenType.LBRACKET); String cat = consume(ChtlTokenType.IDENT).lexeme; consume(ChtlTokenType.RBRACKET); consume(ChtlTokenType.AT); String kind = consume(ChtlTokenType.IDENT).lexeme; String name = consume(ChtlTokenType.IDENT).lexeme; String alias = null; String pathToken = null; if (match(ChtlTokenType.KW_FROM)) pathToken = consume(ChtlTokenType.IDENT).lexeme; if (match(ChtlTokenType.KW_AS)) alias = consume(ChtlTokenType.IDENT).lexeme; consumeOpt(ChtlTokenType.SEMICOLON); if (baseDir != null && pathToken != null) { importOne(cat, kind, name, alias, baseDir.resolve(pathToken)); } return new ImportNode(s, currentEnd(), cat+"/"+kind, pathToken, alias); } if (check(ChtlTokenType.AT)) { advance(); String target = consume(ChtlTokenType.IDENT).lexeme; String pathToken = null; String alias = null; if (match(ChtlTokenType.KW_FROM)) pathToken = consume(ChtlTokenType.IDENT).lexeme; if (match(ChtlTokenType.KW_AS)) alias = consume(ChtlTokenType.IDENT).lexeme; consumeOpt(ChtlTokenType.SEMICOLON); if ("Chtl".equals(target) && baseDir != null && pathToken != null) { try { Path p = baseDir.resolve(pathToken); String src = Files.readString(p, StandardCharsets.UTF_8); var sub = new ChtlParser(src, new com.example.chtl.compilers.chtl.ChtlLexer(src).lex(), state, p.getParent(), strict).parseDocument(); mergeDoc(sub, alias != null ? alias : p.getFileName().toString()); } catch (Exception e) { if (strict) throw new RuntimeException("Import 失败: "+e.getMessage(), e); } } return new ImportNode(s, currentEnd(), target, pathToken, alias);} StringBuilder sb = new StringBuilder(); while (!isAtEnd() && !check(ChtlTokenType.SEMICOLON) && !check(ChtlTokenType.RBRACE)) sb.append(tokenToText(advance())).append(' '); consumeOpt(ChtlTokenType.SEMICOLON); return new ImportNode(s, currentEnd(), "raw", sb.toString().trim(), null); }
 
-	private void importOne(String cat, String kind, String name, String alias, Path path) {
-		try {
-			String src = Files.readString(path, StandardCharsets.UTF_8);
-			var sub = new ChtlParser(src, new com.example.chtl.compilers.chtl.ChtlLexer(src).lex(), state, path.getParent(), strict).parseDocument();
-			String fqName = alias != null ? fq(alias) : fq(name);
-			if ("Template".equalsIgnoreCase(cat)) {
-				if ("Style".equalsIgnoreCase(kind)) {
-					TemplateNodes.StyleTemplate t = collectOneStyleTemplate(sub, name);
-					putNoConflict(styleTemplates, fqName, t);
-				} else if ("Element".equalsIgnoreCase(kind)) {
-					TemplateNodes.ElementTemplate t = collectOneElementTemplate(sub, name);
-					putNoConflict(elementTemplates, fqName, t);
-				} else if ("Var".equalsIgnoreCase(kind)) {
-					TemplateNodes.VarTemplate t = collectOneVarTemplate(sub, name);
-					putNoConflict(varTemplates, fqName, t);
-				}
-			}
-		} catch (Exception e) { if (strict) throw new RuntimeException("Import 精确引入失败: "+e.getMessage(), e); }
-	}
+	private void importOne(String cat, String kind, String name, String alias, Path path) { try { String src = Files.readString(path, StandardCharsets.UTF_8); var sub = new ChtlParser(src, new com.example.chtl.compilers.chtl.ChtlLexer(src).lex(), state, path.getParent(), strict).parseDocument(); String fqName = alias != null ? fq(alias) : fq(name); if ("Template".equalsIgnoreCase(cat)) { if ("Style".equalsIgnoreCase(kind)) { TemplateNodes.StyleTemplate t = collectOneStyleTemplate(sub, name); putNoConflict(styleTemplates, fqName, t); } else if ("Element".equalsIgnoreCase(kind)) { TemplateNodes.ElementTemplate t = collectOneElementTemplate(sub, name); putNoConflict(elementTemplates, fqName, t); } else if ("Var".equalsIgnoreCase(kind)) { TemplateNodes.VarTemplate t = collectOneVarTemplate(sub, name); putNoConflict(varTemplates, fqName, t); } } } catch (Exception e) { if (strict) throw new RuntimeException("Import 精确引入失败: "+e.getMessage(), e); } }
 
-	private TemplateNodes.StyleTemplate collectOneStyleTemplate(ChtlDocument doc, String name){
-		for (var it : doc.items()) if (it instanceof TemplateNodes.StyleTemplate st && st.name().endsWith(name)) return st; return null;
-	}
-	private TemplateNodes.ElementTemplate collectOneElementTemplate(ChtlDocument doc, String name){
-		for (var it : doc.items()) if (it instanceof TemplateNodes.ElementTemplate st && st.name().endsWith(name)) return st; return null;
-	}
-	private TemplateNodes.VarTemplate collectOneVarTemplate(ChtlDocument doc, String name){
-		for (var it : doc.items()) if (it instanceof TemplateNodes.VarTemplate st && st.name().endsWith(name)) return st; return null;
-	}
+	private TemplateNodes.StyleTemplate collectOneStyleTemplate(ChtlDocument doc, String name){ for (var it : doc.items()) if (it instanceof TemplateNodes.StyleTemplate st && st.name().endsWith(name)) return st; return null; }
+	private TemplateNodes.ElementTemplate collectOneElementTemplate(ChtlDocument doc, String name){ for (var it : doc.items()) if (it instanceof TemplateNodes.ElementTemplate st && st.name().endsWith(name)) return st; return null; }
+	private TemplateNodes.VarTemplate collectOneVarTemplate(ChtlDocument doc, String name){ for (var it : doc.items()) if (it instanceof TemplateNodes.VarTemplate st && st.name().endsWith(name)) return st; return null; }
 	private <T> void putNoConflict(Map<String,T> map, String key, T val){ if (val==null) return; if (map.containsKey(key)) { if (strict) throw new RuntimeException("命名冲突: "+key); } else { map.put(key, val); } }
 
 	private ChtlNode parseElement(){
@@ -279,62 +182,9 @@ public class ChtlParser {
 		return new ElementNode(start, currentEnd(), tag) {{ for (AttributeNode a : el.attributes()) addAttribute(a); for (ChtlNode c : el.children()) addChild(c); for (ImportNode.ConstraintNode c : el.constraints()) addConstraint(c); }};
 	}
 
-	private void applySpecialization(List<ChtlNode> cloned, Map<ChtlNode,String> origin){
-		while (!isAtEnd() && !check(ChtlTokenType.RBRACE)) {
-			if (check(ChtlTokenType.KW_INSERT)) {
-				advance();
-				String mode = "after";
-				if (check(ChtlTokenType.KW_AFTER)) { advance(); mode = "after"; }
-				else if (check(ChtlTokenType.KW_BEFORE)) { advance(); mode = "before"; }
-				else if (check(ChtlTokenType.KW_REPLACE)) { advance(); mode = "replace"; }
-				else if (check(ChtlTokenType.IDENT) && peek().lexeme.equals("at")) {
-					advance(); ChtlToken t = consume(ChtlTokenType.IDENT); mode = t.lexeme.equals("top")?"at_top":"at_bottom";
-				}
-				Integer targetIndex = null; String targetTag = null;
-				if (mode.equals("after") || mode.equals("before") || mode.equals("replace")) {
-					targetTag = consume(ChtlTokenType.IDENT).lexeme;
-					if (match(ChtlTokenType.LBRACKET)) { String num = consume(ChtlTokenType.NUMBER).lexeme; consume(ChtlTokenType.RBRACKET); try{ targetIndex = Integer.parseInt(num.split("\\.")[0]); }catch(Exception ignored){} }
-				}
-				consume(ChtlTokenType.LBRACE);
-				List<ChtlNode> payload = new ArrayList<>();
-				while (!check(ChtlTokenType.RBRACE) && !isAtEnd()) { ChtlNode n = parseTopLevel(); if (n!=null) payload.add(n); else advance(); }
-				consume(ChtlTokenType.RBRACE);
-				applyInsert(cloned, mode, targetTag, targetIndex, payload);
-			} else if (check(ChtlTokenType.KW_DELETE)) {
-				advance();
-				if (check(ChtlTokenType.AT)) { // delete @Element Name;
-					advance(); String what = consume(ChtlTokenType.IDENT).lexeme; if (what.equals("Element")) { String delName = consume(ChtlTokenType.IDENT).lexeme; deleteByOrigin(cloned, delName, origin); }
-					consumeOpt(ChtlTokenType.SEMICOLON);
-				} else {
-					String tag = consume(ChtlTokenType.IDENT).lexeme; Integer idx=null; if (match(ChtlTokenType.LBRACKET)) { String n = consume(ChtlTokenType.NUMBER).lexeme; consume(ChtlTokenType.RBRACKET); try{ idx=Integer.parseInt(n.split("\\.")[0]); }catch(Exception ignored){} }
-					consumeOpt(ChtlTokenType.SEMICOLON);
-					deleteByTagIndex(cloned, tag, idx);
-				}
-			} else if (check(ChtlTokenType.IDENT)) {
-				// target element styling: tag[optionalIndex] { style{...} }
-				String tag = consume(ChtlTokenType.IDENT).lexeme; Integer idx=null; if (match(ChtlTokenType.LBRACKET)) { String n = consume(ChtlTokenType.NUMBER).lexeme; consume(ChtlTokenType.RBRACKET); try{ idx=Integer.parseInt(n.split("\\.")[0]); }catch(Exception ignored){} }
-				consume(ChtlTokenType.LBRACE);
-				ElementNode target = findTarget(cloned, tag, idx);
-				while (!check(ChtlTokenType.RBRACE) && !isAtEnd()) {
-					if (matchKw(ChtlTokenType.KW_STYLE)) { parseStyleBlock(target); }
-					else advance();
-				}
-				consume(ChtlTokenType.RBRACE);
-			} else { advance(); }
-		}
-	}
+	private void applySpecialization(List<ChtlNode> cloned, Map<ChtlNode,String> origin){ while (!isAtEnd() && !check(ChtlTokenType.RBRACE)) { if (check(ChtlTokenType.KW_INSERT)) { advance(); String mode = "after"; if (check(ChtlTokenType.KW_AFTER)) { advance(); mode = "after"; } else if (check(ChtlTokenType.KW_BEFORE)) { advance(); mode = "before"; } else if (check(ChtlTokenType.KW_REPLACE)) { advance(); mode = "replace"; } else if (check(ChtlTokenType.IDENT) && peek().lexeme.equals("at")) { advance(); ChtlToken t = consume(ChtlTokenType.IDENT); mode = t.lexeme.equals("top")?"at_top":"at_bottom"; } Integer targetIndex = null; String targetTag = null; if (mode.equals("after") || mode.equals("before") || mode.equals("replace")) { targetTag = consume(ChtlTokenType.IDENT).lexeme; if (match(ChtlTokenType.LBRACKET)) { String num = consume(ChtlTokenType.NUMBER).lexeme; consume(ChtlTokenType.RBRACKET); try{ targetIndex = Integer.parseInt(num.split("\\.")[0]); }catch(Exception ignored){} } } consume(ChtlTokenType.LBRACE); List<ChtlNode> payload = new ArrayList<>(); while (!check(ChtlTokenType.RBRACE) && !isAtEnd()) { ChtlNode n = parseTopLevel(); if (n!=null) payload.add(n); else advance(); } consume(ChtlTokenType.RBRACE); applyInsert(cloned, mode, targetTag, targetIndex, payload); } else if (check(ChtlTokenType.KW_DELETE)) { advance(); if (check(ChtlTokenType.AT)) { advance(); String what = consume(ChtlTokenType.IDENT).lexeme; if (what.equals("Element")) { String delName = consume(ChtlTokenType.IDENT).lexeme; deleteByOrigin(cloned, delName, origin); } consumeOpt(ChtlTokenType.SEMICOLON); } else { String tag = consume(ChtlTokenType.IDENT).lexeme; Integer idx=null; if (match(ChtlTokenType.LBRACKET)) { String n = consume(ChtlTokenType.NUMBER).lexeme; consume(ChtlTokenType.RBRACKET); try{ idx=Integer.parseInt(n.split("\\.")[0]); }catch(Exception ignored){} } consumeOpt(ChtlTokenType.SEMICOLON); deleteByTagIndex(cloned, tag, idx); } } else if (check(ChtlTokenType.IDENT)) { String tag = consume(ChtlTokenType.IDENT).lexeme; Integer idx=null; if (match(ChtlTokenType.LBRACKET)) { String n = consume(ChtlTokenType.NUMBER).lexeme; consume(ChtlTokenType.RBRACKET); try{ idx=Integer.parseInt(n.split("\\.")[0]); }catch(Exception ignored){} } consume(ChtlTokenType.LBRACE); ElementNode target = findTarget(cloned, tag, idx); while (!check(ChtlTokenType.RBRACE) && !isAtEnd()) { if (matchKw(ChtlTokenType.KW_STYLE)) { parseStyleBlock(target); } else advance(); } consume(ChtlTokenType.RBRACE); } else { advance(); } } }
 
-	private void applyInsert(List<ChtlNode> cloned, String mode, String tag, Integer idx, List<ChtlNode> payload){
-		if (mode.equals("at_top")) { cloned.addAll(0, payload); return; }
-		if (mode.equals("at_bottom")) { cloned.addAll(payload); return; }
-		int pos = findIndex(cloned, tag, idx);
-		if (pos<0) return; // 无目标，忽略（严格模式可改为报错）
-		switch (mode) {
-			case "before" -> cloned.addAll(pos, payload);
-			case "after" -> cloned.addAll(pos+1, payload);
-			case "replace" -> { cloned.remove(pos); cloned.addAll(pos, payload); }
-		}
-	}
+	private void applyInsert(List<ChtlNode> cloned, String mode, String tag, Integer idx, List<ChtlNode> payload){ if (mode.equals("at_top")) { cloned.addAll(0, payload); return; } if (mode.equals("at_bottom")) { cloned.addAll(payload); return; } int pos = findIndex(cloned, tag, idx); if (pos<0) return; switch (mode) { case "before" -> cloned.addAll(pos, payload); case "after" -> cloned.addAll(pos+1, payload); case "replace" -> { cloned.remove(pos); cloned.addAll(pos, payload); } } }
 
 	private void deleteByOrigin(List<ChtlNode> cloned, String tpl, Map<ChtlNode,String> origin){ cloned.removeIf(n -> tpl.equals(origin.get(n))); }
 	private void deleteByTagIndex(List<ChtlNode> cloned, String tag, Integer idx){ int i=-1; for (int p=0;p<cloned.size();p++){ ChtlNode n=cloned.get(p); if (n instanceof ElementNode en && en.tagName().equals(tag)) { i++; if (idx==null || i==idx){ cloned.remove(p); return; } } } }
@@ -353,100 +203,18 @@ public class ChtlParser {
 
 	private void error(String msg){ if (strict) throw new RuntimeException(msg + " @pos=" + peek().start); }
 
-	private TextNode parseText(){
-		consume(ChtlTokenType.LBRACE);
-		int contentStart = currentEnd();
-		StringBuilder sb = new StringBuilder();
-		while (!check(ChtlTokenType.RBRACE) && !isAtEnd()) { sb.append(tokenToText(advance())); }
-		consume(ChtlTokenType.RBRACE);
-		return new TextNode(contentStart, currentEnd(), sb.toString().trim());
-	}
+	private TextNode parseText(){ consume(ChtlTokenType.LBRACE); int contentStart = currentEnd(); StringBuilder sb = new StringBuilder(); while (!check(ChtlTokenType.RBRACE) && !isAtEnd()) { sb.append(tokenToText(advance())); } consume(ChtlTokenType.RBRACE); return new TextNode(contentStart, currentEnd(), sb.toString().trim()); }
 
-	private StyleBlockNode parseStyleBlock(ElementNode owner){
-		consume(ChtlTokenType.LBRACE);
-		StyleBlockNode node = new StyleBlockNode(previous().start, previous().end);
-		String ownerAutoClass = null;
-		List<AttributeNode> inline = new ArrayList<>();
-		while (!check(ChtlTokenType.RBRACE) && !isAtEnd()) {
-			if (check(ChtlTokenType.IDENT)) {
-				ChtlToken prop = consume(ChtlTokenType.IDENT);
-				if (match(ChtlTokenType.COLON) || match(ChtlTokenType.EQUAL)) {
-					String value = parseValueUntilSemicolon(); value = tryResolveVar(value);
-					consumeOpt(ChtlTokenType.SEMICOLON);
-					inline.add(new AttributeNode(prop.start, currentEnd(), prop.lexeme, value));
-				}
-			} else if (match(ChtlTokenType.DOT) || match(ChtlTokenType.HASH) || check(ChtlTokenType.AMP)) {
-				boolean isDot = previous().type == ChtlTokenType.DOT; boolean isHash = previous().type == ChtlTokenType.HASH; boolean isAmp = check(ChtlTokenType.AMP); if (isAmp) advance();
-				String name; if (isAmp) { String cls = owner.attributes().stream().filter(a->a.name().equals("class")).map(AttributeNode::value).findFirst().orElse(null); String id = owner.attributes().stream().filter(a->a.name().equals("id")).map(AttributeNode::value).findFirst().orElse(null); if (cls != null) name = "." + cls; else if (id != null) name = "#" + id; else { ownerAutoClass = state.nextAutoClass(); name = "." + ownerAutoClass; } } else { name = (isDot ? "." : "#") + consume(ChtlTokenType.IDENT).lexeme; if (isDot && owner.attributes().stream().noneMatch(a->a.name().equals("class"))) ownerAutoClass = ownerAutoClass == null ? name.substring(1) : ownerAutoClass; if (isHash && owner.attributes().stream().noneMatch(a->a.name().equals("id"))) owner.addAttribute(new AttributeNode(previous().start, previous().end, "id", name.substring(1))); }
-				StringBuilder sel = new StringBuilder(name);
-				while (check(ChtlTokenType.COLON)) { int colonCount = 0; while (check(ChtlTokenType.COLON) && colonCount < 2) { advance(); sel.append(':'); colonCount++; } if (check(ChtlTokenType.IDENT)) { sel.append(consume(ChtlTokenType.IDENT).lexeme); } if (check(ChtlTokenType.LPAREN)) { advance(); sel.append('('); int depth = 1; while (!isAtEnd() && depth > 0) { if (check(ChtlTokenType.LPAREN)) { sel.append('('); advance(); depth++; } else if (check(ChtlTokenType.RPAREN)) { sel.append(')'); advance(); depth--; } else { sel.append(tokenToText(advance())); } } } }
-				consume(ChtlTokenType.LBRACE);
-				StyleRuleNode rule = new StyleRuleNode(previous().start, previous().end, sel.toString());
-				while (!check(ChtlTokenType.RBRACE) && !isAtEnd()) { if (check(ChtlTokenType.IDENT)) { ChtlToken p = consume(ChtlTokenType.IDENT); if (match(ChtlTokenType.COLON) || match(ChtlTokenType.EQUAL)) { String val = parseValueUntilSemicolon(); val = tryResolveVar(val); consumeOpt(ChtlTokenType.SEMICOLON); rule.addDecl(new AttributeNode(p.start, currentEnd(), p.lexeme, val)); } } else { advance(); } }
-				consume(ChtlTokenType.RBRACE); node.addRule(rule);
-			} else { advance(); }
-		}
-		consume(ChtlTokenType.RBRACE);
-		// 汇总 inline 至元素 style 属性
-		if (!inline.isEmpty()) {
-			StringBuilder sb = new StringBuilder();
-			for (var a : inline) { sb.append(a.name()).append(": ").append(a.value()).append(";"); }
-			Optional<AttributeNode> styleAttr = owner.attributes().stream().filter(a->a.name().equals("style")).findFirst();
-			if (styleAttr.isPresent()) {
-				String merged = styleAttr.get().value() + (styleAttr.get().value().endsWith(";")?"":";") + sb;
-				owner.addAttribute(new AttributeNode(styleAttr.get().startOffset(), currentEnd(), "style", merged));
-			} else {
-				owner.addAttribute(new AttributeNode(node.startOffset(), currentEnd(), "style", sb.toString()));
-			}
-		}
-		if (ownerAutoClass != null && owner.attributes().stream().noneMatch(a->a.name().equals("class"))) owner.addAttribute(new AttributeNode(node.startOffset(), node.endOffset(), "class", ownerAutoClass));
-		return new StyleBlockNode(node.startOffset(), currentEnd()) {{ for (var r : node.globalRules()) addRule(r); }};
-	}
+	private StyleBlockNode parseStyleBlock(ElementNode owner){ consume(ChtlTokenType.LBRACE); StyleBlockNode node = new StyleBlockNode(previous().start, previous().end); String ownerAutoClass = null; List<AttributeNode> inline = new ArrayList<>(); while (!check(ChtlTokenType.RBRACE) && !isAtEnd()) { if (check(ChtlTokenType.IDENT)) { ChtlToken prop = consume(ChtlTokenType.IDENT); if (match(ChtlTokenType.COLON) || match(ChtlTokenType.EQUAL)) { String value = parseValueUntilSemicolon(); value = tryResolveVar(value); consumeOpt(ChtlTokenType.SEMICOLON); inline.add(new AttributeNode(prop.start, currentEnd(), prop.lexeme, value)); } } else if (check(ChtlTokenType.AT)) { advance(); String atType = consume(ChtlTokenType.IDENT).lexeme; if (atType.equals("Style")) { String ref = consume(ChtlTokenType.IDENT).lexeme; consumeOpt(ChtlTokenType.SEMICOLON); LinkedHashMap<String,String> props = resolveStyleTemplate(fq(ref), new HashSet<>()); for (var e : props.entrySet()) inline.add(new AttributeNode(owner.startOffset(), currentEnd(), e.getKey(), e.getValue())); } else { while (!isAtEnd() && !check(ChtlTokenType.SEMICOLON) && !check(ChtlTokenType.RBRACE)) advance(); consumeOpt(ChtlTokenType.SEMICOLON); } } else if (match(ChtlTokenType.DOT) || match(ChtlTokenType.HASH) || check(ChtlTokenType.AMP)) { boolean isDot = previous().type == ChtlTokenType.DOT; boolean isHash = previous().type == ChtlTokenType.HASH; boolean isAmp = check(ChtlTokenType.AMP); if (isAmp) advance(); String name; if (isAmp) { String cls = owner.attributes().stream().filter(a->a.name().equals("class")).map(AttributeNode::value).findFirst().orElse(null); String id = owner.attributes().stream().filter(a->a.name().equals("id")).map(AttributeNode::value).findFirst().orElse(null); if (cls != null) name = "." + cls; else if (id != null) name = "#" + id; else { ownerAutoClass = state.nextAutoClass(); name = "." + ownerAutoClass; } } else { name = (isDot ? "." : "#") + consume(ChtlTokenType.IDENT).lexeme; if (isDot && owner.attributes().stream().noneMatch(a->a.name().equals("class"))) ownerAutoClass = ownerAutoClass == null ? name.substring(1) : ownerAutoClass; if (isHash && owner.attributes().stream().noneMatch(a->a.name().equals("id"))) owner.addAttribute(new AttributeNode(previous().start, previous().end, "id", name.substring(1))); } StringBuilder sel = new StringBuilder(name); while (check(ChtlTokenType.COLON)) { int colonCount = 0; while (check(ChtlTokenType.COLON) && colonCount < 2) { advance(); sel.append(':'); colonCount++; } if (check(ChtlTokenType.IDENT)) { sel.append(consume(ChtlTokenType.IDENT).lexeme); } if (check(ChtlTokenType.LPAREN)) { advance(); sel.append('('); int depth = 1; while (!isAtEnd() && depth > 0) { if (check(ChtlTokenType.LPAREN)) { sel.append('('); advance(); depth++; } else if (check(ChtlTokenType.RPAREN)) { sel.append(')'); advance(); depth--; } else { sel.append(tokenToText(advance())); } } } } consume(ChtlTokenType.LBRACE); StyleRuleNode rule = new StyleRuleNode(previous().start, previous().end, sel.toString()); while (!check(ChtlTokenType.RBRACE) && !isAtEnd()) { if (check(ChtlTokenType.IDENT)) { ChtlToken p = consume(ChtlTokenType.IDENT); if (match(ChtlTokenType.COLON) || match(ChtlTokenType.EQUAL)) { String val = parseValueUntilSemicolon(); val = tryResolveVar(val); consumeOpt(ChtlTokenType.SEMICOLON); rule.addDecl(new AttributeNode(p.start, currentEnd(), p.lexeme, val)); } } else { advance(); } } consume(ChtlTokenType.RBRACE); node.addRule(rule); } else { advance(); } } consume(ChtlTokenType.RBRACE); if (!inline.isEmpty()) { StringBuilder sb = new StringBuilder(); for (var a : inline) { sb.append(a.name()).append(": ").append(a.value()).append(";"); } Optional<AttributeNode> styleAttr = owner.attributes().stream().filter(a->a.name().equals("style")).findFirst(); if (styleAttr.isPresent()) { String merged = styleAttr.get().value() + (styleAttr.get().value().endsWith(";")?"":";") + sb; owner.addAttribute(new AttributeNode(styleAttr.get().startOffset(), currentEnd(), "style", merged)); } else { owner.addAttribute(new AttributeNode(node.startOffset(), currentEnd(), "style", sb.toString())); } } if (ownerAutoClass != null && owner.attributes().stream().noneMatch(a->a.name().equals("class"))) owner.addAttribute(new AttributeNode(node.startOffset(), node.endOffset(), "class", ownerAutoClass)); return new StyleBlockNode(node.startOffset(), currentEnd()) {{ for (var r : node.globalRules()) addRule(r); }}; }
 
-	private ScriptBlockNode parseScriptBlock(){
-		consume(ChtlTokenType.LBRACE);
-		int start = previous().start;
-		StringBuilder sb = new StringBuilder();
-		while (!check(ChtlTokenType.RBRACE) && !isAtEnd()) { sb.append(tokenToText(advance())); }
-		consume(ChtlTokenType.RBRACE);
-		return new ScriptBlockNode(start, currentEnd(), sb.toString());
-	}
+	private LinkedHashMap<String,String> resolveStyleTemplate(String name, Set<String> visiting){ if (visiting.contains(name)) { if (strict) error("样式模板循环引用: "+name); return new LinkedHashMap<>(); } visiting.add(name); LinkedHashMap<String,String> props = new LinkedHashMap<>(); List<StyleOp> ops = styleTemplateOps.getOrDefault(name, Collections.emptyList()); for (StyleOp op : ops) { switch (op.kind) { case INCLUDE, INHERIT -> { LinkedHashMap<String,String> sub = resolveStyleTemplate(op.refName, visiting); for (var e : sub.entrySet()) props.put(e.getKey(), e.getValue()); } case DELETE -> { for (String d : op.deletes) props.remove(d); } case DECL -> props.put(op.prop, op.value); } } visiting.remove(name); return props; }
 
-	private String tryResolveVar(String value){
-		String v = value.trim();
-		int l = v.indexOf('('); int r = v.lastIndexOf(')');
-		if (l>0 && r>l && !v.contains(" ")) {
-			String name = v.substring(0,l);
-			String key = v.substring(l+1,r).trim();
-			TemplateNodes.VarTemplate tpl = varTemplates.get(fq(name));
-			if (tpl != null) {
-				for (AttributeNode a : tpl.kv()) if (a.name().equals(key)) return a.value();
-			}
-		}
-		return value;
-	}
+	private ScriptBlockNode parseScriptBlock(){ consume(ChtlTokenType.LBRACE); int start = previous().start; StringBuilder sb = new StringBuilder(); while (!check(ChtlTokenType.RBRACE) && !isAtEnd()) { sb.append(tokenToText(advance())); } consume(ChtlTokenType.RBRACE); return new ScriptBlockNode(start, currentEnd(), sb.toString()); }
+	private String tryResolveVar(String value){ String v = value.trim(); int l = v.indexOf('('); int r = v.lastIndexOf(')'); if (l>0 && r>l && !v.contains(" ")) { String name = v.substring(0,l); String key = v.substring(l+1,r).trim(); TemplateNodes.VarTemplate tpl = varTemplates.get(fq(name)); if (tpl != null) { for (AttributeNode a : tpl.kv()) if (a.name().equals(key)) return a.value(); } } return value; }
 
 	private String fq(String name){ return state.currentNamespace==null||state.currentNamespace.isEmpty()? name : state.currentNamespace+"."+name; }
-
-	private String parseValueUntilSemicolon(){
-		StringBuilder sb = new StringBuilder();
-		while (!isAtEnd() && !check(ChtlTokenType.SEMICOLON) && !check(ChtlTokenType.RBRACE)) {
-			ChtlToken t = advance();
-			if (t.type == ChtlTokenType.STRING || t.type == ChtlTokenType.NUMBER || t.type == ChtlTokenType.IDENT) { sb.append(t.lexeme); }
-			else { sb.append(tokenToText(t)); }
-		}
-		return sb.toString().trim();
-	}
-
-	private String tokenToText(ChtlToken t){
-		return switch (t.type) {
-			case LBRACE -> "{"; case RBRACE -> "}"; case LBRACKET -> "["; case RBRACKET -> "]";
-			case LPAREN -> "("; case RPAREN -> ")"; case COLON -> ":"; case EQUAL -> "="; case SEMICOLON -> ";"; case COMMA -> ",";
-			case DOT -> "."; case HASH -> "#"; case AT -> "@"; case AMP -> "&";
-			default -> t.lexeme;
-		};
-	}
-
+	private String parseValueUntilSemicolon(){ StringBuilder sb = new StringBuilder(); while (!isAtEnd() && !check(ChtlTokenType.SEMICOLON) && !check(ChtlTokenType.RBRACE)) { ChtlToken t = advance(); if (t.type == ChtlTokenType.STRING || t.type == ChtlTokenType.NUMBER || t.type == ChtlTokenType.IDENT) sb.append(t.lexeme); else sb.append(tokenToText(t)); } return sb.toString().trim(); }
+	private String tokenToText(ChtlToken t){ return switch (t.type) { case LBRACE -> "{"; case RBRACE -> "}"; case LBRACKET -> "["; case RBRACKET -> "]"; case LPAREN -> "("; case RPAREN -> ")"; case COLON -> ":"; case EQUAL -> "="; case SEMICOLON -> ";"; case COMMA -> ","; case DOT -> "."; case HASH -> "#"; case AT -> "@"; case AMP -> "&"; default -> t.lexeme; }; }
 	private boolean matchKw(ChtlTokenType t){ return match(t); }
 	private boolean match(ChtlTokenType t){ if (check(t)) { advance(); return true; } return false; }
 	private boolean check(ChtlTokenType t){ if (isAtEnd()) return false; return peek().type == t; }
