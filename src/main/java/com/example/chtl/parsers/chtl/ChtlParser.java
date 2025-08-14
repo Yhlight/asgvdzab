@@ -162,7 +162,7 @@ public class ChtlParser {
 		}
 		if (check(ChtlTokenType.AT)) {
 			advance(); String target = consume(ChtlTokenType.IDENT).lexeme; String pathToken = null; String alias = null;
-			if (match(ChtlTokenType.KW_FROM)) pathToken = consume(ChtlTokenType.IDENT).lexeme;
+			if (match(ChtlTokenType.KW_FROM)) pathToken = readPathToken();
 			if (match(ChtlTokenType.KW_AS)) alias = consume(ChtlTokenType.IDENT).lexeme;
 			consumeOpt(ChtlTokenType.SEMICOLON);
 			if (pathToken == null) return new ImportNode(s, currentEnd(), target, null, alias);
@@ -178,20 +178,24 @@ public class ChtlParser {
 			// @Chtl 导入
 			if (target.equals("Chtl")) {
 				List<Path> files = resolveChtlPaths(pathToken);
+				if (files.isEmpty() && strict) error("资源未找到: "+pathToken);
 				for (Path f : files) importChtlFile(f, alias);
 				return new ImportNode(s, currentEnd(), target, pathToken, alias);
 			}
 			// @CJmod 导入
 			if (target.equals("CJmod")) {
 				List<Path> files = resolveCjmodPaths(pathToken);
+				if (files.isEmpty() && strict) error("资源未找到: "+pathToken);
 				for (Path f : files) importCjmodFile(f, alias);
 				return new ImportNode(s, currentEnd(), target, pathToken, alias);
 			}
 			return new ImportNode(s, currentEnd(), target, pathToken, alias);
 		}
 		// 旧式 [Import] [Template] ... 精确引入保留
-		consume(ChtlTokenType.LBRACKET); String cat = consume(ChtlTokenType.IDENT).lexeme; consume(ChtlTokenType.RBRACKET); consume(ChtlTokenType.AT); String kind = consume(ChtlTokenType.IDENT).lexeme; String name = consume(ChtlTokenType.IDENT).lexeme; String alias = null; String pathToken = null; if (match(ChtlTokenType.KW_FROM)) pathToken = consume(ChtlTokenType.IDENT).lexeme; if (match(ChtlTokenType.KW_AS)) alias = consume(ChtlTokenType.IDENT).lexeme; consumeOpt(ChtlTokenType.SEMICOLON); if (baseDir != null && pathToken != null) { importOne(cat, kind, name, alias, baseDir.resolve(pathToken)); } return new ImportNode(s, currentEnd(), cat+"/"+kind, pathToken, alias);
+		consume(ChtlTokenType.LBRACKET); String cat = consume(ChtlTokenType.IDENT).lexeme; consume(ChtlTokenType.RBRACKET); consume(ChtlTokenType.AT); String kind = consume(ChtlTokenType.IDENT).lexeme; String name = consume(ChtlTokenType.IDENT).lexeme; String alias = null; String pathToken = null; if (match(ChtlTokenType.KW_FROM)) pathToken = readPathToken(); if (match(ChtlTokenType.KW_AS)) alias = consume(ChtlTokenType.IDENT).lexeme; consumeOpt(ChtlTokenType.SEMICOLON); if (baseDir != null && pathToken != null) { importOne(cat, kind, name, alias, baseDir.resolve(pathToken)); } return new ImportNode(s, currentEnd(), cat+"/"+kind, pathToken, alias);
 	}
+
+	private String readPathToken(){ StringBuilder sb = new StringBuilder(); while (!isAtEnd() && !check(ChtlTokenType.KW_AS) && !check(ChtlTokenType.SEMICOLON) && !check(ChtlTokenType.RBRACE)) { sb.append(tokenToText(advance())); } return sb.toString().trim(); }
 
 	private void importOne(String cat, String kind, String name, String alias, Path path) { try { String src = Files.readString(path, StandardCharsets.UTF_8); var sub = new ChtlParser(src, new com.example.chtl.compilers.chtl.ChtlLexer(src).lex(), state, path.getParent(), strict).parseDocument(); String fqName = alias != null ? fq(alias) : fq(name); if ("Template".equalsIgnoreCase(cat)) { if ("Style".equalsIgnoreCase(kind)) { TemplateNodes.StyleTemplate t = collectOneStyleTemplate(sub, name); putNoConflict(styleTemplates, fqName, t); } else if ("Element".equalsIgnoreCase(kind)) { TemplateNodes.ElementTemplate t = collectOneElementTemplate(sub, name); putNoConflict(elementTemplates, fqName, t); } else if ("Var".equalsIgnoreCase(kind)) { TemplateNodes.VarTemplate t = collectOneVarTemplate(sub, name); putNoConflict(varTemplates, fqName, t); } } } catch (Exception e) { if (strict) throw new RuntimeException("Import 精确引入失败: "+e.getMessage(), e); } }
 
@@ -269,7 +273,7 @@ public class ChtlParser {
 
 	private void mergeDoc(ChtlDocument sub, String nsName){ ImportNode.NamespaceNode ns = new ImportNode.NamespaceNode(0,0,nsName); for (var i : sub.items()) ns.add(i); /* 直接注入到模板表，避免名称冲突 */ for (var it : sub.items()) { if (it instanceof TemplateNodes.StyleTemplate st) putNoConflict(styleTemplates, st.name(), st); if (it instanceof TemplateNodes.ElementTemplate et) putNoConflict(elementTemplates, et.name(), et); if (it instanceof TemplateNodes.VarTemplate vt) putNoConflict(varTemplates, vt.name(), vt); } }
 
-	private void error(String msg){ if (strict) throw new RuntimeException(msg + " @pos=" + peek().start); }
+	private void error(String msg){ if (strict) throw new RuntimeException(msg + " @" + peek().line + ":" + peek().column); }
 
 	private TextNode parseText(){ consume(ChtlTokenType.LBRACE); int contentStart = currentEnd(); StringBuilder sb = new StringBuilder(); while (!check(ChtlTokenType.RBRACE) && !isAtEnd()) { sb.append(tokenToText(advance())); } consume(ChtlTokenType.RBRACE); return new TextNode(contentStart, currentEnd(), sb.toString().trim()); }
 
@@ -350,9 +354,8 @@ public class ChtlParser {
 			Path p = baseDir.resolve(token.replace(".*","/*").replace(".*/","/*/").replace(".cmod",".cmod").replace(".chtl",".chtl"));
 			if (isWildcard) out.addAll(globFiles(p, ".cmod", ".chtl"));
 			else if (Files.isRegularFile(p)) out.add(p);
-			else if (!hasExt) { // 具体路径但无文件信息 -> 报错
-				if (strict) error("路径不含文件信息: "+token);
-			}
+			else if (!hasExt) { if (strict) error("路径不含文件信息: "+token); }
+			else { if (strict) error("资源未找到: "+token); }
 			return out;
 		}
 		// 名称
@@ -394,19 +397,20 @@ public class ChtlParser {
 			Path p = baseDir.resolve(token);
 			if (Files.isDirectory(p)) { if (strict) error("路径不含文件信息: "+token); return out; }
 			if (Files.isRegularFile(p)) { out.add(p); return out; }
+			if (strict) error("资源未找到: "+token);
 			return out;
 		}
 		boolean hasExt = token.endsWith(".cjmod");
 		if (hasExt) {
-			Path p = official.resolve(token); if (Files.isRegularFile(p)) { out.add(p); return out; }
-			p = localMod.resolve(token); if (Files.isRegularFile(p)) { out.add(p); return out; }
-			p = baseDir.resolve(token); if (Files.isRegularFile(p)) { out.add(p); return out; }
+			Path p2 = official.resolve(token); if (Files.isRegularFile(p2)) { out.add(p2); return out; }
+			p2 = localMod.resolve(token); if (Files.isRegularFile(p2)) { out.add(p2); return out; }
+			p2 = baseDir.resolve(token); if (Files.isRegularFile(p2)) { out.add(p2); return out; }
 			return out;
 		}
 		// 无后缀：优先官方，其次本地 module，再当前目录
-		Path p = official.resolve(token + ".cjmod"); if (Files.isRegularFile(p)) { out.add(p); return out; }
-		p = localMod.resolve(token + ".cjmod"); if (Files.isRegularFile(p)) { out.add(p); return out; }
-		p = baseDir.resolve(token + ".cjmod"); if (Files.isRegularFile(p)) { out.add(p); return out; }
+		Path p3 = official.resolve(token + ".cjmod"); if (Files.isRegularFile(p3)) { out.add(p3); return out; }
+		p3 = localMod.resolve(token + ".cjmod"); if (Files.isRegularFile(p3)) { out.add(p3); return out; }
+		p3 = baseDir.resolve(token + ".cjmod"); if (Files.isRegularFile(p3)) { out.add(p3); return out; }
 		return out;
 	}
 
@@ -439,7 +443,7 @@ public class ChtlParser {
 	private String ensureExt(String name, String ext){ return name.endsWith(ext)? name : name + ext; }
 	private String safeRead(Path p){ try { return Files.readString(p, StandardCharsets.UTF_8); } catch (Exception e) { return null; } }
 
-	private void importChtlFile(Path file, String alias){ if (file == null) return; if (visitedImports.contains(file)) return; visitedImports.add(file); String key = file.toAbsolutePath().normalize().toString(); if (!importedKeys.add(key)) return; try { String src = Files.readString(file, StandardCharsets.UTF_8); var sub = new ChtlParser(src, new com.example.chtl.compilers.chtl.ChtlLexer(src).lex(), state, file.getParent(), strict).parseDocument(); String nsName = alias != null ? alias : stripExt(file.getFileName().toString()); mergeDocWithNs(sub, nsName); } catch (Exception e) { if (strict) throw new RuntimeException("Import 失败: "+file+": "+e.getMessage(), e); } }
+	private void importChtlFile(Path file, String alias){ if (file == null) return; if (visitedImports.contains(file)) return; visitedImports.add(file); String key = file.toAbsolutePath().normalize().toString(); if (!importedKeys.add(key)) return; try { String src = Files.readString(file, StandardCharsets.UTF_8); var sub = new ChtlParser(src, new com.example.chtl.compilers.chtl.ChtlLexer(src).lex(), state, file.getParent(), strict).parseDocument(); String nsName = alias != null ? alias : (file.getParent()!=null? file.getParent().getFileName().toString() : stripExt(file.getFileName().toString())); mergeDocWithNs(sub, nsName); } catch (Exception e) { if (strict) throw new RuntimeException("Import 失败: "+file+": "+e.getMessage(), e); } }
 	private void importCjmodFile(Path file, String alias){ // cjmod: 假定为纯 JS 模块，作为命名空间下的原始 JS 注入占位
 		if (file == null) return; if (visitedImports.contains(file)) return; visitedImports.add(file); String key = file.toAbsolutePath().normalize().toString(); if (!importedKeys.add(key)) return; String nsName = alias != null ? alias : stripExt(file.getFileName().toString()); String js = safeRead(file); if (js == null) return; ImportNode.NamespaceNode ns = new ImportNode.NamespaceNode(0,0,nsName); ns.add(new OriginNodes.OriginJavaScriptNode(0,0, nsName, js)); }
 	private String stripExt(String n){ int i=n.lastIndexOf('.'); return i>=0? n.substring(0,i) : n; }
@@ -447,11 +451,11 @@ public class ChtlParser {
 	private void mergeDocWithNs(ChtlDocument sub, String nsName){ if (nsName == null || nsName.isBlank()) { mergeDoc(sub, ""); return; } // 同名命名空间合并
 		ImportNode.NamespaceNode ns = new ImportNode.NamespaceNode(0,0,nsName);
 		for (var i : sub.items()) ns.add(i);
-		// 注入模板表，冲突检测
+		// 注入模板表，使用命名空间前缀，冲突检测
 		for (var it : sub.items()) {
-			if (it instanceof TemplateNodes.StyleTemplate st) putNoConflict(styleTemplates, st.name(), st);
-			if (it instanceof TemplateNodes.ElementTemplate et) putNoConflict(elementTemplates, et.name(), et);
-			if (it instanceof TemplateNodes.VarTemplate vt) putNoConflict(varTemplates, vt.name(), vt);
+			if (it instanceof TemplateNodes.StyleTemplate st) putNoConflict(styleTemplates, nsName+"."+st.name(), st);
+			if (it instanceof TemplateNodes.ElementTemplate et) putNoConflict(elementTemplates, nsName+"."+et.name(), et);
+			if (it instanceof TemplateNodes.VarTemplate vt) putNoConflict(varTemplates, nsName+"."+vt.name(), vt);
 		}
 	}
 }

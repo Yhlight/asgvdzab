@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Test;
 public class ConfigurationNameGroupTest {
 	@Test
 	public void customKeywordsAreRecognized() {
-		String src = "[Configuration] @NameGroup{ KEYWORD_ORIGIN: Or; ORIGIN_STYLE: S; ORIGIN_JAVASCRIPT: J; ORIGIN_HTML: H; KEYWORD_STYLE: st; KEYWORD_SCRIPT: sc; KEYWORD_TEXT: tx; }"
-			+ "body{st{.a{w:1;}}sc{{{a}}->x();}[Or] @S{:root{--x:1;}}[Or] @J{console.log(1);}[Or] @H{<b id='k'></b>}}";
+		String src = "[Configuration] @NameGroup{ KEYWORD_ORIGIN: Or,Origin; ORIGIN_STYLE: S; ORIGIN_JAVASCRIPT: J; ORIGIN_HTML: H; KEYWORD_STYLE: st; KEYWORD_SCRIPT: sc; KEYWORD_TEXT: tx; }"
+			+ "body{st{.a{w:1;}}sc{{{a}}->x();}[Or] @S{:root{--x:1;}}[Origin] @J{console.log(1);}[H] @H{<b id='k'></b>}}";
 		var ng = ConfigPreprocessor.extractNameGroup(src);
 		Configuration cfg = Configuration.defaults(); cfg.nameGroup = ng;
 		CHTLUnifiedScanner scanner = new CHTLUnifiedScanner(new ScannerConfig(cfg));
