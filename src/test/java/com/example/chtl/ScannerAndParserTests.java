@@ -28,4 +28,20 @@ public class ScannerAndParserTests {
 		var doc = new ChtlParser(src, lex).parseDocument();
 		Assertions.assertFalse(doc.items().isEmpty());
 	}
+
+	@Test
+	public void originAndScriptSegments() {
+		String src = "[Origin] @Style{.x{a:b;}} script{ {{#id}}->listen({click:fn}); }";
+		ScanResult r = new CHTLUnifiedScanner().scan(src);
+		Assertions.assertTrue(r.getFragmentsByType(com.example.chtl.core.FragmentType.CSS).size() >= 1);
+		Assertions.assertTrue(r.getFragmentsByType(com.example.chtl.core.FragmentType.CHTL_JS).size() >= 1);
+	}
+
+	@Test
+	public void styleTemplateExpand() {
+		String src = "[Template] @Style T{color:red;} div{ style{ @Style T; } }";
+		var tokens = new ChtlLexer(src).lex();
+		var doc = new ChtlParser(src, tokens).parseDocument();
+		Assertions.assertFalse(doc.items().isEmpty());
+	}
 }
