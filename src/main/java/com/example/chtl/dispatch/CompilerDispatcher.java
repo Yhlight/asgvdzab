@@ -18,6 +18,9 @@ public class CompilerDispatcher {
 		// CHTL 主流程
 		ChtlCompiler.Output chtlOut = chtlCompiler.compile(scanResult.getSource());
 
+		StringBuilder htmlBody = new StringBuilder();
+		htmlBody.append(chtlOut.htmlBody);
+
 		StringBuilder globalCss = new StringBuilder();
 		StringBuilder globalJs = new StringBuilder();
 
@@ -43,6 +46,11 @@ public class CompilerDispatcher {
 			if (!transpiled.isBlank()) globalJs.append(transpiled).append('\n');
 		}
 
-		return new CompilationResult(chtlOut.htmlBody, globalCss.toString(), globalJs.toString());
+		// 合并 Origin Html 到 body 底部
+		for (Fragment f : scanResult.getFragmentsByType(FragmentType.HTML)) {
+			htmlBody.append(f.content()).append('\n');
+		}
+
+		return new CompilationResult(htmlBody.toString(), globalCss.toString(), globalJs.toString());
 	}
 }

@@ -12,6 +12,7 @@ public class CHTLUnifiedScanner {
 	private final ScannerConfig scannerConfig;
 	private final Pattern originStylePattern;
 	private final Pattern originJsPattern;
+	private final Pattern originHtmlPattern;
 	private final Pattern scriptPattern;
 
 	public CHTLUnifiedScanner() { this(ScannerConfig.defaults()); }
@@ -20,6 +21,7 @@ public class CHTLUnifiedScanner {
 		NameGroup ng = config.configuration.nameGroup;
 		this.originStylePattern = buildOriginBlockPattern(ng, ng.ORIGIN_STYLE);
 		this.originJsPattern = buildOriginBlockPattern(ng, ng.ORIGIN_JAVASCRIPT);
+		this.originHtmlPattern = buildOriginBlockPattern(ng, ng.ORIGIN_HTML);
 		this.scriptPattern = buildKeywordBlockPattern(ng.KEYWORD_SCRIPT);
 	}
 
@@ -62,6 +64,12 @@ public class CHTLUnifiedScanner {
 		for (Block b : findBlocks(source, originJsPattern)) {
 			String js = b.innerContent(source);
 			result.addFragment(new Fragment(FragmentType.JS, js, b.start, b.end, "Origin-JS"));
+		}
+
+		// 提取 [Origin] @Html
+		for (Block b : findBlocks(source, originHtmlPattern)) {
+			String html = b.innerContent(source);
+			result.addFragment(new Fragment(FragmentType.HTML, html, b.start, b.end, "Origin-Html"));
 		}
 
 		// 提取 script{} 并进行字符级别宽判/严判切割

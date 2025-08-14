@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 public class MinimalPipelineTest {
 	@Test
 	public void pipelineProducesHtml() {
-		String src = "body{style{.box{width:1px;}}script{{{box}}->textContent();}[Origin] @Style{:root{--c:red;}}[Origin] @JavaScript{console.log('a');}}";
+		String src = "body{style{.box{width:1px;}}script{{{box}}->textContent();}[Origin] @Style{:root{--c:red;}}[Origin] @JavaScript{console.log('a');}[Origin] @Html{<div id=\"from-origin\"></div>}}";
 		CHTLUnifiedScanner scanner = new CHTLUnifiedScanner();
 		ScanResult scan = scanner.scan(src);
 		var r = new CompilerDispatcher().dispatch(scan);
@@ -18,5 +18,6 @@ public class MinimalPipelineTest {
 		Assertions.assertTrue(html.contains("<style>"));
 		Assertions.assertTrue(html.contains("<script>"));
 		Assertions.assertTrue(html.contains("<!DOCTYPE html>"));
+		Assertions.assertTrue(html.contains("from-origin"));
 	}
 }
