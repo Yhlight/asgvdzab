@@ -247,7 +247,11 @@ public class ChtlParser {
 				ChtlToken ident = consume(ChtlTokenType.IDENT);
 				if (check(ChtlTokenType.COLON) || check(ChtlTokenType.EQUAL)) { advance(); String value = parseValueUntilSemicolon(); consumeOpt(ChtlTokenType.SEMICOLON); el.addAttribute(new AttributeNode(ident.start, currentEnd(), ident.lexeme, value)); }
 				else if (check(ChtlTokenType.LBRACE)) { unread(); el.addChild(parseElement()); }
-				else { el.addAttribute(new AttributeNode(ident.start, currentEnd(), ident.lexeme, "")); }
+				else {
+					// 未知语法，严格模式下报错
+					if (strict) error("无效的属性或子元素语法: " + ident.lexeme);
+					else advance();
+				}
 			} else if (matchKw(ChtlTokenType.KW_TEXT)) { el.addChild(parseText()); }
 			else if (matchKw(ChtlTokenType.KW_STYLE)) { el.addChild(parseStyleBlock(el)); }
 			else if (matchKw(ChtlTokenType.KW_SCRIPT)) { el.addChild(parseScriptBlock()); }
@@ -283,91 +287,41 @@ public class ChtlParser {
 		consume(ChtlTokenType.LBRACE);
 		StyleBlockNode node = new StyleBlockNode(previous().start, previous().end);
 		String ownerAutoClass = null;
+		List<AttributeNode> inline = new ArrayList<>();
 		while (!check(ChtlTokenType.RBRACE) && !isAtEnd()) {
 			if (check(ChtlTokenType.IDENT)) {
 				ChtlToken prop = consume(ChtlTokenType.IDENT);
 				if (match(ChtlTokenType.COLON) || match(ChtlTokenType.EQUAL)) {
-					String value = parseValueUntilSemicolon();
-					value = tryResolveVar(value); // 变量组值替换
+					String value = parseValueUntilSemicolon(); value = tryResolveVar(value);
 					consumeOpt(ChtlTokenType.SEMICOLON);
-					node.addInline(new AttributeNode(prop.start, currentEnd(), prop.lexeme, value));
-				}
-			} else if (check(ChtlTokenType.KW_DELETE)) {
-				// delete 属性1, 属性2;
-				advance();
-				while (!isAtEnd() && !check(ChtlTokenType.SEMICOLON) && !check(ChtlTokenType.RBRACE)) {
-					if (check(ChtlTokenType.IDENT)) node.deleteInline(consume(ChtlTokenType.IDENT).lexeme);
-					if (check(ChtlTokenType.COMMA)) advance(); else break;
-				}
-				consumeOpt(ChtlTokenType.SEMICOLON);
-			} else if (check(ChtlTokenType.AT)) {
-				advance();
-				String atType = consume(ChtlTokenType.IDENT).lexeme; // Style
-				if (atType.equals("Style")) {
-					String name = consume(ChtlTokenType.IDENT).lexeme;
-					consumeOpt(ChtlTokenType.SEMICOLON);
-					TemplateNodes.StyleTemplate tpl = styleTemplates.get(fq(name));
-					if (tpl != null) for (var d : tpl.declarations()) node.addInline(d);
-				} else {
-					while (!isAtEnd() && !check(ChtlTokenType.SEMICOLON) && !check(ChtlTokenType.RBRACE)) advance();
-					consumeOpt(ChtlTokenType.SEMICOLON);
+					inline.add(new AttributeNode(prop.start, currentEnd(), prop.lexeme, value));
 				}
 			} else if (match(ChtlTokenType.DOT) || match(ChtlTokenType.HASH) || check(ChtlTokenType.AMP)) {
-				boolean isDot = previous().type == ChtlTokenType.DOT;
-				boolean isHash = previous().type == ChtlTokenType.HASH;
-				boolean isAmp = check(ChtlTokenType.AMP);
-				if (isAmp) advance();
-				String name;
-				if (isAmp) {
-					String cls = owner.attributes().stream().filter(a->a.name().equals("class")).map(AttributeNode::value).findFirst().orElse(null);
-					String id = owner.attributes().stream().filter(a->a.name().equals("id")).map(AttributeNode::value).findFirst().orElse(null);
-					if (cls != null) name = "." + cls; else if (id != null) name = "#" + id; else { ownerAutoClass = state.nextAutoClass(); name = "." + ownerAutoClass; }
-				} else {
-					name = (isDot ? "." : "#") + consume(ChtlTokenType.IDENT).lexeme;
-					if (isDot && owner.attributes().stream().noneMatch(a->a.name().equals("class"))) ownerAutoClass = ownerAutoClass == null ? name.substring(1) : ownerAutoClass;
-					if (isHash && owner.attributes().stream().noneMatch(a->a.name().equals("id"))) owner.addAttribute(new AttributeNode(previous().start, previous().end, "id", name.substring(1)));
-				}
-				// 处理伪类/伪元素后缀，如 &:hover 或 ::before
+				boolean isDot = previous().type == ChtlTokenType.DOT; boolean isHash = previous().type == ChtlTokenType.HASH; boolean isAmp = check(ChtlTokenType.AMP); if (isAmp) advance();
+				String name; if (isAmp) { String cls = owner.attributes().stream().filter(a->a.name().equals("class")).map(AttributeNode::value).findFirst().orElse(null); String id = owner.attributes().stream().filter(a->a.name().equals("id")).map(AttributeNode::value).findFirst().orElse(null); if (cls != null) name = "." + cls; else if (id != null) name = "#" + id; else { ownerAutoClass = state.nextAutoClass(); name = "." + ownerAutoClass; } } else { name = (isDot ? "." : "#") + consume(ChtlTokenType.IDENT).lexeme; if (isDot && owner.attributes().stream().noneMatch(a->a.name().equals("class"))) ownerAutoClass = ownerAutoClass == null ? name.substring(1) : ownerAutoClass; if (isHash && owner.attributes().stream().noneMatch(a->a.name().equals("id"))) owner.addAttribute(new AttributeNode(previous().start, previous().end, "id", name.substring(1))); }
 				StringBuilder sel = new StringBuilder(name);
-				while (check(ChtlTokenType.COLON)) {
-					int colonCount = 0;
-					while (check(ChtlTokenType.COLON) && colonCount < 2) { advance(); sel.append(':'); colonCount++; }
-					if (check(ChtlTokenType.IDENT)) { sel.append(consume(ChtlTokenType.IDENT).lexeme); }
-					if (check(ChtlTokenType.LPAREN)) {
-						// 简化收集括号内容
-						advance(); sel.append('(');
-						int depth = 1;
-						while (!isAtEnd() && depth > 0) {
-							if (check(ChtlTokenType.LPAREN)) { sel.append('('); advance(); depth++; }
-							else if (check(ChtlTokenType.RPAREN)) { sel.append(')'); advance(); depth--; }
-							else { sel.append(tokenToText(advance())); }
-						}
-					}
-				}
+				while (check(ChtlTokenType.COLON)) { int colonCount = 0; while (check(ChtlTokenType.COLON) && colonCount < 2) { advance(); sel.append(':'); colonCount++; } if (check(ChtlTokenType.IDENT)) { sel.append(consume(ChtlTokenType.IDENT).lexeme); } if (check(ChtlTokenType.LPAREN)) { advance(); sel.append('('); int depth = 1; while (!isAtEnd() && depth > 0) { if (check(ChtlTokenType.LPAREN)) { sel.append('('); advance(); depth++; } else if (check(ChtlTokenType.RPAREN)) { sel.append(')'); advance(); depth--; } else { sel.append(tokenToText(advance())); } } } }
 				consume(ChtlTokenType.LBRACE);
 				StyleRuleNode rule = new StyleRuleNode(previous().start, previous().end, sel.toString());
-				while (!check(ChtlTokenType.RBRACE) && !isAtEnd()) {
-					if (check(ChtlTokenType.IDENT)) {
-						ChtlToken p = consume(ChtlTokenType.IDENT);
-						if (match(ChtlTokenType.COLON) || match(ChtlTokenType.EQUAL)) {
-							String val = parseValueUntilSemicolon();
-							val = tryResolveVar(val);
-							consumeOpt(ChtlTokenType.SEMICOLON);
-							rule.addDecl(new AttributeNode(p.start, currentEnd(), p.lexeme, val));
-						}
-					} else { advance(); }
-				}
-				consume(ChtlTokenType.RBRACE);
-				node.addRule(rule);
+				while (!check(ChtlTokenType.RBRACE) && !isAtEnd()) { if (check(ChtlTokenType.IDENT)) { ChtlToken p = consume(ChtlTokenType.IDENT); if (match(ChtlTokenType.COLON) || match(ChtlTokenType.EQUAL)) { String val = parseValueUntilSemicolon(); val = tryResolveVar(val); consumeOpt(ChtlTokenType.SEMICOLON); rule.addDecl(new AttributeNode(p.start, currentEnd(), p.lexeme, val)); } } else { advance(); } }
+				consume(ChtlTokenType.RBRACE); node.addRule(rule);
 			} else { advance(); }
 		}
 		consume(ChtlTokenType.RBRACE);
-		// 应用 delete 语义：从 inline 中剔除对应属性
-		if (!node.deletedInlineProps().isEmpty()) {
-			node.inlineStyles().removeIf(a -> node.deletedInlineProps().contains(a.name()));
+		// 汇总 inline 至元素 style 属性
+		if (!inline.isEmpty()) {
+			StringBuilder sb = new StringBuilder();
+			for (var a : inline) { sb.append(a.name()).append(": ").append(a.value()).append(";"); }
+			Optional<AttributeNode> styleAttr = owner.attributes().stream().filter(a->a.name().equals("style")).findFirst();
+			if (styleAttr.isPresent()) {
+				String merged = styleAttr.get().value() + (styleAttr.get().value().endsWith(";")?"":";") + sb;
+				owner.addAttribute(new AttributeNode(styleAttr.get().startOffset(), currentEnd(), "style", merged));
+			} else {
+				owner.addAttribute(new AttributeNode(node.startOffset(), currentEnd(), "style", sb.toString()));
+			}
 		}
 		if (ownerAutoClass != null && owner.attributes().stream().noneMatch(a->a.name().equals("class"))) owner.addAttribute(new AttributeNode(node.startOffset(), node.endOffset(), "class", ownerAutoClass));
-		return new StyleBlockNode(node.startOffset(), currentEnd()) {{ for (var a : node.inlineStyles()) addInline(a); for (var r : node.globalRules()) addRule(r); }};
+		return new StyleBlockNode(node.startOffset(), currentEnd()) {{ for (var r : node.globalRules()) addRule(r); }};
 	}
 
 	private ScriptBlockNode parseScriptBlock(){
