@@ -352,7 +352,12 @@ public class ChtlParser {
 	}
 
 	private List<Path> resolveChtlPaths(String token){
-		List<Path> out = new ArrayList<>(); if (baseDir == null || token == null) return out;
+		List<Path> out = new ArrayList<>(); if (token == null) return out;
+		boolean forceOfficial = false;
+		if (token.startsWith("chtl::")) { token = token.substring("chtl::".length()); forceOfficial = true; }
+		Path official = getOfficialModuleDir();
+		Path localMod = baseDir != null ? baseDir.resolve("module") : null;
+		if (!forceOfficial && baseDir == null) forceOfficial = true; // 无 baseDir 时仅官方
 		// 模块名点号映射到路径分隔：Chtholly.Space -> Chtholly/Space, Chtholly.* -> Chtholly/*
 		if (!token.contains("/") && !token.contains("\\")) {
 			if (token.endsWith(".*")) token = token.substring(0, token.length()-2).replace('.', '/') + "/*";
@@ -365,9 +370,8 @@ public class ChtlParser {
 		}
 		boolean isWildcard = token.endsWith(".*") || token.endsWith("/*") || token.endsWith("*.cmod") || token.endsWith("/*.cmod") || token.endsWith("*.chtl") || token.endsWith("/*.chtl");
 		boolean hasExt = token.endsWith(".cmod") || token.endsWith(".chtl");
-		Path official = Path.of("module"); Path localMod = baseDir.resolve("module");
 		if (token.contains("/") || token.contains("\\")) {
-			Path p = baseDir.resolve(token.replace(".*","/*").replace(".*/","/*/").replace(".cmod",".cmod").replace(".chtl",".chtl"));
+			Path p = (forceOfficial? official : (baseDir!=null? baseDir : official)).resolve(token.replace(".*","/*").replace(".*/","/*/").replace(".cmod",".cmod").replace(".chtl",".chtl"));
 			if (isWildcard) out.addAll(globFiles(p, ".cmod", ".chtl"));
 			else if (Files.isRegularFile(p)) out.add(p);
 			else if (!hasExt) { if (strict) error("路径不含文件信息: "+token); }
@@ -376,40 +380,32 @@ public class ChtlParser {
 		}
 		// 名称
 		if (isWildcard) {
-			out.addAll(globFiles(official.resolve(token), ".cmod", ".chtl")); if (!out.isEmpty()) return out;
-			out.addAll(globFiles(localMod.resolve(token), ".cmod", ".chtl")); if (!out.isEmpty()) return out;
-			out.addAll(globFiles(baseDir.resolve(token), ".cmod", ".chtl")); return out;
+			out.addAll(globFiles(official.resolve(token), ".cmod", ".chtl")); if (forceOfficial || !out.isEmpty()) return out;
+			if (localMod != null) { out.addAll(globFiles(localMod.resolve(token), ".cmod", ".chtl")); if (!out.isEmpty()) return out; }
+			if (baseDir != null) out.addAll(globFiles(baseDir.resolve(token), ".cmod", ".chtl")); return out;
 		}
 		if (hasExt) {
 			Path p = official.resolve(token); if (Files.isRegularFile(p)) { out.add(p); return out; }
-			p = localMod.resolve(token); if (Files.isRegularFile(p)) { out.add(p); return out; }
-			p = baseDir.resolve(token); if (Files.isRegularFile(p)) { out.add(p); return out; }
+			if (!forceOfficial && localMod != null) { p = localMod.resolve(token); if (Files.isRegularFile(p)) { out.add(p); return out; } }
+			if (!forceOfficial && baseDir != null) { p = baseDir.resolve(token); if (Files.isRegularFile(p)) { out.add(p); return out; } }
 			return out;
 		}
 		// 无后缀：优先 cmod，再 chtl
 		Path p = official.resolve(token + ".cmod"); if (Files.isRegularFile(p)) { out.add(p); return out; }
 		p = official.resolve(token + ".chtl"); if (Files.isRegularFile(p)) { out.add(p); return out; }
-		p = localMod.resolve(token + ".cmod"); if (Files.isRegularFile(p)) { out.add(p); return out; }
-		p = localMod.resolve(token + ".chtl"); if (Files.isRegularFile(p)) { out.add(p); return out; }
-		p = baseDir.resolve(token + ".cmod"); if (Files.isRegularFile(p)) { out.add(p); return out; }
-		p = baseDir.resolve(token + ".chtl"); if (Files.isRegularFile(p)) { out.add(p); return out; }
+		if (!forceOfficial && localMod != null) { p = localMod.resolve(token + ".cmod"); if (Files.isRegularFile(p)) { out.add(p); return out; } p = localMod.resolve(token + ".chtl"); if (Files.isRegularFile(p)) { out.add(p); return out; } }
+		if (!forceOfficial && baseDir != null) { p = baseDir.resolve(token + ".cmod"); if (Files.isRegularFile(p)) { out.add(p); return out; } p = baseDir.resolve(token + ".chtl"); if (Files.isRegularFile(p)) { out.add(p); return out; } }
 		return out;
 	}
 
 	private List<Path> resolveCjmodPaths(String token){
-		List<Path> out = new ArrayList<>(); if (baseDir == null || token == null) return out;
-		// 模块名点号映射到路径分隔：Chtholly.Space -> Chtholly/Space, Chtholly.*（对 cjmod 无通配示例，这里不处理 *）
-		if (!token.contains("/") && !token.contains("\\")) {
-			if (token.endsWith(".cjmod")) {
-				int d = token.lastIndexOf('.'); String base = token.substring(0,d).replace('.', '/'); String ext = token.substring(d);
-				token = base + ext;
-			} else {
-				token = token.replace('.', '/');
-			}
-		}
-		Path official = Path.of("module"); Path localMod = baseDir.resolve("module");
+		List<Path> out = new ArrayList<>(); if (token == null) return out;
+		boolean forceOfficial = false; if (token.startsWith("chtl::")) { token = token.substring("chtl::".length()); forceOfficial = true; }
+		Path official = getOfficialModuleDir(); Path localMod = baseDir != null ? baseDir.resolve("module") : null;
+		if (!forceOfficial && baseDir == null) forceOfficial = true;
 		if (token.contains("/") || token.contains("\\")) {
-			Path p = baseDir.resolve(token);
+			Path base = forceOfficial ? official : (baseDir!=null? baseDir : official);
+			Path p = base.resolve(token);
 			if (Files.isDirectory(p)) { if (strict) error("路径不含文件信息: "+token); return out; }
 			if (Files.isRegularFile(p)) { out.add(p); return out; }
 			if (strict) error("资源未找到: "+token);
@@ -418,14 +414,14 @@ public class ChtlParser {
 		boolean hasExt = token.endsWith(".cjmod");
 		if (hasExt) {
 			Path p2 = official.resolve(token); if (Files.isRegularFile(p2)) { out.add(p2); return out; }
-			p2 = localMod.resolve(token); if (Files.isRegularFile(p2)) { out.add(p2); return out; }
-			p2 = baseDir.resolve(token); if (Files.isRegularFile(p2)) { out.add(p2); return out; }
+			if (!forceOfficial && localMod != null) { p2 = localMod.resolve(token); if (Files.isRegularFile(p2)) { out.add(p2); return out; } }
+			if (!forceOfficial && baseDir != null) { p2 = baseDir.resolve(token); if (Files.isRegularFile(p2)) { out.add(p2); return out; } }
 			return out;
 		}
 		// 无后缀：优先官方，其次本地 module，再当前目录
 		Path p3 = official.resolve(token + ".cjmod"); if (Files.isRegularFile(p3)) { out.add(p3); return out; }
-		p3 = localMod.resolve(token + ".cjmod"); if (Files.isRegularFile(p3)) { out.add(p3); return out; }
-		p3 = baseDir.resolve(token + ".cjmod"); if (Files.isRegularFile(p3)) { out.add(p3); return out; }
+		if (!forceOfficial && localMod != null) { p3 = localMod.resolve(token + ".cjmod"); if (Files.isRegularFile(p3)) { out.add(p3); return out; } }
+		if (!forceOfficial && baseDir != null) { p3 = baseDir.resolve(token + ".cjmod"); if (Files.isRegularFile(p3)) { out.add(p3); return out; } }
 		return out;
 	}
 
@@ -486,4 +482,6 @@ public class ChtlParser {
 			if (it instanceof TemplateNodes.VarTemplate vt) putNoConflict(varTemplates, nsName+"."+vt.name(), vt);
 		}
 	}
+
+	private Path getOfficialModuleDir(){ String prop = System.getProperty("CHTL_OFFICIAL_MODULE_DIR"); if (prop != null && !prop.isBlank()) return Path.of(prop); return Path.of("module"); }
 }
