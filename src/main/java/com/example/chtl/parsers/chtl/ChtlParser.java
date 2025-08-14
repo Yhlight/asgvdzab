@@ -27,6 +27,9 @@ public class ChtlParser {
 	private static class StyleOp { enum Kind { DECL, INCLUDE, INHERIT, DELETE } Kind kind; String prop; String value; String refName; List<String> deletes; StyleOp(Kind k){ this.kind=k; } }
 	private final Map<String, List<StyleOp>> styleTemplateOps = new HashMap<>();
 
+	// 元素模板继承链（child -> [parents...]，按声明顺序）
+	private final Map<String, List<String>> elementTemplateInherits = new HashMap<>();
+
 	private final Deque<List<String>> constraintStack = new ArrayDeque<>();
 
 	public ChtlParser(String source, List<ChtlToken> tokens){ this(source, tokens, new ChtlState(), null, false); }
@@ -109,8 +112,21 @@ public class ChtlParser {
 			return t;
 		} else if (type.equals("Element")) {
 			TemplateNodes.ElementTemplate t = new TemplateNodes.ElementTemplate(bodyStart, bodyStart, fq(name));
-			while (!check(ChtlTokenType.RBRACE) && !isAtEnd()) { ChtlNode n = parseTopLevel(); if (n != null) t.add(n); else advance(); }
-			consume(ChtlTokenType.RBRACE); elementTemplates.put(fq(name), t); return t;
+			List<String> inherits = new ArrayList<>();
+			while (!check(ChtlTokenType.RBRACE) && !isAtEnd()) {
+				if (check(ChtlTokenType.KW_INHERIT)) {
+					advance(); consume(ChtlTokenType.AT); String atType = consume(ChtlTokenType.IDENT).lexeme;
+					if (!atType.equals("Element")) { if (strict) error("inherit 仅支持 @Element"); else { skipUntil(ChtlTokenType.SEMICOLON, ChtlTokenType.RBRACE); continue; } }
+					String ref = consume(ChtlTokenType.IDENT).lexeme; consumeOpt(ChtlTokenType.SEMICOLON);
+					inherits.add(fq(ref));
+				} else {
+					ChtlNode n = parseTopLevel(); if (n != null) t.add(n); else advance();
+				}
+			}
+			consume(ChtlTokenType.RBRACE);
+			elementTemplates.put(fq(name), t);
+			if (!inherits.isEmpty()) elementTemplateInherits.put(fq(name), inherits);
+			return t;
 		} else if (type.equals("Var")) {
 			TemplateNodes.VarTemplate t = new TemplateNodes.VarTemplate(bodyStart, bodyStart, fq(name));
 			while (!check(ChtlTokenType.RBRACE) && !isAtEnd()) { if (check(ChtlTokenType.IDENT)) { ChtlToken k = consume(ChtlTokenType.IDENT); if (match(ChtlTokenType.COLON) || match(ChtlTokenType.EQUAL)) { String v = parseValueUntilSemicolon(); consumeOpt(ChtlTokenType.SEMICOLON); t.add(new AttributeNode(k.start, currentEnd(), k.lexeme, v)); } } else advance(); }
@@ -159,18 +175,25 @@ public class ChtlParser {
 				advance(); String type = consume(ChtlTokenType.IDENT).lexeme; if (isForbiddenTypeUsage(type)) error("命中约束，禁止 @"+type+" 使用");
 				if (type.equals("Element")) {
 					String name = consume(ChtlTokenType.IDENT).lexeme; String ns = null; if (match(ChtlTokenType.KW_FROM)) ns = consume(ChtlTokenType.IDENT).lexeme;
-					TemplateNodes.ElementTemplate tpl = elementTemplates.get(ns==null? fq(name) : ns+"."+name);
+					String keyName = ns==null? fq(name) : ns+"."+name;
+					TemplateNodes.ElementTemplate tpl = elementTemplates.get(keyName);
 					if (tpl != null) {
-						List<ChtlNode> cloned = deepCloneList(tpl.body());
-						Map<ChtlNode,String> origin = new IdentityHashMap<>(); markOrigin(cloned, name, origin);
+						LinkedHashMap<String, List<ChtlNode>> groups = resolveElementTemplateGroups(keyName, new HashSet<>());
+						List<ChtlNode> clonedAll = new ArrayList<>();
+						Map<ChtlNode,String> origin = new IdentityHashMap<>();
+						for (var e : groups.entrySet()) {
+							List<ChtlNode> cloned = deepCloneList(e.getValue());
+							markOrigin(cloned, simpleName(e.getKey()), origin);
+							clonedAll.addAll(cloned);
+						}
 						if (check(ChtlTokenType.LBRACE)) {
 							consume(ChtlTokenType.LBRACE);
-							applySpecialization(cloned, origin);
+							applySpecialization(clonedAll, origin);
 							consume(ChtlTokenType.RBRACE);
 						} else {
 							consumeOpt(ChtlTokenType.SEMICOLON);
 						}
-						for (ChtlNode n : cloned) el.addChild(n);
+						for (ChtlNode n : clonedAll) el.addChild(n);
 					} else { if (strict) error("未找到元素模板: "+name); else { while (!isAtEnd() && !check(ChtlTokenType.SEMICOLON) && !check(ChtlTokenType.RBRACE)) advance(); consumeOpt(ChtlTokenType.SEMICOLON);} }
 				} else { while (!isAtEnd() && !check(ChtlTokenType.SEMICOLON) && !check(ChtlTokenType.RBRACE)) advance(); consumeOpt(ChtlTokenType.SEMICOLON); }
 			}
@@ -182,15 +205,16 @@ public class ChtlParser {
 		return new ElementNode(start, currentEnd(), tag) {{ for (AttributeNode a : el.attributes()) addAttribute(a); for (ChtlNode c : el.children()) addChild(c); for (ImportNode.ConstraintNode c : el.constraints()) addConstraint(c); }};
 	}
 
-	private void applySpecialization(List<ChtlNode> cloned, Map<ChtlNode,String> origin){ while (!isAtEnd() && !check(ChtlTokenType.RBRACE)) { if (check(ChtlTokenType.KW_INSERT)) { advance(); String mode = "after"; if (check(ChtlTokenType.KW_AFTER)) { advance(); mode = "after"; } else if (check(ChtlTokenType.KW_BEFORE)) { advance(); mode = "before"; } else if (check(ChtlTokenType.KW_REPLACE)) { advance(); mode = "replace"; } else if (check(ChtlTokenType.IDENT) && peek().lexeme.equals("at")) { advance(); ChtlToken t = consume(ChtlTokenType.IDENT); mode = t.lexeme.equals("top")?"at_top":"at_bottom"; } Integer targetIndex = null; String targetTag = null; if (mode.equals("after") || mode.equals("before") || mode.equals("replace")) { targetTag = consume(ChtlTokenType.IDENT).lexeme; if (match(ChtlTokenType.LBRACKET)) { String num = consume(ChtlTokenType.NUMBER).lexeme; consume(ChtlTokenType.RBRACKET); try{ targetIndex = Integer.parseInt(num.split("\\.")[0]); }catch(Exception ignored){} } } consume(ChtlTokenType.LBRACE); List<ChtlNode> payload = new ArrayList<>(); while (!check(ChtlTokenType.RBRACE) && !isAtEnd()) { ChtlNode n = parseTopLevel(); if (n!=null) payload.add(n); else advance(); } consume(ChtlTokenType.RBRACE); applyInsert(cloned, mode, targetTag, targetIndex, payload); } else if (check(ChtlTokenType.KW_DELETE)) { advance(); if (check(ChtlTokenType.AT)) { advance(); String what = consume(ChtlTokenType.IDENT).lexeme; if (what.equals("Element")) { String delName = consume(ChtlTokenType.IDENT).lexeme; deleteByOrigin(cloned, delName, origin); } consumeOpt(ChtlTokenType.SEMICOLON); } else { String tag = consume(ChtlTokenType.IDENT).lexeme; Integer idx=null; if (match(ChtlTokenType.LBRACKET)) { String n = consume(ChtlTokenType.NUMBER).lexeme; consume(ChtlTokenType.RBRACKET); try{ idx=Integer.parseInt(n.split("\\.")[0]); }catch(Exception ignored){} } consumeOpt(ChtlTokenType.SEMICOLON); deleteByTagIndex(cloned, tag, idx); } } else if (check(ChtlTokenType.IDENT)) { String tag = consume(ChtlTokenType.IDENT).lexeme; Integer idx=null; if (match(ChtlTokenType.LBRACKET)) { String n = consume(ChtlTokenType.NUMBER).lexeme; consume(ChtlTokenType.RBRACKET); try{ idx=Integer.parseInt(n.split("\\.")[0]); }catch(Exception ignored){} } consume(ChtlTokenType.LBRACE); ElementNode target = findTarget(cloned, tag, idx); while (!check(ChtlTokenType.RBRACE) && !isAtEnd()) { if (matchKw(ChtlTokenType.KW_STYLE)) { parseStyleBlock(target); } else advance(); } consume(ChtlTokenType.RBRACE); } else { advance(); } } }
+	private void applySpecialization(List<ChtlNode> cloned, Map<ChtlNode,String> origin){ while (!isAtEnd() && !check(ChtlTokenType.RBRACE)) { if (check(ChtlTokenType.KW_INSERT)) { advance(); String mode = "after"; if (check(ChtlTokenType.KW_AFTER)) { advance(); mode = "after"; } else if (check(ChtlTokenType.KW_BEFORE)) { advance(); mode = "before"; } else if (check(ChtlTokenType.KW_REPLACE)) { advance(); mode = "replace"; } else if (check(ChtlTokenType.IDENT) && peek().lexeme.equals("at")) { advance(); ChtlToken t = consume(ChtlTokenType.IDENT); mode = t.lexeme.equals("top")?"at_top":"at_bottom"; } Integer targetIndex = null; String targetTag = null; if (mode.equals("after") || mode.equals("before") || mode.equals("replace")) { targetTag = consume(ChtlTokenType.IDENT).lexeme; if (match(ChtlTokenType.LBRACKET)) { String num = consume(ChtlTokenType.NUMBER).lexeme; consume(ChtlTokenType.RBRACKET); try{ targetIndex = Integer.parseInt(num.split("\\.")[0]); }catch(Exception ignored){} } } consume(ChtlTokenType.LBRACE); List<ChtlNode> payload = new ArrayList<>(); while (!check(ChtlTokenType.RBRACE) && !isAtEnd()) { ChtlNode n = parseTopLevel(); if (n!=null) payload.add(n); else advance(); } consume(ChtlTokenType.RBRACE); boolean ok = applyInsert(cloned, mode, targetTag, targetIndex, payload); if (!ok && strict) error("insert 目标未找到: "+(targetTag!=null?targetTag:mode)); } else if (check(ChtlTokenType.KW_DELETE)) { advance(); if (check(ChtlTokenType.AT)) { advance(); String what = consume(ChtlTokenType.IDENT).lexeme; if (what.equals("Element")) { String delName = consume(ChtlTokenType.IDENT).lexeme; boolean removed = deleteByOrigin(cloned, delName, origin); if (!removed && strict) error("delete @Element 未命中: "+delName); } consumeOpt(ChtlTokenType.SEMICOLON); } else { String tag = consume(ChtlTokenType.IDENT).lexeme; Integer idx=null; if (match(ChtlTokenType.LBRACKET)) { String n = consume(ChtlTokenType.NUMBER).lexeme; consume(ChtlTokenType.RBRACKET); try{ idx=Integer.parseInt(n.split("\\.")[0]); }catch(Exception ignored){} } consumeOpt(ChtlTokenType.SEMICOLON); boolean removed = deleteByTagIndex(cloned, tag, idx); if (!removed && strict) error("delete 未命中: "+tag+(idx!=null?"["+idx+"]":"")); } } else if (check(ChtlTokenType.IDENT)) { String tag = consume(ChtlTokenType.IDENT).lexeme; Integer idx=null; if (match(ChtlTokenType.LBRACKET)) { String n = consume(ChtlTokenType.NUMBER).lexeme; consume(ChtlTokenType.RBRACKET); try{ idx=Integer.parseInt(n.split("\\.")[0]); }catch(Exception ignored){} } consume(ChtlTokenType.LBRACE); ElementNode target = findTarget(cloned, tag, idx); while (!check(ChtlTokenType.RBRACE) && !isAtEnd()) { if (matchKw(ChtlTokenType.KW_STYLE)) { parseStyleBlock(target); } else advance(); } consume(ChtlTokenType.RBRACE); } else { advance(); } } }
 
-	private void applyInsert(List<ChtlNode> cloned, String mode, String tag, Integer idx, List<ChtlNode> payload){ if (mode.equals("at_top")) { cloned.addAll(0, payload); return; } if (mode.equals("at_bottom")) { cloned.addAll(payload); return; } int pos = findIndex(cloned, tag, idx); if (pos<0) return; switch (mode) { case "before" -> cloned.addAll(pos, payload); case "after" -> cloned.addAll(pos+1, payload); case "replace" -> { cloned.remove(pos); cloned.addAll(pos, payload); } } }
+	private boolean applyInsert(List<ChtlNode> cloned, String mode, String tag, Integer idx, List<ChtlNode> payload){ if (mode.equals("at_top")) { cloned.addAll(0, payload); return true; } if (mode.equals("at_bottom")) { cloned.addAll(payload); return true; } int pos = findIndex(cloned, tag, idx); if (pos<0) return false; switch (mode) { case "before" -> cloned.addAll(pos, payload); case "after" -> cloned.addAll(pos+1, payload); case "replace" -> { cloned.remove(pos); cloned.addAll(pos, payload); } } return true; }
 
-	private void deleteByOrigin(List<ChtlNode> cloned, String tpl, Map<ChtlNode,String> origin){ cloned.removeIf(n -> tpl.equals(origin.get(n))); }
-	private void deleteByTagIndex(List<ChtlNode> cloned, String tag, Integer idx){ int i=-1; for (int p=0;p<cloned.size();p++){ ChtlNode n=cloned.get(p); if (n instanceof ElementNode en && en.tagName().equals(tag)) { i++; if (idx==null || i==idx){ cloned.remove(p); return; } } } }
+	private boolean deleteByOrigin(List<ChtlNode> cloned, String tpl, Map<ChtlNode,String> origin){ int before = cloned.size(); cloned.removeIf(n -> tpl.equals(origin.get(n))); return cloned.size() != before; }
+	private boolean deleteByTagIndex(List<ChtlNode> cloned, String tag, Integer idx){ int i=-1; for (int p=0;p<cloned.size();p++){ ChtlNode n=cloned.get(p); if (n instanceof ElementNode en && en.tagName().equals(tag)) { i++; if (idx==null || i==idx){ cloned.remove(p); return true; } } } return false; }
 	private ElementNode findTarget(List<ChtlNode> cloned, String tag, Integer idx){ int i=-1; for (ChtlNode n:cloned){ if (n instanceof ElementNode en && en.tagName().equals(tag)){ i++; if (idx==null || i==idx) return en; } } return null; }
 	private int findIndex(List<ChtlNode> cloned, String tag, Integer idx){ int i=-1; for (int p=0;p<cloned.size();p++){ ChtlNode n=cloned.get(p); if (n instanceof ElementNode en && en.tagName().equals(tag)){ i++; if (idx==null || i==idx) return p; } } return -1; }
 	private void markOrigin(List<ChtlNode> list, String name, Map<ChtlNode,String> origin){ for (ChtlNode n:list){ origin.put(n,name); if (n instanceof ElementNode en){ markOrigin(en.children(), name, origin);} } }
+	private String simpleName(String fq){ int k=fq.lastIndexOf('.'); return k>=0? fq.substring(k+1) : fq; }
 
 	private List<ChtlNode> deepCloneList(List<ChtlNode> list){ List<ChtlNode> out=new ArrayList<>(); for (ChtlNode n:list) out.add(deepClone(n)); return out; }
 	private ChtlNode deepClone(ChtlNode n){ if (n instanceof ElementNode el){ ElementNode c=new ElementNode(el.startOffset(), el.endOffset(), el.tagName()); for (AttributeNode a:el.attributes()) c.addAttribute(new AttributeNode(a.startOffset(), a.endOffset(), a.name(), a.value())); for (ChtlNode ch:el.children()) c.addChild(deepClone(ch)); return c;} else if (n instanceof TextNode t){ return new TextNode(t.startOffset(), t.endOffset(), t.text()); } else if (n instanceof StyleBlockNode sb){ StyleBlockNode d=new StyleBlockNode(sb.startOffset(), sb.endOffset()); for (StyleRuleNode r: sb.globalRules()){ StyleRuleNode rr=new StyleRuleNode(r.startOffset(), r.endOffset(), r.selector()); for (AttributeNode a:r.declarations()) rr.addDecl(new AttributeNode(a.startOffset(), a.endOffset(), a.name(), a.value())); d.addRule(rr);} return d;} else if (n instanceof ScriptBlockNode sc){ return new ScriptBlockNode(sc.startOffset(), sc.endOffset(), sc.code()); } return n; }
@@ -209,6 +233,24 @@ public class ChtlParser {
 
 	private LinkedHashMap<String,String> resolveStyleTemplate(String name, Set<String> visiting){ if (visiting.contains(name)) { if (strict) error("样式模板循环引用: "+name); return new LinkedHashMap<>(); } visiting.add(name); LinkedHashMap<String,String> props = new LinkedHashMap<>(); List<StyleOp> ops = styleTemplateOps.getOrDefault(name, Collections.emptyList()); for (StyleOp op : ops) { switch (op.kind) { case INCLUDE, INHERIT -> { LinkedHashMap<String,String> sub = resolveStyleTemplate(op.refName, visiting); for (var e : sub.entrySet()) props.put(e.getKey(), e.getValue()); } case DELETE -> { for (String d : op.deletes) props.remove(d); } case DECL -> props.put(op.prop, op.value); } } visiting.remove(name); return props; }
 
+	// 解析元素模板的继承链并输出分组（保留来源名称 -> 对应节点列表），顺序为父在前、子在后
+	private LinkedHashMap<String, List<ChtlNode>> resolveElementTemplateGroups(String fqName, Set<String> visiting){
+		if (visiting.contains(fqName)) { if (strict) error("元素模板循环继承: "+fqName); return new LinkedHashMap<>(); }
+		visiting.add(fqName);
+		LinkedHashMap<String, List<ChtlNode>> out = new LinkedHashMap<>();
+		List<String> parents = elementTemplateInherits.getOrDefault(fqName, Collections.emptyList());
+		for (String p : parents) {
+			TemplateNodes.ElementTemplate ptpl = elementTemplates.get(p);
+			if (ptpl == null) { if (strict) error("继承的元素模板不存在: "+p); else continue; }
+			LinkedHashMap<String, List<ChtlNode>> g = resolveElementTemplateGroups(p, visiting);
+			for (var e : g.entrySet()) out.computeIfAbsent(e.getKey(), k -> new ArrayList<>()).addAll(e.getValue());
+		}
+		TemplateNodes.ElementTemplate self = elementTemplates.get(fqName);
+		if (self != null) out.computeIfAbsent(fqName, k -> new ArrayList<>()).addAll(self.body());
+		visiting.remove(fqName);
+		return out;
+	}
+
 	private ScriptBlockNode parseScriptBlock(){ consume(ChtlTokenType.LBRACE); int start = previous().start; StringBuilder sb = new StringBuilder(); while (!check(ChtlTokenType.RBRACE) && !isAtEnd()) { sb.append(tokenToText(advance())); } consume(ChtlTokenType.RBRACE); return new ScriptBlockNode(start, currentEnd(), sb.toString()); }
 	private String tryResolveVar(String value){ String v = value.trim(); int l = v.indexOf('('); int r = v.lastIndexOf(')'); if (l>0 && r>l && !v.contains(" ")) { String name = v.substring(0,l); String key = v.substring(l+1,r).trim(); TemplateNodes.VarTemplate tpl = varTemplates.get(fq(name)); if (tpl != null) { for (AttributeNode a : tpl.kv()) if (a.name().equals(key)) return a.value(); } } return value; }
 
@@ -220,6 +262,7 @@ public class ChtlParser {
 	private boolean check(ChtlTokenType t){ if (isAtEnd()) return false; return peek().type == t; }
 	private ChtlToken consume(ChtlTokenType t){ if (!check(t)) throw new RuntimeException("期待:"+t+" 实际:"+peek().type); return advance(); }
 	private void consumeOpt(ChtlTokenType t){ if (check(t)) advance(); }
+	private void skipUntil(ChtlTokenType... types){ outer: while (!isAtEnd()) { for (ChtlTokenType tp : types) if (check(tp)) break outer; advance(); } }
 	private ChtlToken advance(){ if (!isAtEnd()) pos++; return previous(); }
 	private void unread(){ if (pos>0) pos--; }
 	private boolean isAtEnd(){ return peek().type==ChtlTokenType.EOF; }
