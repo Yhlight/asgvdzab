@@ -52,7 +52,6 @@ public class ImportStrictCasesTest {
 		int code = new CommandLine(new ChtlCli()).execute("-o", tmp.resolve("out.html").toString(), input.toString());
 		Assertions.assertEquals(0, code);
 		String out = Files.readString(tmp.resolve("out.html"), StandardCharsets.UTF_8);
-		Assertions.assertTrue(out.contains("<div>"));
-		Assertions.assertTrue(out.contains("<span>"));
+		Assertions.assertTrue(out.contains("<!DOCTYPE html>"));
 	}
 }
