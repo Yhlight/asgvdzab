@@ -133,3 +133,20 @@ java -jar target/chtl-compiler-0.1.0-SNAPSHOT-shaded.jar --dump-fragments -o out
   - 现象：未死循环但内容重复或被跳过。
   - 修复：检查导入链路；工具已做去重与循环保护，避免重复导入同一路径。
   - 截图：docs/errors/cycle.png（占位）
+
+## 示例：通配导入与命名空间引用
+
+```chtl
+[Import] @Chtl from ui/*.cmod;        // 导入 ui 目录下所有 cmod
+[Import] @Chtl from lib/*;            // 导入 lib 目录下所有 cmod 与 chtl
+[Import] @Chtl from MyNs/*.chtl;      // 导入命名空间 MyNs 下所有 chtl 文件
+
+body{
+  @Element Button from MyNs;
+}
+```
+
+### 小结
+- 通配默认仅当前层级，不递归；按 cmod 优先再 chtl。
+- 命名空间默认取父目录名或 alias；引用时使用 `from Namespace`。
+- 循环与重复导入自动去重；严格模式下资源与路径错误立即失败并包含行列定位。

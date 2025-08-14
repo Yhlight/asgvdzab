@@ -10,6 +10,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class ChtlParser {
 	private final String source;
@@ -36,6 +39,9 @@ public class ChtlParser {
 	// Import 防重复与循环检测
 	private final Set<Path> visitedImports = new HashSet<>();
 	private final Set<String> importedKeys = new HashSet<>();
+
+	private static final int IMPORT_THREADS = Integer.getInteger("CHTL_IMPORT_THREADS", 0);
+	private static final ExecutorService IMPORT_POOL = IMPORT_THREADS > 0 ? Executors.newFixedThreadPool(IMPORT_THREADS) : null;
 
 	public ChtlParser(String source, List<ChtlToken> tokens){ this(source, tokens, new ChtlState(), null, false); }
 	public ChtlParser(String source, List<ChtlToken> tokens, ChtlState state){ this(source, tokens, state, null, false); }
@@ -455,7 +461,15 @@ public class ChtlParser {
 		try { return Files.readString(k, StandardCharsets.UTF_8); } catch (Exception e) { return null; }
 	}); } catch (Exception e) { return null; } }
 
-	private void preloadFiles(List<Path> files){ files.parallelStream().forEach(f -> { try { safeRead(f); } catch (Exception ignored) {} }); }
+	private void preloadFiles(List<Path> files){
+		if (IMPORT_POOL != null) {
+			for (Path f : files) { IMPORT_POOL.submit(() -> { try { safeRead(f); } catch (Exception ignored) {} }); }
+			IMPORT_POOL.shutdown();
+			try { IMPORT_POOL.awaitTermination(10, TimeUnit.SECONDS); } catch (InterruptedException ignored) {}
+		} else {
+			files.parallelStream().forEach(f -> { try { safeRead(f); } catch (Exception ignored) {} });
+		}
+	}
 
 	private void importChtlFile(Path file, String alias){ if (file == null) return; if (visitedImports.contains(file)) return; visitedImports.add(file); String key = file.toAbsolutePath().normalize().toString(); if (!importedKeys.add(key)) return; try { String src = safeRead(file); if (src==null) { if (strict) error("资源未找到: "+file.toString()); return; } var sub = new ChtlParser(src, new com.example.chtl.compilers.chtl.ChtlLexer(src).lex(), state, file.getParent(), strict).parseDocument(); String nsName = alias != null ? alias : (file.getParent()!=null? file.getParent().getFileName().toString() : stripExt(file.getFileName().toString())); mergeDocWithNs(sub, nsName); } catch (Exception e) { if (strict) throw new RuntimeException("Import 失败: "+file+": "+e.getMessage(), e); } }
 	private void importCjmodFile(Path file, String alias){ // cjmod: 假定为纯 JS 模块，作为命名空间下的原始 JS 注入占位
