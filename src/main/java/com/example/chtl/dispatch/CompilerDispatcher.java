@@ -8,6 +8,8 @@ import com.example.chtl.core.Fragment;
 import com.example.chtl.core.FragmentType;
 import com.example.chtl.core.ScanResult;
 
+import java.nio.file.Path;
+
 public class CompilerDispatcher {
 	private final ChtlCompiler chtlCompiler = new ChtlCompiler();
 	private final ChtlJsCompiler chtlJsCompiler = new ChtlJsCompiler();
@@ -15,8 +17,12 @@ public class CompilerDispatcher {
 	private final JsCompiler jsCompiler = new JsCompiler();
 
 	public CompilationResult dispatch(ScanResult scanResult) {
+		return dispatch(scanResult, null);
+	}
+
+	public CompilationResult dispatch(ScanResult scanResult, Path baseDir) {
 		// CHTL 主流程
-		ChtlCompiler.Output chtlOut = chtlCompiler.compile(scanResult.getSource());
+		ChtlCompiler.Output chtlOut = chtlCompiler.compile(scanResult.getSource(), baseDir);
 
 		StringBuilder htmlBody = new StringBuilder();
 		htmlBody.append(chtlOut.htmlBody);
