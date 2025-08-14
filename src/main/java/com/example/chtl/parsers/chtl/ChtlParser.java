@@ -3,6 +3,7 @@ package com.example.chtl.parsers.chtl;
 import com.example.chtl.ast.chtl.*;
 import com.example.chtl.compilers.chtl.ChtlToken;
 import com.example.chtl.compilers.chtl.ChtlTokenType;
+import com.example.chtl.compilers.chtl.ChtlState;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,8 +12,10 @@ public class ChtlParser {
 	private final String source;
 	private final List<ChtlToken> tokens;
 	private int pos = 0;
+	private final ChtlState state;
 
-	public ChtlParser(String source, List<ChtlToken> tokens){ this.source=source; this.tokens=tokens; }
+	public ChtlParser(String source, List<ChtlToken> tokens){ this(source, tokens, new ChtlState()); }
+	public ChtlParser(String source, List<ChtlToken> tokens, ChtlState state){ this.source=source; this.tokens=tokens; this.state=state; }
 
 	public ChtlDocument parseDocument(){
 		ChtlDocument doc = new ChtlDocument(0, source.length());
@@ -25,7 +28,6 @@ public class ChtlParser {
 	}
 
 	private ChtlNode parseTopLevel(){
-		// 顶层允许元素或模板等，这里最小实现：元素
 		if (check(ChtlTokenType.IDENT)) return parseElement();
 		return null;
 	}
@@ -33,18 +35,17 @@ public class ChtlParser {
 	private ElementNode parseElement(){
 		int start = peek().start; String tag = consume(ChtlTokenType.IDENT).lexeme;
 		consume(ChtlTokenType.LBRACE);
+		state.elementStack.push(tag);
 		ElementNode el = new ElementNode(start, start, tag);
 		while (!check(ChtlTokenType.RBRACE) && !isAtEnd()) {
 			if (check(ChtlTokenType.IDENT)) {
-				// 属性或子元素，猜测：如果后跟 ':'/'=' 则为属性，否则为子元素
 				ChtlToken ident = consume(ChtlTokenType.IDENT);
 				if (match(ChtlTokenType.COLON) || match(ChtlTokenType.EQUAL)) {
 					String value = parseValueUntilSemicolon();
 					consumeOpt(ChtlTokenType.SEMICOLON);
 					el.addAttribute(new AttributeNode(ident.start, currentEnd(), ident.lexeme, value));
 				} else {
-					// 作为子元素
-					unread(); // 回退一个
+					unread();
 					el.addChild(parseElement());
 				}
 			} else if (matchKw(ChtlTokenType.KW_TEXT)) {
@@ -58,6 +59,7 @@ public class ChtlParser {
 			}
 		}
 		consume(ChtlTokenType.RBRACE);
+		state.elementStack.pop();
 		return new ElementNode(start, currentEnd(), tag) {{
 			for (AttributeNode a : el.attributes()) addAttribute(a);
 			for (ChtlNode c : el.children()) addChild(c);
@@ -76,7 +78,7 @@ public class ChtlParser {
 	private StyleBlockNode parseStyleBlock(ElementNode owner){
 		consume(ChtlTokenType.LBRACE);
 		StyleBlockNode node = new StyleBlockNode(previous().start, previous().end);
-		String ownerAutoClass = null; // 为 .class 或 #id 自动补全
+		String ownerAutoClass = null;
 		while (!check(ChtlTokenType.RBRACE) && !isAtEnd()) {
 			if (check(ChtlTokenType.IDENT)) {
 				ChtlToken prop = consume(ChtlTokenType.IDENT);
@@ -92,14 +94,10 @@ public class ChtlParser {
 				if (isAmp) advance();
 				String name;
 				if (isAmp) {
-					// & -> 用元素已有 class/id 推导，优先 class
 					String cls = owner.attributes().stream().filter(a->a.name().equals("class")).map(AttributeNode::value).findFirst().orElse(null);
 					String id = owner.attributes().stream().filter(a->a.name().equals("id")).map(AttributeNode::value).findFirst().orElse(null);
-					if (cls != null) { name = "." + cls; }
-					else if (id != null) { name = "#" + id; }
-					else {
-						// 若都没有，则赋予一个自动类名
-						ownerAutoClass = ownerAutoClass == null ? "auto-" + owner.hashCode() : ownerAutoClass;
+					if (cls != null) name = "." + cls; else if (id != null) name = "#" + id; else {
+						ownerAutoClass = state.nextAutoClass();
 						name = "." + ownerAutoClass;
 					}
 				} else {
@@ -128,7 +126,6 @@ public class ChtlParser {
 			} else { advance(); }
 		}
 		consume(ChtlTokenType.RBRACE);
-		// 自动补全 class
 		if (ownerAutoClass != null && owner.attributes().stream().noneMatch(a->a.name().equals("class"))) {
 			owner.addAttribute(new AttributeNode(node.startOffset(), node.endOffset(), "class", ownerAutoClass));
 		}
