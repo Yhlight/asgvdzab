@@ -24,6 +24,12 @@ public class ChtlCli implements Runnable {
     @CommandLine.Option(names = {"-o", "--output"}, description = "输出 HTML 文件路径", required = true)
     private Path output;
 
+    @CommandLine.Option(names = "--dump-fragments", description = "打印扫描片段列表")
+    private boolean dumpFragments;
+
+    @CommandLine.Option(names = "--dump-ast", description = "打印 CHTL AST 概要")
+    private boolean dumpAst;
+
     @Override
     public void run() {
         try {
@@ -31,8 +37,23 @@ public class ChtlCli implements Runnable {
             CHTLUnifiedScanner scanner = new CHTLUnifiedScanner();
             ScanResult scanResult = scanner.scan(source);
 
+            if (dumpFragments) {
+                System.out.println("== Fragments ==");
+                for (var f : scanResult.getFragments()) {
+                    System.out.printf("%-10s %6d-%-6d (%s)\n", f.type(), f.startOffset(), f.endOffset(), f.origin());
+                }
+            }
+
             CompilerDispatcher dispatcher = new CompilerDispatcher();
             var compileResult = dispatcher.dispatch(scanResult);
+
+            if (dumpAst) {
+                System.out.println("== AST (概要) ==");
+                System.out.printf("HTML len=%d, CSS len=%d, JS len=%d\n",
+                        compileResult.getHtmlBody().length(),
+                        compileResult.getGlobalCss().length(),
+                        compileResult.getGlobalJs().length());
+            }
 
             String html = ResultMerger.mergeToHtmlDocument(compileResult);
             if (output.getParent() != null) {

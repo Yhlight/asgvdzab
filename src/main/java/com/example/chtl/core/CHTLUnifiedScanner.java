@@ -1,19 +1,49 @@
 package com.example.chtl.core;
 
+import com.example.chtl.core.config.NameGroup;
+import com.example.chtl.core.scanner.ScannerConfig;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CHTLUnifiedScanner {
-	private static final Pattern ORIGIN_STYLE_PATTERN = Pattern.compile("\\[Origin\\]\\s*@Style\\s*\\{", Pattern.CASE_INSENSITIVE);
-	private static final Pattern ORIGIN_JS_PATTERN = Pattern.compile("\\[Origin\\]\\s*@JavaScript\\s*\\{", Pattern.CASE_INSENSITIVE);
-	private static final Pattern SCRIPT_PATTERN = Pattern.compile("\\bscript\\s*\\{", Pattern.CASE_INSENSITIVE);
+	private final ScannerConfig scannerConfig;
+	private final Pattern originStylePattern;
+	private final Pattern originJsPattern;
+	private final Pattern scriptPattern;
+
+	public CHTLUnifiedScanner() { this(ScannerConfig.defaults()); }
+	public CHTLUnifiedScanner(ScannerConfig config) {
+		this.scannerConfig = config;
+		NameGroup ng = config.configuration.nameGroup;
+		this.originStylePattern = buildOriginBlockPattern(ng, ng.ORIGIN_STYLE);
+		this.originJsPattern = buildOriginBlockPattern(ng, ng.ORIGIN_JAVASCRIPT);
+		this.scriptPattern = buildKeywordBlockPattern(ng.KEYWORD_SCRIPT);
+	}
+
+	private static Pattern buildOriginBlockPattern(NameGroup ng, String atName) {
+		String alt = String.join("|", ng.KEYWORD_ORIGIN.stream().map(CHTLUnifiedScanner::escapeRegex).toList());
+		String at = escapeRegex(atName);
+		String regex = "(?i)\\[(?:" + alt + ")\\]\\s*@" + at + "\\s*\\{";
+		return Pattern.compile(regex);
+	}
+
+	private static Pattern buildKeywordBlockPattern(String keyword) {
+		String k = escapeRegex(keyword);
+		String regex = "(?i)\\b" + k + "\\s*\\{";
+		return Pattern.compile(regex);
+	}
+
+	private static String escapeRegex(String s) {
+		return s.replace("\\", "\\\\").replace("[", "\\[").replace("]", "\\]").replace("(", "\\(").replace(")", "\\)").replace(".", "\\.").replace("?", "\\?").replace("+", "\\+").replace("*", "\\*").replace("|", "\\|").replace("^", "\\^").replace("$", "\\$");
+	}
 
 	public ScanResult scan(String source) {
 		ScanResult result = new ScanResult(source);
 
-		// 整体作为一个CHTL片段，供CHTL编译器处理（其内部可忽略[Origin]与script块）
+		// 整体作为一个CHTL片段
 		result.addFragment(new Fragment(
 				FragmentType.CHTL,
 				source,
@@ -23,40 +53,36 @@ public class CHTLUnifiedScanner {
 		));
 
 		// 提取 [Origin] @Style
-		for (Block b : findBlocks(source, ORIGIN_STYLE_PATTERN)) {
+		for (Block b : findBlocks(source, originStylePattern)) {
 			String css = b.innerContent(source);
 			result.addFragment(new Fragment(FragmentType.CSS, css, b.start, b.end, "Origin-Style"));
 		}
 
 		// 提取 [Origin] @JavaScript
-		for (Block b : findBlocks(source, ORIGIN_JS_PATTERN)) {
+		for (Block b : findBlocks(source, originJsPattern)) {
 			String js = b.innerContent(source);
 			result.addFragment(new Fragment(FragmentType.JS, js, b.start, b.end, "Origin-JS"));
 		}
 
 		// 提取 script{} 并进行字符级别宽判/严判切割
-		for (Block b : findBlocks(source, SCRIPT_PATTERN)) {
+		for (Block b : findBlocks(source, scriptPattern)) {
 			String scriptCode = b.innerContent(source);
 			List<Range> chtlJsRanges = detectChtlJsRanges(scriptCode);
 			if (chtlJsRanges.isEmpty()) {
-				// 没有检测到 CHTL JS，整体作为 JS
 				result.addFragment(new Fragment(FragmentType.JS, scriptCode, b.innerStart, b.innerEnd, "Local-Script"));
 			} else {
 				int cursor = 0;
 				for (Range r : chtlJsRanges) {
-					// 前置 JS 片段（宽判：允许以 CHTL JS 边界切割 JS）
 					if (r.start > cursor) {
 						String jsPart = scriptCode.substring(cursor, r.start);
 						if (!jsPart.isBlank()) {
 							result.addFragment(new Fragment(FragmentType.JS, jsPart, b.innerStart + cursor, b.innerStart + r.start, "Local-Script"));
 						}
 					}
-					// 严判：将 {{...}} 与后续 ->method 链整块作为一个 CHTL_JS 片段
 					String chtlJsPart = scriptCode.substring(r.start, r.end);
 					result.addFragment(new Fragment(FragmentType.CHTL_JS, chtlJsPart, b.innerStart + r.start, b.innerStart + r.end, "Local-Script"));
 					cursor = r.end;
 				}
-				// 收尾 JS 片段
 				if (cursor < scriptCode.length()) {
 					String tail = scriptCode.substring(cursor);
 					if (!tail.isBlank()) {
