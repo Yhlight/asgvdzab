@@ -53,7 +53,11 @@ public class ChtlParser {
 
 	private ChtlNode parseTopLevel(){
 		if (check(ChtlTokenType.LBRACKET)) return parseBracketDirective();
-		if (check(ChtlTokenType.IDENT)) return parseElement();
+		if (check(ChtlTokenType.IDENT)) {
+			// 仅在后续紧跟 { 时解析为元素，否则跳过（健壮性）
+			if (pos+1 < tokens.size() && tokens.get(pos+1).type == ChtlTokenType.LBRACE) return parseElement();
+			advance(); return null;
+		}
 		return null;
 	}
 
@@ -68,6 +72,7 @@ public class ChtlParser {
 			case KW_CUSTOM -> kw = "Custom";
 			case KW_NAMESPACE -> kw = "Namespace";
 			case KW_IMPORT -> kw = "Import";
+			case KW_ORIGIN -> kw = "Origin";
 			default -> kw = head.lexeme;
 		}
 		if (isForbiddenType(kw)) error("命中约束，禁止使用类型: " + kw);
@@ -76,9 +81,12 @@ public class ChtlParser {
 			case "Custom", "custom" -> parseCustomDirective();
 			case "Namespace", "namespace" -> parseNamespaceDirective();
 			case "Import", "import" -> parseImportDirective();
+			case "Origin", "origin" -> { skipOriginBlock(); yield null; }
 			default -> null;
 		};
 	}
+
+	private void skipOriginBlock(){ if (check(ChtlTokenType.AT)) advance(); if (check(ChtlTokenType.IDENT)) advance(); if (check(ChtlTokenType.LBRACE)) { int depth=0; do { if (check(ChtlTokenType.LBRACE)) { depth++; } else if (check(ChtlTokenType.RBRACE)) { depth--; } advance(); } while (!isAtEnd() && depth>0); } }
 
 	private ChtlNode parseTemplateDirective(){
 		consume(ChtlTokenType.AT);
