@@ -187,6 +187,7 @@ public class ChtlParser {
 			// @Chtl 导入
 			if (target.equals("Chtl")) {
 				List<Path> files = resolveChtlPaths(pathToken);
+				if (files.size() > 1) preloadFiles(files);
 				if (files.isEmpty() && strict) error("资源未找到: "+pathToken);
 				for (Path f : files) importChtlFile(f, alias);
 				return new ImportNode(s, currentEnd(), target, pathToken, alias);
@@ -308,7 +309,7 @@ public class ChtlParser {
 		return out;
 	}
 
-	private ScriptBlockNode parseScriptBlock(){ consume(ChtlTokenType.LBRACE); int start = previous().start; StringBuilder sb = new StringBuilder(); while (!check(ChtlTokenType.RBRACE) && !isAtEnd()) { sb.append(tokenToText(advance())); } consume(ChtlTokenType.RBRACE); return new ScriptBlockNode(start, currentEnd(), sb.toString()); }
+	private ScriptBlockNode parseScriptBlock(){ consume(ChtlTokenType.LBRACE); int start = previous().start; StringBuilder sb = new StringBuilder(); int depth = 1; while (!isAtEnd() && depth > 0) { ChtlToken t = advance(); if (t.type == ChtlTokenType.LBRACE) { depth++; sb.append("{"); } else if (t.type == ChtlTokenType.RBRACE) { depth--; if (depth == 0) break; sb.append("}"); } else { sb.append(tokenToText(t)); } } return new ScriptBlockNode(start, currentEnd(), sb.toString()); }
 	private String tryResolveVar(String value){ String v = value.trim(); int l = v.indexOf('('); int r = v.lastIndexOf(')'); if (l>0 && r>l && !v.contains(" ")) { String name = v.substring(0,l); String key = v.substring(l+1,r).trim(); TemplateNodes.VarTemplate tpl = varTemplates.get(fq(name)); if (tpl != null) { for (AttributeNode a : tpl.kv()) if (a.name().equals(key)) return a.value(); } } return value; }
 
 	private String fq(String name){ return state.currentNamespace==null||state.currentNamespace.isEmpty()? name : state.currentNamespace+"."+name; }
@@ -453,6 +454,8 @@ public class ChtlParser {
 	private String safeRead(Path p){ try { return FILE_CACHE.computeIfAbsent(p.toAbsolutePath().normalize(), k -> {
 		try { return Files.readString(k, StandardCharsets.UTF_8); } catch (Exception e) { return null; }
 	}); } catch (Exception e) { return null; } }
+
+	private void preloadFiles(List<Path> files){ files.parallelStream().forEach(f -> { try { safeRead(f); } catch (Exception ignored) {} }); }
 
 	private void importChtlFile(Path file, String alias){ if (file == null) return; if (visitedImports.contains(file)) return; visitedImports.add(file); String key = file.toAbsolutePath().normalize().toString(); if (!importedKeys.add(key)) return; try { String src = safeRead(file); if (src==null) { if (strict) error("资源未找到: "+file.toString()); return; } var sub = new ChtlParser(src, new com.example.chtl.compilers.chtl.ChtlLexer(src).lex(), state, file.getParent(), strict).parseDocument(); String nsName = alias != null ? alias : (file.getParent()!=null? file.getParent().getFileName().toString() : stripExt(file.getFileName().toString())); mergeDocWithNs(sub, nsName); } catch (Exception e) { if (strict) throw new RuntimeException("Import 失败: "+file+": "+e.getMessage(), e); } }
 	private void importCjmodFile(Path file, String alias){ // cjmod: 假定为纯 JS 模块，作为命名空间下的原始 JS 注入占位
