@@ -75,10 +75,13 @@ public class ChtlJsCompiler {
 				String targetExpr = map.remove("target");
 				if (targetExpr == null) { sb.append("/* delegate missing target */ "); continue; }
 				for (var e : map.entrySet()) {
-					sb.append("(function(){ const regs = window.__CHTL_DELEGATE__.ensure(_el, \"").append(e.getKey()).append("\"); regs.push({ selector: ").append(targetExpr).append(", handler: ").append(e.getValue()).append(" }); })(); ");
+					sb.append("(function(){ window.__CHTL_DELEGATE__.register(_el, \"").append(e.getKey()).append("\", ").append(targetExpr).append(", ").append(e.getValue()).append("); })(); ");
 				}
 			} else if (c.method.equals("animate")) {
-				sb.append("(function(){ const opt = ").append(safeJsonLike(c.argsRaw)).append("; const start=performance.now(); const dur=opt.duration||300; function step(ts){ const t=(ts-start)/dur; /* TODO: apply CSS properties via style */ if(t<1){ requestAnimationFrame(step);} else if(typeof opt.callback==='function'){ opt.callback(); } } requestAnimationFrame(step); })(); ");
+				sb.append("(function(){ const opt = ").append(safeJsonLike(c.argsRaw)).append("; ");
+				sb.append("if(typeof opt!==\"object\"){console.warn('animate expects object');return;} ");
+				sb.append("const dur=Number(opt.duration||300); if(!isFinite(dur)||dur<=0){console.warn('animate invalid duration');return;} ");
+				sb.append("const start=performance.now(); function step(ts){ const t=Math.min(1,(ts-start)/dur); if(opt.props && typeof opt.props==='object'){ for(const k in opt.props){ try{ _el.style[k]=typeof opt.props[k]==='function'? opt.props[k](t): opt.props[k]; }catch(_){} } } if(t<1){ requestAnimationFrame(step);} else if(typeof opt.callback==='function'){ opt.callback(); } } requestAnimationFrame(step); })(); ");
 			} else {
 				sb.append("_el.").append(c.method).append("(").append(c.argsRaw==null?"":c.argsRaw).append("); ");
 			}
