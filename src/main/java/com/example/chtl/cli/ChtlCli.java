@@ -1,5 +1,7 @@
 package com.example.chtl.cli;
 
+import com.example.chtl.ast.json.AstJsonSerializer;
+import com.example.chtl.compilers.ChtlCompiler;
 import com.example.chtl.core.CHTLUnifiedScanner;
 import com.example.chtl.core.ScanResult;
 import com.example.chtl.dispatch.CompilerDispatcher;
@@ -27,7 +29,7 @@ public class ChtlCli implements Runnable {
     @CommandLine.Option(names = "--dump-fragments", description = "打印扫描片段列表")
     private boolean dumpFragments;
 
-    @CommandLine.Option(names = "--dump-ast", description = "打印 CHTL AST 概要(JSON)")
+    @CommandLine.Option(names = "--dump-ast", description = "打印 CHTL AST JSON")
     private boolean dumpAst;
 
     @Override
@@ -47,19 +49,17 @@ public class ChtlCli implements Runnable {
                 System.out.println("  ]\n}");
             }
 
+            // 生成 AST JSON
+            if (dumpAst) {
+                var lexer = new com.example.chtl.compilers.chtl.ChtlLexer(source);
+                var tokens = lexer.lex();
+                var parser = new com.example.chtl.parsers.chtl.ChtlParser(source, tokens, new com.example.chtl.compilers.chtl.ChtlState(), input.getParent());
+                var doc = parser.parseDocument();
+                System.out.println(AstJsonSerializer.toJson(doc));
+            }
+
             CompilerDispatcher dispatcher = new CompilerDispatcher();
             var compileResult = dispatcher.dispatch(scanResult);
-
-            if (dumpAst) {
-                String json = String.format("{\n  \"htmlLen\": %d,\n  \"cssLen\": %d,\n  \"jsLen\": %d,\n  \"htmlHead\": \"%s\",\n  \"cssHead\": \"%s\",\n  \"jsHead\": \"%s\"\n}",
-                        compileResult.getHtmlBody().length(),
-                        compileResult.getGlobalCss().length(),
-                        compileResult.getGlobalJs().length(),
-                        escape(head(compileResult.getHtmlBody())),
-                        escape(head(compileResult.getGlobalCss())),
-                        escape(head(compileResult.getGlobalJs())));
-                System.out.println(json);
-            }
 
             String html = ResultMerger.mergeToHtmlDocument(compileResult);
             if (output.getParent() != null) {
@@ -72,7 +72,6 @@ public class ChtlCli implements Runnable {
         }
     }
 
-    private static String head(String s){ return s==null?"":s.substring(0, Math.min(80, s.length())).replace("\n"," "); }
     private static String escape(String s){ return s==null?"":s.replace("\\","\\\\").replace("\"","\\\""); }
 
     public static void main(String[] args) {
