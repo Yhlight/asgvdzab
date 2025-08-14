@@ -1,0 +1,41 @@
+html
+{
+	head
+	{
+	}
+
+	body
+	{
+		div
+		{
+			id: box;
+			class: welcome;
+
+			text
+			{
+				HelloWorld
+			}
+
+			style
+			{
+				.box
+				{
+					width: 100px;
+					height: 200px;
+					background-color: red;
+				}
+			}
+
+			script
+			{
+				{{box}}->textContent = "Clicked!";
+			}
+		}
+
+		[Origin] @Html
+		{
+			<!-- raw html -->
+			<footer>Footer here</footer>
+		}
+	}
+}
