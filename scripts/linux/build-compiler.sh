@@ -78,8 +78,8 @@ prepare_modules() {
     mkdir -p "$TEMP_MODULE_DIR"
     
     # 复制官方模块
-    if [ -d "src/main/resources/module" ]; then
-        cp -r src/main/resources/module/* "$TEMP_MODULE_DIR/"
+    if [ -d "src/main/java/com/chtl/module" ]; then
+        cp -r src/main/java/com/chtl/module/* "$TEMP_MODULE_DIR/"
     fi
     
     # 编译Chtholly模块（如果存在）
@@ -94,7 +94,7 @@ prepare_modules() {
             mkdir -p build
             
             # 编译Java文件
-            find src -name "*.java" -print0 | xargs -0 javac -cp "../../../../target/chtl-compiler.jar" -d build/
+            find src -name "*.java" -print0 | xargs -0 javac -cp "../../../../../target/chtl-compiler.jar" -d build/
             
             # 打包成JAR
             jar cf chtholly-cjmod.jar -C build .

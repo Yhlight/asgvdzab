@@ -88,8 +88,8 @@ set "TEMP_MODULE_DIR=build\modules"
 mkdir "%TEMP_MODULE_DIR%" 2>nul
 
 REM 复制官方模块
-if exist "src\main\resources\module" (
-    xcopy /s /e /y "src\main\resources\module\*" "%TEMP_MODULE_DIR%\" >nul
+if exist "src\main\java\com\chtl\module" (
+    xcopy /s /e /y "src\main\java\com\chtl\module\*" "%TEMP_MODULE_DIR%\" >nul
 )
 
 REM 编译Chtholly模块（如果存在）
@@ -105,7 +105,7 @@ if exist "%TEMP_MODULE_DIR%\Chtholly" (
         
         REM 编译Java文件
         dir /s /b src\*.java > java_files.txt
-        javac -cp "..\..\..\..\target\chtl-compiler.jar" -d build @java_files.txt
+        javac -cp "..\..\..\..\..\target\chtl-compiler.jar" -d build @java_files.txt
         del java_files.txt
         
         REM 打包成JAR
