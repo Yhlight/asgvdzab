@@ -12,12 +12,14 @@ public class ElementNode extends AbstractCHTLASTNode {
     private String tagName;
     private List<AttributeNode> attributes;
     private boolean isSelfClosing;
+    private Integer index; // 用于索引访问，如div[1]
     
     public ElementNode(String tagName) {
         super(NodeType.ELEMENT);
         this.tagName = tagName;
         this.attributes = new ArrayList<>();
         this.isSelfClosing = false;
+        this.index = null;
     }
     
     public String getTagName() {
@@ -52,6 +54,18 @@ public class ElementNode extends AbstractCHTLASTNode {
     
     public void setSelfClosing(boolean selfClosing) {
         isSelfClosing = selfClosing;
+    }
+    
+    public Integer getIndex() {
+        return index;
+    }
+    
+    public void setIndex(Integer index) {
+        this.index = index;
+    }
+    
+    public boolean hasIndex() {
+        return index != null;
     }
     
     @Override

@@ -134,7 +134,19 @@ public class CHTLParser {
      */
     private ElementNode parseElement() {
         CHTLToken nameToken = consume(CHTLTokenType.IDENTIFIER, "期望元素名称");
+        
+        // 检查索引访问 div[1]
+        Integer index = null;
+        if (match(CHTLTokenType.LEFT_BRACKET)) {
+            CHTLToken indexToken = consume(CHTLTokenType.NUMBER, "期望索引");
+            index = Integer.parseInt(indexToken.getValue());
+            consume(CHTLTokenType.RIGHT_BRACKET, "期望']'");
+        }
+        
         ElementNode element = new ElementNode(nameToken.getValue());
+        if (index != null) {
+            element.setIndex(index);
+        }
         
         // 使用RAII管理状态和作用域
         try (var stateGuard = context.enterState(com.chtl.context.CompilationContext.State.ELEMENT);
@@ -239,9 +251,14 @@ public class CHTLParser {
             return new StringLiteralNode(value, '"');
         }
         
-        // 数字字面量
+        // 数字字面量（可能带单位）
         if (match(CHTLTokenType.NUMBER)) {
-            return new NumberLiteralNode(previous().getValue());
+            String value = previous().getValue();
+            // 检查是否有单位
+            if (check(CHTLTokenType.IDENTIFIER)) {
+                value += advance().getValue();
+            }
+            return new NumberLiteralNode(value);
         }
         
         // 无引号字面量
@@ -454,9 +471,18 @@ public class CHTLParser {
     /**
      * 解析模板定义
      */
-    private TemplateDefinitionNode parseTemplateDefinition() {
+    private CHTLASTNode parseTemplateDefinition() {
         TemplateDefinitionNode.TemplateType type = parseTemplateType();
         String name = consume(CHTLTokenType.IDENTIFIER, "期望模板名称").getValue();
+        
+        // 如果是@Var类型，创建VarGroupDefinitionNode
+        if (type == TemplateDefinitionNode.TemplateType.VAR) {
+            VarGroupDefinitionNode varGroup = new VarGroupDefinitionNode(name, true);
+            consume(CHTLTokenType.LEFT_BRACE, "期望'{'");
+            parseVarGroupContent(varGroup);
+            consume(CHTLTokenType.RIGHT_BRACE, "期望'}'");
+            return varGroup;
+        }
         
         TemplateDefinitionNode template = new TemplateDefinitionNode(type, name);
         consume(CHTLTokenType.LEFT_BRACE, "期望'{'");
@@ -471,9 +497,18 @@ public class CHTLParser {
     /**
      * 解析自定义定义
      */
-    private CustomDefinitionNode parseCustomDefinition() {
+    private CHTLASTNode parseCustomDefinition() {
         TemplateDefinitionNode.TemplateType type = parseTemplateType();
         String name = consume(CHTLTokenType.IDENTIFIER, "期望自定义名称").getValue();
+        
+        // 如果是@Var类型，创建VarGroupDefinitionNode
+        if (type == TemplateDefinitionNode.TemplateType.VAR) {
+            VarGroupDefinitionNode varGroup = new VarGroupDefinitionNode(name, false);
+            consume(CHTLTokenType.LEFT_BRACE, "期望'{'");
+            parseVarGroupContent(varGroup);
+            consume(CHTLTokenType.RIGHT_BRACE, "期望'}'");
+            return varGroup;
+        }
         
         CustomDefinitionNode custom = new CustomDefinitionNode(type, name);
         consume(CHTLTokenType.LEFT_BRACE, "期望'{'");
@@ -555,6 +590,24 @@ public class CHTLParser {
                     }
                 }
                 break;
+        }
+    }
+    
+    /**
+     * 解析变量组内容
+     */
+    private void parseVarGroupContent(VarGroupDefinitionNode varGroup) {
+        while (!check(CHTLTokenType.RIGHT_BRACE) && !isAtEnd()) {
+            if (check(CHTLTokenType.IDENTIFIER)) {
+                String varName = advance().getValue();
+                consume(CHTLTokenType.COLON, "期望':'");
+                CHTLASTNode value = parseLiteral();
+                consume(CHTLTokenType.SEMICOLON, "期望';'");
+                varGroup.addVariable(varName, value);
+            } else {
+                error("期望变量定义");
+                advance();
+            }
         }
     }
     

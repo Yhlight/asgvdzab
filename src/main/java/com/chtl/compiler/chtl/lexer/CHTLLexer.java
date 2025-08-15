@@ -130,6 +130,9 @@ public class CHTLLexer {
             case ')':
                 advance();
                 return new CHTLToken(CHTLTokenType.RIGHT_PAREN, ")", startLine, startColumn, startPosition);
+            case ']':
+                advance();
+                return new CHTLToken(CHTLTokenType.RIGHT_BRACKET, "]", startLine, startColumn, startPosition);
         }
         
         // 检查注释
@@ -237,25 +240,37 @@ public class CHTLLexer {
      * 扫描[]关键字
      */
     private CHTLToken scanBracketKeyword(int startLine, int startColumn, int startPosition) {
-        StringBuilder keyword = new StringBuilder();
+        // 先检查是否可能是[]关键字（如[Template]）
+        // []关键字必须以字母开头
+        advance(); // 跳过[
         
-        while (!isAtEnd() && current() != ']') {
-            keyword.append(current());
-            advance();
-        }
-        
-        if (current() == ']') {
-            keyword.append(']');
-            advance();
-        }
-        
-        String key = keyword.toString();
-        CHTLTokenType type = BRACKET_KEYWORDS.get(key);
-        
-        if (type != null) {
-            return new CHTLToken(type, key, startLine, startColumn, startPosition);
+        if (!isAtEnd() && Character.isLetter(current())) {
+            // 可能是[]关键字
+            StringBuilder keyword = new StringBuilder("[");
+            
+            while (!isAtEnd() && current() != ']') {
+                keyword.append(current());
+                advance();
+            }
+            
+            if (current() == ']') {
+                keyword.append(']');
+                advance();
+            }
+            
+            String key = keyword.toString();
+            CHTLTokenType type = BRACKET_KEYWORDS.get(key);
+            
+            if (type != null) {
+                return new CHTLToken(type, key, startLine, startColumn, startPosition);
+            } else {
+                // 如果不是已知的[]关键字，回退
+                // 这种情况比较复杂，暂时报错
+                return new CHTLToken(CHTLTokenType.LEFT_BRACKET, "[", startLine, startColumn, startPosition);
+            }
         } else {
-            // 如果不是已知的[]关键字，作为普通的[和]处理
+            // 不是[]关键字，只是普通的[
+            // 不需要重置position，因为我们只advance了一次（跳过[）
             return new CHTLToken(CHTLTokenType.LEFT_BRACKET, "[", startLine, startColumn, startPosition);
         }
     }
