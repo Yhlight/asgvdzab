@@ -551,6 +551,9 @@ public class UnifiedScanner {
                     
                     // 找到函数调用结束
                     int funcEnd = findFunctionCallEnd(content, pos);
+                    // 确保不超出边界
+                    funcEnd = Math.min(funcEnd, content.length());
+                    
                     fragments.add(new CodeFragment(
                         FragmentType.CHTL_JS,
                         content.substring(pos, funcEnd),
@@ -808,7 +811,7 @@ public class UnifiedScanner {
     private int findFunctionCallEnd(String content, int start) {
         // 找到函数名的结束
         int parenStart = content.indexOf('(', start);
-        if (parenStart == -1) return start;
+        if (parenStart == -1) return Math.min(start + 1, content.length());
         
         // 匹配括号
         int parenDepth = 1;
@@ -820,14 +823,21 @@ public class UnifiedScanner {
                 parenDepth++;
             } else if (c == ')') {
                 parenDepth--;
-            } else if (c == '"' || c == '\'') {
+            } else if (c == '"' || c == '\'' || c == '`') {
                 // 跳过字符串
-                pos = skipString(content, pos);
+                int newPos = skipString(content, pos);
+                if (newPos == pos) {
+                    // 避免无限循环
+                    pos++;
+                } else {
+                    pos = newPos;
+                }
+                continue;
             }
             pos++;
         }
         
-        return pos;
+        return Math.min(pos, content.length());
     }
     
     /**

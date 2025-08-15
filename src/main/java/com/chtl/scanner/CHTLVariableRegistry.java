@@ -22,32 +22,8 @@ public class CHTLVariableRegistry {
         "Breakpoint", "Transition", "Typography"
     );
     
-    // CSS函数哈希表（用于快速排除）
-    private static final Set<String> CSS_FUNCTIONS = Set.of(
-        // Transform functions
-        "translate", "translateX", "translateY", "translateZ", "translate3d",
-        "scale", "scaleX", "scaleY", "scaleZ", "scale3d",
-        "rotate", "rotateX", "rotateY", "rotateZ", "rotate3d",
-        "skew", "skewX", "skewY",
-        "matrix", "matrix3d", "perspective",
-        // Color functions
-        "rgb", "rgba", "hsl", "hsla", "hwb", "lab", "lch", "color",
-        // Gradient functions
-        "linear-gradient", "radial-gradient", "conic-gradient",
-        "repeating-linear-gradient", "repeating-radial-gradient",
-        // Filter functions
-        "blur", "brightness", "contrast", "drop-shadow",
-        "grayscale", "hue-rotate", "invert", "opacity",
-        "saturate", "sepia",
-        // Other CSS functions
-        "calc", "min", "max", "clamp", "var", "env",
-        "url", "attr", "counter", "counters",
-        "cubic-bezier", "steps", "path",
-        // Shape functions
-        "circle", "ellipse", "inset", "polygon",
-        // Grid functions
-        "repeat", "minmax", "fit-content"
-    );
+    // CSS函数检测器
+    private static final CSSFunctionDetector cssDetector = new CSSFunctionDetector();
     
     // 用于从代码中提取变量定义的模式
     private static final Pattern VARIABLE_DEFINITION = Pattern.compile(
@@ -86,13 +62,8 @@ public class CHTLVariableRegistry {
      * 3. 检查是否符合常见变量模式
      */
     public static boolean isCHTLVariable(String name) {
-        // 快速排除CSS函数
-        if (CSS_FUNCTIONS.contains(name)) {
-            return false;
-        }
-        
-        // 检查是否是camelCase的CSS函数（如translateY）
-        if (isCamelCaseCSSFunction(name)) {
+        // 使用CSS函数检测器排除CSS函数
+        if (cssDetector.isCSSFunction(name)) {
             return false;
         }
         
@@ -103,22 +74,6 @@ public class CHTLVariableRegistry {
         
         // 检查是否符合常见变量模式
         return matchesVariablePattern(name);
-    }
-    
-    /**
-     * 检查是否是camelCase的CSS函数
-     */
-    private static boolean isCamelCaseCSSFunction(String name) {
-        // 将camelCase转换为kebab-case
-        String kebabCase = camelToKebab(name);
-        return CSS_FUNCTIONS.contains(kebabCase);
-    }
-    
-    /**
-     * camelCase转kebab-case
-     */
-    private static String camelToKebab(String camel) {
-        return camel.replaceAll("([a-z])([A-Z])", "$1-$2").toLowerCase();
     }
     
     /**

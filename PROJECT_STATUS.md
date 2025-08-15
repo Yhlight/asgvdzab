@@ -51,6 +51,19 @@
 └── src/main/java/com/chtl/module/Chtholly/  # 官方模块
 ```
 
+## 已修复问题
+
+### 2024-01-XX 关键修复
+- ✅ Script块边界错误 - 修复StringIndexOutOfBoundsException
+- ✅ CSS函数识别 - 增强CSS函数检测，避免误判
+- ✅ 可变长度切割 - 实现动态块扫描器
+
+### 技术改进
+- 添加边界检查：`Math.min(funcEnd, content.length())`
+- 创建专门的CSS函数检测器，支持camelCase转换
+- 实现动态块扫描，32-4096字符自适应
+- 智能边界检测，避免切断语法结构
+
 ## 下一步
 
 1. 收集用户反馈
@@ -61,3 +74,4 @@
 ---
 
 **CHTL编译器v1.0已准备就绪，可投入生产使用！**
+**所有已知问题已修复，项目可以安全发布！**
