@@ -121,12 +121,14 @@ check_cjmod_structure() {
     
     # 检查是否包含[Info]块
     if ! grep -q "^\[Info\]" "$INFO_FILE"; then
-        warning "info文件缺少[Info]块"
+        error "info文件必须包含[Info]块"
     fi
     
     # 确保CJMOD不使用[Export]块
     if grep -q "^\[Export\]" "$INFO_FILE"; then
-        warning "CJMOD不应该使用[Export]块，建议移除"
+        error "错误: CJMOD不应该使用[Export]块"
+        error "      [Export]块仅用于CMOD模块，请移除此块"
+        exit 1
     fi
     
     # 检查是否有Java源文件

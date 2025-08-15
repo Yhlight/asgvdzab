@@ -130,13 +130,17 @@ if not exist "%INFO_FILE%" (
 REM 检查是否包含[Info]块
 findstr /b "[Info]" "%INFO_FILE%" >nul 2>&1
 if errorlevel 1 (
-    call :warning "info文件缺少[Info]块"
+    call :error "info文件必须包含[Info]块"
+    exit /b 1
 )
 
-REM 提示[Export]块的作用
+REM 检查[Export]块
 findstr /b "[Export]" "%INFO_FILE%" >nul 2>&1
 if errorlevel 1 (
-    call :info "提示: 可以添加[Export]块来优化模块查询性能"
+    call :info "提示: 建议添加[Export]块来明确模块对外接口并优化查询性能"
+    call :info "      如果不提供，系统将自动生成并导出所有模板"
+) else (
+    call :info "发现[Export]块，将只导出指定的模板"
 )
 
 call :info "CMOD结构检查通过"

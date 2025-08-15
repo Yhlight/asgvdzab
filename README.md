@@ -13,7 +13,9 @@ CHTL（Custom HyperText Language）是一种创新的前端开发语言，旨在
 - **统一语法**：HTML、CSS、JavaScript统一在一个文件中，支持模块化开发
 - **增强选择器**：`{{}}` 语法提供更强大的DOM操作能力
 - **CHTL JS**：扩展的JavaScript语法，支持unquoted literals和更直观的事件绑定
-- **模块系统**：完整的CMOD/CJMOD模块化支持
+- **模块系统**：
+  - CMOD：CHTL模板打包，支持`[Export]`声明（推荐）
+  - CJMOD：Java扩展模块，不使用`[Export]`
 - **智能优化**：自动代码优化、压缩和性能提升
 - **开发工具**：VSCode插件支持，提供语法高亮、自动补全等功能
 
@@ -126,6 +128,8 @@ java -cp "src/main/java:test/java" TestPrecisionScanner
 - [CHTL语法文档](CHTL语法文档.md) - 完整的语言规范
 - [API文档](docs/api/) - Java API参考
 - [开发者指南](docs/developer-guide.md) - 贡献代码指南
+- [CJMOD开发指南](CJMOD_DEVELOPER_GUIDE.md) - CJMOD模块开发
+- [CMOD Export指南](CMOD_EXPORT_GUIDE.md) - CMOD [Export]块使用
 - [未来规划](FUTURE_ROADMAP.md) - 项目发展路线图
 
 ## 🤝 贡献

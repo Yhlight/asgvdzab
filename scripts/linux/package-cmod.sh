@@ -115,12 +115,15 @@ check_cmod_structure() {
     
     # 检查是否包含[Info]块
     if ! grep -q "^\[Info\]" "$INFO_FILE"; then
-        warning "info文件缺少[Info]块"
+        error "info文件必须包含[Info]块"
     fi
     
-    # 提示[Export]块的作用
+    # 检查[Export]块
     if ! grep -q "^\[Export\]" "$INFO_FILE"; then
-        info "提示: 可以添加[Export]块来优化模块查询性能"
+        info "提示: 建议添加[Export]块来明确模块对外接口并优化查询性能"
+        info "      如果不提供，系统将自动生成并导出所有模板"
+    else
+        info "发现[Export]块，将只导出指定的模板"
     fi
     
     info "CMOD结构检查通过"
