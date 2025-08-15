@@ -293,25 +293,33 @@ public class PrecisionScanner {
             }
         }
         
-        // 只在局部style中处理CHTL变量语法
+        // 处理CHTL变量语法（全局和局部style都支持）
+        // 检查变量函数调用形式：VariableName(property)
+        if (Character.isUpperCase(current()) && isVariableFunctionCall()) {
+            flushCurrentFragment();
+            currentFragmentType = FragmentType.CHTL;
+            scanVariableFunctionCall();
+            flushCurrentFragment();
+            currentFragmentType = FragmentType.CSS;
+            return;
+        }
+        
+        // 检查@Var前缀形式
+        if (current() == '@' && matchKeyword("@Var")) {
+            flushCurrentFragment();
+            currentFragmentType = FragmentType.CHTL;
+            scanOptionalVarPrefix();
+            flushCurrentFragment();
+            currentFragmentType = FragmentType.CSS;
+            return;
+        }
+        
+        // 只在局部style中处理的特殊功能
         if (contextManager.getCurrentContextType() == LanguageContextManager.ContextType.LOCAL_STYLE) {
-            // 检查变量函数调用形式：VariableName(property)
-            if (Character.isUpperCase(current()) && isVariableFunctionCall()) {
-                flushCurrentFragment();
-                currentFragmentType = FragmentType.CHTL;
-                scanVariableFunctionCall();
-                flushCurrentFragment();
-                currentFragmentType = FragmentType.CSS;
-                return;
-            }
-            
-            // 检查可选的@Var前缀形式
-            if (current() == '@' && matchKeyword("@Var")) {
-                flushCurrentFragment();
-                currentFragmentType = FragmentType.CHTL;
-                scanOptionalVarPrefix();
-                flushCurrentFragment();
-                currentFragmentType = FragmentType.CSS;
+            // 检查&符号（上下文推导）
+            if (current() == '&') {
+                // &符号是局部样式块特有功能
+                consumeChar();
                 return;
             }
         }
