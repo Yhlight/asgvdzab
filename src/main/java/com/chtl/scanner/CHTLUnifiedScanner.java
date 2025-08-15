@@ -2,8 +2,8 @@ package com.chtl.scanner;
 
 import com.chtl.model.CodeFragment;
 import com.chtl.model.FragmentType;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+// import org.slf4j.Logger;
+// import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
  * 2. 严判：CHTL和CHTL JS代码以最小单元切割，但保持上下文连续性
  */
 public class CHTLUnifiedScanner {
-    private static final Logger logger = LoggerFactory.getLogger(CHTLUnifiedScanner.class);
+    // private static final Logger logger = LoggerFactory.getLogger(CHTLUnifiedScanner.class);
     
     // CHTL JS特征模式
     private static final Pattern CHTL_JS_SELECTOR = Pattern.compile("\\{\\{([^}]+)\\}\\}");
@@ -45,14 +45,14 @@ public class CHTLUnifiedScanner {
     }
     
     public CHTLUnifiedScanner() {
-        logger.info("初始化CHTL统一扫描器 - 宽判严判模式");
+        // logger.info("初始化CHTL统一扫描器 - 宽判严判模式");
     }
     
     /**
      * 扫描并切割CHTL源代码
      */
     public List<CodeFragment> scan(String sourceCode) {
-        logger.debug("开始扫描CHTL源代码，长度: {} 字符", sourceCode.length());
+        // logger.debug("开始扫描CHTL源代码，长度: {} 字符", sourceCode.length());
         
         List<CodeFragment> fragments = new ArrayList<>();
         ScanContext context = new ScanContext(sourceCode);
@@ -61,14 +61,14 @@ public class CHTLUnifiedScanner {
             CodeFragment fragment = scanNextFragment(context);
             if (fragment != null) {
                 fragments.add(fragment);
-                logger.trace("生成片段: {} at {}", fragment.getType(), fragment.getSourcePosition());
+                // logger.trace("生成片段: {} at {}", fragment.getType(), fragment.getSourcePosition());
             }
         }
         
         // 合并连续的相同类型片段
         fragments = mergeFragments(fragments);
         
-        logger.info("扫描完成，共生成 {} 个代码片段", fragments.size());
+        // logger.info("扫描完成，共生成 {} 个代码片段", fragments.size());
         return fragments;
     }
     

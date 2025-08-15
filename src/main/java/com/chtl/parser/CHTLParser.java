@@ -11,14 +11,17 @@ import java.util.*;
 /**
  * CHTL解析器
  * 严格根据CHTL语法文档实现
+ * 使用CompilationContext进行状态管理
  */
 public class CHTLParser {
     private List<CHTLToken> tokens;
     private int current;
     private List<String> errors;
+    private com.chtl.context.CompilationContext context;
     
     public CHTLParser() {
         this.errors = new ArrayList<>();
+        this.context = new com.chtl.context.CompilationContext();
     }
     
     /**
@@ -133,10 +136,15 @@ public class CHTLParser {
         CHTLToken nameToken = consume(CHTLTokenType.IDENTIFIER, "期望元素名称");
         ElementNode element = new ElementNode(nameToken.getValue());
         
-        consume(CHTLTokenType.LEFT_BRACE, "期望'{'");
-        
-        // 解析元素内容
-        while (!check(CHTLTokenType.RIGHT_BRACE) && !isAtEnd()) {
+        // 使用RAII管理状态和作用域
+        try (var stateGuard = context.enterState(com.chtl.context.CompilationContext.State.ELEMENT);
+             var scopeGuard = context.enterScope(com.chtl.context.CompilationContext.ScopeType.ELEMENT, nameToken.getValue());
+             var nodeGuard = context.processNode(element)) {
+            
+            consume(CHTLTokenType.LEFT_BRACE, "期望'{'");
+            
+            // 解析元素内容
+            while (!check(CHTLTokenType.RIGHT_BRACE) && !isAtEnd()) {
             // 检查属性
             if (checkAttribute()) {
                 AttributeNode attr = parseAttribute();
@@ -173,9 +181,11 @@ public class CHTLParser {
             else {
                 advance(); // 跳过无法识别的内容
             }
+            }
+            
+            consume(CHTLTokenType.RIGHT_BRACE, "期望'}'");
         }
         
-        consume(CHTLTokenType.RIGHT_BRACE, "期望'}'");
         return element;
     }
     
