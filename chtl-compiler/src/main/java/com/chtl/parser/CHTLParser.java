@@ -11,9 +11,13 @@ import com.chtl.lexer.*;
 import com.chtl.runtime.ContextAssistant;
 import com.chtl.template.TemplateRegistry;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class CHTLParser {
@@ -37,12 +41,96 @@ public class CHTLParser {
 		DocumentNode doc = this.document;
 		try (var g = ctx.enter(State.DEFAULT)) {
 			while (!isAtEnd()) {
+				if (checkCustomHeader()) { parseCustomDefinition(); continue; }
 				AstOrNone n = parseElementOrText();
 				if (n != null && n.node != null) doc.addChild(n.node);
 				else advance();
 			}
 		}
 		return doc;
+	}
+
+	private boolean checkCustomHeader() {
+		return checkType(CHTLTokenType.LBRACKET)
+				&& (i + 2 < tokens.size())
+				&& tokens.get(i + 1).getType() == CHTLTokenType.IDENT
+				&& "Custom".equals(tokens.get(i + 1).getLexeme())
+				&& tokens.get(i + 2).getType() == CHTLTokenType.RBRACKET;
+	}
+
+	private void parseCustomDefinition() {
+		consumeType(CHTLTokenType.LBRACKET);
+		Token ident = advance(); // 'Custom'
+		consumeType(CHTLTokenType.RBRACKET);
+		consumeType(CHTLTokenType.AT);
+		Token kind = advance(); // IDENT: Style/Element/Var
+		Token nameTok = advance(); // name
+		String name = nameTok.getLexeme();
+		consumeType(CHTLTokenType.LBRACE);
+		if ("Style".equals(kind.getLexeme())) {
+			String raw = collectRawUntilMatchingBrace();
+			consumeType(CHTLTokenType.RBRACE);
+			templates.defineStyle(name, raw);
+			return;
+		}
+		if ("Var".equals(kind.getLexeme())) {
+			String raw = collectRawUntilMatchingBrace();
+			consumeType(CHTLTokenType.RBRACE);
+			Map<String, String> vars = parseVarBody(raw);
+			templates.defineVar(name, vars);
+			return;
+		}
+		if ("Element".equals(kind.getLexeme())) {
+			List<ElementNode> defs = parseElementsUntilBrace();
+			consumeType(CHTLTokenType.RBRACE);
+			templates.defineElement(name, defs);
+		}
+	}
+
+	private Map<String, String> parseVarBody(String raw) {
+		Map<String, String> map = new HashMap<>();
+		int p = 0, n = raw.length();
+		while (p < n) {
+			while (p < n && Character.isWhitespace(raw.charAt(p))) p++;
+			int kStart = p; while (p < n && (Character.isLetterOrDigit(raw.charAt(p)) || raw.charAt(p) == '_' || raw.charAt(p) == '-')) p++;
+			String key = raw.substring(kStart, p).trim();
+			while (p < n && Character.isWhitespace(raw.charAt(p))) p++;
+			if (p < n && (raw.charAt(p) == ':' || raw.charAt(p) == '=')) p++;
+			while (p < n && Character.isWhitespace(raw.charAt(p))) p++;
+			int vStart = p; boolean inStr = false; char q = '\0';
+			while (p < n) {
+				char c = raw.charAt(p);
+				if (!inStr && (c == ';')) break;
+				if (c == '"' || c == '\'') { if (!inStr) { inStr = true; q = c; } else if (q == c) { inStr = false; } }
+				p++;
+			}
+			String val = raw.substring(vStart, p).trim();
+			if (p < n && raw.charAt(p) == ';') p++;
+			if (!key.isEmpty()) map.put(key, val);
+		}
+		return map;
+	}
+
+	private List<ElementNode> parseElementsUntilBrace() {
+		List<ElementNode> result = new ArrayList<>();
+		while (!isAtEnd() && !checkType(CHTLTokenType.RBRACE)) {
+			AstOrNone n = parseElementOrText();
+			if (n != null && n.node instanceof ElementNode) result.add((ElementNode) n.node);
+			else advance();
+		}
+		return result;
+	}
+
+	private String collectRawUntilMatchingBrace() {
+		StringBuilder sb = new StringBuilder();
+		int depth = 0;
+		while (!isAtEnd()) {
+			if (checkType(CHTLTokenType.LBRACE)) { depth++; sb.append(advance().getLexeme()); continue; }
+			if (checkType(CHTLTokenType.RBRACE) && depth == 0) break;
+			if (checkType(CHTLTokenType.RBRACE)) { depth--; sb.append(advance().getLexeme()); continue; }
+			sb.append(advance().getLexeme());
+		}
+		return sb.toString();
 	}
 
 	private static class AstOrNone { final com.chtl.ast.AstNode node; AstOrNone(com.chtl.ast.AstNode n){this.node=n;} }
@@ -86,6 +174,24 @@ public class CHTLParser {
 				}
 				continue;
 			}
+			// @Element 模板使用
+			if (checkType(CHTLTokenType.AT) && i + 1 < tokens.size() && tokens.get(i + 1).getType() == CHTLTokenType.IDENT && "Element".equals(tokens.get(i + 1).getLexeme())) {
+				advance(); // '@'
+				advance(); // 'Element'
+				Token nameTok = advance();
+				TemplateRegistry.ElementTemplateDef def = templates.getElement(nameTok.getLexeme());
+				List<ElementNode> injected = new ArrayList<>();
+				if (def != null) {
+					for (ElementNode node : def.elements) injected.add(cloneElement(node));
+				}
+				// 可选特例化块（此处最小实现：跳过解析）
+				if (matchType(CHTLTokenType.LBRACE)) {
+					String skip = collectUntil(CHTLTokenType.RBRACE);
+					consumeType(CHTLTokenType.RBRACE);
+				}
+				el.getChildren().addAll(injected);
+				continue;
+			}
 			// 属性：name : value ; 或 name = value ;
 			if (checkType(CHTLTokenType.IDENT)) {
 				int save = i;
@@ -119,6 +225,14 @@ public class CHTLParser {
 		consumeType(CHTLTokenType.RBRACE);
 	}
 
+	private ElementNode cloneElement(ElementNode src) {
+		ElementNode dst = new ElementNode(src.getTagName());
+		for (Attribute a : src.getAttributes()) dst.getAttributes().add(new Attribute(a.getName(), a.getValue()));
+		for (StyleProperty sp : src.getInlineStyles()) dst.getInlineStyles().add(new StyleProperty(sp.getKey(), sp.getValue()));
+		for (ElementNode c : src.getChildren()) dst.getChildren().add(cloneElement(c));
+		return dst;
+	}
+
 	private void parseStyleBlock(String styleText, ElementNode el) {
 		int p = 0; int n = styleText.length();
 		while (p < n) {
@@ -130,11 +244,20 @@ public class CHTLParser {
 				while (p < n && Character.isWhitespace(styleText.charAt(p))) p++;
 				int nameStart = p; while (p < n && (Character.isLetterOrDigit(styleText.charAt(p)) || styleText.charAt(p) == '_' || styleText.charAt(p) == '-')) p++;
 				String name = styleText.substring(nameStart, p);
-				while (p < n && styleText.charAt(p) != ';') p++;
+				// 可选覆盖块 { ... }
+				while (p < n && Character.isWhitespace(styleText.charAt(p))) p++;
+				List<StyleProperty> merged = new ArrayList<>(templates.resolveStyleInlineProperties(name, new HashSet<>()));
+				if (p < n && styleText.charAt(p) == '{') {
+					p++;
+					String ov = readUntilBraceClose(styleText, p);
+					p += ov.length();
+					if (p < n && styleText.charAt(p) == '}') p++;
+					applyCustomStyleOverrides(merged, ov);
+				}
+				// 结束分号
+				while (p < n && styleText.charAt(p) != ';' && p < n && styleText.charAt(p) != '}') p++;
 				if (p < n && styleText.charAt(p) == ';') p++;
-				Set<String> visiting = new HashSet<>();
-				List<StyleProperty> props = templates.resolveStyleInlineProperties(name, visiting);
-				el.getInlineStyles().addAll(props);
+				el.getInlineStyles().addAll(merged);
 				continue;
 			}
 			if (styleText.charAt(p) == '.' || styleText.charAt(p) == '#') {
@@ -194,6 +317,52 @@ public class CHTLParser {
 			val = templates.substituteVarCalls(val);
 			if (p < n && styleText.charAt(p) == ';') p++;
 			if (!key.isEmpty() && !val.isEmpty()) el.getInlineStyles().add(new StyleProperty(key, val));
+		}
+	}
+
+	private void applyCustomStyleOverrides(List<StyleProperty> base, String ov) {
+		// 支持 delete 以及属性覆盖
+		int p = 0, n = ov.length();
+		while (p < n) {
+			while (p < n && Character.isWhitespace(ov.charAt(p))) p++;
+			if (p >= n) break;
+			if (ov.startsWith("delete", p)) {
+				p += "delete".length();
+				while (p < n && Character.isWhitespace(ov.charAt(p))) p++;
+				// 可能是属性列表用逗号分隔
+				List<String> names = new ArrayList<>();
+				int s = p;
+				while (p < n && ov.charAt(p) != ';') p++;
+				String list = ov.substring(s, Math.min(p, n));
+				if (p < n && ov.charAt(p) == ';') p++;
+				for (String item : list.split(",")) {
+					String key = item.trim();
+					if (key.startsWith("@Style")) continue; // 删除继承留到模板级处理
+					if (!key.isEmpty()) names.add(key);
+				}
+				base.removeIf(sp -> names.contains(sp.getKey()));
+				continue;
+			}
+			// 属性覆盖
+			int kStart = p; while (p < n && (Character.isLetterOrDigit(ov.charAt(p)) || ov.charAt(p) == '-' || ov.charAt(p) == '_')) p++;
+			String key = ov.substring(kStart, p).trim();
+			while (p < n && Character.isWhitespace(ov.charAt(p))) p++;
+			if (p < n && (ov.charAt(p) == ':' || ov.charAt(p) == '=')) p++;
+			while (p < n && Character.isWhitespace(ov.charAt(p))) p++;
+			int vStart = p; boolean inStr = false; char q = '\0';
+			while (p < n) {
+				char c = ov.charAt(p);
+				if (!inStr && (c == ';' || c == '\n' || c == '}')) break;
+				if (c == '"' || c == '\'') { if (!inStr) { inStr = true; q = c; } else if (q == c) { inStr = false; } }
+				p++;
+			}
+			String val = ov.substring(vStart, p).trim();
+			if (p < n && ov.charAt(p) == ';') p++;
+			boolean replaced = false;
+			for (int idx = 0; idx < base.size(); idx++) {
+				if (base.get(idx).getKey().equals(key)) { base.set(idx, new StyleProperty(key, val)); replaced = true; break; }
+			}
+			if (!replaced) base.add(new StyleProperty(key, val));
 		}
 	}
 
