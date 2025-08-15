@@ -67,33 +67,43 @@ Open VS Code settings and search for "CHTL" to configure:
 ## Example
 
 ```chtl
-[Template] @Card {
-    <div class="card {{&}}">
-        <h2><slot name="title"/></h2>
-        <div class="content">
-            <slot/>
-        </div>
-    </div>
-    
-    style {
-        {{&}} {
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 16px;
-            margin: 8px;
+[Template] @Element Card {
+    div {
+        class = "card";
+        
+        h2 {
+            slot name="title";
         }
         
-        {{&}} h2 {
-            margin-top: 0;
-            color: #333;
+        div {
+            class = "content";
+            slot;
+        }
+        
+        style {
+            & {
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                padding: 16px;
+                margin: 8px;
+            }
+            
+            & h2 {
+                margin-top: 0;
+                color: #333;
+            }
         }
     }
 }
 
-// Usage
-@Card {
-    [Slot: title] { Welcome to CHTL }
-    This is a simple card component.
+// 使用示例
+body {
+    @Element Card {
+        slot name="title" {
+            text { Welcome to CHTL }
+        }
+        text { This is a simple card component. }
+    }
 }
 ```
 

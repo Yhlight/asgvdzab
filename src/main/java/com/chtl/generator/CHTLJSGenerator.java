@@ -112,6 +112,12 @@ public class CHTLJSGenerator implements CHTLJSASTVisitor {
     }
     
     @Override
+    public void visitAnimationController(AnimationControllerNode node) {
+        // 动画控制器在animate函数中生成
+        // 这里通常不会被直接调用
+    }
+    
+    @Override
     public void visitEventHandler(EventHandlerNode node) {
         generateEventHandler(node);
     }
@@ -198,10 +204,117 @@ public class CHTLJSGenerator implements CHTLJSASTVisitor {
         output.append("        const keyframes = config.when || [];\n");
         output.append("        const loop = config.loop || 1;\n");
         output.append("        const delay = config.delay || 0;\n");
+        output.append("        const direction = config.direction || 'normal';\n");
         output.append("        const callback = config.callback;\n");
         output.append("        \n");
-        output.append("        // TODO: 实现动画逻辑\n");
-        output.append("        console.log('Animation config:', config);\n");
+        output.append("        // 创建动画控制对象\n");
+        output.append("        let animationId = null;\n");
+        output.append("        let isPaused = false;\n");
+        output.append("        let isPlaying = false;\n");
+        output.append("        let currentLoop = 0;\n");
+        output.append("        let startTime = null;\n");
+        output.append("        let pausedTime = 0;\n");
+        output.append("        \n");
+        output.append("        const controller = {\n");
+        output.append("            play: function() {\n");
+        output.append("                if (!isPlaying) {\n");
+        output.append("                    isPlaying = true;\n");
+        output.append("                    isPaused = false;\n");
+        output.append("                    startAnimation();\n");
+        output.append("                }\n");
+        output.append("                return this;\n");
+        output.append("            },\n");
+        output.append("            \n");
+        output.append("            pause: function() {\n");
+        output.append("                if (isPlaying && !isPaused) {\n");
+        output.append("                    isPaused = true;\n");
+        output.append("                    if (animationId) {\n");
+        output.append("                        cancelAnimationFrame(animationId);\n");
+        output.append("                        animationId = null;\n");
+        output.append("                    }\n");
+        output.append("                }\n");
+        output.append("                return this;\n");
+        output.append("            },\n");
+        output.append("            \n");
+        output.append("            stop: function() {\n");
+        output.append("                isPlaying = false;\n");
+        output.append("                isPaused = false;\n");
+        output.append("                if (animationId) {\n");
+        output.append("                    cancelAnimationFrame(animationId);\n");
+        output.append("                    animationId = null;\n");
+        output.append("                }\n");
+        output.append("                // 重置到初始状态\n");
+        output.append("                applyStyles(begin);\n");
+        output.append("                return this;\n");
+        output.append("            },\n");
+        output.append("            \n");
+        output.append("            reverse: function() {\n");
+        output.append("                // 交换开始和结束状态\n");
+        output.append("                [begin, end] = [end, begin];\n");
+        output.append("                return this;\n");
+        output.append("            },\n");
+        output.append("            \n");
+        output.append("            onComplete: function(fn) {\n");
+        output.append("                const originalCallback = callback;\n");
+        output.append("                config.callback = function() {\n");
+        output.append("                    if (originalCallback) originalCallback();\n");
+        output.append("                    if (fn) fn();\n");
+        output.append("                };\n");
+        output.append("                return this;\n");
+        output.append("            },\n");
+        output.append("            \n");
+        output.append("            isPlaying: function() {\n");
+        output.append("                return isPlaying && !isPaused;\n");
+        output.append("            },\n");
+        output.append("            \n");
+        output.append("            isPaused: function() {\n");
+        output.append("                return isPaused;\n");
+        output.append("            }\n");
+        output.append("        };\n");
+        output.append("        \n");
+        output.append("        // 应用样式的辅助函数\n");
+        output.append("        function applyStyles(styles) {\n");
+        output.append("            // TODO: 实现样式应用逻辑\n");
+        output.append("        }\n");
+        output.append("        \n");
+        output.append("        // 启动动画的函数\n");
+        output.append("        function startAnimation() {\n");
+        output.append("            setTimeout(() => {\n");
+        output.append("                if (!isPlaying) return;\n");
+        output.append("                startTime = performance.now() - pausedTime;\n");
+        output.append("                animate();\n");
+        output.append("            }, delay);\n");
+        output.append("        }\n");
+        output.append("        \n");
+        output.append("        // 动画主循环\n");
+        output.append("        function animate() {\n");
+        output.append("            if (!isPlaying || isPaused) return;\n");
+        output.append("            \n");
+        output.append("            const currentTime = performance.now();\n");
+        output.append("            const elapsed = currentTime - startTime;\n");
+        output.append("            const progress = Math.min(elapsed / duration, 1);\n");
+        output.append("            \n");
+        output.append("            // TODO: 实现缓动函数和关键帧插值\n");
+        output.append("            \n");
+        output.append("            if (progress < 1) {\n");
+        output.append("                animationId = requestAnimationFrame(animate);\n");
+        output.append("            } else {\n");
+        output.append("                // 动画完成\n");
+        output.append("                currentLoop++;\n");
+        output.append("                if (loop === -1 || currentLoop < loop) {\n");
+        output.append("                    startTime = performance.now();\n");
+        output.append("                    animate();\n");
+        output.append("                } else {\n");
+        output.append("                    isPlaying = false;\n");
+        output.append("                    if (config.callback) config.callback();\n");
+        output.append("                }\n");
+        output.append("            }\n");
+        output.append("        }\n");
+        output.append("        \n");
+        output.append("        // 自动开始动画\n");
+        output.append("        controller.play();\n");
+        output.append("        \n");
+        output.append("        return controller;\n");
         output.append("    }\n");
         
         output.append("};\n\n");

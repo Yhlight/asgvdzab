@@ -57,6 +57,7 @@ public interface CHTLJSASTNode {
         // 动画配置
         ANIMATION_CONFIG,     // animate的配置对象
         ANIMATION_KEYFRAME,   // when数组中的关键帧
+        ANIMATION_CONTROLLER, // 动画控制器
         
         // 属性访问
         PROPERTY_ACCESS,      // .style.color

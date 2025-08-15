@@ -18,6 +18,7 @@ public interface CHTLJSASTVisitor {
     // 动画配置
     void visitAnimationConfig(AnimationConfigNode node);
     void visitAnimationKeyframe(AnimationKeyframeNode node);
+    void visitAnimationController(AnimationControllerNode node);
     
     // 操作和表达式
     void visitArrowOperation(ArrowOperationNode node);

@@ -59,13 +59,14 @@ java -jar target/chtl-compiler.jar input.chtl -o output/
 ### 简单示例
 
 ```chtl
-[Template] @MyButton {
-    <button class="btn my-button">
-        <slot/>
-    </button>
+[Template] @Element MyButton {
+    button {
+        class = "btn my-button";
+        slot;
+    }
     
     style {
-        .my-button {
+        & {
             background: #007bff;
             color: white;
             padding: 10px 20px;
@@ -74,25 +75,35 @@ java -jar target/chtl-compiler.jar input.chtl -o output/
             cursor: pointer;
         }
         
-        .my-button:hover {
+        &:hover {
             background: #0056b3;
         }
     }
     
     script {
         // 使用增强选择器绑定事件
-        {{.my-button}}.listen('click', function() {
-            this.animate({
-                scale: [1, 0.95, 1],
-                duration: 200,
-                easing: ease-out
-            });
+        {{&}}.listen({
+            click: function() {
+                const anim = animate({
+                    duration: 200,
+                    easing: ease-out,
+                    when: [
+                        {at: 0.0, transform: 'scale(1)'},
+                        {at: 0.5, transform: 'scale(0.95)'},
+                        {at: 1.0, transform: 'scale(1)'}
+                    ]
+                });
+            }
         });
     }
 }
 
 // 使用模板
-@MyButton { 点击我 }
+body {
+    @Element MyButton { 
+        text { 点击我 }
+    }
+}
 ```
 
 ## 📁 项目结构
@@ -143,10 +154,11 @@ java -cp "src/main/java:test/java" TestPrecisionScanner
 
 - [CHTL语法文档](CHTL语法文档.md) - 完整的语言规范
 - [API文档](docs/api/) - Java API参考
+- [Animate API指南](docs/ANIMATE_API_GUIDE.md) - 动画控制对象详解
 - [开发者指南](docs/developer-guide.md) - 贡献代码指南
 - [CJMOD开发指南](CJMOD_DEVELOPER_GUIDE.md) - CJMOD模块开发
 - [CMOD Export指南](CMOD_EXPORT_GUIDE.md) - CMOD [Export]块使用
-- [CHTL语法示例](CHTL_SYNTAX_EXAMPLES.md) - 语法使用示例
+- [CHTL语法示例](docs/reports/CHTL_SYNTAX_EXAMPLES.md) - 语法使用示例
 - [Chtholly模块](src/main/java/com/chtl/module/Chtholly/README.md) - 官方主题模块
 - [未来规划](FUTURE_ROADMAP.md) - 项目发展路线图
 

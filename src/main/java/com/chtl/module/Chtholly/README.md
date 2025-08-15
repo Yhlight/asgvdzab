@@ -54,24 +54,33 @@ Chtholly模块是CHTL的官方主题模块，提供了美观的UI组件和实用
 #### ChthollyCard - 卡片
 ```chtl
 @Element ChthollyCard from chtholly {
-    <h3>卡片标题</h3>
-    <p>卡片内容</p>
+    h3 { text { 卡片标题 } }
+    p { text { 卡片内容 } }
 }
 ```
 
 #### ChthollyButton - 按钮
 ```chtl
 @Element ChthollyButton from chtholly {
-    点击我
+    text { 点击我 }
 }
 ```
 
 #### ChthollyGallery - 图片画廊
 ```chtl
 @Element ChthollyGallery from chtholly {
-    <img src="image1.jpg" alt="图片1"/>
-    <img src="image2.jpg" alt="图片2"/>
-    <img src="image3.jpg" alt="图片3"/>
+    img { 
+        src = "image1.jpg";
+        alt = "图片1";
+    }
+    img { 
+        src = "image2.jpg";
+        alt = "图片2";
+    }
+    img { 
+        src = "image3.jpg";
+        alt = "图片3";
+    }
 }
 ```
 

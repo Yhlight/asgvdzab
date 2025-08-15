@@ -5,19 +5,26 @@
 ### 1. 基本增强选择器（在script块中）
 
 ```chtl
-<div class="container">
-    <button class="my-btn">点击我</button>
+div {
+    class = "container";
+    
+    button {
+        class = "my-btn";
+        text { 点击我 }
+    }
     
     script {
         // 使用增强选择器
-        {{.my-btn}}.listen('click', function() {
-            console.log('按钮被点击');
+        {{.my-btn}}.listen({
+            click: function() {
+                console.log('按钮被点击');
+            }
         });
         
         // 相当于
         // document.querySelector('.my-btn').addEventListener('click', ...)
     }
-</div>
+}
 ```
 
 ### 2. 局部样式块中的 `&` 和局部脚本块中的 `{{&}}`
@@ -27,7 +34,9 @@
 #### 局部样式块使用 `&`
 
 ```chtl
-<div class="card">
+div {
+    class = "card";
+    
     style {
         & {
             background: white;
@@ -45,35 +54,48 @@
         }
     }
     
-    <h2 class="title">卡片标题</h2>
-    <p>卡片内容</p>
-</div>
+    h2 {
+        class = "title";
+        text { 卡片标题 }
+    }
+    
+    p {
+        text { 卡片内容 }
+    }
+}
 ```
 
 #### 局部脚本块使用 `{{&}}`
 
 ```chtl
-<div class="interactive-card">
+div {
+    class = "interactive-card";
+    
     script {
-        {{&}}.listen('click', function() {
-            // this 指向当前元素
-            this.classList.toggle('active');
-        });
-        
-        {{&}}.listen('mouseenter', function() {
-            console.log('鼠标进入');
+        {{&}}.listen({
+            click: function() {
+                // this 指向当前元素
+                this.classList.toggle('active');
+            },
+            mouseenter: function() {
+                console.log('鼠标进入');
+            }
         });
     }
     
-    <p>点击切换状态</p>
-</div>
+    p {
+        text { 点击切换状态 }
+    }
+}
 ```
 
 ### 3. 模板中的用法
 
 ```chtl
-[Template] @Card {
-    <div class="card-wrapper">
+[Template] @Element Card {
+    div {
+        class = "card-wrapper";
+        
         style {
             & {
                 border: 1px solid #ddd;
@@ -86,13 +108,15 @@
         }
         
         script {
-            {{&}}.listen('mouseenter', function() {
-                console.log('Mouse entered card');
+            {{&}}.listen({
+                mouseenter: function() {
+                    console.log('Mouse entered card');
+                }
             });
         }
         
-        <slot/>
-    </div>
+        slot;
+    }
 }
 ```
 
