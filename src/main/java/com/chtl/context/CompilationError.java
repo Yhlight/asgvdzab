@@ -33,6 +33,10 @@ public class CompilationError {
         this(message, null, type);
     }
     
+    public CompilationError(String message, ErrorType type) {
+        this(message, null, type);
+    }
+    
     public String getMessage() {
         return message;
     }
