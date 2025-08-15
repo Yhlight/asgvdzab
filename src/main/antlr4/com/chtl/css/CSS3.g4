@@ -403,8 +403,12 @@ fragment NONASCII
     : ~[\u0000-\u007F]
     ;
 
+fragment HEX
+    : [0-9a-fA-F]
+    ;
+
 fragment ESCAPE
-    : '\\' ([0-9a-fA-F]{1,6} ' '? | ~[\r\n\f0-9a-fA-F])
+    : '\\' ( HEX HEX? HEX? HEX? HEX? HEX? ' '? | ~[\r\n\f0-9a-fA-F] )
     ;
 
 fragment NAME

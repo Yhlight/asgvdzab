@@ -8,7 +8,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.Future;
 
-import com.chtl.compiler.CompilationResult;
+import com.chtl.model.CompilationResult;
 import com.chtl.core.memory.StreamingFileProcessor.ChunkResult;
 import com.chtl.core.memory.StreamingFileProcessor.OptimizedStringBuilder;
 import com.chtl.core.memory.StreamingFileProcessor.StreamingScanner;

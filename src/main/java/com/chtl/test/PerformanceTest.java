@@ -10,7 +10,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import com.chtl.compiler.CHTLCompiler;
-import com.chtl.compiler.CompilationResult;
+import com.chtl.model.CompilationResult;
 import com.chtl.compiler.CompilerOptions;
 import com.chtl.test.PerformanceTest.PerformanceResult;
 

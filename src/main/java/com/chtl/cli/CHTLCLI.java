@@ -7,7 +7,7 @@ import java.util.Map;
 
 import com.chtl.cli.CHTLCLI.CLIOptions;
 import com.chtl.compiler.CHTLCompiler;
-import com.chtl.compiler.CompilationResult;
+import com.chtl.model.CompilationResult;
 import com.chtl.compiler.CompilerOptions;
 
 

@@ -1,14 +1,8 @@
 package com.chtl.compiler.javascript;import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.TokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 
-import com.chtl.compiler.CompilationResult;
-import com.chtl.compiler.javascript.JavaScriptCompiler.ECMAScriptParser;
-import com.chtl.compiler.javascript.JavaScriptCompiler.JavaScriptOptimizingVisitor;
 import com.chtl.javascript.ECMAScriptBaseVisitor;
-
-
 import com.chtl.javascript.ECMAScriptLexer;
 import com.chtl.javascript.ECMAScriptParser;
 import com.chtl.model.CodeFragment;
@@ -85,17 +79,10 @@ public class JavaScriptCompiler {
      * 创建JavaScript解析器
      */
     private ECMAScriptParser createParser(String input) {
-        CharStreams.fromString inputStream = CharStreams.fromString(input);
+        org.antlr.v4.runtime.CharStream inputStream = CharStreams.fromString(input);
         ECMAScriptLexer lexer = new ECMAScriptLexer(inputStream);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         ECMAScriptParser parser = new ECMAScriptParser(tokens);
-        
-        // 添加预测函数
-        parser.addPredicate("notOpenBraceAndNotFunction", this::notOpenBraceAndNotFunction);
-        parser.addPredicate("notLineTerminator", this::notLineTerminator);
-        parser.addPredicate("lineTerminatorAhead", this::lineTerminatorAhead);
-        parser.addPredicate("p", this::checkNext);
-        
         return parser;
     }
     

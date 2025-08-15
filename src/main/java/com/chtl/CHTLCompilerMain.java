@@ -2,7 +2,7 @@ package com.chtl;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import com.chtl.compiler.CompilationResult;
+import com.chtl.model.CompilationResult;
 import com.chtl.compiler.cmod.CmodPackager;
 import com.chtl.compiler.cmod.CmodUnpacker;
 

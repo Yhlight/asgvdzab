@@ -371,7 +371,7 @@ public class ModuleSandbox {
         synchronized (securityManagerLock) {
             if (securityManager == null) {
                 securityManager = new SandboxSecurityManager();
-                // System.setSecurityManager(...); // Deprecated in Java 17+
+                // // System.setSecurityManager(...); // Deprecated in Java 17+ // Deprecated in Java 17+
             }
         }
     }

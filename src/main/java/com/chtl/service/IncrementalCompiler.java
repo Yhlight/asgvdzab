@@ -24,7 +24,7 @@ import com.chtl.service.IncrementalCompiler.FileWatcher;
 
 
 import com.chtl.compiler.CHTLCompiler;
-import com.chtl.compiler.CompilationResult;
+import com.chtl.model.CompilationResult;
 import com.chtl.core.cache.CompilationCache;
 import com.chtl.context.CompilationContext;
 

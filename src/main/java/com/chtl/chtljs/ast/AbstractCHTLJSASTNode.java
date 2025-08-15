@@ -1,7 +1,4 @@
-package com.chtl.chtljs.ast;import com.chtl.ast.chtljs.AbstractCHTLJSASTNode;
-import com.chtl.ast.chtljs.CHTLJSASTNode;
-import com.chtl.ast.chtljs.CHTLJSASTVisitor;
-
+package com.chtl.chtljs.ast;
 
 public abstract class AbstractCHTLJSASTNode implements CHTLJSASTNode {
     protected CHTLJSASTNode.NodeType nodeType;

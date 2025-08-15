@@ -2,11 +2,7 @@ package com.chtl.compiler.css;import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 
-import com.chtl.compiler.CompilationResult;
-import com.chtl.compiler.css.CSSCompiler.CSSOptimizingVisitor;
 import com.chtl.css.CSS3BaseVisitor;
-
-
 import com.chtl.css.CSS3Lexer;
 import com.chtl.css.CSS3Parser;
 import com.chtl.model.CodeFragment;
@@ -77,7 +73,7 @@ public class CSSCompiler {
      * 创建CSS解析器
      */
     private CSS3Parser createParser(String input) {
-        CharStreams.fromString inputStream = CharStreams.fromString(input);
+        org.antlr.v4.runtime.CharStream inputStream = CharStreams.fromString(input);
         CSS3Lexer lexer = new CSS3Lexer(inputStream);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         return new CSS3Parser(tokens);

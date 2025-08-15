@@ -715,7 +715,7 @@ public class ImportManager {
     /**
      * 导入节点包装
      */
-    private static class ImportNode {
+    public static class ImportNode {
         private final ImportStatementNode importStatement;
         private final CHTLASTNode importedNode;
         

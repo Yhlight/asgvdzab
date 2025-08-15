@@ -16,7 +16,7 @@ import com.chtl.ast.node.UnquotedLiteralNode;
 import com.chtl.compiler.constraint.ConstraintManager.ConstraintRule;
 import com.chtl.compiler.constraint.ConstraintManager.ConstraintScope;
 import com.chtl.compiler.constraint.ConstraintManager.ConstraintTarget;
-import com.chtl.model.ElementNode;
+
 
 
 import com.chtl.ast.*;
@@ -47,10 +47,10 @@ public class ConstraintManager {
     /**
      * 约束作用域
      */
-    private static class ConstraintScope {
-        final CHTLASTNode scopeNode;
-        final List<ConstraintRule> rules;
-        final ConstraintScope parent;
+    public static class ConstraintScope {
+        public final CHTLASTNode scopeNode;
+        public final List<ConstraintRule> rules;
+        public final ConstraintScope parent;
         
         ConstraintScope(CHTLASTNode scopeNode, ConstraintScope parent) {
             this.scopeNode = scopeNode;
@@ -70,9 +70,9 @@ public class ConstraintManager {
     /**
      * 约束规则
      */
-    private static class ConstraintRule {
-        final ConstraintType type;
-        final List<ConstraintTarget> targets;
+    public static class ConstraintRule {
+        public final ConstraintType type;
+        public final List<ConstraintTarget> targets;
         
         ConstraintRule(ConstraintType type) {
             this.type = type;
@@ -87,10 +87,10 @@ public class ConstraintManager {
     /**
      * 约束目标
      */
-    private static class ConstraintTarget {
-        final TargetType type;
-        final String name;
-        final String templateType; // 用于@Var, @Element等
+    public static class ConstraintTarget {
+        public final TargetType type;
+        public final String name;
+        public final String templateType; // 用于@Var, @Element等
         
         ConstraintTarget(TargetType type, String name, String templateType) {
             this.type = type;
@@ -292,8 +292,8 @@ public class ConstraintManager {
     private boolean matchesTarget(CHTLASTNode node, ConstraintTarget target) {
         switch (target.type) {
             case HTML_ELEMENT:
-                if (node instanceof ElementNode) {
-                    return ((ElementNode) node).getTagName().equals(target.name);
+                if (node instanceof com.chtl.ast.node.ElementNode) {
+                    return ((com.chtl.ast.node.ElementNode) node).getTagName().equals(target.name);
                 }
                 break;
                 

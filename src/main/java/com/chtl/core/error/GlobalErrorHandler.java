@@ -442,7 +442,7 @@ public class GlobalErrorHandler {
     /**
      * 恢复点注册表
      */
-    private static class RecoveryPoint {
+    public static class RecoveryPoint {
         private static final List<SourceLocation> recoveryPoints = new ArrayList<>();
         
         public static void save(SourceLocation location) {
@@ -453,7 +453,7 @@ public class GlobalErrorHandler {
     /**
      * 占位符注册表
      */
-    private static class PlaceholderRegistry {
+    public static class PlaceholderRegistry {
         private static final Set<String> placeholders = new HashSet<>();
         
         public static void register(String name) {
@@ -464,7 +464,7 @@ public class GlobalErrorHandler {
     /**
      * 类型恢复工具
      */
-    private static class TypeRecovery {
+    public static class TypeRecovery {
         public static void attempt(CompilationError error) {
             // 类型恢复逻辑
         }

@@ -7,7 +7,7 @@ import com.chtl.ast.AbstractCHTLASTNode;
 import com.chtl.ast.CHTLASTNode;
 import com.chtl.ast.node.CustomDefinitionNode;
 import com.chtl.ast.node.TemplateDefinitionNode;
-import com.chtl.compiler.chtl.CHTLParser.Token;
+
 import com.chtl.context.CompilationContext;
 import com.chtl.context.CompilationError;
 import com.chtl.context.CompilationWarning;

@@ -11,7 +11,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicLong;
 
 import com.chtl.compiler.CHTLCompiler;
-import com.chtl.compiler.CompilationResult;
+import com.chtl.model.CompilationResult;
 import com.chtl.service.CompilerService.BatchCompileHandler;
 import com.chtl.service.CompilerService.BatchCompileRequest;
 import com.chtl.service.CompilerService.BatchCompileResponse;
@@ -131,7 +131,7 @@ public class CompilerService {
     /**
      * 编译处理器
      */
-    private class CompileHandler implements HttpHandler {
+    public static class CompileHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange exchange) throws IOException {
             statistics.incrementRequests();
@@ -187,7 +187,7 @@ public class CompilerService {
     /**
      * 增量编译处理器
      */
-    private class IncrementalCompileHandler implements HttpHandler {
+    public static class IncrementalCompileHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange exchange) throws IOException {
             try {
@@ -213,7 +213,7 @@ public class CompilerService {
     /**
      * 批量编译处理器
      */
-    private class BatchCompileHandler implements HttpHandler {
+    public static class BatchCompileHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange exchange) throws IOException {
             try {
@@ -258,7 +258,7 @@ public class CompilerService {
     /**
      * 验证处理器
      */
-    private class ValidateHandler implements HttpHandler {
+    public static class ValidateHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange exchange) throws IOException {
             try {
@@ -292,7 +292,7 @@ public class CompilerService {
     /**
      * 缓存清理处理器
      */
-    private class CacheClearHandler implements HttpHandler {
+    public static class CacheClearHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange exchange) throws IOException {
             if (!"POST".equals(exchange.getRequestMethod())) {
@@ -308,7 +308,7 @@ public class CompilerService {
     /**
      * 缓存统计处理器
      */
-    private class CacheStatsHandler implements HttpHandler {
+    public static class CacheStatsHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange exchange) throws IOException {
             CompilationCache.CacheStatistics stats = cache.getStatistics();
@@ -319,7 +319,7 @@ public class CompilerService {
     /**
      * 健康检查处理器
      */
-    private class HealthCheckHandler implements HttpHandler {
+    public static class HealthCheckHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange exchange) throws IOException {
             HealthStatus status = new HealthStatus(
@@ -335,7 +335,7 @@ public class CompilerService {
     /**
      * 统计信息处理器
      */
-    private class StatsHandler implements HttpHandler {
+    public static class StatsHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange exchange) throws IOException {
             sendJsonResponse(exchange, 200, statistics);

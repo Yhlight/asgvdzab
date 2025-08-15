@@ -29,8 +29,7 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveTask;
 
 import com.chtl.scanner.Fragment;
-import com.chtl.scanner.FragmentType;
-import com.chtl.lexer.CHTLToken;
+import com.chtl.model.FragmentType;
 import com.chtl.ast.CHTLASTNode;
 import com.chtl.context.CompilationContext;
 import com.chtl.core.cache.CompilationCache;

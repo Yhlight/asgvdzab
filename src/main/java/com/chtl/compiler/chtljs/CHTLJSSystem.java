@@ -60,7 +60,7 @@ public class CHTLJSSystem {
     /**
      * 事件委托信息
      */
-    private static class DelegationInfo {
+    public static class DelegationInfo {
         final String parentSelector;
         final Map<String, List<DelegationTarget>> eventTargets;
         
@@ -73,7 +73,7 @@ public class CHTLJSSystem {
     /**
      * 委托目标
      */
-    private static class DelegationTarget {
+    public static class DelegationTarget {
         final String targetSelector;
         final String handlerFunction;
         

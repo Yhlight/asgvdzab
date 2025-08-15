@@ -1,5 +1,4 @@
-package com.chtl.lexer;import com.chtl.compiler.chtl.token.CHTLToken;
-
+package com.chtl.lexer;
 
 public class CHTLToken {
     private String type;

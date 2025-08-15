@@ -1,5 +1,4 @@
-package com.chtl.compiler.dispatcher;import com.chtl.compiler.CHTLCompiler;
-import com.chtl.compiler.CompilationResult;
+package com.chtl.compiler.dispatcher;
 
 
 import com.chtl.compiler.chtl.CHTLCompiler;

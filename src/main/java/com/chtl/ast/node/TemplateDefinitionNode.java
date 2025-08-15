@@ -1,6 +1,5 @@
 package com.chtl.ast.node;import com.chtl.ast.AbstractCHTLASTNode;
 import com.chtl.ast.CHTLASTVisitor;
-import com.chtl.model.TemplateType;
 
 
 import com.chtl.ast.*;

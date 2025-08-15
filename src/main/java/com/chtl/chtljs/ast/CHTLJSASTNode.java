@@ -1,7 +1,4 @@
-package com.chtl.chtljs.ast;import com.chtl.ast.NodeType;
-import com.chtl.ast.chtljs.CHTLJSASTNode;
-import com.chtl.ast.chtljs.CHTLJSASTVisitor;
-
+package com.chtl.chtljs.ast;
 
 public interface CHTLJSASTNode {
     void accept(CHTLJSASTVisitor visitor);

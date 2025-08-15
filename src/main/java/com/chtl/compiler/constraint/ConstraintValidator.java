@@ -6,7 +6,6 @@ import com.chtl.ast.node.NamespaceNode;
 import com.chtl.ast.node.TemplateDefinitionNode;
 import com.chtl.ast.node.TemplateUsageNode;
 import com.chtl.ast.node.VarGroupDefinitionNode;
-import com.chtl.model.ElementNode;
 
 
 import com.chtl.ast.*;
