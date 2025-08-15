@@ -1,4 +1,5 @@
-package com.chtl.core.error;
+package com.chtl.core.error;import com.chtl.model.SourceLocation;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;

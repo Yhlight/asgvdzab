@@ -1,4 +1,6 @@
-package com.chtl.compiler.debug;
+package com.chtl.compiler.debug;import com.chtl.exception.CompilationException;
+import com.chtl.model.SourceLocation;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
