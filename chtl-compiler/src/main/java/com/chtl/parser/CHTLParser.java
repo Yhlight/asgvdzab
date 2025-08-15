@@ -1,0 +1,600 @@
+package com.chtl.parser;
+
+import com.chtl.ast.DocumentNode;
+import com.chtl.ast.TemplateNodes.ElementNode;
+import com.chtl.ast.TemplateNodes.TextNode;
+import com.chtl.ast.TemplateNodes.ScriptNode;
+import com.chtl.ast.TemplateNodes.Attribute;
+import com.chtl.ast.TemplateNodes.StyleProperty;
+import com.chtl.ast.CssRule;
+import com.chtl.lexer.*;
+import com.chtl.runtime.ContextAssistant;
+import com.chtl.template.TemplateRegistry;
+
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+public class CHTLParser {
+	private final List<Token> tokens;
+	private int i = 0;
+	private final ContextAssistant ctx = new ContextAssistant();
+	private final DocumentNode document;
+	private final TemplateRegistry templates = new TemplateRegistry();
+	private final GlobalMap globalMap;
+
+	public CHTLParser(String src, GlobalMap map) {
+		this.tokens = new CHTLLexer(src, map).lex();
+		this.document = new DocumentNode();
+		this.globalMap = map;
+	}
+
+	public CHTLParser(String src, GlobalMap map, DocumentNode doc) {
+		this.tokens = new CHTLLexer(src, map).lex();
+		this.document = doc;
+		this.globalMap = map;
+	}
+
+	public DocumentNode parseDocument() {
+		DocumentNode doc = this.document;
+		try (var g = ctx.enter(State.DEFAULT)) {
+			while (!isAtEnd()) {
+				if (checkCustomHeader()) { parseCustomDefinition(); continue; }
+				AstOrNone n = parseElementOrText();
+				if (n != null && n.node != null) doc.addChild(n.node);
+				else advance();
+			}
+		}
+		return doc;
+	}
+
+	private boolean checkCustomHeader() {
+		return checkType(CHTLTokenType.LBRACKET)
+				&& (i + 2 < tokens.size())
+				&& tokens.get(i + 1).getType() == CHTLTokenType.IDENT
+				&& "Custom".equals(tokens.get(i + 1).getLexeme())
+				&& tokens.get(i + 2).getType() == CHTLTokenType.RBRACKET;
+	}
+
+	private void parseCustomDefinition() {
+		consumeType(CHTLTokenType.LBRACKET);
+		Token ident = advance(); // 'Custom'
+		consumeType(CHTLTokenType.RBRACKET);
+		consumeType(CHTLTokenType.AT);
+		Token kind = advance(); // IDENT: Style/Element/Var
+		Token nameTok = advance(); // name
+		String name = nameTok.getLexeme();
+		consumeType(CHTLTokenType.LBRACE);
+		if ("Style".equals(kind.getLexeme())) {
+			String raw = collectRawUntilMatchingBrace();
+			consumeType(CHTLTokenType.RBRACE);
+			templates.defineStyle(name, raw);
+			return;
+		}
+		if ("Var".equals(kind.getLexeme())) {
+			String raw = collectRawUntilMatchingBrace();
+			consumeType(CHTLTokenType.RBRACE);
+			Map<String, String> vars = parseVarBody(raw);
+			templates.defineVar(name, vars);
+			return;
+		}
+		if ("Element".equals(kind.getLexeme())) {
+			List<ElementNode> defs = parseElementsUntilBrace();
+			consumeType(CHTLTokenType.RBRACE);
+			templates.defineElement(name, defs);
+		}
+	}
+
+	private Map<String, String> parseVarBody(String raw) {
+		Map<String, String> map = new HashMap<>();
+		int p = 0, n = raw.length();
+		while (p < n) {
+			while (p < n && Character.isWhitespace(raw.charAt(p))) p++;
+			int kStart = p; while (p < n && (Character.isLetterOrDigit(raw.charAt(p)) || raw.charAt(p) == '_' || raw.charAt(p) == '-')) p++;
+			String key = raw.substring(kStart, p).trim();
+			while (p < n && Character.isWhitespace(raw.charAt(p))) p++;
+			if (p < n && (raw.charAt(p) == ':' || raw.charAt(p) == '=')) p++;
+			while (p < n && Character.isWhitespace(raw.charAt(p))) p++;
+			int vStart = p; boolean inStr = false; char q = '\0';
+			while (p < n) {
+				char c = raw.charAt(p);
+				if (!inStr && (c == ';')) break;
+				if (c == '"' || c == '\'') { if (!inStr) { inStr = true; q = c; } else if (q == c) { inStr = false; } }
+				p++;
+			}
+			String val = raw.substring(vStart, p).trim();
+			if (p < n && raw.charAt(p) == ';') p++;
+			if (!key.isEmpty()) map.put(key, val);
+		}
+		return map;
+	}
+
+	private List<ElementNode> parseElementsUntilBrace() {
+		List<ElementNode> result = new ArrayList<>();
+		while (!isAtEnd() && !checkType(CHTLTokenType.RBRACE)) {
+			AstOrNone n = parseElementOrText();
+			if (n != null && n.node instanceof ElementNode) result.add((ElementNode) n.node);
+			else advance();
+		}
+		return result;
+	}
+
+	private String collectRawUntilMatchingBrace() {
+		StringBuilder sb = new StringBuilder();
+		int depth = 0;
+		while (!isAtEnd()) {
+			if (checkType(CHTLTokenType.LBRACE)) { depth++; sb.append(advance().getLexeme()); continue; }
+			if (checkType(CHTLTokenType.RBRACE) && depth == 0) break;
+			if (checkType(CHTLTokenType.RBRACE)) { depth--; sb.append(advance().getLexeme()); continue; }
+			sb.append(advance().getLexeme());
+		}
+		return sb.toString();
+	}
+
+	private static class AstOrNone { final com.chtl.ast.AstNode node; AstOrNone(com.chtl.ast.AstNode n){this.node=n;} }
+
+	private AstOrNone parseElementOrText() {
+		if (matchType(CHTLTokenType.IDENT)) {
+			String tag = prev().getLexeme();
+			if (matchType(CHTLTokenType.LBRACE)) {
+				ElementNode el = new ElementNode(tag);
+				try (var g = ctx.enter(State.IN_ELEMENT_BLOCK)) {
+					parseElementBody(el);
+				}
+				return new AstOrNone(el);
+			}
+		}
+		if (matchType(CHTLTokenType.KW_TEXT) && matchType(CHTLTokenType.LBRACE)) {
+			try (var g = ctx.enter(State.IN_TEXT_BLOCK)) {
+				String content = collectUntil(CHTLTokenType.RBRACE);
+				consumeType(CHTLTokenType.RBRACE);
+				return new AstOrNone(new TextNode(content.trim()));
+			}
+		}
+		return null;
+	}
+
+	private void parseElementBody(ElementNode el) {
+		while (!isAtEnd() && !checkType(CHTLTokenType.RBRACE)) {
+			if (matchType(CHTLTokenType.KW_STYLE) && matchType(CHTLTokenType.LBRACE)) {
+				try (var g = ctx.enter(State.IN_STYLE_BLOCK)) {
+					String styleText = collectUntil(CHTLTokenType.RBRACE);
+					consumeType(CHTLTokenType.RBRACE);
+					parseStyleBlock(styleText, el);
+				}
+				continue;
+			}
+			if (matchType(CHTLTokenType.KW_SCRIPT) && matchType(CHTLTokenType.LBRACE)) {
+				try (var g = ctx.enter(State.IN_SCRIPT_BLOCK)) {
+					String js = collectUntil(CHTLTokenType.RBRACE);
+					consumeType(CHTLTokenType.RBRACE);
+					el.getScripts().add(new ScriptNode(js));
+				}
+				continue;
+			}
+			// @Element 模板使用
+			if (checkType(CHTLTokenType.AT) && i + 1 < tokens.size() && tokens.get(i + 1).getType() == CHTLTokenType.IDENT && "Element".equals(tokens.get(i + 1).getLexeme())) {
+				advance(); // '@'
+				advance(); // 'Element'
+				Token nameTok = advance();
+				TemplateRegistry.ElementTemplateDef def = templates.getElement(nameTok.getLexeme());
+				List<ElementNode> injected = new ArrayList<>();
+				if (def != null) {
+					for (ElementNode node : def.elements) injected.add(cloneElement(node));
+				}
+				// 特例化块
+				if (matchType(CHTLTokenType.LBRACE)) {
+					String spec = collectUntil(CHTLTokenType.RBRACE);
+					consumeType(CHTLTokenType.RBRACE);
+					applyElementCustomization(injected, spec);
+				}
+				el.getChildren().addAll(injected);
+				continue;
+			}
+			// 属性：name : value ; 或 name = value ;
+			if (checkType(CHTLTokenType.IDENT)) {
+				int save = i;
+				String key = tokens.get(i).getLexeme(); advance();
+				if (matchType(CHTLTokenType.COLON) || matchType(CHTLTokenType.EQUAL)) {
+					StringBuilder v = new StringBuilder();
+					while (!isAtEnd() && !checkType(CHTLTokenType.SEMICOLON) && !checkType(CHTLTokenType.RBRACE)) {
+						v.append(advance().getLexeme());
+					}
+					if (matchType(CHTLTokenType.SEMICOLON)) {
+						el.getAttributes().add(new Attribute(key, v.toString().trim()));
+						continue;
+					} else {
+						i = save;
+					}
+				} else {
+					i = save;
+				}
+			}
+			AstOrNone child = parseElementOrText();
+			if (child != null && child.node != null) {
+				if (child.node instanceof ElementNode) {
+					el.getChildren().add((ElementNode) child.node);
+				} else if (child.node instanceof TextNode) {
+					el.getTexts().add((TextNode) child.node);
+				} else {
+					advance();
+				}
+			} else advance();
+		}
+		consumeType(CHTLTokenType.RBRACE);
+	}
+
+	private ElementNode cloneElement(ElementNode src) {
+		ElementNode dst = new ElementNode(src.getTagName());
+		for (Attribute a : src.getAttributes()) dst.getAttributes().add(new Attribute(a.getName(), a.getValue()));
+		for (StyleProperty sp : src.getInlineStyles()) dst.getInlineStyles().add(new StyleProperty(sp.getKey(), sp.getValue()));
+		for (ElementNode c : src.getChildren()) dst.getChildren().add(cloneElement(c));
+		return dst;
+	}
+
+	private void parseStyleBlock(String styleText, ElementNode el) {
+		int p = 0; int n = styleText.length();
+		while (p < n) {
+			while (p < n && Character.isWhitespace(styleText.charAt(p))) p++;
+			if (p >= n) break;
+			// 模板样式使用：@Style Name; 合并到内联样式
+			if (styleText.startsWith("@Style", p)) {
+				p += "@Style".length();
+				while (p < n && Character.isWhitespace(styleText.charAt(p))) p++;
+				int nameStart = p; while (p < n && (Character.isLetterOrDigit(styleText.charAt(p)) || styleText.charAt(p) == '_' || styleText.charAt(p) == '-')) p++;
+				String name = styleText.substring(nameStart, p);
+				// 可选覆盖块 { ... }
+				while (p < n && Character.isWhitespace(styleText.charAt(p))) p++;
+				List<StyleProperty> merged = new ArrayList<>(templates.resolveStyleInlineProperties(name, new HashSet<>()));
+				if (p < n && styleText.charAt(p) == '{') {
+					p++;
+					String ov = readUntilBraceClose(styleText, p);
+					p += ov.length();
+					if (p < n && styleText.charAt(p) == '}') p++;
+					applyCustomStyleOverrides(merged, ov);
+				}
+				// 结束分号
+				while (p < n && styleText.charAt(p) != ';' && p < n && styleText.charAt(p) != '}') p++;
+				if (p < n && styleText.charAt(p) == ';') p++;
+				el.getInlineStyles().addAll(merged);
+				continue;
+			}
+			if (styleText.charAt(p) == '.' || styleText.charAt(p) == '#') {
+				char prefix = styleText.charAt(p);
+				int selStart = p; p++;
+				while (p < n && !Character.isWhitespace(styleText.charAt(p)) && styleText.charAt(p) != '{') p++;
+				String selector = styleText.substring(selStart, p).trim();
+				String name = selector.substring(1);
+				if (prefix == '.') maybeAttachAttribute(el, "class", name);
+				if (prefix == '#') maybeAttachAttribute(el, "id", name);
+				while (p < n && Character.isWhitespace(styleText.charAt(p))) p++;
+				if (p < n && styleText.charAt(p) == '{') {
+					p++;
+					String block = readUntilBraceClose(styleText, p);
+					p += block.length();
+					if (p < n && styleText.charAt(p) == '}') p++;
+					CssRule rule = new CssRule(selector);
+					parseStyleDeclarations(block, rule);
+					this.document.getGlobalCssRules().add(rule);
+				}
+				continue;
+			}
+			if (styleText.charAt(p) == '&') {
+				int selStart = p; p++;
+				while (p < n && !Character.isWhitespace(styleText.charAt(p)) && styleText.charAt(p) != '{') p++;
+				String suffix = styleText.substring(selStart + 1, p).trim();
+				String base = deriveBaseSelectorFromElement(el);
+				if (base != null) {
+					String selector = base + suffix;
+					while (p < n && Character.isWhitespace(styleText.charAt(p))) p++;
+					if (p < n && styleText.charAt(p) == '{') {
+						p++;
+						String block = readUntilBraceClose(styleText, p);
+						p += block.length();
+						if (p < n && styleText.charAt(p) == '}') p++;
+						CssRule rule = new CssRule(selector);
+						parseStyleDeclarations(block, rule);
+						this.document.getGlobalCssRules().add(rule);
+					}
+				}
+				continue;
+			}
+			int kStart = p;
+			while (p < n && isKeyChar(styleText.charAt(p))) p++;
+			String key = styleText.substring(kStart, p).trim();
+			while (p < n && Character.isWhitespace(styleText.charAt(p))) p++;
+			if (p < n && (styleText.charAt(p) == ':' || styleText.charAt(p) == '=')) p++;
+			while (p < n && Character.isWhitespace(styleText.charAt(p))) p++;
+			int vStart = p; boolean inStr = false; char q = '\0';
+			while (p < n) {
+				char c = styleText.charAt(p);
+				if (!inStr && (c == ';' || c == '\n' || c == '}')) break;
+				if (c == '"' || c == '\'') { if (!inStr) { inStr = true; q = c; } else if (q == c) { inStr = false; } }
+				p++;
+			}
+			String val = styleText.substring(vStart, p).trim();
+			val = templates.substituteVarCalls(val);
+			if (p < n && styleText.charAt(p) == ';') p++;
+			if (!key.isEmpty() && !val.isEmpty()) el.getInlineStyles().add(new StyleProperty(key, val));
+		}
+	}
+
+	private void applyCustomStyleOverrides(List<StyleProperty> base, String ov) {
+		// 支持 delete 以及属性覆盖
+		int p = 0, n = ov.length();
+		while (p < n) {
+			while (p < n && Character.isWhitespace(ov.charAt(p))) p++;
+			if (p >= n) break;
+			if (ov.startsWith("delete", p)) {
+				p += "delete".length();
+				while (p < n && Character.isWhitespace(ov.charAt(p))) p++;
+				// 可能是属性列表用逗号分隔
+				List<String> names = new ArrayList<>();
+				int s = p;
+				while (p < n && ov.charAt(p) != ';') p++;
+				String list = ov.substring(s, Math.min(p, n));
+				if (p < n && ov.charAt(p) == ';') p++;
+				for (String item : list.split(",")) {
+					String key = item.trim();
+					if (key.startsWith("@Style")) continue; // 删除继承留到模板级处理
+					if (!key.isEmpty()) names.add(key);
+				}
+				base.removeIf(sp -> names.contains(sp.getKey()));
+				continue;
+			}
+			// 属性覆盖
+			int kStart = p; while (p < n && (Character.isLetterOrDigit(ov.charAt(p)) || ov.charAt(p) == '-' || ov.charAt(p) == '_')) p++;
+			String key = ov.substring(kStart, p).trim();
+			while (p < n && Character.isWhitespace(ov.charAt(p))) p++;
+			if (p < n && (ov.charAt(p) == ':' || ov.charAt(p) == '=')) p++;
+			while (p < n && Character.isWhitespace(ov.charAt(p))) p++;
+			int vStart = p; boolean inStr = false; char q = '\0';
+			while (p < n) {
+				char c = ov.charAt(p);
+				if (!inStr && (c == ';' || c == '\n' || c == '}')) break;
+				if (c == '"' || c == '\'') { if (!inStr) { inStr = true; q = c; } else if (q == c) { inStr = false; } }
+				p++;
+			}
+			String val = ov.substring(vStart, p).trim();
+			if (p < n && ov.charAt(p) == ';') p++;
+			boolean replaced = false;
+			for (int idx = 0; idx < base.size(); idx++) {
+				if (base.get(idx).getKey().equals(key)) { base.set(idx, new StyleProperty(key, val)); replaced = true; break; }
+			}
+			if (!replaced) base.add(new StyleProperty(key, val));
+		}
+	}
+
+	private String readUntilBraceClose(String s, int from) {
+		int p = from, n = s.length(), depth = 0; StringBuilder b = new StringBuilder();
+		while (p < n) {
+			char c = s.charAt(p);
+			if (c == '{') { depth++; b.append(c); p++; continue; }
+			if (c == '}' && depth == 0) break;
+			if (c == '}' && depth > 0) { depth--; b.append(c); p++; continue; }
+			b.append(c); p++;
+		}
+		return b.toString();
+	}
+
+	private void parseStyleDeclarations(String block, CssRule rule) {
+		int p = 0; int n = block.length();
+		while (p < n) {
+			while (p < n && Character.isWhitespace(block.charAt(p))) p++;
+			int kStart = p;
+			while (p < n && isKeyChar(block.charAt(p))) p++;
+			String key = block.substring(kStart, p).trim();
+			while (p < n && Character.isWhitespace(block.charAt(p))) p++;
+			if (p < n && (block.charAt(p) == ':' || block.charAt(p) == '=')) p++;
+			while (p < n && Character.isWhitespace(block.charAt(p))) p++;
+			int vStart = p; boolean inStr = false; char q = '\0';
+			while (p < n) {
+				char c = block.charAt(p);
+				if (!inStr && (c == ';' || c == '\n' || c == '}')) break;
+				if (c == '"' || c == '\'') { if (!inStr) { inStr = true; q = c; } else if (q == c) { inStr = false; } }
+				p++;
+			}
+			String val = block.substring(vStart, p).trim();
+			if (p < n && block.charAt(p) == ';') p++;
+			if (!key.isEmpty() && !val.isEmpty()) rule.getDeclarations().add(new StyleProperty(key, val));
+		}
+	}
+
+	private boolean isKeyChar(char c) { return Character.isLetterOrDigit(c) || c == '-' || c == '_'; }
+
+	private String collectUntil(CHTLTokenType end) {
+		StringBuilder sb = new StringBuilder();
+		int depth = 0;
+		while (!isAtEnd()) {
+			if (checkType(CHTLTokenType.LBRACE)) { depth++; sb.append(advance().getLexeme()); continue; }
+			if (checkType(end) && depth == 0) break;
+			if (checkType(CHTLTokenType.RBRACE)) { depth--; sb.append(advance().getLexeme()); continue; }
+			sb.append(advance().getLexeme());
+		}
+		return sb.toString();
+	}
+
+	private boolean isAtEnd() { return i >= tokens.size(); }
+	private Token advance() { return tokens.get(i++); }
+	private Token prev() { return tokens.get(i-1); }
+	private boolean checkType(CHTLTokenType t) { return !isAtEnd() && tokens.get(i).getType() == t; }
+	private boolean matchType(CHTLTokenType t) { if (checkType(t)) { advance(); return true; } return false; }
+	private void consumeType(CHTLTokenType t) { if (!matchType(t)) throw new IllegalStateException("Expect: " + t + " at " + i); }
+
+	private String deriveBaseSelectorFromElement(ElementNode el) {
+		String cls = null;
+		String id = null;
+		for (Attribute a : el.getAttributes()) {
+			if (a.getName().equals("class")) cls = a.getValue();
+			if (a.getName().equals("id")) id = a.getValue();
+		}
+		if (cls != null && !cls.isEmpty()) return "." + cls;
+		if (id != null && !id.isEmpty()) return "#" + id;
+		return null;
+	}
+
+	private void maybeAttachAttribute(ElementNode el, String name, String value) {
+		for (Attribute a : el.getAttributes()) {
+			if (a.getName().equals(name)) return;
+		}
+		el.getAttributes().add(new Attribute(name, value));
+	}
+
+	private void applyElementCustomization(List<ElementNode> roots, String spec) {
+		int p = 0, n = spec.length();
+		while (p < n) {
+			while (p < n && Character.isWhitespace(spec.charAt(p))) p++;
+			if (p >= n) break;
+			if (spec.startsWith("delete", p)) {
+				p += "delete".length();
+				while (p < n && Character.isWhitespace(spec.charAt(p))) p++;
+				// delete tag[index]?;
+				String sel = readSelectorToken(spec, p);
+				p += sel.length();
+				while (p < n && spec.charAt(p) != ';') p++;
+				if (p < n && spec.charAt(p) == ';') p++;
+				deleteBySelector(roots, sel);
+				continue;
+			}
+			if (spec.startsWith("insert", p)) {
+				p += "insert".length();
+				while (p < n && Character.isWhitespace(spec.charAt(p))) p++;
+				if (spec.startsWith("at", p)) {
+					p += 2; while (p < n && Character.isWhitespace(spec.charAt(p))) p++;
+					boolean top = false, bottom = false;
+					if (spec.startsWith("top", p)) { top = true; p += 3; }
+					else if (spec.startsWith("bottom", p)) { bottom = true; p += 6; }
+					while (p < n && Character.isWhitespace(spec.charAt(p))) p++;
+					String block = readBraceBlock(spec, p);
+					p += block.length() + 2; // include {}
+					List<ElementNode> nodes = parseElementsSnippet(block);
+					if (top) roots.addAll(0, nodes);
+					else if (bottom) roots.addAll(nodes);
+					continue;
+				}
+				// after/before/replace selector { ... }
+				boolean after=false, before=false, replace=false;
+				if (spec.startsWith("after", p)) { after = true; p += 5; }
+				else if (spec.startsWith("before", p)) { before = true; p += 6; }
+				else if (spec.startsWith("replace", p)) { replace = true; p += 7; }
+				while (p < n && Character.isWhitespace(spec.charAt(p))) p++;
+				String sel = readSelectorToken(spec, p);
+				p += sel.length();
+				while (p < n && Character.isWhitespace(spec.charAt(p))) p++;
+				String block = readBraceBlock(spec, p);
+				p += block.length() + 2;
+				List<ElementNode> nodes = parseElementsSnippet(block);
+				int idx = findTopLevelIndex(roots, sel);
+				if (idx >= 0) {
+					if (after) roots.addAll(idx + 1, nodes);
+					if (before) roots.addAll(idx, nodes);
+					if (replace) { roots.remove(idx); roots.addAll(idx, nodes); }
+				}
+				continue;
+			}
+			// tag[index]? { ... } customization (add style)
+			String sel = readSelectorToken(spec, p);
+			p += sel.length();
+			while (p < n && Character.isWhitespace(spec.charAt(p))) p++;
+			if (p < n && spec.charAt(p) == '{') {
+				String block = readBraceBlock(spec, p);
+				p += block.length() + 2;
+				ElementNode target = findTopLevelBySelector(roots, sel);
+				if (target != null) {
+					// find style{...}
+					int sbeg = block.indexOf("style");
+					if (sbeg >= 0) {
+						int brace = block.indexOf('{', sbeg);
+						if (brace >= 0) {
+							int end = findMatchingBrace(block, brace);
+							String styleContent = block.substring(brace + 1, end);
+							parseStyleBlock(styleContent, target);
+						}
+					}
+				}
+			} else {
+				// skip unknown char
+				p++;
+			}
+		}
+	}
+
+	private List<ElementNode> parseElementsSnippet(String snippet) {
+		String src = "container{" + snippet + "}";
+		DocumentNode tmp = new DocumentNode();
+		CHTLParser sub = new CHTLParser(src, this.globalMap, tmp);
+		DocumentNode got = sub.parseDocument();
+		// merge global CSS
+		this.document.getGlobalCssRules().addAll(got.getGlobalCssRules());
+		for (var child : got.getChildren()) {
+			if (child instanceof ElementNode) {
+				ElementNode e = (ElementNode) child;
+				if ("container".equals(e.getTagName())) {
+					return new ArrayList<>(e.getChildren());
+				}
+			}
+		}
+		return new ArrayList<>();
+	}
+
+	private int findMatchingBrace(String s, int openIdx) {
+		int depth = 0;
+		for (int k = openIdx + 1; k < s.length(); k++) {
+			char c = s.charAt(k);
+			if (c == '{') depth++;
+			if (c == '}' && depth == 0) return k;
+			if (c == '}' && depth > 0) depth--;
+		}
+		return s.length() - 1;
+	}
+
+	private void deleteBySelector(List<ElementNode> roots, String sel) {
+		int idx = findTopLevelIndex(roots, sel);
+		if (idx >= 0) roots.remove(idx);
+	}
+
+	private String readSelectorToken(String s, int p) {
+		int n = s.length(); int start = p;
+		while (p < n && (Character.isLetterOrDigit(s.charAt(p)) || s.charAt(p) == '_' || s.charAt(p) == '[' || s.charAt(p) == ']' )) p++;
+		return s.substring(start, Math.min(p, n)).trim();
+	}
+
+	private int findTopLevelIndex(List<ElementNode> roots, String sel) {
+		String tag = sel; int idx = -1;
+		int lb = sel.indexOf('[');
+		if (lb >= 0) {
+			int rb = sel.indexOf(']', lb);
+			if (rb > lb) {
+				try { idx = Integer.parseInt(sel.substring(lb + 1, rb)); } catch (Exception ignored) {}
+				tag = sel.substring(0, lb);
+			}
+		}
+		int pos = -1; int count = -1;
+		for (int k = 0; k < roots.size(); k++) {
+			if (roots.get(k).getTagName().equals(tag)) {
+				count++;
+				if (idx < 0 || count == idx) { pos = k; if (idx >= 0) break; }
+			}
+		}
+		return pos;
+	}
+
+	private ElementNode findTopLevelBySelector(List<ElementNode> roots, String sel) {
+		int idx = findTopLevelIndex(roots, sel);
+		return (idx >= 0 && idx < roots.size()) ? roots.get(idx) : null;
+	}
+
+	private String readBraceBlock(String s, int p) {
+		int n = s.length();
+		while (p < n && Character.isWhitespace(s.charAt(p))) p++;
+		if (p >= n || s.charAt(p) != '{') return "";
+		int open = p;
+		int end = findMatchingBrace(s, open);
+		return s.substring(open + 1, Math.min(end, n));
+	}
+}

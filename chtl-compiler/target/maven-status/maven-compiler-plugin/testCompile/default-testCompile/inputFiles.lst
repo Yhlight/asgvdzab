@@ -1,0 +1,5 @@
+/workspace/chtl-compiler/src/test/java/com/chtl/parser/ParserGeneratorSmokeTest.java
+/workspace/chtl-compiler/src/test/java/com/chtl/lexer/CHTLLexerTest.java
+/workspace/chtl-compiler/src/test/java/com/chtl/parser/TemplateStyleTest.java
+/workspace/chtl-compiler/src/test/java/com/chtl/lexer/CHTLJsLexerTest.java
+/workspace/chtl-compiler/src/test/java/com/chtl/parser/CustomStyleTest.java
