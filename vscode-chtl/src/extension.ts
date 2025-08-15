@@ -31,6 +31,85 @@ export function activate(context: vscode.ExtensionContext) {
     registerFileWatchers(context);
 }
 
+function registerBracketBehavior(context: vscode.ExtensionContext) {
+    // Override default bracket auto-closing for CHTL keywords
+    context.subscriptions.push(
+        vscode.workspace.onDidChangeTextDocument(event => {
+            if (event.document.languageId !== 'chtl') return;
+            
+            for (const change of event.contentChanges) {
+                // Check if user typed '[' 
+                if (change.text === '[' && change.rangeLength === 0) {
+                    const position = change.range.start;
+                    const line = event.document.lineAt(position.line);
+                    const textBefore = line.text.substring(0, position.character);
+                    const textAfter = line.text.substring(position.character);
+                    
+                    // Check if this might be a CHTL keyword
+                    const keywordPattern = /^\s*$/;
+                    const afterPattern = /^[A-Z][a-zA-Z]*/;
+                    
+                    if (keywordPattern.test(textBefore) && afterPattern.test(textAfter)) {
+                        // This might be a keyword like [Template], don't auto-close
+                        const editor = vscode.window.activeTextEditor;
+                        if (editor && editor.document === event.document) {
+                            // Remove the auto-inserted ']' if it exists
+                            const nextChar = event.document.getText(new vscode.Range(
+                                position.translate(0, 1),
+                                position.translate(0, 2)
+                            ));
+                            
+                            if (nextChar === ']') {
+                                editor.edit(editBuilder => {
+                                    editBuilder.delete(new vscode.Range(
+                                        position.translate(0, 1),
+                                        position.translate(0, 2)
+                                    ));
+                                }, { undoStopBefore: false, undoStopAfter: false });
+                            }
+                        }
+                    }
+                }
+            }
+        })
+    );
+    
+    // Add smart typing for CHTL keywords
+    context.subscriptions.push(
+        vscode.languages.registerCompletionItemProvider('chtl', {
+            provideCompletionItems(document: vscode.TextDocument, position: vscode.Position) {
+                const linePrefix = document.lineAt(position).text.substring(0, position.character);
+                
+                // If user typed '[', suggest CHTL keywords
+                if (linePrefix.endsWith('[')) {
+                    const keywords = ['Template', 'Custom', 'Origin', 'Import', 'Namespace', 'Configuration', 'Info', 'Export'];
+                    
+                    return keywords.map(keyword => {
+                        const item = new vscode.CompletionItem(keyword, vscode.CompletionItemKind.Keyword);
+                        item.insertText = keyword + ']';
+                        item.detail = `CHTL ${keyword} declaration`;
+                        item.documentation = new vscode.MarkdownString(`Creates a **[${keyword}]** block in CHTL`);
+                        
+                        // Move cursor after the closing bracket
+                        item.command = {
+                            command: 'cursorMove',
+                            arguments: [{
+                                to: 'right',
+                                by: 'character',
+                                value: 1
+                            }]
+                        };
+                        
+                        return item;
+                    });
+                }
+                
+                return undefined;
+            }
+        }, '[')
+    );
+}
+
 function registerLanguageFeatures(context: vscode.ExtensionContext) {
     // Register completion provider
     const completionProvider = new CHTLCompletionProvider();
@@ -47,6 +126,9 @@ function registerLanguageFeatures(context: vscode.ExtensionContext) {
     context.subscriptions.push(
         vscode.languages.registerHoverProvider('chtl', hoverProvider)
     );
+    
+    // Register custom bracket behavior
+    registerBracketBehavior(context);
     
     // Register diagnostic provider
     diagnosticProvider = new CHTLDiagnosticProvider(compilerService);
