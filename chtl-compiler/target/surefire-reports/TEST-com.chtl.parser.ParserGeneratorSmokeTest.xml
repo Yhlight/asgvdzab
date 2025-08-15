@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.chtl.parser.ParserGeneratorSmokeTest" time="0" tests="2" errors="0" skipped="0" failures="0">
+<testsuite name="com.chtl.parser.ParserGeneratorSmokeTest" time="0.002" tests="2" errors="0" skipped="0" failures="0">
   <properties>
     <property name="jansi.mode" value="force"/>
     <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
@@ -60,5 +60,5 @@
     <property name="sun.cpu.endian" value="little"/>
   </properties>
   <testcase name="testChtlToHtml" classname="com.chtl.parser.ParserGeneratorSmokeTest" time="0"/>
-  <testcase name="testChtlJsToJs" classname="com.chtl.parser.ParserGeneratorSmokeTest" time="0"/>
+  <testcase name="testChtlJsToJs" classname="com.chtl.parser.ParserGeneratorSmokeTest" time="0.002"/>
 </testsuite>

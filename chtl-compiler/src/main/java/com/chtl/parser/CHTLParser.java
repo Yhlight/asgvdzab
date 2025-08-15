@@ -26,15 +26,18 @@ public class CHTLParser {
 	private final ContextAssistant ctx = new ContextAssistant();
 	private final DocumentNode document;
 	private final TemplateRegistry templates = new TemplateRegistry();
+	private final GlobalMap globalMap;
 
 	public CHTLParser(String src, GlobalMap map) {
 		this.tokens = new CHTLLexer(src, map).lex();
 		this.document = new DocumentNode();
+		this.globalMap = map;
 	}
 
 	public CHTLParser(String src, GlobalMap map, DocumentNode doc) {
 		this.tokens = new CHTLLexer(src, map).lex();
 		this.document = doc;
+		this.globalMap = map;
 	}
 
 	public DocumentNode parseDocument() {
@@ -184,10 +187,11 @@ public class CHTLParser {
 				if (def != null) {
 					for (ElementNode node : def.elements) injected.add(cloneElement(node));
 				}
-				// 可选特例化块（此处最小实现：跳过解析）
+				// 特例化块
 				if (matchType(CHTLTokenType.LBRACE)) {
-					String skip = collectUntil(CHTLTokenType.RBRACE);
+					String spec = collectUntil(CHTLTokenType.RBRACE);
 					consumeType(CHTLTokenType.RBRACE);
+					applyElementCustomization(injected, spec);
 				}
 				el.getChildren().addAll(injected);
 				continue;
@@ -439,5 +443,158 @@ public class CHTLParser {
 			if (a.getName().equals(name)) return;
 		}
 		el.getAttributes().add(new Attribute(name, value));
+	}
+
+	private void applyElementCustomization(List<ElementNode> roots, String spec) {
+		int p = 0, n = spec.length();
+		while (p < n) {
+			while (p < n && Character.isWhitespace(spec.charAt(p))) p++;
+			if (p >= n) break;
+			if (spec.startsWith("delete", p)) {
+				p += "delete".length();
+				while (p < n && Character.isWhitespace(spec.charAt(p))) p++;
+				// delete tag[index]?;
+				String sel = readSelectorToken(spec, p);
+				p += sel.length();
+				while (p < n && spec.charAt(p) != ';') p++;
+				if (p < n && spec.charAt(p) == ';') p++;
+				deleteBySelector(roots, sel);
+				continue;
+			}
+			if (spec.startsWith("insert", p)) {
+				p += "insert".length();
+				while (p < n && Character.isWhitespace(spec.charAt(p))) p++;
+				if (spec.startsWith("at", p)) {
+					p += 2; while (p < n && Character.isWhitespace(spec.charAt(p))) p++;
+					boolean top = false, bottom = false;
+					if (spec.startsWith("top", p)) { top = true; p += 3; }
+					else if (spec.startsWith("bottom", p)) { bottom = true; p += 6; }
+					while (p < n && Character.isWhitespace(spec.charAt(p))) p++;
+					String block = readBraceBlock(spec, p);
+					p += block.length() + 2; // include {}
+					List<ElementNode> nodes = parseElementsSnippet(block);
+					if (top) roots.addAll(0, nodes);
+					else if (bottom) roots.addAll(nodes);
+					continue;
+				}
+				// after/before/replace selector { ... }
+				boolean after=false, before=false, replace=false;
+				if (spec.startsWith("after", p)) { after = true; p += 5; }
+				else if (spec.startsWith("before", p)) { before = true; p += 6; }
+				else if (spec.startsWith("replace", p)) { replace = true; p += 7; }
+				while (p < n && Character.isWhitespace(spec.charAt(p))) p++;
+				String sel = readSelectorToken(spec, p);
+				p += sel.length();
+				while (p < n && Character.isWhitespace(spec.charAt(p))) p++;
+				String block = readBraceBlock(spec, p);
+				p += block.length() + 2;
+				List<ElementNode> nodes = parseElementsSnippet(block);
+				int idx = findTopLevelIndex(roots, sel);
+				if (idx >= 0) {
+					if (after) roots.addAll(idx + 1, nodes);
+					if (before) roots.addAll(idx, nodes);
+					if (replace) { roots.remove(idx); roots.addAll(idx, nodes); }
+				}
+				continue;
+			}
+			// tag[index]? { ... } customization (add style)
+			String sel = readSelectorToken(spec, p);
+			p += sel.length();
+			while (p < n && Character.isWhitespace(spec.charAt(p))) p++;
+			if (p < n && spec.charAt(p) == '{') {
+				String block = readBraceBlock(spec, p);
+				p += block.length() + 2;
+				ElementNode target = findTopLevelBySelector(roots, sel);
+				if (target != null) {
+					// find style{...}
+					int sbeg = block.indexOf("style");
+					if (sbeg >= 0) {
+						int brace = block.indexOf('{', sbeg);
+						if (brace >= 0) {
+							int end = findMatchingBrace(block, brace);
+							String styleContent = block.substring(brace + 1, end);
+							parseStyleBlock(styleContent, target);
+						}
+					}
+				}
+			} else {
+				// skip unknown char
+				p++;
+			}
+		}
+	}
+
+	private List<ElementNode> parseElementsSnippet(String snippet) {
+		String src = "container{" + snippet + "}";
+		DocumentNode tmp = new DocumentNode();
+		CHTLParser sub = new CHTLParser(src, this.globalMap, tmp);
+		DocumentNode got = sub.parseDocument();
+		// merge global CSS
+		this.document.getGlobalCssRules().addAll(got.getGlobalCssRules());
+		for (var child : got.getChildren()) {
+			if (child instanceof ElementNode) {
+				ElementNode e = (ElementNode) child;
+				if ("container".equals(e.getTagName())) {
+					return new ArrayList<>(e.getChildren());
+				}
+			}
+		}
+		return new ArrayList<>();
+	}
+
+	private int findMatchingBrace(String s, int openIdx) {
+		int depth = 0;
+		for (int k = openIdx + 1; k < s.length(); k++) {
+			char c = s.charAt(k);
+			if (c == '{') depth++;
+			if (c == '}' && depth == 0) return k;
+			if (c == '}' && depth > 0) depth--;
+		}
+		return s.length() - 1;
+	}
+
+	private void deleteBySelector(List<ElementNode> roots, String sel) {
+		int idx = findTopLevelIndex(roots, sel);
+		if (idx >= 0) roots.remove(idx);
+	}
+
+	private String readSelectorToken(String s, int p) {
+		int n = s.length(); int start = p;
+		while (p < n && (Character.isLetterOrDigit(s.charAt(p)) || s.charAt(p) == '_' || s.charAt(p) == '[' || s.charAt(p) == ']' )) p++;
+		return s.substring(start, Math.min(p, n)).trim();
+	}
+
+	private int findTopLevelIndex(List<ElementNode> roots, String sel) {
+		String tag = sel; int idx = -1;
+		int lb = sel.indexOf('[');
+		if (lb >= 0) {
+			int rb = sel.indexOf(']', lb);
+			if (rb > lb) {
+				try { idx = Integer.parseInt(sel.substring(lb + 1, rb)); } catch (Exception ignored) {}
+				tag = sel.substring(0, lb);
+			}
+		}
+		int pos = -1; int count = -1;
+		for (int k = 0; k < roots.size(); k++) {
+			if (roots.get(k).getTagName().equals(tag)) {
+				count++;
+				if (idx < 0 || count == idx) { pos = k; if (idx >= 0) break; }
+			}
+		}
+		return pos;
+	}
+
+	private ElementNode findTopLevelBySelector(List<ElementNode> roots, String sel) {
+		int idx = findTopLevelIndex(roots, sel);
+		return (idx >= 0 && idx < roots.size()) ? roots.get(idx) : null;
+	}
+
+	private String readBraceBlock(String s, int p) {
+		int n = s.length();
+		while (p < n && Character.isWhitespace(s.charAt(p))) p++;
+		if (p >= n || s.charAt(p) != '{') return "";
+		int open = p;
+		int end = findMatchingBrace(s, open);
+		return s.substring(open + 1, Math.min(end, n));
 	}
 }
