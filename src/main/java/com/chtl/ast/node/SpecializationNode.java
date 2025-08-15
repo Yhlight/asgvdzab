@@ -1,80 +1,13 @@
-package com.chtl.ast.node;import com.chtl.ast.AbstractCHTLASTNode;
-import com.chtl.ast.CHTLASTNode;
-import com.chtl.ast.CHTLASTVisitor;
+package com.chtl.ast.node;
 
+import com.chtl.ast.AbstractCHTLASTNode;
+import com.chtl.ast.NodeType;
 
-import java.io.Serializable;
-import com.chtl.ast.*;
+public class SpecializationNode extends AbstractCHTLASTNode {
 
-/**
- * 特例化操作节点
- * 用于[Custom]定义中的特殊操作
- */
-public class SpecializationNode extends AbstractCHTLASTNode implements Serializable {
-    private static final long serialVersionUID = 1L;
-    
-    /**
-     * 特例化操作类型
-     */
-    public enum SpecializationType {
-        ADD_STYLE,        // 增加样式
-        REMOVE_STYLE,     // 删除样式  
-        ADD_ELEMENT,      // 增加元素
-        REMOVE_ELEMENT,   // 删除元素
-        MODIFY_PROPERTY,  // 修改属性
-        OVERRIDE_INHERIT  // 覆盖继承
-    }
-    
-    private SpecializationType type;
-    private String target;      // 操作目标
-    private CHTLASTNode value;      // 操作值
-    private int position = -1;  // 位置（用于删除/插入操作）
-    
-    public SpecializationNode(SpecializationType type) {
+    public SpecializationNode() {
         super(NodeType.SPECIALIZATION);
-        this.type = type;
     }
-    
-    // Getters and setters
-    public SpecializationType getType() {
-        return type;
-    }
-    
-    public void setType(SpecializationType type) {
-        this.type = type;
-    }
-    
-    public String getTarget() {
-        return target;
-    }
-    
-    public void setTarget(String target) {
-        this.target = target;
-    }
-    
-    public CHTLASTNode getValue() {
-        return value;
-    }
-    
-    public void setValue(CHTLASTNode value) {
-        this.value = value;
-    }
-    
-    public int getPosition() {
-        return position;
-    }
-    
-    public void setPosition(int position) {
-        this.position = position;
-    }
-    
-    @Override
-    public void accept(CHTLASTVisitor visitor) {
-        visitor.visitSpecialization(this);
-    }
-    
-    @Override
-    public String toString() {
-        return String.format("Specialization[%s]: %s", type, target);
-    }
+
+
 }

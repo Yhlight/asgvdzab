@@ -13,6 +13,8 @@ if not exist lib mkdir lib
 REM Run all fix programs first
 echo Running fix programs...
 call :runFix FixCoreClasses.java
+call :runFix FixAllProblems.java
+call :runFix FixModelClasses.java
 call :runFix FixAllIssues.java
 call :runFix FixANTLRClasses.java
 call :runFix FixAllCompilationErrors.java

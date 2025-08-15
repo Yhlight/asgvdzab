@@ -25,8 +25,5 @@ public class ScriptNode extends CHTLNode {
         return isLocal;
     }
     
-    @Override
-    public void accept(CHTLNodeVisitor visitor) {
-        visitor.visit(this);
-    }
+    
 }

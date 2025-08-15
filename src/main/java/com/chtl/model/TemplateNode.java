@@ -37,8 +37,5 @@ public class TemplateNode extends CHTLNode {
         return templateName;
     }
     
-    @Override
-    public void accept(CHTLNodeVisitor visitor) {
-        visitor.visit(this);
-    }
+    
 }

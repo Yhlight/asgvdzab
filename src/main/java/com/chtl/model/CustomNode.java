@@ -37,8 +37,5 @@ public class CustomNode extends CHTLNode {
         return customName;
     }
     
-    @Override
-    public void accept(CHTLNodeVisitor visitor) {
-        visitor.visit(this);
-    }
+    
 }

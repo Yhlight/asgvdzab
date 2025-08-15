@@ -1,4 +1,6 @@
-package com.chtl.ast;import com.chtl.ast.node.CommentNode;
+package com.chtl.ast;
+
+import com.chtl.ast.node.CommentNode;
 import com.chtl.ast.node.ConfigurationNode;
 import com.chtl.ast.node.ConstraintNode;
 import com.chtl.ast.node.CustomDefinitionNode;

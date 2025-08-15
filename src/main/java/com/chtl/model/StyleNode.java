@@ -30,10 +30,7 @@ public class StyleNode extends CHTLNode {
         rules.add(rule);
     }
     
-    @Override
-    public void accept(CHTLNodeVisitor visitor) {
-        visitor.visit(this);
-    }
+    
     
     /**
      * 样式规则内部类

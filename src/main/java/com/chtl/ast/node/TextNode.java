@@ -1,41 +1,16 @@
-package com.chtl.ast.node;import com.chtl.ast.AbstractCHTLASTNode;
-import com.chtl.ast.CHTLASTVisitor;
-import com.chtl.model.TextNode;
+package com.chtl.ast.node;
 
+import com.chtl.model.Text;
 
-import com.chtl.ast.*;
-
-/**
- * 文本节点
- * 对应CHTL中的text { }块
- */
 public class TextNode extends AbstractCHTLASTNode {
-    private String content;
-    
-    public TextNode() {
+    private Text text;
+
+    public TextNode(Text text) {
         super(NodeType.TEXT);
-        this.content = "";
+        this.text = text;
     }
-    
-    public TextNode(String content) {
-        super(NodeType.TEXT);
-        this.content = content;
-    }
-    
-    public String getContent() {
-        return content;
-    }
-    
-    public void setContent(String content) {
-        this.content = content;
-    }
-    
-    public void appendContent(String text) {
-        this.content += text;
-    }
-    
-    @Override
-    public void accept(CHTLASTVisitor visitor) {
-        visitor.visitText(this);
+
+    public Text getText() {
+        return text;
     }
 }
