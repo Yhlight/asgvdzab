@@ -11,8 +11,6 @@ public class GlobalMap {
 	}
 
 	private final Config config;
-
-	// Name 映射（根据文档，可配置关键字集合或单值）
 	private final Map<String, Set<String>> nameGroup = new HashMap<>();
 
 	public GlobalMap() { this(new Config()); }
@@ -23,7 +21,6 @@ public class GlobalMap {
 	}
 
 	private void initializeDefaults() {
-		// 仅实现文档中的默认 Name 集（不私自扩展）。
 		put("CUSTOM_STYLE", set("@Style", "@style", "@CSS", "@Css", "@css"));
 		put("CUSTOM_ELEMENT", set("@Element"));
 		put("CUSTOM_VAR", set("@Var"));
@@ -59,21 +56,25 @@ public class GlobalMap {
 		put("KEYWORD_NAMESPACE", set("[Namespace]"));
 	}
 
-	private void put(String key, Set<String> values) {
-		nameGroup.put(key, values);
-	}
-
-	private static Set<String> set(String... v) {
-		LinkedHashSet<String> s = new LinkedHashSet<>();
-		Collections.addAll(s, v);
-		return s;
-	}
+	private void put(String key, Set<String> values) { nameGroup.put(key, values); }
+	private static Set<String> set(String... v) { LinkedHashSet<String> s = new LinkedHashSet<>(); Collections.addAll(s, v); return s; }
 
 	public Config getConfig() { return config; }
 	public Map<String, Set<String>> getNameGroup() { return nameGroup; }
 
-	public boolean matches(String groupKey, String candidate) {
-		Set<String> set = nameGroup.get(groupKey);
-		return set != null && set.contains(candidate);
+	public boolean matches(String groupKey, String candidate) { Set<String> set = nameGroup.get(groupKey); return set != null && set.contains(candidate); }
+
+	public void overrideNameEntry(String key, List<String> values) {
+		if (values == null) return;
+		int limit = Math.max(0, config.optionCount);
+		LinkedHashSet<String> set = new LinkedHashSet<>();
+		int count = 0;
+		for (String v : values) {
+			if (limit > 0 && count >= limit) break;
+			if (v != null && !v.isEmpty()) { set.add(v); count++; }
+		}
+		if (!set.isEmpty()) {
+			nameGroup.put(key, set);
+		}
 	}
 }
