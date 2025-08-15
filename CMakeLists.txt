@@ -41,6 +41,9 @@ list(REMOVE_ITEM TEST_LIB_SOURCES "${CMAKE_SOURCE_DIR}/src/main.cpp")
 
 add_executable(chtl_tests ${TEST_SOURCES} ${TEST_LIB_SOURCES})
 
+# 创建切片扫描器测试
+add_executable(slice_scanner_tests tests/slice_scanner_test.cpp ${TEST_LIB_SOURCES})
+
 # 如果需要链接其他库（例如ANTLR），可以在这里添加
 # find_package(antlr4-cpp-runtime REQUIRED)
 # target_link_libraries(chtl_compiler antlr4-cpp-runtime)

@@ -232,6 +232,7 @@ CMakeFiles/chtl_compiler.dir/src/main.cpp.o: /workspace/src/main.cpp \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/enable_special_members.h \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/node_handle.h \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/erase_if.h \
+  /workspace/include/scanner/slice_scanner.hpp \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/regex \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bitset \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/locale \
@@ -268,6 +269,8 @@ CMakeFiles/chtl_compiler.dir/src/main.cpp.o: /workspace/src/main.cpp \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/regex.tcc \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/regex_executor.h \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/regex_executor.tcc \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/unordered_set \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/unordered_set.h \
   /workspace/include/dispatcher/compiler_dispatcher.hpp \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/functional \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/array \

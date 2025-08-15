@@ -7,7 +7,7 @@
 namespace chtl {
 
 CHTLUnifiedScanner::CHTLUnifiedScanner(const CompileConfig& config) 
-    : config_(config) {
+    : config_(config), sliceScanner_(std::make_unique<SliceScanner>(config)) {
 }
 
 ScanResult CHTLUnifiedScanner::scan(const std::string& source, const std::string& filename) {
@@ -42,6 +42,7 @@ ScanResult CHTLUnifiedScanner::scanFile(const std::string& filename) {
 
 void CHTLUnifiedScanner::setConfig(const CompileConfig& config) {
     config_ = config;
+    sliceScanner_ = std::make_unique<SliceScanner>(config);
 }
 
 const CompileConfig& CHTLUnifiedScanner::getConfig() const {
@@ -51,6 +52,24 @@ const CompileConfig& CHTLUnifiedScanner::getConfig() const {
 void CHTLUnifiedScanner::reset() {
     state_ = ScannerState{};
     result_ = ScanResult{};
+}
+
+ScanResult CHTLUnifiedScanner::scanWithSliceEngine(const std::string& source, const std::string& filename) {
+    return sliceScanner_->scanWithSlices(source, filename);
+}
+
+ScanResult CHTLUnifiedScanner::scanFileWithSliceEngine(const std::string& filename) {
+    std::ifstream file(filename);
+    if (!file.is_open()) {
+        ScanResult result;
+        result.success = false;
+        result.errors.push_back("无法打开文件: " + filename);
+        return result;
+    }
+    
+    std::stringstream buffer;
+    buffer << file.rdbuf();
+    return scanWithSliceEngine(buffer.str(), filename);
 }
 
 void CHTLUnifiedScanner::preprocessSource() {

@@ -187,6 +187,19 @@ chtl_tests/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/build
 .PHONY : chtl_tests/fast
 
+#=============================================================================
+# Target rules for targets named slice_scanner_tests
+
+# Build rule for target.
+slice_scanner_tests: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 slice_scanner_tests
+.PHONY : slice_scanner_tests
+
+# fast build rule for target.
+slice_scanner_tests/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/build
+.PHONY : slice_scanner_tests/fast
+
 src/common/types.o: src/common/types.cpp.o
 .PHONY : src/common/types.o
 
@@ -194,6 +207,7 @@ src/common/types.o: src/common/types.cpp.o
 src/common/types.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/common/types.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/common/types.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/common/types.cpp.o
 .PHONY : src/common/types.cpp.o
 
 src/common/types.i: src/common/types.cpp.i
@@ -203,6 +217,7 @@ src/common/types.i: src/common/types.cpp.i
 src/common/types.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/common/types.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/common/types.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/common/types.cpp.i
 .PHONY : src/common/types.cpp.i
 
 src/common/types.s: src/common/types.cpp.s
@@ -212,6 +227,7 @@ src/common/types.s: src/common/types.cpp.s
 src/common/types.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/common/types.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/common/types.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/common/types.cpp.s
 .PHONY : src/common/types.cpp.s
 
 src/compilers/chtl_compiler.o: src/compilers/chtl_compiler.cpp.o
@@ -221,6 +237,7 @@ src/compilers/chtl_compiler.o: src/compilers/chtl_compiler.cpp.o
 src/compilers/chtl_compiler.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/compilers/chtl_compiler.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/compilers/chtl_compiler.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/compilers/chtl_compiler.cpp.o
 .PHONY : src/compilers/chtl_compiler.cpp.o
 
 src/compilers/chtl_compiler.i: src/compilers/chtl_compiler.cpp.i
@@ -230,6 +247,7 @@ src/compilers/chtl_compiler.i: src/compilers/chtl_compiler.cpp.i
 src/compilers/chtl_compiler.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/compilers/chtl_compiler.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/compilers/chtl_compiler.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/compilers/chtl_compiler.cpp.i
 .PHONY : src/compilers/chtl_compiler.cpp.i
 
 src/compilers/chtl_compiler.s: src/compilers/chtl_compiler.cpp.s
@@ -239,6 +257,7 @@ src/compilers/chtl_compiler.s: src/compilers/chtl_compiler.cpp.s
 src/compilers/chtl_compiler.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/compilers/chtl_compiler.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/compilers/chtl_compiler.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/compilers/chtl_compiler.cpp.s
 .PHONY : src/compilers/chtl_compiler.cpp.s
 
 src/dispatcher/compiler_dispatcher.o: src/dispatcher/compiler_dispatcher.cpp.o
@@ -248,6 +267,7 @@ src/dispatcher/compiler_dispatcher.o: src/dispatcher/compiler_dispatcher.cpp.o
 src/dispatcher/compiler_dispatcher.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/dispatcher/compiler_dispatcher.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/dispatcher/compiler_dispatcher.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/dispatcher/compiler_dispatcher.cpp.o
 .PHONY : src/dispatcher/compiler_dispatcher.cpp.o
 
 src/dispatcher/compiler_dispatcher.i: src/dispatcher/compiler_dispatcher.cpp.i
@@ -257,6 +277,7 @@ src/dispatcher/compiler_dispatcher.i: src/dispatcher/compiler_dispatcher.cpp.i
 src/dispatcher/compiler_dispatcher.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/dispatcher/compiler_dispatcher.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/dispatcher/compiler_dispatcher.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/dispatcher/compiler_dispatcher.cpp.i
 .PHONY : src/dispatcher/compiler_dispatcher.cpp.i
 
 src/dispatcher/compiler_dispatcher.s: src/dispatcher/compiler_dispatcher.cpp.s
@@ -266,6 +287,7 @@ src/dispatcher/compiler_dispatcher.s: src/dispatcher/compiler_dispatcher.cpp.s
 src/dispatcher/compiler_dispatcher.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/dispatcher/compiler_dispatcher.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/dispatcher/compiler_dispatcher.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/dispatcher/compiler_dispatcher.cpp.s
 .PHONY : src/dispatcher/compiler_dispatcher.cpp.s
 
 src/main.o: src/main.cpp.o
@@ -292,6 +314,36 @@ src/main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/main.cpp.s
 .PHONY : src/main.cpp.s
 
+src/scanner/slice_scanner.o: src/scanner/slice_scanner.cpp.o
+.PHONY : src/scanner/slice_scanner.o
+
+# target to build an object file
+src/scanner/slice_scanner.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/scanner/slice_scanner.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/scanner/slice_scanner.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/scanner/slice_scanner.cpp.o
+.PHONY : src/scanner/slice_scanner.cpp.o
+
+src/scanner/slice_scanner.i: src/scanner/slice_scanner.cpp.i
+.PHONY : src/scanner/slice_scanner.i
+
+# target to preprocess a source file
+src/scanner/slice_scanner.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/scanner/slice_scanner.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/scanner/slice_scanner.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/scanner/slice_scanner.cpp.i
+.PHONY : src/scanner/slice_scanner.cpp.i
+
+src/scanner/slice_scanner.s: src/scanner/slice_scanner.cpp.s
+.PHONY : src/scanner/slice_scanner.s
+
+# target to generate assembly for a file
+src/scanner/slice_scanner.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/scanner/slice_scanner.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/scanner/slice_scanner.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/scanner/slice_scanner.cpp.s
+.PHONY : src/scanner/slice_scanner.cpp.s
+
 src/scanner/unified_scanner.o: src/scanner/unified_scanner.cpp.o
 .PHONY : src/scanner/unified_scanner.o
 
@@ -299,6 +351,7 @@ src/scanner/unified_scanner.o: src/scanner/unified_scanner.cpp.o
 src/scanner/unified_scanner.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/scanner/unified_scanner.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/scanner/unified_scanner.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/scanner/unified_scanner.cpp.o
 .PHONY : src/scanner/unified_scanner.cpp.o
 
 src/scanner/unified_scanner.i: src/scanner/unified_scanner.cpp.i
@@ -308,6 +361,7 @@ src/scanner/unified_scanner.i: src/scanner/unified_scanner.cpp.i
 src/scanner/unified_scanner.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/scanner/unified_scanner.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/scanner/unified_scanner.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/scanner/unified_scanner.cpp.i
 .PHONY : src/scanner/unified_scanner.cpp.i
 
 src/scanner/unified_scanner.s: src/scanner/unified_scanner.cpp.s
@@ -317,6 +371,7 @@ src/scanner/unified_scanner.s: src/scanner/unified_scanner.cpp.s
 src/scanner/unified_scanner.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/scanner/unified_scanner.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/scanner/unified_scanner.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/scanner/unified_scanner.cpp.s
 .PHONY : src/scanner/unified_scanner.cpp.s
 
 tests/basic_test.o: tests/basic_test.cpp.o
@@ -343,6 +398,33 @@ tests/basic_test.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/basic_test.cpp.s
 .PHONY : tests/basic_test.cpp.s
 
+tests/slice_scanner_test.o: tests/slice_scanner_test.cpp.o
+.PHONY : tests/slice_scanner_test.o
+
+# target to build an object file
+tests/slice_scanner_test.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/slice_scanner_test.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/tests/slice_scanner_test.cpp.o
+.PHONY : tests/slice_scanner_test.cpp.o
+
+tests/slice_scanner_test.i: tests/slice_scanner_test.cpp.i
+.PHONY : tests/slice_scanner_test.i
+
+# target to preprocess a source file
+tests/slice_scanner_test.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/slice_scanner_test.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/tests/slice_scanner_test.cpp.i
+.PHONY : tests/slice_scanner_test.cpp.i
+
+tests/slice_scanner_test.s: tests/slice_scanner_test.cpp.s
+.PHONY : tests/slice_scanner_test.s
+
+# target to generate assembly for a file
+tests/slice_scanner_test.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/slice_scanner_test.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/tests/slice_scanner_test.cpp.s
+.PHONY : tests/slice_scanner_test.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -357,6 +439,7 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... chtl_compiler"
 	@echo "... chtl_tests"
+	@echo "... slice_scanner_tests"
 	@echo "... src/common/types.o"
 	@echo "... src/common/types.i"
 	@echo "... src/common/types.s"
@@ -369,12 +452,18 @@ help:
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
+	@echo "... src/scanner/slice_scanner.o"
+	@echo "... src/scanner/slice_scanner.i"
+	@echo "... src/scanner/slice_scanner.s"
 	@echo "... src/scanner/unified_scanner.o"
 	@echo "... src/scanner/unified_scanner.i"
 	@echo "... src/scanner/unified_scanner.s"
 	@echo "... tests/basic_test.o"
 	@echo "... tests/basic_test.i"
 	@echo "... tests/basic_test.s"
+	@echo "... tests/slice_scanner_test.o"
+	@echo "... tests/slice_scanner_test.i"
+	@echo "... tests/slice_scanner_test.s"
 .PHONY : help
 
 

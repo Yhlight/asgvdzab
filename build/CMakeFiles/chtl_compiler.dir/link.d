@@ -6,6 +6,7 @@ bin/chtl_compiler: \
   CMakeFiles/chtl_compiler.dir/src/compilers/chtl_compiler.cpp.o \
   CMakeFiles/chtl_compiler.dir/src/dispatcher/compiler_dispatcher.cpp.o \
   CMakeFiles/chtl_compiler.dir/src/main.cpp.o \
+  CMakeFiles/chtl_compiler.dir/src/scanner/slice_scanner.cpp.o \
   CMakeFiles/chtl_compiler.dir/src/scanner/unified_scanner.cpp.o \
   /usr/lib/gcc/x86_64-linux-gnu/14/libstdc++.so \
   /lib/x86_64-linux-gnu/libm.so \
@@ -48,6 +49,8 @@ CMakeFiles/chtl_compiler.dir/src/compilers/chtl_compiler.cpp.o:
 CMakeFiles/chtl_compiler.dir/src/dispatcher/compiler_dispatcher.cpp.o:
 
 CMakeFiles/chtl_compiler.dir/src/main.cpp.o:
+
+CMakeFiles/chtl_compiler.dir/src/scanner/slice_scanner.cpp.o:
 
 CMakeFiles/chtl_compiler.dir/src/scanner/unified_scanner.cpp.o:
 

@@ -12,6 +12,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/workspace/src/compilers/chtl_compiler.cpp" "CMakeFiles/chtl_compiler.dir/src/compilers/chtl_compiler.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/compilers/chtl_compiler.cpp.o.d"
   "/workspace/src/dispatcher/compiler_dispatcher.cpp" "CMakeFiles/chtl_compiler.dir/src/dispatcher/compiler_dispatcher.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/dispatcher/compiler_dispatcher.cpp.o.d"
   "/workspace/src/main.cpp" "CMakeFiles/chtl_compiler.dir/src/main.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/main.cpp.o.d"
+  "/workspace/src/scanner/slice_scanner.cpp" "CMakeFiles/chtl_compiler.dir/src/scanner/slice_scanner.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/scanner/slice_scanner.cpp.o.d"
   "/workspace/src/scanner/unified_scanner.cpp" "CMakeFiles/chtl_compiler.dir/src/scanner/unified_scanner.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/scanner/unified_scanner.cpp.o.d"
   "" "bin/chtl_compiler" "gcc" "CMakeFiles/chtl_compiler.dir/link.d"
   )

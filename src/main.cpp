@@ -202,7 +202,7 @@ int main(int argc, char* argv[]) {
         CHTLUnifiedScanner scanner(config);
         
         // 扫描输入文件
-        auto scanResult = scanner.scanFile(args.inputFile);
+        auto scanResult = scanner.scanFileWithSliceEngine(args.inputFile);
         
         showScanDetails(scanResult, args.verbose);
         

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/types.hpp"
+#include "scanner/slice_scanner.hpp"
 #include <string>
 #include <vector>
 #include <memory>
@@ -57,6 +58,21 @@ public:
      */
     void reset();
 
+    /**
+     * 使用新的切片机制扫描（推荐）
+     * @param source CHTL源代码字符串
+     * @param filename 文件名（用于错误报告）
+     * @return 扫描结果
+     */
+    ScanResult scanWithSliceEngine(const std::string& source, const std::string& filename = "");
+
+    /**
+     * 从文件使用切片机制扫描
+     * @param filename 文件路径
+     * @return 扫描结果
+     */
+    ScanResult scanFileWithSliceEngine(const std::string& filename);
+
 private:
     /**
      * 扫描器内部状态
@@ -80,6 +96,7 @@ private:
     CompileConfig config_;          // 编译配置
     ScannerState state_;           // 扫描器状态
     ScanResult result_;            // 扫描结果
+    std::unique_ptr<SliceScanner> sliceScanner_; // 切片扫描器
 
     /**
      * 预处理源代码（移除注释、处理转义字符等）

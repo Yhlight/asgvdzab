@@ -1,0 +1,6 @@
+div {
+    script {
+        {{box}}->listen({click: () => console.log("clicked")});
+        animate({duration: 500});
+    }
+}

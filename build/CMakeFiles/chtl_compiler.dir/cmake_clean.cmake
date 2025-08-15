@@ -8,6 +8,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/chtl_compiler.dir/src/dispatcher/compiler_dispatcher.cpp.o.d"
   "CMakeFiles/chtl_compiler.dir/src/main.cpp.o"
   "CMakeFiles/chtl_compiler.dir/src/main.cpp.o.d"
+  "CMakeFiles/chtl_compiler.dir/src/scanner/slice_scanner.cpp.o"
+  "CMakeFiles/chtl_compiler.dir/src/scanner/slice_scanner.cpp.o.d"
   "CMakeFiles/chtl_compiler.dir/src/scanner/unified_scanner.cpp.o"
   "CMakeFiles/chtl_compiler.dir/src/scanner/unified_scanner.cpp.o.d"
   "bin/chtl_compiler"
