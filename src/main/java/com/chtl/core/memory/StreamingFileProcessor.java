@@ -1,4 +1,5 @@
 package com.chtl.core.memory;
+import java.nio.MappedByteBuffer;
 
 import com.chtl.scanner.Fragment;
 import com.chtl.scanner.FragmentType;

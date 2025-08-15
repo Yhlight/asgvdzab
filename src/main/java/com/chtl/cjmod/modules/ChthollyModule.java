@@ -1,3 +1,4 @@
+import com.chtl.cjmod.*;
 package com.chtl.cjmod.chtholly;
 
 import com.chtl.cjmod.CJmodBase;
