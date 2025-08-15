@@ -179,8 +179,8 @@ public class UnifiedScannerV2 {
         int pos = 0;
         
         while (pos < content.length()) {
-            // 检查CHTL特殊语法
-            if (checkCHTLSyntax(content, pos)) {
+            // 检查局部script允许的CHTL语法
+            if (checkLocalScriptCHTLSyntax(content, pos)) {
                 // 找到CHTL语法的结束
                 int chtlEnd = findCHTLSyntaxEnd(content, pos);
                 fragments.add(new CodeFragment(
@@ -210,27 +210,36 @@ public class UnifiedScannerV2 {
     }
     
     /**
-     * 检查是否是局部块允许的CHTL语法
+     * 检查是否是局部script块允许的CHTL语法
      */
-    private boolean checkCHTLSyntax(String content, int pos) {
-        // 局部块只允许使用性的语法，不允许定义性的语法
-        String[] allowedMarkers = {
-            "[Import]",      // 允许导入
-            "[Origin]",      // 允许原始嵌入
-            "text ",         // 允许文本
-            "slot ",         // 允许插槽
-            "@Element",      // 允许使用元素
-            "@Style",        // 允许使用样式
-            // 注意：不允许 [Template]、[Custom]、[Configuration]、[Namespace] 等定义性语法
-        };
+    private boolean checkLocalScriptCHTLSyntax(String content, int pos) {
+        // 局部script块只允许：
+        // 1. {{&}} - 自引用增强选择器
+        // 2. 模板变量使用 - VariableName 或 VariableName(key)
+        // 3. 自定义变量使用
+        // 4. 特例化变量
+        // 5. from语法（导入变量）
+        // 6. [Origin] - 原始嵌入
         
-        for (String marker : allowedMarkers) {
-            if (pos + marker.length() <= content.length() &&
-                content.substring(pos).startsWith(marker)) {
-                return true;
-            }
+        // 检查{{&}}
+        if (pos + 3 <= content.length() && 
+            content.substring(pos, pos + 3).equals("{{&")) {
+            return false; // 这是CHTL JS语法，不是CHTL语法
         }
         
+        // 检查原始嵌入
+        if (pos + 8 <= content.length() && 
+            content.substring(pos, pos + 8).equals("[Origin]")) {
+            return true;
+        }
+        
+        // 检查from语法
+        if (pos + 5 <= content.length() && 
+            content.substring(pos, pos + 5).equals("from ")) {
+            return true;
+        }
+        
+        // 其他CHTL语法在局部script中不允许
         return false;
     }
     
