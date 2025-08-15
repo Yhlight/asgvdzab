@@ -71,7 +71,9 @@ public class StyleProcessor {
         VARIABLE_FUNCTION,
         STYLE_TEMPLATE,
         ORIGIN_BLOCK,
-        AMPERSAND  // & 符号（仅局部样式）
+        AMPERSAND,         // & 符号（仅局部样式）
+        DELETE_STATEMENT,  // delete语句（仅局部样式）
+        FROM_STATEMENT     // from语句（仅局部样式）
     }
     
     private final boolean isLocalStyle;
@@ -142,25 +144,28 @@ public class StyleProcessor {
             }
         }
         
-        // 查找样式模板使用（局部样式块只允许使用，不允许定义）
+        // 查找样式模板使用
+        // 局部样式块允许：模板样式组、自定义样式组、无值样式组
         Matcher styleMatcher = STYLE_TEMPLATE.matcher(content);
         while (styleMatcher.find()) {
-            String matched = styleMatcher.group();
-            
-            // 局部样式块不允许定义性语法
-            if (isLocalStyle && 
-                (matched.contains("[Template]") || 
-                 matched.contains("[Custom]") || 
-                 matched.contains("[Configuration]"))) {
-                continue; // 跳过定义性语法
-            }
-            
             syntaxMap.put(styleMatcher.start(), new SyntaxInfo(
                 SyntaxType.STYLE_TEMPLATE,
                 styleMatcher.start(),
                 styleMatcher.end(),
-                matched
+                styleMatcher.group()
             ));
+        }
+        
+        // 局部样式块特有功能
+        if (isLocalStyle) {
+            // 查找delete语句
+            findDeleteStatements(content, syntaxMap);
+            
+            // 查找from语句（命名空间）
+            findFromStatements(content, syntaxMap);
+            
+            // 查找特例化语法
+            findSpecializations(content, syntaxMap);
         }
         
         // 查找原始嵌入
@@ -255,6 +260,46 @@ public class StyleProcessor {
         }
         
         return pos;
+    }
+    
+    /**
+     * 查找delete语句
+     */
+    private void findDeleteStatements(String content, TreeMap<Integer, SyntaxInfo> syntaxMap) {
+        Pattern deletePattern = Pattern.compile("\\bdelete\\s+[^;]+;");
+        Matcher matcher = deletePattern.matcher(content);
+        while (matcher.find()) {
+            syntaxMap.put(matcher.start(), new SyntaxInfo(
+                SyntaxType.DELETE_STATEMENT,
+                matcher.start(),
+                matcher.end(),
+                matcher.group()
+            ));
+        }
+    }
+    
+    /**
+     * 查找from语句
+     */
+    private void findFromStatements(String content, TreeMap<Integer, SyntaxInfo> syntaxMap) {
+        Pattern fromPattern = Pattern.compile("\\bfrom\\s+[\\w.]+");
+        Matcher matcher = fromPattern.matcher(content);
+        while (matcher.find()) {
+            syntaxMap.put(matcher.start(), new SyntaxInfo(
+                SyntaxType.FROM_STATEMENT,
+                matcher.start(),
+                matcher.end(),
+                matcher.group()
+            ));
+        }
+    }
+    
+    /**
+     * 查找特例化语法
+     */
+    private void findSpecializations(String content, TreeMap<Integer, SyntaxInfo> syntaxMap) {
+        // 特例化通常和delete、from等结合使用
+        // 已经在上面的方法中处理
     }
     
     /**
