@@ -62,41 +62,42 @@ java -jar target/chtl-compiler.jar input.chtl -o output/
 [Template] @Element MyButton {
     button {
         class = "btn my-button";
+        
         slot { }
-    }
-    
-    style {
-        & {
-            background: #007bff;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
+        
+        style {
+            & {
+                background: #007bff;
+                color: white;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+            
+            &:hover {
+                background: #0056b3;
+            }
         }
         
-        &:hover {
-            background: #0056b3;
+        script {
+            // 使用增强选择器绑定事件
+            {{&}}.listen({
+                click: function() {
+                    // 使用animate函数，指定target为this
+                    const anim = animate({
+                        target: this,
+                        duration: 200,
+                        easing: ease-out,
+                        when: [
+                            {at: 0.0, transform: 'scale(1)'},
+                            {at: 0.5, transform: 'scale(0.95)'},
+                            {at: 1.0, transform: 'scale(1)'}
+                        ]
+                    });
+                }
+            });
         }
-    }
-    
-    script {
-        // 使用增强选择器绑定事件
-        {{&}}.listen({
-            click: function() {
-                // 使用animate函数，指定target为this
-                const anim = animate({
-                    target: this,
-                    duration: 200,
-                    easing: ease-out,
-                    when: [
-                        {at: 0.0, transform: 'scale(1)'},
-                        {at: 0.5, transform: 'scale(0.95)'},
-                        {at: 1.0, transform: 'scale(1)'}
-                    ]
-                });
-            }
-        });
     }
 }
 
