@@ -9,23 +9,36 @@ namespace chtl {
 
 /**
  * 代码片段类型枚举
+ * 明确分为4个独立编译器处理的类型
  */
 enum class CodeSegmentType {
-    CHTL,           // CHTL核心语法
-    CHTL_JS,        // CHTL JS扩展语法
-    CSS,            // 全局CSS样式
-    JAVASCRIPT,     // 标准JavaScript
-    LOCAL_STYLE,    // 局部样式块
-    LOCAL_SCRIPT,   // 局部脚本块
-    TEMPLATE,       // 模板
-    CUSTOM,         // 自定义
-    IMPORT,         // 导入
-    ORIGIN,         // 原始嵌入
-    CONFIGURATION,  // 配置
-    NAMESPACE,      // 命名空间
-    COMMENT,        // 注释
-    TEXT,           // 文本节点
-    UNKNOWN         // 未知类型
+    // === CHTL编译器处理 (手写) ===
+    CHTL_CORE,          // CHTL核心语法：模板、自定义、配置、命名空间、导入等
+    CHTL_TEMPLATE,      // [Template] 块
+    CHTL_CUSTOM,        // [Custom] 块  
+    CHTL_CONFIGURATION, // [Configuration] 块
+    CHTL_NAMESPACE,     // [Namespace] 块
+    CHTL_IMPORT,        // [Import] 块
+    CHTL_TEXT,          // text { } 块
+    
+    // === CHTL JS编译器处理 (手写) ===
+    CHTL_JS_SCRIPT,     // script块中的CHTL JS代码（包含{{}}、->、listen、delegate、animate）
+    
+    // === CSS编译器处理 (ANTLR) ===
+    CSS_GLOBAL,         // 全局CSS文件
+    CSS_LOCAL_STYLE,    // style块中的纯CSS代码
+    CSS_ORIGIN,         // [Origin] @Style块
+    
+    // === JavaScript编译器处理 (ANTLR) ===
+    JAVASCRIPT_STANDARD, // 标准JavaScript代码
+    JAVASCRIPT_ORIGIN,   // [Origin] @JavaScript块
+    
+    // === 原始嵌入处理 ===
+    ORIGIN_HTML,        // [Origin] @Html块
+    
+    // === 其他 ===
+    COMMENT,            // 注释
+    UNKNOWN             // 未知类型
 };
 
 /**
