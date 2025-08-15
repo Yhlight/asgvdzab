@@ -76,8 +76,11 @@ public class ChthollyModule extends CJmodBase {
         try {
             String url = (String) config.get("url");
             String mode = (String) config.getOrDefault("mode", "ASCII");
-            int width = ((Number) config.getOrDefault("width", 80)).intValue();
-            int height = ((Number) config.getOrDefault("height", 40)).intValue();
+            
+            // 处理width和height参数，支持CSS单位
+            Object widthParam = config.get("width");
+            Object heightParam = config.get("height");
+            Object scaleParam = config.get("scale");
             
             // 加载图片
             BufferedImage image = loadImage(url);
@@ -85,8 +88,31 @@ public class ChthollyModule extends CJmodBase {
                 return "// 无法加载图片: " + url;
             }
             
+            // 计算目标尺寸
+            int targetWidth = 80;  // 默认宽度
+            int targetHeight = 40; // 默认高度
+            
+            // 如果提供了scale参数，使用等比缩放
+            if (scaleParam != null) {
+                double scale = parseScale(scaleParam);
+                targetWidth = (int)(image.getWidth() * scale / 10); // 字符宽度调整
+                targetHeight = (int)(image.getHeight() * scale / 20); // 字符高度调整
+            } else {
+                // 否则使用width和height参数
+                if (widthParam != null) {
+                    targetWidth = parseDimension(widthParam, image.getWidth());
+                }
+                if (heightParam != null) {
+                    targetHeight = parseDimension(heightParam, image.getHeight());
+                }
+            }
+            
+            // 确保尺寸在合理范围内
+            targetWidth = Math.max(10, Math.min(targetWidth, 200));
+            targetHeight = Math.max(5, Math.min(targetHeight, 100));
+            
             // 缩放图片
-            BufferedImage scaledImage = scaleImage(image, width, height);
+            BufferedImage scaledImage = scaleImage(image, targetWidth, targetHeight);
             
             // 转换为字符画
             if ("ASCII".equalsIgnoreCase(mode)) {
@@ -129,6 +155,72 @@ public class ChthollyModule extends CJmodBase {
             0, 0, null
         );
         return scaled;
+    }
+    
+    /**
+     * 解析尺寸参数，支持数字、百分比、CSS单位
+     */
+    private int parseDimension(Object value, int referenceSize) {
+        if (value == null) return referenceSize;
+        
+        if (value instanceof Number) {
+            return ((Number) value).intValue();
+        }
+        
+        String strValue = value.toString().trim();
+        
+        // 百分比
+        if (strValue.endsWith("%")) {
+            try {
+                double percent = Double.parseDouble(strValue.substring(0, strValue.length() - 1));
+                return (int)(referenceSize * percent / 100.0);
+            } catch (NumberFormatException e) {
+                return referenceSize;
+            }
+        }
+        
+        // CSS单位 (简化处理，转换为大概的字符数)
+        if (strValue.endsWith("px")) {
+            try {
+                int px = Integer.parseInt(strValue.substring(0, strValue.length() - 2));
+                return px / 8; // 假设每个字符约8像素
+            } catch (NumberFormatException e) {
+                return referenceSize;
+            }
+        }
+        
+        if (strValue.endsWith("em")) {
+            try {
+                double em = Double.parseDouble(strValue.substring(0, strValue.length() - 2));
+                return (int)(em * 16 / 8); // 1em ≈ 16px ≈ 2字符
+            } catch (NumberFormatException e) {
+                return referenceSize;
+            }
+        }
+        
+        // 纯数字
+        try {
+            return Integer.parseInt(strValue);
+        } catch (NumberFormatException e) {
+            return referenceSize;
+        }
+    }
+    
+    /**
+     * 解析缩放参数
+     */
+    private double parseScale(Object value) {
+        if (value == null) return 1.0;
+        
+        if (value instanceof Number) {
+            return ((Number) value).doubleValue();
+        }
+        
+        try {
+            return Double.parseDouble(value.toString());
+        } catch (NumberFormatException e) {
+            return 1.0;
+        }
     }
     
     /**

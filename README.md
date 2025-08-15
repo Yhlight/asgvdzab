@@ -11,7 +11,7 @@ CHTL（Custom HyperText Language）是一种创新的前端开发语言，旨在
 ### 🎯 核心特性
 
 - **统一语法**：HTML、CSS、JavaScript统一在一个文件中，支持模块化开发
-- **增强选择器**：`{{}}` 语法提供更强大的DOM操作能力
+- **增强选择器**：`{{}}` 语法在script块中提供更强大的DOM操作能力
 - **CHTL JS**：扩展的JavaScript语法，支持unquoted literals和更直观的事件绑定
 - **模块系统**：
   - CMOD：CHTL模板打包，支持`[Export]`声明（推荐）
@@ -45,12 +45,12 @@ java -jar target/chtl-compiler.jar input.chtl -o output/
 
 ```chtl
 [Template] @MyButton {
-    <button class="btn {{&}}">
+    <button class="btn my-button">
         <slot/>
     </button>
     
     style {
-        {{&}} {
+        .my-button {
             background: #007bff;
             color: white;
             padding: 10px 20px;
@@ -59,13 +59,14 @@ java -jar target/chtl-compiler.jar input.chtl -o output/
             cursor: pointer;
         }
         
-        {{&}}:hover {
+        .my-button:hover {
             background: #0056b3;
         }
     }
     
     script {
-        {{&}}.listen('click', function() {
+        // 使用增强选择器绑定事件
+        {{.my-button}}.listen('click', function() {
             this.animate({
                 scale: [1, 0.95, 1],
                 duration: 200,
@@ -130,6 +131,8 @@ java -cp "src/main/java:test/java" TestPrecisionScanner
 - [开发者指南](docs/developer-guide.md) - 贡献代码指南
 - [CJMOD开发指南](CJMOD_DEVELOPER_GUIDE.md) - CJMOD模块开发
 - [CMOD Export指南](CMOD_EXPORT_GUIDE.md) - CMOD [Export]块使用
+- [CHTL语法示例](CHTL_SYNTAX_EXAMPLES.md) - 语法使用示例
+- [Chtholly模块](src/main/java/com/chtl/module/Chtholly/README.md) - 官方主题模块
 - [未来规划](FUTURE_ROADMAP.md) - 项目发展路线图
 
 ## 🤝 贡献
