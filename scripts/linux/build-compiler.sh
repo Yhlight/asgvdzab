@@ -1,17 +1,17 @@
 #!/bin/bash
 
-# CHTL编译器构建脚本 - Linux平台
-# 构建编译器并打包官方模块
+# CHTL Compiler Build Script - Linux Platform
+# Builds the compiler and packages official modules
 
 set -e
 
-# 颜色定义
+# Color definitions
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
-# 打印信息
+# Print functions
 info() {
     echo -e "${GREEN}[INFO]${NC} $1"
 }
@@ -25,269 +25,244 @@ warning() {
     echo -e "${YELLOW}[WARN]${NC} $1"
 }
 
-# 检查环境
+# Check environment
 check_environment() {
-    info "检查构建环境..."
+    info "Checking build environment..."
     
-    # 检查Java
+    # Check Java
     if ! command -v java &> /dev/null; then
-        error "未找到Java，请安装Java 17或更高版本"
+        error "Java not found. Please install JDK 17 or higher"
     fi
     
-    JAVA_VERSION=$(java -version 2>&1 | head -n 1 | cut -d'"' -f 2 | cut -d'.' -f 1)
+    JAVA_VERSION=$(java -version 2>&1 | awk -F '"' '/version/ {print $2}' | cut -d'.' -f1)
     if [ "$JAVA_VERSION" -lt 17 ]; then
-        error "需要Java 17或更高版本，当前版本：$JAVA_VERSION"
+        error "Java 17 or higher required, current version: $JAVA_VERSION"
     fi
+    info "Java version: $(java -version 2>&1 | head -n 1)"
     
-    # 检查Maven
+    # Check Maven
     if ! command -v mvn &> /dev/null; then
-        error "未找到Maven，请安装Maven 3.6+"
+        error "Maven not found. Please install Maven 3.6.0 or higher"
     fi
-    
-    info "环境检查通过"
+    info "Maven version: $(mvn -version | head -n 1)"
 }
 
-# 清理构建目录
-clean_build() {
-    info "清理构建目录..."
-    rm -rf target/
-    rm -rf build/
-    rm -rf dist/
-}
-
-# 编译项目
-compile_project() {
-    info "编译CHTL编译器..."
+# Main build function
+build() {
+    info "Starting CHTL compiler build..."
     
-    # 使用Maven构建
-    mvn clean package -DskipTests
+    # Navigate to project root
+    cd "$(dirname "$0")/../.."
+    PROJECT_ROOT=$(pwd)
     
-    if [ $? -ne 0 ]; then
-        error "编译失败"
+    # Clean old build
+    if [ -d "target" ]; then
+        info "Cleaning old build..."
+        rm -rf target
     fi
     
-    info "编译成功"
-}
-
-# 准备模块
-prepare_modules() {
-    info "准备官方模块..."
-    
-    # 创建临时模块目录
-    TEMP_MODULE_DIR="build/modules"
-    mkdir -p "$TEMP_MODULE_DIR"
-    
-    # 复制官方模块
-    if [ -d "src/main/java/com/chtl/module" ]; then
-        cp -r src/main/java/com/chtl/module/* "$TEMP_MODULE_DIR/"
+    # Build with Maven
+    info "Running Maven build..."
+    if [ "$SKIP_TESTS" = true ]; then
+        mvn clean package -DskipTests
+    else
+        mvn clean package
     fi
     
-    # 编译Chtholly模块（如果存在）
-    if [ -d "$TEMP_MODULE_DIR/Chtholly" ]; then
-        info "构建Chtholly模块..."
+    # Check build result
+    if [ ! -f "target/chtl-compiler-1.0.jar" ]; then
+        error "Build failed: JAR file not found"
+    fi
+    
+    info "Build completed successfully"
+}
+
+# Package modules
+package_modules() {
+    info "Packaging official modules..."
+    
+    # Create module directory
+    MODULE_DIR="$PROJECT_ROOT/target/modules"
+    mkdir -p "$MODULE_DIR"
+    
+    # Package Chtholly module
+    CHTHOLLY_PATH="$PROJECT_ROOT/src/main/java/com/chtl/module/Chtholly"
+    if [ -d "$CHTHOLLY_PATH" ]; then
+        info "Packaging Chtholly module..."
         
-        # 编译CJMOD部分
-        if [ -d "$TEMP_MODULE_DIR/Chtholly/CJMOD/src" ]; then
-            pushd "$TEMP_MODULE_DIR/Chtholly/CJMOD" > /dev/null
-            
-            # 创建build目录
-            mkdir -p build
-            
-            # 编译Java文件
-            find src -name "*.java" -print0 | xargs -0 javac -cp "../../../../../target/chtl-compiler.jar" -d build/
-            
-            # 打包成JAR
-            jar cf chtholly-cjmod.jar -C build .
-            
-            popd > /dev/null
+        # Use packaging script
+        if [ -f "$PROJECT_ROOT/scripts/linux/package-unified.sh" ]; then
+            bash "$PROJECT_ROOT/scripts/linux/package-unified.sh" "$CHTHOLLY_PATH" "$MODULE_DIR"
+        else
+            warning "Module packaging script not found, copying source files..."
+            cp -r "$CHTHOLLY_PATH" "$MODULE_DIR/"
         fi
     fi
     
-    info "模块准备完成"
+    info "Module packaging completed"
 }
 
-# 创建发布包
+# Create distribution package
 create_distribution() {
-    info "创建发布包..."
+    info "Creating distribution package..."
     
-    # 创建发布目录
-    DIST_DIR="dist/chtl-compiler-linux"
-    mkdir -p "$DIST_DIR"/{bin,lib,modules,config,docs}
+    # Create dist directory
+    DIST_DIR="$PROJECT_ROOT/dist"
+    mkdir -p "$DIST_DIR"
     
-    # 复制编译器JAR
-    cp target/chtl-compiler*.jar "$DIST_DIR/lib/chtl-compiler.jar"
+    # Create temporary directory
+    TEMP_DIR=$(mktemp -d)
+    PACKAGE_NAME="chtl-compiler-linux"
+    PACKAGE_DIR="$TEMP_DIR/$PACKAGE_NAME"
+    mkdir -p "$PACKAGE_DIR"
     
-    # 复制依赖
-    if [ -d "target/lib" ]; then
-        cp target/lib/*.jar "$DIST_DIR/lib/"
+    # Copy files
+    cp "target/chtl-compiler-1.0.jar" "$PACKAGE_DIR/chtl-compiler.jar"
+    
+    # Copy modules
+    if [ -d "target/modules" ]; then
+        cp -r "target/modules" "$PACKAGE_DIR/"
     fi
     
-    # 复制模块
-    if [ -d "build/modules" ]; then
-        cp -r build/modules/* "$DIST_DIR/modules/"
-    fi
-    
-    # 创建启动脚本
-    cat > "$DIST_DIR/bin/chtl" << 'EOF'
+    # Create launcher script
+    cat > "$PACKAGE_DIR/chtl" << 'EOF'
 #!/bin/bash
-# CHTL编译器启动脚本
-
-# 获取脚本所在目录
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-BASE_DIR="$(dirname "$SCRIPT_DIR")"
-
-# 设置类路径
-CLASSPATH="$BASE_DIR/lib/*"
-
-# 设置模块路径
-export CHTL_MODULE_PATH="$BASE_DIR/modules"
-
-# 运行编译器
-java -cp "$CLASSPATH" com.chtl.cli.CHTLCLI "$@"
+java -jar "$SCRIPT_DIR/chtl-compiler.jar" "$@"
 EOF
+    chmod +x "$PACKAGE_DIR/chtl"
     
-    chmod +x "$DIST_DIR/bin/chtl"
-    
-    # 创建cjmod命令脚本
-    cat > "$DIST_DIR/bin/cjmod" << 'EOF'
+    # Create installation script
+    cat > "$PACKAGE_DIR/install.sh" << 'EOF'
 #!/bin/bash
-# CJMOD管理工具启动脚本
-
-# 获取脚本所在目录
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-BASE_DIR="$(dirname "$SCRIPT_DIR")"
-
-# 设置类路径
-CLASSPATH="$BASE_DIR/lib/*"
-
-# 设置模块路径
-export CHTL_MODULE_PATH="$BASE_DIR/modules"
-
-# 运行CJMOD CLI
-java -cp "$CLASSPATH" com.chtl.cli.CJmodCLI "$@"
-EOF
-    
-    chmod +x "$DIST_DIR/bin/cjmod"
-    
-    # 复制文档
-    cp README.md "$DIST_DIR/docs/"
-    cp CHTL语法文档.md "$DIST_DIR/docs/"
-    
-    # 创建配置文件
-    cat > "$DIST_DIR/config/chtl.conf" << EOF
-# CHTL编译器配置文件
-
-# 默认输出目录
-output.dir=output
-
-# 编译选项
-compile.optimize=true
-compile.sourcemap=true
-compile.minify=false
-
-# 模块路径
-module.path=\${CHTL_HOME}/modules
-
-# 日志级别
-log.level=INFO
-EOF
-    
-    info "发布包创建成功"
-}
-
-# 打包发布文件
-package_distribution() {
-    info "打包发布文件..."
-    
-    cd dist
-    
-    # 创建tar.gz包
-    tar -czf chtl-compiler-linux.tar.gz chtl-compiler-linux/
-    
-    # 创建安装脚本
-    cat > install.sh << 'EOF'
-#!/bin/bash
-# CHTL编译器安装脚本
-
 set -e
 
-INSTALL_DIR="/opt/chtl"
+echo "Installing CHTL compiler..."
 
-echo "安装CHTL编译器到 $INSTALL_DIR ..."
-
-# 检查权限
+# Check permissions
 if [ "$EUID" -ne 0 ]; then 
-    echo "请使用sudo运行此脚本"
+    echo "Please run with sudo"
     exit 1
 fi
 
-# 解压文件
-tar -xzf chtl-compiler-linux.tar.gz
+# Install directory
+INSTALL_DIR="/opt/chtl"
+BIN_LINK="/usr/local/bin/chtl"
 
-# 创建安装目录
+# Create installation directory
 mkdir -p "$INSTALL_DIR"
 
-# 复制文件
-cp -r chtl-compiler-linux/* "$INSTALL_DIR/"
+# Copy files
+cp -r * "$INSTALL_DIR/"
 
-# 创建符号链接
-ln -sf "$INSTALL_DIR/bin/chtl" /usr/local/bin/chtl
-ln -sf "$INSTALL_DIR/bin/cjmod" /usr/local/bin/cjmod
+# Create symbolic link
+ln -sf "$INSTALL_DIR/chtl" "$BIN_LINK"
 
-# 设置环境变量
-echo "export CHTL_HOME=$INSTALL_DIR" > /etc/profile.d/chtl.sh
+# Set permissions
+chmod -R 755 "$INSTALL_DIR"
+chmod +x "$INSTALL_DIR/chtl"
 
-echo "安装完成！"
-echo "请运行 'source /etc/profile.d/chtl.sh' 或重新登录以使环境变量生效"
-echo "然后运行 'chtl --version' 验证安装"
+echo "CHTL compiler installed successfully!"
+echo "You can now use 'chtl' command"
+EOF
+    chmod +x "$PACKAGE_DIR/install.sh"
+    
+    # Create uninstall script
+    cat > "$PACKAGE_DIR/uninstall.sh" << 'EOF'
+#!/bin/bash
+set -e
+
+echo "Uninstalling CHTL compiler..."
+
+# Check permissions
+if [ "$EUID" -ne 0 ]; then 
+    echo "Please run with sudo"
+    exit 1
+fi
+
+# Remove files
+rm -rf /opt/chtl
+rm -f /usr/local/bin/chtl
+
+echo "CHTL compiler uninstalled successfully!"
+EOF
+    chmod +x "$PACKAGE_DIR/uninstall.sh"
+    
+    # Create README
+    cat > "$PACKAGE_DIR/README.md" << 'EOF'
+# CHTL Compiler - Linux
+
+## Installation
+
+Run with administrator privileges:
+```bash
+sudo bash install.sh
+```
+
+## Usage
+
+After installation, you can use the `chtl` command:
+```bash
+chtl input.chtl -o output.html
+```
+
+## Uninstallation
+
+Run with administrator privileges:
+```bash
+sudo bash uninstall.sh
+```
 EOF
     
-    chmod +x install.sh
+    # Package
+    info "Creating tarball..."
+    cd "$TEMP_DIR"
+    tar -czf "$DIST_DIR/$PACKAGE_NAME.tar.gz" "$PACKAGE_NAME"
     
-    cd ..
+    # Clean up
+    rm -rf "$TEMP_DIR"
     
-    info "打包完成：dist/chtl-compiler-linux.tar.gz"
+    info "Distribution package created: $DIST_DIR/$PACKAGE_NAME.tar.gz"
 }
 
-# 显示构建信息
-show_build_info() {
-    info "构建信息："
-    echo "  平台：Linux"
-    echo "  Java版本：$(java -version 2>&1 | head -n 1)"
-    echo "  Maven版本：$(mvn -version | head -n 1)"
-    echo "  构建时间：$(date)"
-    
-    if [ -f "dist/chtl-compiler-linux.tar.gz" ]; then
-        echo "  包大小：$(du -h dist/chtl-compiler-linux.tar.gz | cut -f1)"
-    fi
-}
+# Parse command line arguments
+SKIP_TESTS=false
+PACKAGE_ONLY=false
 
-# 主流程
-main() {
-    echo "==================================="
-    echo "CHTL编译器构建脚本 - Linux平台"
-    echo "==================================="
-    echo
-    
-    # 切换到项目根目录
-    cd "$(dirname "$0")/../.."
-    
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --skip-tests)
+            SKIP_TESTS=true
+            shift
+            ;;
+        --package-only)
+            PACKAGE_ONLY=true
+            shift
+            ;;
+        -h|--help)
+            echo "Usage: $0 [options]"
+            echo "Options:"
+            echo "  --skip-tests    Skip running tests"
+            echo "  --package-only  Only create distribution package (skip build)"
+            echo "  -h, --help      Show this help message"
+            exit 0
+            ;;
+        *)
+            error "Unknown option: $1"
+            ;;
+    esac
+done
+
+# Main execution
+info "CHTL Compiler Build Script - Linux"
+info "=================================="
+
+if [ "$PACKAGE_ONLY" != true ]; then
     check_environment
-    clean_build
-    compile_project
-    prepare_modules
-    create_distribution
-    package_distribution
-    show_build_info
-    
-    echo
-    info "构建完成！"
-    echo
-    echo "使用方法："
-    echo "  1. 解压：tar -xzf dist/chtl-compiler-linux.tar.gz"
-    echo "  2. 安装：sudo bash dist/install.sh"
-    echo "  3. 使用：chtl input.chtl -o output/"
-}
+    build
+    package_modules
+fi
 
-# 运行主流程
-main "$@"
+create_distribution
+
+info "Build process completed successfully!"

@@ -1,22 +1,22 @@
 @echo off
-REM CHTL项目统一构建脚本 - Windows版本
+REM CHTL Project Unified Build Script - Windows Version
 
 setlocal enabledelayedexpansion
 
-REM 颜色定义
+REM Color definitions
 set "GREEN=[92m"
 set "RED=[91m"
 set "YELLOW=[93m"
 set "BLUE=[94m"
 set "NC=[0m"
 
-REM 默认值
+REM Default values
 set "BUILD_TARGET=all"
 set "PLATFORM=windows"
 set "SKIP_TESTS=false"
 set "MODULE_PATH="
 
-REM 解析参数
+REM Parse arguments
 :parse_args
 if "%1"=="" goto :check_params
 if "%1"=="all" (
@@ -45,10 +45,11 @@ if "%1"=="module" (
     set "MODULE_TYPE=unified"
     shift
     shift
-    REM 继续解析module特定参数
+    REM Continue parsing module-specific parameters
     :parse_module_type
     if "%1"=="--type" (
-        set "MODULE_TYPE=%2"
+        if "%2"=="cmod" set "MODULE_TYPE=cmod"
+        if "%2"=="cjmod" set "MODULE_TYPE=cjmod"
         shift
         shift
     )
@@ -59,189 +60,166 @@ if "%1"=="--skip-tests" (
     shift
     goto :parse_args
 )
-if "%1"=="-h" goto :usage
-if "%1"=="--help" goto :usage
-if "%1"=="/?" goto :usage
-
-echo %RED%[ERROR]%NC% 未知参数: %1
-exit /b 1
+if "%1"=="-h" goto :show_usage
+if "%1"=="--help" goto :show_usage
+echo %RED%[ERROR]%NC% Unknown parameter: %1
+goto :show_usage
 
 :check_params
-REM 显示构建信息
-echo ========================================
-echo CHTL项目统一构建脚本
-echo ========================================
-echo 构建目标: %BUILD_TARGET%
-echo 目标平台: %PLATFORM%
-echo 跳过测试: %SKIP_TESTS%
+goto :start_build
+
+:show_usage
+echo Usage: build-all.bat [target] [options]
+echo.
+echo Targets:
+echo   all          Build all components (default)
+echo   compiler     Build CHTL compiler only
+echo   vscode       Build VSCode extension only
+echo   module       Build specific module
+echo   clean        Clean all build outputs
+echo.
+echo Options:
+echo   --skip-tests     Skip running tests
+echo   --type TYPE      Module type (cmod/cjmod), for module target
+echo.
+echo Examples:
+echo   build-all.bat                     # Build everything
+echo   build-all.bat compiler            # Build compiler only
+echo   build-all.bat module Chtholly     # Build Chtholly module
+echo   build-all.bat --skip-tests        # Build without tests
+exit /b 1
+
+:start_build
+echo %GREEN%========================================%NC%
+echo %GREEN% CHTL Unified Build Script%NC%
+echo %GREEN% Platform: %PLATFORM%%NC%
+echo %GREEN% Target: %BUILD_TARGET%%NC%
+echo %GREEN%========================================%NC%
 echo.
 
-REM 执行构建
-if "%BUILD_TARGET%"=="all" goto :build_all
+if "%BUILD_TARGET%"=="clean" goto :clean_all
 if "%BUILD_TARGET%"=="compiler" goto :build_compiler
 if "%BUILD_TARGET%"=="vscode" goto :build_vscode
 if "%BUILD_TARGET%"=="module" goto :build_module
-if "%BUILD_TARGET%"=="clean" goto :clean_all
+if "%BUILD_TARGET%"=="all" goto :build_all
 
 :build_all
-echo %BLUE%=== 构建编译器 ===%NC%
+echo %BLUE%[1/3] Building CHTL compiler...%NC%
 call :build_compiler
+if errorlevel 1 goto :error
+
 echo.
-echo %BLUE%=== 构建VSCode插件 ===%NC%
+echo %BLUE%[2/3] Building official modules...%NC%
+call :build_modules
+if errorlevel 1 goto :error
+
+echo.
+echo %BLUE%[3/3] Building VSCode extension...%NC%
 call :build_vscode
-goto :show_results
+if errorlevel 1 goto :error
+
+echo.
+echo %GREEN%========================================%NC%
+echo %GREEN% Build completed successfully!%NC%
+echo %GREEN%========================================%NC%
+goto :end
 
 :build_compiler
-echo %GREEN%[INFO]%NC% 开始构建编译器...
-call "%~dp0windows\build-compiler.bat"
-if %errorlevel% neq 0 (
-    echo %RED%[ERROR]%NC% 编译器构建失败
+echo %GREEN%[INFO]%NC% Starting compiler build...
+cd /d "%~dp0\windows"
+call build-compiler.bat
+if errorlevel 1 (
+    echo %RED%[ERROR]%NC% Compiler build failed
     exit /b 1
 )
-echo %GREEN%[INFO]%NC% 编译器构建完成
-goto :eof
+cd /d "%~dp0\.."
+exit /b 0
+
+:build_modules
+echo %GREEN%[INFO]%NC% Building official modules...
+REM Build Chtholly module
+if exist "src\main\java\com\chtl\module\Chtholly" (
+    echo %GREEN%[INFO]%NC% Building Chtholly module...
+    cd /d "%~dp0\windows"
+    call package-unified.bat "%~dp0\..\src\main\java\com\chtl\module\Chtholly"
+    if errorlevel 1 (
+        echo %YELLOW%[WARN]%NC% Chtholly module build failed, continuing...
+    )
+    cd /d "%~dp0\.."
+)
+exit /b 0
 
 :build_vscode
-echo %GREEN%[INFO]%NC% 开始构建VSCode插件...
-call "%~dp0windows\build-vscode-extension.bat"
-if %errorlevel% neq 0 (
-    echo %RED%[ERROR]%NC% VSCode插件构建失败
+echo %GREEN%[INFO]%NC% Starting VSCode extension build...
+cd /d "%~dp0\windows"
+call build-vscode-extension.bat
+if errorlevel 1 (
+    echo %RED%[ERROR]%NC% VSCode extension build failed
     exit /b 1
 )
-echo %GREEN%[INFO]%NC% VSCode插件构建完成
-goto :eof
+cd /d "%~dp0\.."
+exit /b 0
 
 :build_module
 if "%MODULE_PATH%"=="" (
-    echo %RED%[ERROR]%NC% 请指定模块路径
-    exit /b 1
+    echo %RED%[ERROR]%NC% Module path not specified
+    goto :show_usage
 )
-
-if "%MODULE_TYPE%"=="" set MODULE_TYPE=unified
-
-echo %GREEN%[INFO]%NC% 开始打包模块: %MODULE_PATH% (类型: %MODULE_TYPE%)
-cd /d "%~dp0.."
-
-REM 根据模块类型选择相应的打包脚本
-if /i "%MODULE_TYPE%"=="cmod" (
-    set PACKAGE_SCRIPT=package-cmod
-) else if /i "%MODULE_TYPE%"=="cjmod" (
-    set PACKAGE_SCRIPT=package-cjmod
+echo %GREEN%[INFO]%NC% Building module: %MODULE_PATH%
+echo %GREEN%[INFO]%NC% Module type: %MODULE_TYPE%
+cd /d "%~dp0\windows"
+if "%MODULE_TYPE%"=="cmod" (
+    call package-cmod.bat "%MODULE_PATH%"
+) else if "%MODULE_TYPE%"=="cjmod" (
+    call package-cjmod.bat "%MODULE_PATH%"
 ) else (
-    set PACKAGE_SCRIPT=package-unified
+    call package-unified.bat "%MODULE_PATH%"
 )
-
-call "scripts\windows\%PACKAGE_SCRIPT%.bat" "%MODULE_PATH%"
-if %errorlevel% neq 0 (
-    echo %RED%[ERROR]%NC% 模块打包失败
+if errorlevel 1 (
+    echo %RED%[ERROR]%NC% Module build failed
     exit /b 1
 )
-echo %GREEN%[INFO]%NC% 模块打包完成
-goto :show_results
+cd /d "%~dp0\.."
+exit /b 0
 
 :clean_all
-echo %GREEN%[INFO]%NC% 清理构建文件...
-cd /d "%~dp0.."
+echo %GREEN%[INFO]%NC% Cleaning build outputs...
 
-REM 清理目录
-if exist target rmdir /s /q target
-if exist build rmdir /s /q build
-if exist dist rmdir /s /q dist
-
-REM 清理VSCode插件构建文件
-if exist vscode-chtl (
-    cd vscode-chtl
-    if exist out rmdir /s /q out
-    if exist node_modules rmdir /s /q node_modules
-    if exist resources\compiler rmdir /s /q resources\compiler
-    if exist resources\modules rmdir /s /q resources\modules
-    del /q *.vsix 2>nul
-    cd ..
+REM Clean compiler build
+if exist "target" (
+    echo %GREEN%[INFO]%NC% Cleaning compiler build...
+    rd /s /q "target"
 )
 
-REM 清理测试输出
-if exist test-output rmdir /s /q test-output
-if exist test-reports rmdir /s /q test-reports
+REM Clean test outputs
+if exist "test-output" (
+    echo %GREEN%[INFO]%NC% Cleaning test outputs...
+    rd /s /q "test-output"
+)
 
-REM 清理临时文件
-del /s /q *.class 2>nul
-del /s /q *.log 2>nul
-del /s /q *.tmp 2>nul
+REM Clean module builds
+if exist "build\modules" (
+    echo %GREEN%[INFO]%NC% Cleaning module builds...
+    rd /s /q "build\modules"
+)
 
-echo %GREEN%[INFO]%NC% 清理完成
+REM Clean VSCode extension build
+if exist "vscode-chtl\out" (
+    echo %GREEN%[INFO]%NC% Cleaning VSCode extension build...
+    rd /s /q "vscode-chtl\out"
+)
+if exist "vscode-chtl\*.vsix" (
+    del /q "vscode-chtl\*.vsix"
+)
+
+echo %GREEN%[INFO]%NC% Clean completed
 goto :end
 
-:show_results
-echo.
-echo %BLUE%=== 构建结果 ===%NC%
-
-cd /d "%~dp0.."
-
-REM 检查编译器
-if "%BUILD_TARGET%"=="all" goto :check_compiler
-if "%BUILD_TARGET%"=="compiler" goto :check_compiler
-goto :check_vscode
-
-:check_compiler
-echo 编译器包:
-if exist "dist\chtl-compiler-windows.zip" (
-    for %%F in ("dist\chtl-compiler-windows.zip") do echo   %%~nxF (%%~zF 字节^)
-) else (
-    echo   未找到
-)
-
-:check_vscode
-if "%BUILD_TARGET%"=="all" goto :do_check_vscode
-if "%BUILD_TARGET%"=="vscode" goto :do_check_vscode
-goto :check_module
-
-:do_check_vscode
-echo.
-echo VSCode插件:
-if exist "dist\*.vsix" (
-    for %%F in (dist\*.vsix) do echo   %%~nxF (%%~zF 字节^)
-) else (
-    echo   未找到
-)
-
-:check_module
-if "%BUILD_TARGET%"=="module" (
-    echo.
-    echo 模块包:
-    if exist "*.cjmod" (
-        for %%F in (*.cjmod) do echo   %%~nxF (%%~zF 字节^)
-    ) else if exist "dist\*.cjmod" (
-        for %%F in (dist\*.cjmod) do echo   %%~nxF (%%~zF 字节^)
-    ) else (
-        echo   未找到
-    )
-)
-
-echo.
-echo %BLUE%=== 下一步 ===%NC%
-echo 1. 安装编译器: 以管理员身份运行 dist\install.bat
-echo 2. 安装VSCode插件: code --install-extension dist\*.vsix
+:error
+echo %RED%========================================%NC%
+echo %RED% Build failed!%NC%
+echo %RED%========================================%NC%
+exit /b 1
 
 :end
-echo.
-echo %GREEN%[INFO]%NC% 构建完成！
 endlocal
-exit /b 0
-
-:usage
-echo 用法: %~nx0 [选项]
-echo.
-echo 选项:
-echo   all              构建所有组件（默认）
-echo   compiler         仅构建编译器
-echo   vscode           仅构建VSCode插件
-echo   module ^<path^> [--type cmod^|cjmod^|unified]    打包指定模块
-echo   clean            清理构建文件
-echo   --skip-tests     跳过测试
-echo   -h, --help, /?   显示帮助信息
-echo.
-echo 示例:
-echo   %~nx0                    # 构建所有组件
-echo   %~nx0 compiler           # 仅构建编译器
-echo   %~nx0 module Chtholly    # 打包Chtholly模块
-exit /b 0

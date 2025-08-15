@@ -1,18 +1,22 @@
 #!/bin/bash
 
-# CHTL项目统一构建脚本
-# 自动检测平台并调用相应的构建脚本
+# CHTL Project Unified Build Script - Unix Version
 
-set -e
-
-# 颜色定义
+# Color definitions
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
-# 打印信息
+# Default values
+BUILD_TARGET="all"
+PLATFORM=$(uname -s | tr '[:upper:]' '[:lower:]')
+SKIP_TESTS=false
+MODULE_PATH=""
+MODULE_TYPE="unified"
+
+# Print functions
 info() {
     echo -e "${GREEN}[INFO]${NC} $1"
 }
@@ -26,309 +30,289 @@ warning() {
     echo -e "${YELLOW}[WARN]${NC} $1"
 }
 
-header() {
-    echo -e "${BLUE}=== $1 ===${NC}"
+# Usage function
+show_usage() {
+    echo "Usage: $0 [target] [options]"
+    echo ""
+    echo "Targets:"
+    echo "  all          Build all components (default)"
+    echo "  compiler     Build CHTL compiler only"
+    echo "  vscode       Build VSCode extension only"
+    echo "  module       Build specific module"
+    echo "  clean        Clean all build outputs"
+    echo ""
+    echo "Options:"
+    echo "  --skip-tests     Skip running tests"
+    echo "  --type TYPE      Module type (cmod/cjmod/unified), for module target"
+    echo ""
+    echo "Examples:"
+    echo "  $0                           # Build everything"
+    echo "  $0 compiler                  # Build compiler only"
+    echo "  $0 module Chtholly           # Build Chtholly module"
+    echo "  $0 module path --type cjmod  # Build CJMOD module"
+    echo "  $0 --skip-tests              # Build without tests"
+    exit 1
 }
 
-# 检测操作系统
-detect_os() {
-    if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-        echo "linux"
-    elif [[ "$OSTYPE" == "darwin"* ]]; then
-        echo "macos"
-    elif [[ "$OSTYPE" == "cygwin" ]] || [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "win32" ]]; then
-        echo "windows"
-    else
-        echo "unknown"
-    fi
-}
-
-# 显示使用说明
-usage() {
-    echo "用法: $0 [选项]"
-    echo
-    echo "选项:"
-    echo "  all              构建所有组件（默认）"
-    echo "  compiler         仅构建编译器"
-    echo "  vscode           仅构建VSCode插件"
-    echo "  module <path>    打包指定模块"
-    echo "  clean            清理构建文件"
-    echo "  --platform <os>  指定平台 (linux/macos/windows)"
-    echo "  --skip-tests     跳过测试"
-    echo "  -h, --help       显示帮助信息"
-    echo
-    echo "示例:"
-    echo "  $0                    # 构建所有组件"
-    echo "  $0 compiler           # 仅构建编译器"
-    echo "  $0 module Chtholly    # 打包Chtholly模块"
-    echo "  $0 --platform linux   # 为Linux平台构建"
-}
-
-# 主函数
-main() {
-    # 切换到脚本所在目录
-    cd "$(dirname "$0")"
-    
-    # 默认值
-    BUILD_TARGET="all"
-    PLATFORM=$(detect_os)
-    SKIP_TESTS=false
-    MODULE_PATH=""
-    
-    # 解析参数
-    while [[ $# -gt 0 ]]; do
-        case $1 in
-            all|compiler|vscode|clean)
-                BUILD_TARGET="$1"
-                shift
-                ;;
-            module)
-                BUILD_TARGET="module"
-                MODULE_PATH="$2"
-                shift 2
-                ;;
-            --platform)
-                PLATFORM="$2"
-                shift 2
-                ;;
-            --skip-tests)
-                SKIP_TESTS=true
-                shift
-                ;;
-            -h|--help)
-                usage
-                exit 0
-                ;;
-            *)
-                error "未知参数: $1"
-                ;;
-        esac
-    done
-    
-    # 显示构建信息
-    echo "========================================"
-    echo "CHTL项目统一构建脚本"
-    echo "========================================"
-    echo "构建目标: $BUILD_TARGET"
-    echo "目标平台: $PLATFORM"
-    echo "跳过测试: $SKIP_TESTS"
-    echo
-    
-    # 检查平台
-    if [ "$PLATFORM" == "unknown" ]; then
-        error "无法识别的操作系统: $OSTYPE"
-    fi
-    
-    # 检查脚本是否存在
-    if [ ! -d "$PLATFORM" ]; then
-        error "找不到平台目录: $PLATFORM"
-    fi
-    
-    # 执行构建
-    case $BUILD_TARGET in
-        all)
-            build_all
-            ;;
-        compiler)
-            build_compiler
-            ;;
-        vscode)
-            build_vscode
+# Parse arguments
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        all|compiler|vscode|clean)
+            BUILD_TARGET="$1"
+            shift
             ;;
         module)
-            if [ $# -lt 1 ]; then
-                echo "错误: 'module' 命令需要指定模块路径"
-                echo "用法: $0 module <module-path> [--type cmod|cjmod|unified]"
-                exit 1
-            fi
-            MODULE_PATH="$1"
-            MODULE_TYPE="unified"
+            BUILD_TARGET="module"
             shift
-            
-            # 解析模块类型
-            while [[ $# -gt 0 ]]; do
+            if [[ $# -gt 0 ]]; then
+                MODULE_PATH="$1"
+                shift
+            else
+                error "Module path not specified"
+            fi
+            ;;
+        --type)
+            shift
+            if [[ $# -gt 0 ]]; then
                 case $1 in
-                    --type)
-                        MODULE_TYPE="$2"
-                        shift 2
+                    cmod|cjmod|unified)
+                        MODULE_TYPE="$1"
                         ;;
                     *)
-                        shift
+                        error "Invalid module type: $1"
                         ;;
                 esac
-            done
-            
-            build_module
+                shift
+            else
+                error "Module type not specified"
+            fi
             ;;
-        clean)
-            clean_all
+        --skip-tests)
+            SKIP_TESTS=true
+            shift
+            ;;
+        -h|--help)
+            show_usage
+            ;;
+        *)
+            error "Unknown parameter: $1"
             ;;
     esac
-    
-    echo
-    info "构建完成！"
-    echo
-    show_results
-}
+done
 
-# 构建所有组件
-build_all() {
-    header "构建编译器"
-    build_compiler
-    
-    echo
-    header "构建VSCode插件"
-    build_vscode
-}
+# Determine script directory
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PROJECT_ROOT="$( cd "${SCRIPT_DIR}/.." && pwd )"
 
-# 构建编译器
+# Set platform-specific directory
+case "$PLATFORM" in
+    linux)
+        PLATFORM_DIR="linux"
+        ;;
+    darwin)
+        PLATFORM_DIR="macos"
+        ;;
+    *)
+        error "Unsupported platform: $PLATFORM"
+        ;;
+esac
+
+# Build functions
 build_compiler() {
-    info "开始构建编译器..."
-    
-    if [ "$PLATFORM" == "windows" ]; then
-        # Windows使用批处理文件
-        cmd.exe /c "$PLATFORM\\build-compiler.bat"
+    info "Starting compiler build..."
+    cd "${SCRIPT_DIR}/${PLATFORM_DIR}"
+    if ./build-compiler.sh; then
+        info "Compiler build completed"
+        cd "${PROJECT_ROOT}"
+        return 0
     else
-        # Linux和macOS使用Shell脚本
-        bash "$PLATFORM/build-compiler.sh"
+        error "Compiler build failed"
     fi
-    
-    info "编译器构建完成"
 }
 
-# 构建VSCode插件
+build_modules() {
+    info "Building official modules..."
+    
+    # Build Chtholly module
+    local module_path="${PROJECT_ROOT}/src/main/java/com/chtl/module/Chtholly"
+    if [[ -d "$module_path" ]]; then
+        info "Building Chtholly module..."
+        cd "${SCRIPT_DIR}/${PLATFORM_DIR}"
+        if ./package-unified.sh "$module_path"; then
+            info "Chtholly module build completed"
+        else
+            warning "Chtholly module build failed, continuing..."
+        fi
+        cd "${PROJECT_ROOT}"
+    fi
+    
+    return 0
+}
+
 build_vscode() {
-    info "开始构建VSCode插件..."
-    
-    if [ "$PLATFORM" == "windows" ]; then
-        # Windows使用批处理文件
-        cmd.exe /c "$PLATFORM\\build-vscode-extension.bat"
+    info "Starting VSCode extension build..."
+    cd "${SCRIPT_DIR}/${PLATFORM_DIR}"
+    if ./build-vscode-extension.sh; then
+        info "VSCode extension build completed"
+        cd "${PROJECT_ROOT}"
+        return 0
     else
-        # Linux和macOS使用Shell脚本
-        bash "$PLATFORM/build-vscode-extension.sh"
+        error "VSCode extension build failed"
     fi
-    
-    info "VSCode插件构建完成"
 }
 
-# 打包模块
 build_module() {
-    if [ -z "$MODULE_PATH" ]; then
-        error "请指定模块路径"
+    if [[ -z "$MODULE_PATH" ]]; then
+        error "Module path not specified"
     fi
     
-    MODULE_TYPE="${MODULE_TYPE:-unified}"  # 默认为unified
+    info "Building module: $MODULE_PATH"
+    info "Module type: $MODULE_TYPE"
     
-    info "开始打包模块: $MODULE_PATH (类型: $MODULE_TYPE)"
+    cd "${SCRIPT_DIR}/${PLATFORM_DIR}"
     
-    # 转到项目根目录
-    cd ..
-    
-    # 根据模块类型选择相应的打包脚本
     case "$MODULE_TYPE" in
-        cmod|CMOD)
-            PACKAGE_SCRIPT="package-cmod"
+        cmod)
+            if ./package-cmod.sh "$MODULE_PATH"; then
+                info "Module build completed"
+            else
+                error "Module build failed"
+            fi
             ;;
-        cjmod|CJMOD)
-            PACKAGE_SCRIPT="package-cjmod"
+        cjmod)
+            if ./package-cjmod.sh "$MODULE_PATH"; then
+                info "Module build completed"
+            else
+                error "Module build failed"
+            fi
             ;;
-        unified|*)
-            PACKAGE_SCRIPT="package-unified"
+        unified)
+            if ./package-unified.sh "$MODULE_PATH"; then
+                info "Module build completed"
+            else
+                error "Module build failed"
+            fi
             ;;
     esac
     
-    if [ "$PLATFORM" == "windows" ]; then
-        # Windows使用批处理文件
-        cmd.exe /c "scripts\\$PLATFORM\\${PACKAGE_SCRIPT}.bat $MODULE_PATH"
-    else
-        # Linux和macOS使用Shell脚本
-        bash "scripts/$PLATFORM/${PACKAGE_SCRIPT}.sh" "$MODULE_PATH"
-    fi
-    
-    info "模块打包完成"
+    cd "${PROJECT_ROOT}"
 }
 
-# 清理构建文件
 clean_all() {
-    info "清理构建文件..."
+    info "Cleaning build outputs..."
     
-    cd ..
+    cd "${PROJECT_ROOT}"
     
-    # 清理目录
-    rm -rf target/ build/ dist/
-    
-    # 清理VSCode插件构建文件
-    if [ -d "vscode-chtl" ]; then
-        cd vscode-chtl
-        rm -rf out/ node_modules/ resources/compiler resources/modules *.vsix
-        cd ..
+    # Clean compiler build
+    if [[ -d "target" ]]; then
+        info "Cleaning compiler build..."
+        rm -rf target
     fi
     
-    # 清理测试输出
-    rm -rf test-output/ test-reports/
+    # Clean test outputs
+    if [[ -d "test-output" ]]; then
+        info "Cleaning test outputs..."
+        rm -rf test-output
+    fi
     
-    # 清理临时文件
-    find . -name "*.class" -type f -delete
-    find . -name "*.log" -type f -delete
-    find . -name "*.tmp" -type f -delete
+    # Clean module builds
+    if [[ -d "build/modules" ]]; then
+        info "Cleaning module builds..."
+        rm -rf build/modules
+    fi
     
-    info "清理完成"
+    # Clean VSCode extension build
+    if [[ -d "vscode-chtl/out" ]]; then
+        info "Cleaning VSCode extension build..."
+        rm -rf vscode-chtl/out
+    fi
+    
+    # Remove VSCode extension packages
+    rm -f vscode-chtl/*.vsix 2>/dev/null
+    
+    # Clean dist directory
+    if [[ -d "dist" ]]; then
+        info "Cleaning distribution files..."
+        rm -rf dist
+    fi
+    
+    info "Clean completed"
 }
 
-# 显示构建结果
-show_results() {
-    cd ..
-    
-    header "构建结果"
-    
-    # 检查编译器
-    if [ "$BUILD_TARGET" == "all" ] || [ "$BUILD_TARGET" == "compiler" ]; then
-        echo "编译器包:"
-        case $PLATFORM in
-            linux)
-                ls -lh dist/chtl-compiler-linux.tar.gz 2>/dev/null || echo "  未找到"
-                ;;
-            macos)
-                ls -lh dist/chtl-compiler-macos.dmg 2>/dev/null || ls -lh dist/chtl-compiler-macos.tar.gz 2>/dev/null || echo "  未找到"
-                ;;
-            windows)
-                ls -lh dist/chtl-compiler-windows.zip 2>/dev/null || echo "  未找到"
-                ;;
-        esac
-    fi
-    
-    # 检查VSCode插件
-    if [ "$BUILD_TARGET" == "all" ] || [ "$BUILD_TARGET" == "vscode" ]; then
-        echo
-        echo "VSCode插件:"
-        ls -lh dist/*.vsix 2>/dev/null || echo "  未找到"
-    fi
-    
-    # 检查模块包
-    if [ "$BUILD_TARGET" == "module" ]; then
-        echo
-        echo "模块包:"
-        ls -lh *.cjmod 2>/dev/null || ls -lh dist/*.cjmod 2>/dev/null || echo "  未找到"
-    fi
-    
-    echo
-    header "下一步"
-    
-    case $PLATFORM in
-        linux)
-            echo "1. 安装编译器: sudo bash dist/install.sh"
-            echo "2. 安装VSCode插件: code --install-extension dist/*.vsix"
-            ;;
-        macos)
-            echo "1. 安装编译器: 打开dist/*.dmg或运行 bash dist/install.sh"
-            echo "2. 安装VSCode插件: code --install-extension dist/*.vsix"
-            ;;
-        windows)
-            echo "1. 安装编译器: 以管理员身份运行 dist\\install.bat"
-            echo "2. 安装VSCode插件: code --install-extension dist\\*.vsix"
-            ;;
-    esac
-}
+# Main execution
+echo -e "${GREEN}======================================${NC}"
+echo -e "${GREEN} CHTL Unified Build Script${NC}"
+echo -e "${GREEN} Platform: $PLATFORM${NC}"
+echo -e "${GREEN} Target: $BUILD_TARGET${NC}"
+echo -e "${GREEN}======================================${NC}"
+echo ""
 
-# 运行主函数
-main "$@"
+case "$BUILD_TARGET" in
+    all)
+        echo -e "${BLUE}[1/3] Building CHTL compiler...${NC}"
+        build_compiler
+        
+        echo ""
+        echo -e "${BLUE}[2/3] Building official modules...${NC}"
+        build_modules
+        
+        echo ""
+        echo -e "${BLUE}[3/3] Building VSCode extension...${NC}"
+        build_vscode
+        
+        echo ""
+        echo -e "${GREEN}======================================${NC}"
+        echo -e "${GREEN} Build completed successfully!${NC}"
+        echo -e "${GREEN}======================================${NC}"
+        ;;
+    compiler)
+        build_compiler
+        ;;
+    vscode)
+        build_vscode
+        ;;
+    module)
+        build_module
+        ;;
+    clean)
+        clean_all
+        ;;
+    *)
+        error "Invalid build target: $BUILD_TARGET"
+        ;;
+esac
+
+# Check results for all or specific builds
+if [[ "$BUILD_TARGET" == "all" || "$BUILD_TARGET" == "compiler" ]]; then
+    echo ""
+    echo -e "${BLUE}Compiler package:${NC}"
+    if [[ -f "${PROJECT_ROOT}/dist/chtl-compiler-${PLATFORM}.tar.gz" ]]; then
+        ls -lh "${PROJECT_ROOT}/dist/chtl-compiler-${PLATFORM}.tar.gz"
+    else
+        echo "  Not found"
+    fi
+fi
+
+if [[ "$BUILD_TARGET" == "all" || "$BUILD_TARGET" == "vscode" ]]; then
+    echo ""
+    echo -e "${BLUE}VSCode extension:${NC}"
+    if ls "${PROJECT_ROOT}"/vscode-chtl/*.vsix 1> /dev/null 2>&1; then
+        ls -lh "${PROJECT_ROOT}"/vscode-chtl/*.vsix
+    else
+        echo "  Not found"
+    fi
+fi
+
+if [[ "$BUILD_TARGET" == "module" ]]; then
+    echo ""
+    echo -e "${BLUE}Module package:${NC}"
+    # Check in current directory and dist
+    if ls *.cmod *.cjmod 2>/dev/null || ls "${PROJECT_ROOT}"/dist/*.cmod "${PROJECT_ROOT}"/dist/*.cjmod 2>/dev/null; then
+        ls -lh *.cmod *.cjmod 2>/dev/null || ls -lh "${PROJECT_ROOT}"/dist/*.cmod "${PROJECT_ROOT}"/dist/*.cjmod 2>/dev/null
+    else
+        echo "  Not found"
+    fi
+fi
+
+echo ""
+info "Build process completed!"
