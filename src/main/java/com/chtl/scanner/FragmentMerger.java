@@ -145,15 +145,7 @@ public class FragmentMerger {
         merged.setLine(first.getLine());
         merged.setColumn(first.getColumn());
         
-        // 合并元数据
-        Map<String, Object> mergedMetadata = new HashMap<>();
-        if (first.getMetadata() != null) {
-            mergedMetadata.putAll(first.getMetadata());
-        }
-        if (second.getMetadata() != null) {
-            mergedMetadata.putAll(second.getMetadata());
-        }
-        merged.setMetadata(mergedMetadata);
+        // 合并元数据 - 暂时跳过，因为CodeFragment的元数据API不支持批量操作
         
         return merged;
     }

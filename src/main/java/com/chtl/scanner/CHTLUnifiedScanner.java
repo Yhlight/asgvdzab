@@ -54,22 +54,61 @@ public class CHTLUnifiedScanner {
     public List<CodeFragment> scan(String sourceCode) {
         // logger.debug("开始扫描CHTL源代码，长度: {} 字符", sourceCode.length());
         
-        List<CodeFragment> fragments = new ArrayList<>();
-        ScanContext context = new ScanContext(sourceCode);
+        // 使用增强的PrecisionScanner进行精确扫描
+        LanguageContextManager contextManager = new LanguageContextManager();
+        PrecisionScanner precisionScanner = new PrecisionScanner(contextManager);
+        List<CodeFragment> fragments = precisionScanner.scan(sourceCode);
         
-        while (!context.isEnd()) {
-            CodeFragment fragment = scanNextFragment(context);
-            if (fragment != null) {
-                fragments.add(fragment);
-                // logger.trace("生成片段: {} at {}", fragment.getType(), fragment.getSourcePosition());
-            }
-        }
+        // 使用FragmentMerger优化片段，但保持最小语义单元
+        FragmentMerger merger = new FragmentMerger();
+        fragments = merger.merge(fragments);
         
-        // 合并连续的相同类型片段
-        fragments = mergeFragments(fragments);
+        // 后处理：添加额外的元数据
+        postProcessFragments(fragments, contextManager);
         
         // logger.info("扫描完成，共生成 {} 个代码片段", fragments.size());
         return fragments;
+    }
+    
+    /**
+     * 后处理片段，添加额外的元数据
+     */
+    private void postProcessFragments(List<CodeFragment> fragments, LanguageContextManager contextManager) {
+        for (CodeFragment fragment : fragments) {
+            // 为CHTL JS片段添加函数类型元数据
+            if (fragment.getType() == FragmentType.CHTL_JS) {
+                String content = fragment.getContent();
+                if (content.contains(".listen")) {
+                    fragment.setMetadata("function", "listen");
+                } else if (content.contains(".delegate")) {
+                    fragment.setMetadata("function", "delegate");
+                } else if (content.contains("animate(")) {
+                    fragment.setMetadata("function", "animate");
+                } else if (content.contains("{{") && content.contains("}}")) {
+                    fragment.setMetadata("syntax", "enhanced-selector");
+                } else if (content.contains("->")) {
+                    fragment.setMetadata("syntax", "arrow-operator");
+                }
+            }
+            
+            // 为CHTL片段添加变量使用元数据
+            if (fragment.getType() == FragmentType.CHTL) {
+                String content = fragment.getContent();
+                if (content.matches(".*[A-Z]\\w*\\s*\\(.*\\).*")) {
+                    fragment.setMetadata("syntax", "variable-function");
+                } else if (content.contains("@Var")) {
+                    fragment.setMetadata("syntax", "variable-reference");
+                }
+            }
+            
+            // 为CSS片段添加上下文信息
+            if (fragment.getType() == FragmentType.CSS) {
+                // 根据片段内容判断是否在局部style中
+                if (fragment.getMetadata("context") == null) {
+                    fragment.setMetadata("context", "css");
+                }
+            }
+        }
     }
     
     /**

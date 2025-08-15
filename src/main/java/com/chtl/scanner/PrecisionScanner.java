@@ -181,6 +181,26 @@ public class PrecisionScanner {
      * 在CHTL JS中扫描
      */
     private void scanInCHTLJS() {
+        // 检查是否遇到增强选择器
+        if (current() == '{' && peek() == '{') {
+            // 不刷新当前片段，让{{}}作为CHTL JS的一部分
+            scanEnhancedSelector();
+            return;
+        }
+        
+        // 检查CHTL JS特殊函数：listen、delegate、animate
+        if (isAtCHTLJSFunction()) {
+            scanCHTLJSFunction();
+            return;
+        }
+        
+        // 检查->操作符
+        if (current() == '-' && peek() == '>') {
+            consumeChar(); // -
+            consumeChar(); // >
+            return;
+        }
+        
         // 检查是否是function关键字
         if (matchKeyword("function") && lookAheadFor('(')) {
             // 扫描function关键字和参数列表
@@ -261,32 +281,35 @@ public class PrecisionScanner {
      * 在CSS中扫描
      */
     private void scanInCSS() {
-        // 检查是否退出局部style块
-        if (current() == '}' && 
-            contextManager.getCurrentContextType() == LanguageContextManager.ContextType.LOCAL_STYLE) {
-            consumeChar(); // }
-            flushCurrentFragment();
-            contextManager.exitContext();
-            currentFragmentType = FragmentType.CHTL;
-            return;
+        // 检查是否退出style块
+        if (current() == '}') {
+            // 检查是否真的要退出CSS
+            if (balancer.getCurlyDepth() == 0) {
+                consumeChar(); // }
+                flushCurrentFragment();
+                contextManager.exitContext();
+                currentFragmentType = FragmentType.CHTL;
+                return;
+            }
         }
         
-        // 检查CHTL特殊语法
-        if (current() == '@') {
-            // 检查是否是@Var
-            if (matchKeywordAt(position, "@Var")) {
+        // 只在局部style中处理CHTL变量语法
+        if (contextManager.getCurrentContextType() == LanguageContextManager.ContextType.LOCAL_STYLE) {
+            // 检查变量函数调用形式：VariableName(property)
+            if (Character.isUpperCase(current()) && isVariableFunctionCall()) {
                 flushCurrentFragment();
                 currentFragmentType = FragmentType.CHTL;
-                scanCHTLVarReference();
+                scanVariableFunctionCall();
                 flushCurrentFragment();
                 currentFragmentType = FragmentType.CSS;
                 return;
             }
-            // 检查是否是@Style
-            else if (matchKeywordAt(position, "@Style")) {
+            
+            // 检查可选的@Var前缀形式
+            if (current() == '@' && matchKeyword("@Var")) {
                 flushCurrentFragment();
                 currentFragmentType = FragmentType.CHTL;
-                scanCHTLStyleReference();
+                scanOptionalVarPrefix();
                 flushCurrentFragment();
                 currentFragmentType = FragmentType.CSS;
                 return;
@@ -677,4 +700,295 @@ public class PrecisionScanner {
             position++;
         }
     }
+    
+    /**
+     * 检查是否是变量函数调用
+     */
+    private boolean isVariableFunctionCall() {
+        int savePos = position;
+        int saveLine = line;
+        int saveColumn = column;
+        
+        // 跳过变量名（首字母大写）
+        if (!Character.isUpperCase(current())) {
+            return false;
+        }
+        
+        while (!isAtEnd() && (Character.isLetterOrDigit(current()) || current() == '_')) {
+            advance();
+        }
+        
+        skipWhitespace();
+        boolean result = current() == '(';
+        
+        // 恢复位置
+        position = savePos;
+        line = saveLine;
+        column = saveColumn;
+        return result;
+    }
+    
+    /**
+     * 扫描变量函数调用
+     */
+    private void scanVariableFunctionCall() {
+        // 扫描变量名
+        while (!isAtEnd() && (Character.isLetterOrDigit(current()) || current() == '_')) {
+            consumeChar();
+        }
+        
+        skipWhitespace();
+        
+        if (current() == '(') {
+            consumeChar(); // (
+            
+            // 扫描属性名
+            while (!isAtEnd() && current() != ')') {
+                consumeChar();
+            }
+            
+            if (current() == ')') {
+                consumeChar(); // )
+            }
+        }
+    }
+    
+    /**
+     * 扫描可选的@Var前缀
+     */
+    private void scanOptionalVarPrefix() {
+        // 消费 @Var
+        consumeKeyword("@Var");
+        skipWhitespace();
+        
+        // 扫描变量路径 (e.g., ThemeColor.tableColor)
+        while (!isAtEnd() && (Character.isLetterOrDigit(current()) || current() == '.' || current() == '_')) {
+            consumeChar();
+        }
+    }
+    
+    /**
+     * 扫描CSS字符串
+     */
+    private void scanCSSString() {
+        char quote = current();
+        consumeChar(); // 开始引号
+        
+        while (!isAtEnd() && current() != quote) {
+            if (current() == '\\') {
+                consumeChar(); // 转义字符
+                if (!isAtEnd()) {
+                    consumeChar(); // 被转义的字符
+                }
+            } else {
+                consumeChar();
+            }
+        }
+        
+        if (!isAtEnd()) {
+            consumeChar(); // 结束引号
+        }
+    }
+    
+    /**
+     * 扫描CSS注释
+     */
+    private void scanCSSComment() {
+        consumeChar(); // /
+        consumeChar(); // *
+        
+        while (!isAtEnd()) {
+            if (current() == '*' && peek() == '/') {
+                consumeChar(); // *
+                consumeChar(); // /
+                break;
+            }
+            consumeChar();
+        }
+    }
+    
+    /**
+     * 检查是否在CHTL JS函数位置
+     */
+    private boolean isAtCHTLJSFunction() {
+        // 检查.listen、.delegate
+        if (current() == '.') {
+            int savePos = position;
+            advance(); // skip .
+            boolean result = matchKeyword("listen") || matchKeyword("delegate");
+            position = savePos; // restore
+            return result;
+        }
+        
+        // 检查全局animate函数
+        if (matchKeyword("animate") && lookAheadFor('(')) {
+            return true;
+        }
+        
+        return false;
+    }
+    
+    /**
+     * 扫描CHTL JS函数
+     */
+    private void scanCHTLJSFunction() {
+        if (current() == '.') {
+            consumeChar(); // .
+        }
+        
+        // 扫描函数名
+        if (matchKeyword("listen")) {
+            consumeKeyword("listen");
+        } else if (matchKeyword("delegate")) {
+            consumeKeyword("delegate");
+        } else if (matchKeyword("animate")) {
+            consumeKeyword("animate");
+        }
+        
+        skipWhitespace();
+        
+        // 扫描参数
+        if (current() == '(') {
+            scanFunctionArguments();
+        }
+    }
+    
+    /**
+     * 扫描函数参数，处理嵌套的对象和函数
+     */
+    private void scanFunctionArguments() {
+        consumeChar(); // (
+        int parenDepth = 1;
+        
+        while (!isAtEnd() && parenDepth > 0) {
+            if (current() == '(') {
+                parenDepth++;
+            } else if (current() == ')') {
+                parenDepth--;
+            } else if (current() == '{') {
+                // 可能是对象字面量或函数体
+                scanPossibleObjectOrFunction();
+                continue;
+            } else if (current() == '"' || current() == '\'') {
+                scanJSString();
+                continue;
+            }
+            
+            consumeChar();
+        }
+    }
+    
+    /**
+     * 扫描可能的对象字面量或函数体
+     */
+    private void scanPossibleObjectOrFunction() {
+        int braceDepth = 0;
+        boolean inFunction = false;
+        boolean inCHTLJSContext = currentFragmentType == FragmentType.CHTL_JS;
+        
+        do {
+            if (current() == '{') {
+                // 检查是否是增强选择器
+                if (peek() == '{' && inCHTLJSContext) {
+                    scanEnhancedSelector();
+                    continue;
+                }
+                
+                braceDepth++;
+                consumeChar();
+                
+                // 检查是否进入函数体
+                if (braceDepth == 1 && lookBackFor("function")) {
+                    flushCurrentFragment();
+                    currentFragmentType = FragmentType.JS;
+                    inFunction = true;
+                }
+            } else if (current() == '}') {
+                consumeChar();
+                braceDepth--;
+                
+                // 退出函数体
+                if (braceDepth == 0 && inFunction) {
+                    flushCurrentFragment();
+                    currentFragmentType = FragmentType.CHTL_JS;
+                    inFunction = false;
+                }
+            } else if (current() == '"' || current() == '\'') {
+                scanJSString();
+            } else if (inCHTLJSContext && !inFunction) {
+                // 在CHTL JS上下文中检查特殊语法
+                if (current() == '-' && peek() == '>') {
+                    consumeChar(); // -
+                    consumeChar(); // >
+                } else if (current() == '.') {
+                    int savePos = position;
+                    advance(); // skip .
+                    boolean isFunction = matchKeyword("listen") || matchKeyword("delegate");
+                    position = savePos; // restore
+                    if (isFunction) {
+                        // 切割点：方法调用前
+                        flushCurrentFragment();
+                        scanCHTLJSFunction();
+                    } else {
+                        consumeChar();
+                    }
+                } else {
+                    consumeChar();
+                }
+            } else {
+                consumeChar();
+            }
+        } while (!isAtEnd() && braceDepth > 0);
+    }
+    
+    /**
+     * 扫描JS字符串
+     */
+    private void scanJSString() {
+        char quote = current();
+        consumeChar(); // 开始引号
+        
+        while (!isAtEnd() && current() != quote) {
+            if (current() == '\\') {
+                consumeChar(); // 转义字符
+                if (!isAtEnd()) {
+                    consumeChar(); // 被转义的字符
+                }
+            } else {
+                consumeChar();
+            }
+        }
+        
+        if (!isAtEnd()) {
+            consumeChar(); // 结束引号
+        }
+    }
+    
+    /**
+     * 向后查找关键字
+     */
+    private boolean lookBackFor(String keyword) {
+        int len = keyword.length();
+        if (position < len) {
+            return false;
+        }
+        
+        // 检查源代码中的关键字
+        for (int i = 0; i < len; i++) {
+            if (input.charAt(position - len + i) != keyword.charAt(i)) {
+                return false;
+            }
+        }
+        
+        // 确保关键字前面是空白或非字母
+        if (position > len) {
+            char before = input.charAt(position - len - 1);
+            if (Character.isLetterOrDigit(before)) {
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    
 }
