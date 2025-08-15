@@ -1,0 +1,141 @@
+// CHTL UI Module
+// 提供常用的UI组件和样式
+
+[Namespace] ui {
+    // 按钮组件
+    [Template] @Element Button {
+        button {
+            class: "chtl-btn";
+            style {
+                padding: 10px 20px;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 14px;
+                font-weight: 500;
+                transition: all 0.3s ease;
+                
+                &:hover {
+                    transform: translateY(-1px);
+                    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+                }
+                
+                &:active {
+                    transform: translateY(0);
+                }
+            }
+            text { ${text || "Button"} }
+        }
+    }
+    
+    // 主按钮样式
+    [Template] @Style PrimaryButton {
+        background: #007bff;
+        color: white;
+        
+        &:hover {
+            background: #0056b3;
+        }
+    }
+    
+    // 次要按钮样式
+    [Template] @Style SecondaryButton {
+        background: #6c757d;
+        color: white;
+        
+        &:hover {
+            background: #545b62;
+        }
+    }
+    
+    // 卡片组件
+    [Template] @Element Card {
+        div {
+            class: "chtl-card";
+            style {
+                background: white;
+                border-radius: 8px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                padding: 20px;
+                margin: 10px;
+                transition: box-shadow 0.3s ease;
+                
+                &:hover {
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                }
+            }
+        }
+    }
+    
+    // 输入框组件
+    [Template] @Element Input {
+        input {
+            class: "chtl-input";
+            type: "${type || 'text'}";
+            placeholder: "${placeholder || ''}";
+            style {
+                width: 100%;
+                padding: 8px 12px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                font-size: 14px;
+                transition: border-color 0.3s ease;
+                
+                &:focus {
+                    outline: none;
+                    border-color: #007bff;
+                    box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
+                }
+            }
+        }
+    }
+    
+    // 容器组件
+    [Template] @Element Container {
+        div {
+            class: "chtl-container";
+            style {
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 0 20px;
+            }
+        }
+    }
+    
+    // 网格布局
+    [Template] @Style Grid {
+        display: grid;
+        grid-template-columns: repeat(${columns || 3}, 1fr);
+        gap: ${gap || '20px'};
+    }
+    
+    // Flex布局
+    [Template] @Style Flex {
+        display: flex;
+        flex-direction: ${direction || 'row'};
+        justify-content: ${justify || 'flex-start'};
+        align-items: ${align || 'stretch'};
+        gap: ${gap || '10px'};
+    }
+    
+    // 颜色变量
+    [Template] @Var Colors {
+        primary: "#007bff";
+        secondary: "#6c757d";
+        success: "#28a745";
+        danger: "#dc3545";
+        warning: "#ffc107";
+        info: "#17a2b8";
+        light: "#f8f9fa";
+        dark: "#343a40";
+    }
+    
+    // 间距变量
+    [Template] @Var Spacing {
+        xs: "4px";
+        sm: "8px";
+        md: "16px";
+        lg: "24px";
+        xl: "32px";
+    }
+}

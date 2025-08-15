@@ -1,0 +1,158 @@
+{
+    "name": "chtl",
+    "displayName": "CHTL Language Support",
+    "description": "Language support for CHTL (Custom HyperText Language)",
+    "version": "1.0.0",
+    "engines": {
+        "vscode": "^1.74.0"
+    },
+    "categories": [
+        "Programming Languages",
+        "Linters",
+        "Formatters"
+    ],
+    "keywords": [
+        "chtl",
+        "html",
+        "css",
+        "javascript",
+        "web"
+    ],
+    "activationEvents": [
+        "onLanguage:chtl"
+    ],
+    "main": "./out/extension.js",
+    "contributes": {
+        "languages": [
+            {
+                "id": "chtl",
+                "aliases": [
+                    "CHTL",
+                    "chtl"
+                ],
+                "extensions": [
+                    ".chtl"
+                ],
+                "configuration": "./language-configuration.json"
+            }
+        ],
+        "grammars": [
+            {
+                "language": "chtl",
+                "scopeName": "source.chtl",
+                "path": "./syntaxes/chtl.tmLanguage.json"
+            }
+        ],
+        "configuration": {
+            "title": "CHTL",
+            "properties": {
+                "chtl.compiler.path": {
+                    "type": "string",
+                    "default": "",
+                    "description": "Path to CHTL compiler (leave empty to use built-in)"
+                },
+                "chtl.compiler.javaPath": {
+                    "type": "string",
+                    "default": "java",
+                    "description": "Path to Java executable"
+                },
+                "chtl.compiler.autoSave": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Automatically compile on save"
+                },
+                "chtl.compiler.outputPath": {
+                    "type": "string",
+                    "default": "./dist",
+                    "description": "Output directory for compiled files"
+                },
+                "chtl.compiler.mode": {
+                    "type": "string",
+                    "enum": [
+                        "development",
+                        "production"
+                    ],
+                    "default": "development",
+                    "description": "Compilation mode"
+                },
+                "chtl.diagnostics.enable": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Enable real-time error checking"
+                },
+                "chtl.diagnostics.delay": {
+                    "type": "number",
+                    "default": 500,
+                    "description": "Delay in milliseconds before checking for errors"
+                }
+            }
+        },
+        "commands": [
+            {
+                "command": "chtl.compile",
+                "title": "CHTL: Compile Current File"
+            },
+            {
+                "command": "chtl.compileAll",
+                "title": "CHTL: Compile All Files"
+            },
+            {
+                "command": "chtl.showPreview",
+                "title": "CHTL: Show Preview"
+            },
+            {
+                "command": "chtl.createProject",
+                "title": "CHTL: Create New Project"
+            }
+        ],
+        "menus": {
+            "editor/context": [
+                {
+                    "when": "resourceExtname == .chtl",
+                    "command": "chtl.compile",
+                    "group": "chtl"
+                },
+                {
+                    "when": "resourceExtname == .chtl",
+                    "command": "chtl.showPreview",
+                    "group": "chtl"
+                }
+            ],
+            "explorer/context": [
+                {
+                    "when": "resourceExtname == .chtl",
+                    "command": "chtl.compile",
+                    "group": "chtl"
+                }
+            ]
+        },
+        "snippets": [
+            {
+                "language": "chtl",
+                "path": "./snippets/chtl.json"
+            }
+        ]
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run compile && npm run build-compiler",
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./",
+        "build-compiler": "node scripts/build-compiler.js",
+        "package": "vsce package",
+        "test": "node ./out/test/runTest.js"
+    },
+    "devDependencies": {
+        "@types/vscode": "^1.74.0",
+        "@types/node": "^18.0.0",
+        "@typescript-eslint/eslint-plugin": "^5.0.0",
+        "@typescript-eslint/parser": "^5.0.0",
+        "eslint": "^8.0.0",
+        "typescript": "^4.9.0",
+        "vsce": "^2.0.0"
+    },
+    "dependencies": {
+        "vscode-languageclient": "^8.0.0",
+        "vscode-languageserver": "^8.0.0",
+        "vscode-languageserver-textdocument": "^1.0.0"
+    }
+}
