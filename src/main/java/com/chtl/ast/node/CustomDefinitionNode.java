@@ -1,32 +1,54 @@
 package com.chtl.ast.node;
 
-import com.chtl.ast.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * 自定义定义节点
  * 对应CHTL中的[Custom] @Type Name { }
+ * Custom支持特例化操作，比Template更灵活
  */
-public class CustomDefinitionNode extends AbstractCHTLASTNode {
-    private TemplateDefinitionNode.TemplateType customType;
+public class CustomDefinitionNode extends AbstractASTNode implements Serializable {
+    private static final long serialVersionUID = 1L;
+    
+    /**
+     * 自定义类型
+     */
+    public enum CustomType {
+        ELEMENT("@Element"),
+        STYLE("@Style"),
+        VAR("@Var");
+        
+        private final String symbol;
+        
+        CustomType(String symbol) {
+            this.symbol = symbol;
+        }
+        
+        public String getSymbol() {
+            return symbol;
+        }
+    }
+    
+    private CustomType customType;
     private String name;
+    private List<ASTNode> body = new ArrayList<>();
+    private List<String> inherits = new ArrayList<>(); // 继承的模板或自定义
+    private List<SpecializationNode> specializations = new ArrayList<>(); // 特例化操作
     
-    // 用于样式组的无值属性，如 color, font-size;
-    private List<String> emptyProperties;
-    
-    public CustomDefinitionNode(TemplateDefinitionNode.TemplateType customType, String name) {
+    public CustomDefinitionNode(CustomType customType, String name) {
         super(NodeType.CUSTOM_DEFINITION);
         this.customType = customType;
         this.name = name;
-        this.emptyProperties = new ArrayList<>();
     }
     
-    public TemplateDefinitionNode.TemplateType getCustomType() {
+    // Getters and setters
+    public CustomType getCustomType() {
         return customType;
     }
     
-    public void setCustomType(TemplateDefinitionNode.TemplateType customType) {
+    public void setCustomType(CustomType customType) {
         this.customType = customType;
     }
     
@@ -38,18 +60,37 @@ public class CustomDefinitionNode extends AbstractCHTLASTNode {
         this.name = name;
     }
     
-    public List<String> getEmptyProperties() {
-        return emptyProperties;
+    public List<ASTNode> getBody() {
+        return body;
     }
     
-    public void addEmptyProperty(String property) {
-        if (property != null && !emptyProperties.contains(property)) {
-            emptyProperties.add(property);
-        }
+    public void addBodyNode(ASTNode node) {
+        this.body.add(node);
+    }
+    
+    public List<String> getInherits() {
+        return inherits;
+    }
+    
+    public void addInherit(String inherit) {
+        this.inherits.add(inherit);
+    }
+    
+    public List<SpecializationNode> getSpecializations() {
+        return specializations;
+    }
+    
+    public void addSpecialization(SpecializationNode specialization) {
+        this.specializations.add(specialization);
     }
     
     @Override
-    public void accept(CHTLASTVisitor visitor) {
-        visitor.visitCustomDefinition(this);
+    public void accept(ASTVisitor visitor) {
+        visitor.visit(this);
+    }
+    
+    @Override
+    public String toString() {
+        return String.format("[Custom] %s %s", customType.getSymbol(), name);
     }
 }

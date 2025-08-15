@@ -35,6 +35,8 @@ public class CHTLLexer {
         KEYWORDS.put("from", CHTLTokenType.FROM);
         KEYWORDS.put("as", CHTLTokenType.AS);
         KEYWORDS.put("except", CHTLTokenType.EXCEPT);
+        KEYWORDS.put("delete", CHTLTokenType.DELETE);
+        KEYWORDS.put("insert", CHTLTokenType.INSERT);
         
         // @关键字
         AT_KEYWORDS.put("@Style", CHTLTokenType.AT_STYLE);

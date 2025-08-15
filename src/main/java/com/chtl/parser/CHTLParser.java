@@ -514,7 +514,7 @@ public class CHTLParser {
         consume(CHTLTokenType.LEFT_BRACE, "期望'{'");
         
         // 解析自定义内容
-        parseTemplateOrCustomContent(custom, type);
+        parseCustomContent(custom, parseCustomType());
         
         consume(CHTLTokenType.RIGHT_BRACE, "期望'}'");
         return custom;
@@ -534,6 +534,72 @@ public class CHTLParser {
         
         error("期望@Style、@Element或@Var");
         return TemplateDefinitionNode.TemplateType.ELEMENT;
+    }
+    
+    /**
+     * 解析自定义类型
+     */
+    private CustomDefinitionNode.CustomType parseCustomType() {
+        if (match(CHTLTokenType.AT_STYLE)) {
+            return CustomDefinitionNode.CustomType.STYLE;
+        } else if (match(CHTLTokenType.AT_ELEMENT)) {
+            return CustomDefinitionNode.CustomType.ELEMENT;
+        } else if (match(CHTLTokenType.AT_VAR)) {
+            return CustomDefinitionNode.CustomType.VAR;
+        } else {
+            error("期望@Style, @Element或@Var");
+            return null;
+        }
+    }
+    
+    /**
+     * 解析自定义内容，支持特例化操作
+     */
+    private void parseCustomContent(CustomDefinitionNode custom, CustomDefinitionNode.CustomType type) {
+        switch (type) {
+            case ELEMENT:
+                // 解析元素内容和特例化操作
+                while (!check(CHTLTokenType.RIGHT_BRACE) && !isAtEnd()) {
+                    if (check(CHTLTokenType.DELETE)) {
+                        custom.addSpecialization(parseDeleteOperation());
+                    } else if (check(CHTLTokenType.INSERT)) {
+                        custom.addSpecialization(parseInsertOperation());
+                    } else if (check(CHTLTokenType.IDENTIFIER)) {
+                        custom.addBodyNode(parseElement());
+                    } else if (checkTemplateOrCustomUsage()) {
+                        // 检查是否是继承
+                        CHTLASTNode node = parseTemplateOrCustomUsage();
+                        if (node instanceof TemplateUsageNode) {
+                            TemplateUsageNode usage = (TemplateUsageNode) node;
+                            custom.addInherit(usage.getName());
+                        }
+                    } else {
+                        advance();
+                    }
+                }
+                break;
+                
+            case STYLE:
+                // 解析样式内容
+                while (!check(CHTLTokenType.RIGHT_BRACE) && !isAtEnd()) {
+                    if (checkStyleProperty()) {
+                        custom.addBodyNode(parseStyleProperty());
+                    } else if (checkTemplateOrCustomUsage()) {
+                        CHTLASTNode node = parseTemplateOrCustomUsage();
+                        if (node instanceof TemplateUsageNode) {
+                            TemplateUsageNode usage = (TemplateUsageNode) node;
+                            custom.addInherit(usage.getName());
+                        }
+                    } else {
+                        advance();
+                    }
+                }
+                break;
+                
+            case VAR:
+                // VAR类型应该在parseCustomDefinition中特殊处理
+                break;
+        }
     }
     
     /**
@@ -1179,6 +1245,56 @@ public class CHTLParser {
         return new CHTLToken(type, "", 0, 0, 0);
     }
     
+    /**
+     * 解析删除操作
+     */
+    private SpecializationNode parseDeleteOperation() {
+        consume(CHTLTokenType.DELETE, "期望'delete'");
+        SpecializationNode spec = new SpecializationNode(SpecializationNode.SpecializationType.REMOVE_ELEMENT);
+        
+        // 解析要删除的元素
+        while (!check(CHTLTokenType.SEMICOLON) && !isAtEnd()) {
+            if (check(CHTLTokenType.IDENTIFIER)) {
+                spec.setTarget(advance().getValue());
+            } else if (check(CHTLTokenType.NUMBER)) {
+                spec.setPosition(Integer.parseInt(advance().getValue()));
+            }
+            
+            if (!match(CHTLTokenType.COMMA)) {
+                break;
+            }
+        }
+        
+        consume(CHTLTokenType.SEMICOLON, "期望';'");
+        return spec;
+    }
+    
+    /**
+     * 解析插入操作
+     */
+    private SpecializationNode parseInsertOperation() {
+        consume(CHTLTokenType.INSERT, "期望'insert'");
+        
+        SpecializationNode spec = new SpecializationNode(SpecializationNode.SpecializationType.ADD_ELEMENT);
+        
+        // 解析位置
+        if (check(CHTLTokenType.NUMBER)) {
+            spec.setPosition(Integer.parseInt(advance().getValue()));
+        }
+        
+        consume(CHTLTokenType.LEFT_BRACE, "期望'{'");
+        
+        // 解析要插入的内容
+        if (check(CHTLTokenType.IDENTIFIER)) {
+            spec.setValue(parseElement());
+        }
+        
+        consume(CHTLTokenType.RIGHT_BRACE, "期望'}'");
+        consume(CHTLTokenType.SEMICOLON, "期望';'");
+        
+        return spec;
+    }
+
     private void error(String message) {
         CHTLToken token = peek();
         String errorMsg = String.format("[%d:%d] %s", token.getLine(), token.getColumn(), message);

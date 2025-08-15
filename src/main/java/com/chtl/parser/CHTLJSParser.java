@@ -128,6 +128,10 @@ public class CHTLJSParser {
             return parseDotOperation(left);
         }
         
+        if (match(CHTLJSTokenType.ARROW)) {
+            return parseArrowOperation(left);
+        }
+        
         return left;
     }
     
@@ -182,6 +186,10 @@ public class CHTLJSParser {
     /**
      * 解析listen调用
      */
+    /**
+     * 解析listen调用
+     * 支持无序的事件处理器定义
+     */
     private ListenCallNode parseListenCall(CHTLJSASTNode target) {
         consume(CHTLJSTokenType.LISTEN, "期望'listen'");
         consume(CHTLJSTokenType.LEFT_PAREN, "期望'('");
@@ -193,16 +201,25 @@ public class CHTLJSParser {
         ListenCallNode listenCall = new ListenCallNode();
         listenCall.setTarget(target);
         
-        // 解析事件处理器
+        // 解析事件处理器 - 支持任意顺序
         while (!check(CHTLJSTokenType.RIGHT_BRACE) && !isAtEnd()) {
-            String eventName = consume(CHTLJSTokenType.IDENTIFIER, "期望事件名").getValue();
+            if (!check(CHTLJSTokenType.IDENTIFIER)) {
+                error("期望事件名");
+                break;
+            }
+            
+            String eventName = advance().getValue();
             consume(CHTLJSTokenType.COLON, "期望':'");
             
             context.setCurrentProperty(eventName);
             EventHandlerNode handler = parseEventHandler(eventName);
             listenCall.addEventHandler(eventName, handler);
             
-            if (!match(CHTLJSTokenType.COMMA)) {
+            // 参数之间可以有逗号，也可以没有
+            match(CHTLJSTokenType.COMMA);
+            
+            // 如果下一个是右大括号，结束解析
+            if (check(CHTLJSTokenType.RIGHT_BRACE)) {
                 break;
             }
         }
@@ -218,49 +235,80 @@ public class CHTLJSParser {
     
     /**
      * 解析delegate调用
+     * 语法: {{父元素}}->delegate({
+     *     target: {{选择器}} | [{{选择器1}}, {{选择器2}}],
+     *     事件名: 处理函数,
+     *     ...
+     * })
+     * 支持无序参数
      */
     private DelegateCallNode parseDelegateCall(CHTLJSASTNode parent) {
         consume(CHTLJSTokenType.DELEGATE, "期望'delegate'");
         consume(CHTLJSTokenType.LEFT_PAREN, "期望'('");
         consume(CHTLJSTokenType.LEFT_BRACE, "期望'{'");
         
+        // 进入delegate配置状态
+        context.enterState(CHTLJSParserContext.ParseState.IN_DELEGATE_CONFIG);
+        
         DelegateCallNode delegateCall = new DelegateCallNode();
         delegateCall.setParentElement(parent);
         
-        // 解析配置
+        // 解析配置 - 支持无序参数
         while (!check(CHTLJSTokenType.RIGHT_BRACE) && !isAtEnd()) {
-            String key = consume(CHTLJSTokenType.IDENTIFIER, "期望配置项").getValue();
+            if (!check(CHTLJSTokenType.IDENTIFIER)) {
+                error("期望属性名");
+                break;
+            }
+            
+            String key = advance().getValue();
             consume(CHTLJSTokenType.COLON, "期望':'");
+            context.setCurrentProperty(key);
             
             if ("target".equals(key)) {
                 // 解析目标元素
                 if (check(CHTLJSTokenType.LEFT_BRACKET)) {
-                    // 数组形式
-                    consume(CHTLJSTokenType.LEFT_BRACKET, "期望'['");
+                    // 数组形式: [{{选择器1}}, {{选择器2}}]
+                    advance(); // 消费 [
                     while (!check(CHTLJSTokenType.RIGHT_BRACKET) && !isAtEnd()) {
                         if (check(CHTLJSTokenType.DOUBLE_LEFT_BRACE)) {
                             delegateCall.addTargetElement(parseEnhancedSelector());
+                        } else {
+                            error("期望增强选择器{{}}");
+                            break;
                         }
-                        match(CHTLJSTokenType.COMMA);
+                        
+                        // 元素之间可以有逗号
+                        if (!match(CHTLJSTokenType.COMMA)) {
+                            break;
+                        }
                     }
                     consume(CHTLJSTokenType.RIGHT_BRACKET, "期望']'");
-                } else {
-                    // 单个选择器
+                } else if (check(CHTLJSTokenType.DOUBLE_LEFT_BRACE)) {
+                    // 单个选择器: {{选择器}}
                     delegateCall.addTargetElement(parseEnhancedSelector());
+                } else {
+                    error("target必须是增强选择器或增强选择器数组");
                 }
             } else {
-                // 事件处理器
+                // 其他都是事件处理器
                 EventHandlerNode handler = parseEventHandler(key);
                 delegateCall.addEventHandler(key, handler);
             }
             
-            if (!match(CHTLJSTokenType.COMMA)) {
+            // 参数之间可以有逗号，也可以没有
+            match(CHTLJSTokenType.COMMA);
+            
+            // 如果下一个是右大括号，结束解析
+            if (check(CHTLJSTokenType.RIGHT_BRACE)) {
                 break;
             }
         }
         
         consume(CHTLJSTokenType.RIGHT_BRACE, "期望'}'");
         consume(CHTLJSTokenType.RIGHT_PAREN, "期望')'");
+        
+        // 退出delegate配置状态
+        context.exitState();
         
         return delegateCall;
     }
@@ -309,6 +357,7 @@ public class CHTLJSParser {
     
     /**
      * 解析animate调用
+     * 支持无序和可选参数
      */
     private AnimateCallNode parseAnimateCall() {
         consume(CHTLJSTokenType.LEFT_PAREN, "期望'('");
@@ -321,12 +370,18 @@ public class CHTLJSParser {
         AnimationConfigNode config = new AnimationConfigNode();
         animateCall.setConfig(config);
         
-        // 解析动画配置
+        // 解析动画配置 - 支持任意顺序和可选参数
         while (!check(CHTLJSTokenType.RIGHT_BRACE) && !isAtEnd()) {
-            String key = consume(CHTLJSTokenType.IDENTIFIER, "期望配置项").getValue();
+            if (!check(CHTLJSTokenType.IDENTIFIER)) {
+                error("期望配置项名称");
+                break;
+            }
+            
+            String key = advance().getValue();
             consume(CHTLJSTokenType.COLON, "期望':'");
             context.setCurrentProperty(key);
             
+            // 根据key解析对应的值，所有参数都是可选的
             switch (key) {
                 case "duration":
                     config.setDuration(parseNumber());
@@ -367,9 +422,20 @@ public class CHTLJSParser {
                 case "callback":
                     config.setCallback(parseExpression().toString());
                     break;
+                    
+                default:
+                    // 忽略未知参数，提供更好的扩展性
+                    warning("未知的animate参数: " + key);
+                    // 跳过值
+                    parseExpression();
+                    break;
             }
             
-            if (!match(CHTLJSTokenType.COMMA)) {
+            // 参数之间可以有逗号，也可以没有
+            match(CHTLJSTokenType.COMMA);
+            
+            // 如果下一个是右大括号，结束解析
+            if (check(CHTLJSTokenType.RIGHT_BRACE)) {
                 break;
             }
         }

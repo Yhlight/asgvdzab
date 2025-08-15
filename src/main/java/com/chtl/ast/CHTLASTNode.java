@@ -77,6 +77,7 @@ public interface CHTLASTNode {
         CUSTOM_DEFINITION,    // 自定义定义
         CUSTOM_USAGE,         // 自定义使用
         CUSTOM_OPERATION,     // 自定义操作（delete, insert等）
+        SPECIALIZATION,       // 特例化操作
         
         // 原始嵌入
         ORIGIN_BLOCK,         // 原始嵌入块

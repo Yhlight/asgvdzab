@@ -157,6 +157,11 @@ public class CHTLJSLexer {
                 return new CHTLJSToken(CHTLJSTokenType.PLUS, "+", startLine, startColumn, startPosition);
             case '-':
                 advance();
+                // 检查是否是->操作符
+                if (current() == '>') {
+                    advance();
+                    return new CHTLJSToken(CHTLJSTokenType.ARROW, "->", startLine, startColumn, startPosition);
+                }
                 return new CHTLJSToken(CHTLJSTokenType.MINUS, "-", startLine, startColumn, startPosition);
             case '*':
                 advance();
