@@ -1,157 +1,141 @@
 # CHTL Language Support for Visual Studio Code
 
-Complete language support for CHTL (Custom HyperText Language) in Visual Studio Code.
-
-![CHTL Logo](images/logo.png)
+This extension provides comprehensive language support for CHTL (Custom HyperText Language) in Visual Studio Code.
 
 ## Features
 
-### 🎨 Syntax Highlighting
-- Full syntax highlighting for CHTL language constructs
-- Support for templates, custom elements, namespaces, and imports
-- CHTL JS enhanced syntax highlighting
-- Embedded CSS and JavaScript highlighting
+### Syntax Highlighting
+- Full CHTL syntax highlighting
+- Embedded CSS and JavaScript support
+- CHTL-specific keywords and constructs
 
-### 🚀 IntelliSense & Auto-completion
-- Smart completions for CHTL keywords and structures
-- HTML element suggestions
-- CSS property completions
-- CHTL JS method completions (`->listen`, `->delegate`, `->animate`)
-- Template and variable references
+### IntelliSense
+- Auto-completion for CHTL keywords
+- Template and function suggestions
+- Smart bracket completion
 
-### 🔍 Real-time Error Checking
-- Syntax error detection as you type
-- Undefined reference warnings
-- Import validation
-- Constraint violation detection
+### Built-in Compiler
+- No separate installation required
+- Compile on save
+- Real-time error checking
 
-### 🛠️ Built-in Compiler
-- No external dependencies - compiler included
-- Compile on save option
-- Batch compilation support
-- Development and production modes
+### Code Navigation
+- Go to definition
+- Find all references
+- Symbol search
 
-### 📦 Code Snippets
-- Quick snippets for common patterns
-- Template creation helpers
-- Complete file templates
-
-## Installation
-
-1. Install from VSCode Marketplace: Search for "CHTL Language Support"
-2. Or install manually: `code --install-extension chtl-1.0.0.vsix`
-
-## Quick Start
-
-1. Create a new file with `.chtl` extension
-2. Start typing - IntelliSense will guide you
-3. Use `Ctrl+Shift+P` and search for "CHTL" commands
-
-### Example CHTL File
-
-```chtl
-// Import UI components
-[Import] @Chtl from chtl::ui as ui;
-
-// Define custom styles
-[Template] @Style Theme {
-    primaryColor: "#007bff";
-    fontFamily: "Arial, sans-serif";
-}
-
-// Main content
-body {
-    style {
-        margin: 0;
-        padding: 20px;
-        font-family: @Var Theme.fontFamily;
-    }
-    
-    @Element Container from ui {
-        h1 {
-            style {
-                color: @Var Theme.primaryColor;
-            }
-            text { Welcome to CHTL }
-        }
-        
-        @Element Button from ui {
-            style {
-                @Style PrimaryButton from ui;
-            }
-            text { Get Started }
-            
-            script {
-                let btn = {{#button}};
-                btn->listen("click", () => {
-                    alert("Hello CHTL!");
-                });
-            }
-        }
-    }
-}
-```
-
-## Commands
-
-Access commands via Command Palette (`Ctrl+Shift+P`):
-
-- **CHTL: Compile Current File** - Compile the active CHTL file
-- **CHTL: Compile All Files** - Compile all CHTL files in workspace
-- **CHTL: Show Preview** - Preview compiled output
-- **CHTL: Create New Project** - Generate a new CHTL project structure
-
-## Configuration
-
-Configure CHTL in VSCode settings:
-
-```json
-{
-    // Compiler settings
-    "chtl.compiler.path": "",  // Path to custom compiler (leave empty for built-in)
-    "chtl.compiler.javaPath": "java",  // Path to Java executable
-    "chtl.compiler.autoSave": true,  // Compile on save
-    "chtl.compiler.outputPath": "./dist",  // Output directory
-    "chtl.compiler.mode": "development",  // "development" or "production"
-    
-    // Diagnostics
-    "chtl.diagnostics.enable": true,  // Enable error checking
-    "chtl.diagnostics.delay": 500  // Delay before checking (ms)
-}
-```
-
-## Official Modules
-
-The extension includes official CHTL modules:
-
-### UI Module (`chtl::ui`)
-- Button, Card, Container components
-- Grid and Flex layouts
-- Color and spacing variables
-
-### Form Module (`chtl::form`)
-- Form components and validation
-- Input, Select, Checkbox, Radio
-- Built-in validation helpers
+### Code Snippets
+- Common CHTL patterns
+- Template snippets
+- Event handler snippets
 
 ## Requirements
 
 - Visual Studio Code 1.74.0 or higher
-- Java 17 or higher (for compiler)
+- Java 17 or higher (for the built-in compiler)
 
-## Known Issues
+## Installation
 
-- First compilation may be slow while Java runtime initializes
-- Large files may have delayed error checking
+1. Open Visual Studio Code
+2. Press `Ctrl+P` / `Cmd+P` to open Quick Open
+3. Type `ext install chtl` and press Enter
+4. Or install from the [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=chtl-team.chtl)
+
+## Usage
+
+### Creating a CHTL File
+
+1. Create a new file with `.chtl` extension
+2. Start typing - the extension will provide syntax highlighting and auto-completion
+
+### Compiling
+
+- **Manual Compile**: Right-click on a `.chtl` file and select "CHTL: Compile Current File"
+- **Auto Compile**: Enable auto-compile in settings to compile on save
+- **Compile All**: Use command palette (`Ctrl+Shift+P`) and run "CHTL: Compile All Files"
+
+### Configuration
+
+Open VS Code settings and search for "CHTL" to configure:
+
+- `chtl.compiler.autoSave`: Enable/disable auto-compile on save
+- `chtl.compiler.outputPath`: Set output directory for compiled files
+- `chtl.compiler.mode`: Choose between development and production mode
+- `chtl.compiler.optimize`: Enable compilation optimization
+- `chtl.compiler.sourcemap`: Generate source maps
+
+## Example
+
+```chtl
+[Template] @Card {
+    <div class="card {{&}}">
+        <h2><slot name="title"/></h2>
+        <div class="content">
+            <slot/>
+        </div>
+    </div>
+    
+    style {
+        {{&}} {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 8px;
+        }
+        
+        {{&}} h2 {
+            margin-top: 0;
+            color: #333;
+        }
+    }
+}
+
+// Usage
+@Card {
+    [Slot: title] { Welcome to CHTL }
+    This is a simple card component.
+}
+```
+
+## Module Support
+
+The extension includes support for CHTL modules:
+
+- **Install Module**: `Ctrl+Shift+P` → "CHTL: Install Module"
+- **Create Module**: `Ctrl+Shift+P` → "CHTL: Create New Module"
+- **Official Modules**: Includes the Chtholly UI framework
+
+## Troubleshooting
+
+### Java Not Found
+
+The extension requires Java 17+ to run the built-in compiler. Make sure:
+
+1. Java 17 or higher is installed
+2. `JAVA_HOME` environment variable is set
+3. Or configure `chtl.compiler.javaPath` in settings
+
+### Compilation Errors
+
+1. Check the Output panel (View → Output → CHTL)
+2. Ensure your CHTL syntax is correct
+3. Check file permissions
 
 ## Contributing
 
-Found a bug or have a feature request? Please open an issue on our [GitHub repository](https://github.com/chtl-lang/vscode-chtl).
+Found a bug or have a feature request? Please visit our [GitHub repository](https://github.com/your-org/vscode-chtl).
 
 ## License
 
-MIT License - see LICENSE file for details.
+MIT
 
----
+## Release Notes
 
-**Enjoy coding with CHTL!** 🚀
+### 1.0.0
+
+- Initial release
+- Full CHTL syntax highlighting
+- Built-in compiler integration
+- Auto-completion and IntelliSense
+- Real-time error checking
+- Module support

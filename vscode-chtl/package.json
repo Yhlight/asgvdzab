@@ -3,6 +3,11 @@
     "displayName": "CHTL Language Support",
     "description": "Language support for CHTL (Custom HyperText Language)",
     "version": "1.0.0",
+    "publisher": "chtl-team",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/your-org/vscode-chtl"
+    },
     "engines": {
         "vscode": "^1.74.0"
     },
@@ -22,6 +27,16 @@
         "onLanguage:chtl"
     ],
     "main": "./out/extension.js",
+    "files": [
+        "out/**/*",
+        "syntaxes/**/*",
+        "snippets/**/*",
+        "language-configuration.json",
+        "resources/**/*",
+        "README.md",
+        "CHANGELOG.md",
+        "LICENSE"
+    ],
     "contributes": {
         "languages": [
             {
@@ -75,6 +90,16 @@
                     "default": "development",
                     "description": "Compilation mode"
                 },
+                "chtl.compiler.optimize": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Enable compilation optimization"
+                },
+                "chtl.compiler.sourcemap": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Generate source maps"
+                },
                 "chtl.diagnostics.enable": {
                     "type": "boolean",
                     "default": true,
@@ -103,6 +128,14 @@
             {
                 "command": "chtl.createProject",
                 "title": "CHTL: Create New Project"
+            },
+            {
+                "command": "chtl.installModule",
+                "title": "CHTL: Install Module"
+            },
+            {
+                "command": "chtl.createModule",
+                "title": "CHTL: Create New Module"
             }
         ],
         "menus": {
@@ -134,11 +167,10 @@
         ]
     },
     "scripts": {
-        "vscode:prepublish": "npm run compile && npm run build-compiler",
+        "vscode:prepublish": "npm run compile",
         "compile": "tsc -p ./",
         "watch": "tsc -watch -p ./",
-        "build-compiler": "node scripts/build-compiler.js",
-        "package": "vsce package",
+        "package": "vsce package --no-dependencies",
         "test": "node ./out/test/runTest.js"
     },
     "devDependencies": {
