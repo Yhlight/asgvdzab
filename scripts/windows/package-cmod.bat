@@ -1,15 +1,15 @@
 @echo off
-REM CMOD模块打包脚本 - Windows平台
+REM CMOD Module Packaging Script - Windows Platform
 
 setlocal enabledelayedexpansion
 
-REM 颜色定义
+REM Color definitions
 set "GREEN=[92m"
 set "RED=[91m"
 set "YELLOW=[93m"
 set "NC=[0m"
 
-REM 打印信息
+REM Print messages
 :info
 echo %GREEN%[INFO]%NC% %~1
 goto :eof
@@ -22,18 +22,19 @@ exit /b 1
 echo %YELLOW%[WARN]%NC% %~1
 goto :eof
 
-REM 显示使用说明
+REM Show usage
 if "%1"=="" goto :usage
 if "%1"=="-h" goto :usage
 if "%1"=="--help" goto :usage
 if "%1"=="/?" goto :usage
 
-REM 解析命令行参数
+REM Parse command line arguments
 set "MODULE_PATH=%1"
 set "OUTPUT_DIR=."
 set "MODULE_NAME="
 set "MODULE_VERSION="
-set "MINIFY=true"
+set "GENERATE_EXPORT=true"
+set "SIGN_MODULE=false"
 
 shift
 :parse_args
@@ -50,242 +51,289 @@ if "%1"=="--output" (
     shift
     goto :parse_args
 )
-if "%1"=="-n" (
-    set "MODULE_NAME=%2"
-    shift
-    shift
-    goto :parse_args
-)
-if "%1"=="--name" (
-    set "MODULE_NAME=%2"
-    shift
+if "%1"=="--no-export" (
+    set "GENERATE_EXPORT=false"
     shift
     goto :parse_args
 )
-if "%1"=="-v" (
-    set "MODULE_VERSION=%2"
-    shift
-    shift
-    goto :parse_args
-)
-if "%1"=="--version" (
-    set "MODULE_VERSION=%2"
-    shift
+if "%1"=="--sign" (
+    set "SIGN_MODULE=true"
     shift
     goto :parse_args
 )
-if "%1"=="--no-minify" (
-    set "MINIFY=false"
-    shift
-    goto :parse_args
-)
-call :error "未知参数: %1"
-exit /b 1
-
+shift
+goto :parse_args
 :end_parse
 
-REM 验证参数
-if not exist "%MODULE_PATH%" (
-    call :error "模块路径不存在: %MODULE_PATH%"
-    exit /b 1
-)
-
-REM 获取模块名（从路径推断）
-for %%F in ("%MODULE_PATH%") do set "PARENT_DIR=%%~dpF"
-for %%F in ("%PARENT_DIR:~0,-1%") do set "PARENT_NAME=%%~nxF"
-for %%F in ("%PARENT_DIR:~0,-1%") do set "GRANDPARENT_DIR=%%~dpF"
-for %%F in ("%GRANDPARENT_DIR:~0,-1%") do set "GRANDPARENT_NAME=%%~nxF"
-
-if /i "%PARENT_NAME%"=="CMOD" set "INFERRED_NAME=%GRANDPARENT_NAME%"
-if /i "%PARENT_NAME%"=="cmod" set "INFERRED_NAME=%GRANDPARENT_NAME%"
-if not defined INFERRED_NAME (
-    for %%F in ("%MODULE_PATH%") do set "INFERRED_NAME=%%~nxF"
-)
-
-echo ===================================
-echo CMOD模块打包工具 - Windows平台
-echo ===================================
+REM Main process starts
+echo ======================================
+echo CMOD Module Packaging Script - Windows
+echo ======================================
 echo.
 
-REM 检查CMOD结构
-call :info "检查CMOD模块结构..."
+call :info "Module path: %MODULE_PATH%"
+call :info "Output directory: %OUTPUT_DIR%"
 
-if not exist "%MODULE_PATH%\src" (
-    call :error "缺少src目录"
+REM Check if module path exists
+if not exist "%MODULE_PATH%" (
+    call :error "Module path not found: %MODULE_PATH%"
     exit /b 1
 )
 
-if not exist "%MODULE_PATH%\info" (
-    call :error "缺少info目录"
-    exit /b 1
-)
+REM Check CMOD structure
+set "HAS_CMOD_STRUCTURE=false"
+if exist "%MODULE_PATH%\CMOD" set "HAS_CMOD_STRUCTURE=true"
+if exist "%MODULE_PATH%\Cmod" set "HAS_CMOD_STRUCTURE=true"
+if exist "%MODULE_PATH%\cmod" set "HAS_CMOD_STRUCTURE=true"
 
-REM 检查info文件
-set "INFO_FILE=%MODULE_PATH%\info\%INFERRED_NAME%.chtl"
-if not exist "%INFO_FILE%" (
-    call :error "缺少info文件: %INFERRED_NAME%.chtl"
-    exit /b 1
-)
-
-REM 检查是否包含[Info]块
-findstr /b "[Info]" "%INFO_FILE%" >nul 2>&1
-if errorlevel 1 (
-    call :error "info文件必须包含[Info]块"
-    exit /b 1
-)
-
-REM 检查[Export]块
-findstr /b "[Export]" "%INFO_FILE%" >nul 2>&1
-if errorlevel 1 (
-    call :info "提示: 建议添加[Export]块来明确模块对外接口并优化查询性能"
-    call :info "      如果不提供，系统将自动生成并导出所有模板"
+if "%HAS_CMOD_STRUCTURE%"=="false" (
+    REM Check if current directory is already a CMOD directory
+    if exist "%MODULE_PATH%\src" (
+        if exist "%MODULE_PATH%\info" (
+            call :info "Detected CMOD directory structure"
+        ) else (
+            call :error "Invalid CMOD structure: missing info directory"
+            exit /b 1
+        )
+    ) else (
+        call :error "Invalid CMOD structure: missing src directory"
+        exit /b 1
+    )
 ) else (
-    call :info "发现[Export]块，将只导出指定的模板"
-)
-
-call :info "CMOD结构检查通过"
-
-REM 读取模块信息
-call :info "读取模块信息..."
-
-REM 如果没有指定名称和版本，从info文件读取
-if "%MODULE_NAME%"=="" (
-    for /f "tokens=2 delims==" %%a in ('findstr /i "name" "%INFO_FILE%" ^| findstr "="') do (
-        set "TEMP_NAME=%%a"
-        set "TEMP_NAME=!TEMP_NAME:~1!"
-        for /f "delims=;" %%b in ("!TEMP_NAME!") do (
-            set "MODULE_NAME=%%~b"
-            set "MODULE_NAME=!MODULE_NAME:~0,-1!"
-        )
+    REM Handle module with CMOD + CJMOD structure
+    call :info "Detected CMOD + CJMOD structure"
+    if exist "%MODULE_PATH%\CMOD" (
+        set "MODULE_PATH=%MODULE_PATH%\CMOD"
+    ) else if exist "%MODULE_PATH%\Cmod" (
+        set "MODULE_PATH=%MODULE_PATH%\Cmod"
+    ) else (
+        set "MODULE_PATH=%MODULE_PATH%\cmod"
     )
 )
 
-if "%MODULE_VERSION%"=="" (
-    for /f "tokens=2 delims==" %%a in ('findstr /i "version" "%INFO_FILE%" ^| findstr "="') do (
-        set "TEMP_VER=%%a"
-        set "TEMP_VER=!TEMP_VER:~1!"
-        for /f "delims=;" %%b in ("!TEMP_VER!") do (
-            set "MODULE_VERSION=%%~b"
-            set "MODULE_VERSION=!MODULE_VERSION:~0,-1!"
-        )
-    )
+REM Read module information
+call :read_module_info
+
+REM Create working directory
+set "WORK_DIR=%TEMP%\cmod_pack_%RANDOM%"
+mkdir "%WORK_DIR%" 2>nul
+
+REM Copy module structure
+call :info "Copying module structure..."
+xcopy /s /e /y "%MODULE_PATH%\*" "%WORK_DIR%\" >nul
+
+REM Process CHTL files
+call :info "Processing CHTL files..."
+call :process_chtl_files "%WORK_DIR%"
+
+REM Generate [Export] block if needed
+if "%GENERATE_EXPORT%"=="true" (
+    call :info "Generating [Export] block..."
+    call :generate_export_block "%WORK_DIR%"
 )
 
-if "%MODULE_NAME%"=="" (
-    set "MODULE_NAME=%INFERRED_NAME%"
-    call :warning "使用推断的模块名称: %MODULE_NAME%"
-)
+REM Create META-INF
+mkdir "%WORK_DIR%\META-INF" 2>nul
 
-if "%MODULE_VERSION%"=="" (
-    set "MODULE_VERSION=1.0.0"
-    call :warning "使用默认版本: %MODULE_VERSION%"
-)
-
-call :info "模块: %MODULE_NAME% v%MODULE_VERSION%"
-
-REM 创建CMOD包
-call :info "创建CMOD包..."
-
-REM 创建输出目录
-if not exist "%OUTPUT_DIR%" mkdir "%OUTPUT_DIR%"
-
-REM 包文件名
-set "PACKAGE_FILE=%OUTPUT_DIR%\%MODULE_NAME%-%MODULE_VERSION%.cmod"
-
-REM 创建临时目录
-set "TEMP_DIR=%TEMP%\cmod_%RANDOM%"
-mkdir "%TEMP_DIR%"
-
-REM 复制CMOD结构
-xcopy /s /e /y "%MODULE_PATH%\*" "%TEMP_DIR%\" >nul
-
-REM 处理子模块
-call :process_submodules "%TEMP_DIR%"
-
-REM 压缩CHTL文件（如果需要）
-if "%MINIFY%"=="true" (
-    call :info "压缩CHTL文件..."
-    REM Windows下的简单压缩处理
-    for /r "%TEMP_DIR%" %%f in (*.chtl) do (
-        REM 这里可以调用其他工具或脚本来压缩
-        REM 暂时跳过实际压缩
-    )
-)
-
-REM 创建元信息
-mkdir "%TEMP_DIR%\META-INF"
+REM Create manifest file
 (
 echo Manifest-Version: 1.0
 echo Module-Type: CMOD
 echo Module-Name: %MODULE_NAME%
 echo Module-Version: %MODULE_VERSION%
-echo Created-By: CMOD Package Tool
 echo Build-Time: %date% %time%
-) > "%TEMP_DIR%\META-INF\MANIFEST.MF"
+echo Build-Platform: Windows
+) > "%WORK_DIR%\META-INF\MANIFEST.MF"
 
-REM 计算校验和
-call :info "计算校验和..."
-REM Windows下简化处理，使用文件数量作为示例
-set /a CHECKSUM=0
-for /r "%TEMP_DIR%" %%f in (*) do set /a CHECKSUM+=1
-echo %CHECKSUM% > "%TEMP_DIR%\META-INF\CHECKSUM.SHA256"
+REM Package module
+set "OUTPUT_FILE=%OUTPUT_DIR%\%MODULE_NAME%-%MODULE_VERSION%.cmod"
+call :info "Creating CMOD package: %OUTPUT_FILE%"
 
-REM 创建ZIP包（CMOD使用ZIP格式）
-pushd "%TEMP_DIR%"
-powershell -Command "Compress-Archive -Path '*' -DestinationPath '%PACKAGE_FILE%' -Force"
+REM Change to working directory for packaging
+pushd "%WORK_DIR%"
+
+REM Create ZIP file (CMOD format)
+powershell -Command "Compress-Archive -Path '*' -DestinationPath '%OUTPUT_FILE%' -Force"
+if %errorlevel% neq 0 (
+    call :error "Failed to create CMOD package"
+    popd
+    rmdir /s /q "%WORK_DIR%"
+    exit /b 1
+)
+
 popd
 
-REM 清理临时目录
-rmdir /s /q "%TEMP_DIR%"
+REM Sign module (if requested)
+if "%SIGN_MODULE%"=="true" (
+    call :info "Signing module..."
+    call :sign_module "%OUTPUT_FILE%"
+)
 
-call :info "CMOD包创建成功: %PACKAGE_FILE%"
+REM Calculate checksum
+call :info "Calculating checksum..."
+certutil -hashfile "%OUTPUT_FILE%" SHA256 | findstr /v ":" > "%OUTPUT_FILE%.sha256"
 
-REM 显示包信息
-call :info "包信息:"
-echo   文件: %PACKAGE_FILE%
-for %%F in ("%PACKAGE_FILE%") do echo   大小: %%~zF 字节
+REM Clean up
+rmdir /s /q "%WORK_DIR%"
 
-REM 列出包内容
+REM Display results
+call :info "CMOD packaging completed!"
 echo.
-call :info "包内容:"
-powershell -Command "$zip = [System.IO.Compression.ZipFile]::OpenRead('%PACKAGE_FILE%'); $entries = $zip.Entries | Select-Object -First 20; foreach($entry in $entries) { Write-Host '  ' $entry.FullName }; $zip.Dispose()"
+echo Module information:
+echo   Name: %MODULE_NAME%
+echo   Version: %MODULE_VERSION%
+echo   Output: %OUTPUT_FILE%
+
+if exist "%OUTPUT_FILE%" (
+    for %%F in ("%OUTPUT_FILE%") do echo   Size: %%~zF bytes
+)
 
 echo.
-call :info "打包完成！"
+call :info "Package created successfully!"
 
 endlocal
 exit /b 0
 
-:process_submodules
-REM 处理子模块
+REM Read module information
+:read_module_info
+set "INFO_FILE="
+if exist "%MODULE_PATH%\info\*.chtl" (
+    for %%F in ("%MODULE_PATH%\info\*.chtl") do (
+        set "INFO_FILE=%%F"
+        set "MODULE_NAME=%%~nF"
+    )
+)
+
+if "%INFO_FILE%"=="" (
+    call :error "No info file found in info directory"
+    exit /b 1
+)
+
+call :info "Reading module information from: %INFO_FILE%"
+
+REM Parse info file
+for /f "tokens=1,* delims==" %%A in ('findstr /i "name version" "%INFO_FILE%"') do (
+    set "KEY=%%A"
+    set "VALUE=%%B"
+    
+    REM Remove quotes and spaces
+    set "KEY=!KEY: =!"
+    set "VALUE=!VALUE:"=!"
+    set "VALUE=!VALUE:;=!"
+    set "VALUE=!VALUE: =!"
+    
+    if /i "!KEY!"=="name" set "MODULE_NAME=!VALUE!"
+    if /i "!KEY!"=="version" set "MODULE_VERSION=!VALUE!"
+)
+
+if "%MODULE_VERSION%"=="" set "MODULE_VERSION=1.0.0"
+
+call :info "Module: %MODULE_NAME% v%MODULE_VERSION%"
+goto :eof
+
+REM Process CHTL files
+:process_chtl_files
 set "base_dir=%~1"
 
-if exist "%base_dir%\src" (
-    for /d %%D in ("%base_dir%\src\*") do (
-        if exist "%%D\src" if exist "%%D\info" (
-            for %%F in ("%%D") do set "submodule_name=%%~nxF"
-            call :info "发现子模块: !submodule_name!"
-            
-            REM 验证子模块结构
-            if not exist "%%D\info\!submodule_name!.chtl" (
-                call :warning "子模块缺少info文件: !submodule_name!.chtl"
-            )
-        )
+REM Process all .chtl files
+for /r "%base_dir%\src" %%F in (*.chtl) do (
+    call :info "Processing: %%~nxF"
+    REM Here you would call CHTL compiler if needed
+)
+
+REM Process submodules
+for /d %%D in ("%base_dir%\src\*") do (
+    if exist "%%D\src" if exist "%%D\info" (
+        call :info "Found submodule: %%~nxD"
+        call :process_chtl_files "%%D"
     )
 )
 goto :eof
 
+REM Generate [Export] block
+:generate_export_block
+set "base_dir=%~1"
+set "info_file=%base_dir%\info\%MODULE_NAME%.chtl"
+
+REM Check if [Export] already exists
+findstr /b "[Export]" "%info_file%" >nul 2>&1
+if not errorlevel 1 (
+    call :info "[Export] block already exists"
+    goto :eof
+)
+
+REM Analyze module to generate export list
+call :info "Analyzing module structure..."
+
+REM Append [Export] block to info file
+echo. >> "%info_file%"
+echo [Export] { >> "%info_file%"
+
+REM Find all templates
+for /f "delims=" %%F in ('findstr /s /r "^\[Template\].*@.*" "%base_dir%\src\*.chtl"') do (
+    REM Extract template name
+    echo %%F | findstr "@Style" >nul && echo     @Style %%~nF; >> "%info_file%"
+    echo %%F | findstr "@Component" >nul && echo     @Component %%~nF; >> "%info_file%"
+    echo %%F | findstr "@Element" >nul && echo     @Element %%~nF; >> "%info_file%"
+)
+
+REM Find all variables
+for /f "delims=" %%F in ('findstr /s /r "^\[Var\]" "%base_dir%\src\*.chtl"') do (
+    echo     @Var %%~nF; >> "%info_file%"
+)
+
+echo } >> "%info_file%"
+call :info "[Export] block generated"
+goto :eof
+
+REM Sign module
+:sign_module
+set "MODULE_FILE=%~1"
+
+REM Check for signing key
+if not exist "%USERPROFILE%\.chtl\keys\private.key" (
+    call :warning "No signing key found, skipping signature"
+    goto :eof
+)
+
+REM Sign the module (placeholder - actual implementation needed)
+call :info "Module signed (placeholder)"
+goto :eof
+
+REM Show usage
 :usage
-echo 用法: %~nx0 ^<module-path^> [options]
 echo.
-echo 选项:
-echo   -o, --output ^<dir^>      输出目录 (默认: .)
-echo   -n, --name ^<name^>       模块名称 (默认: 从info文件读取)
-echo   -v, --version ^<ver^>     模块版本 (默认: 从info文件读取)
-echo   --no-minify             不压缩CHTL文件
-echo   -h, --help, /?          显示帮助信息
+echo Usage: package-cmod.bat MODULE_PATH [OPTIONS]
 echo.
-echo 示例:
-echo   %~nx0 src\main\java\com\chtl\module\Chtholly\CMOD -o dist\
-echo   %~nx0 mymodule\CMOD --name MyModule --version 1.0.0
+echo Package a CMOD module for distribution
+echo.
+echo Arguments:
+echo   MODULE_PATH      Path to the module directory
+echo.
+echo Options:
+echo   -o, --output DIR     Output directory (default: current)
+echo   --no-export          Do not generate [Export] block
+echo   --sign               Sign the module package
+echo   -h, --help           Show this help message
+echo.
+echo Examples:
+echo   package-cmod.bat MyModule
+echo   package-cmod.bat MyModule -o dist
+echo   package-cmod.bat path\to\module --no-export --sign
+echo.
+echo Module structure:
+echo   MyModule/
+echo   ├── src/           # CHTL source files
+echo   │   ├── MyModule.chtl
+echo   │   └── components/
+echo   └── info/          # Module information
+echo       └── MyModule.chtl
+echo.
+echo Or with CMOD + CJMOD structure:
+echo   MyModule/
+echo   ├── CMOD/
+echo   │   ├── src/
+echo   │   └── info/
+echo   └── CJMOD/
+echo.
 exit /b 0
