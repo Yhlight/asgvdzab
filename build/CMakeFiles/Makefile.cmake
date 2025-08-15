@@ -52,4 +52,5 @@ set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/chtl_compiler.dir/DependInfo.cmake"
   "CMakeFiles/chtl_tests.dir/DependInfo.cmake"
   "CMakeFiles/slice_scanner_tests.dir/DependInfo.cmake"
+  "CMakeFiles/token_tests.dir/DependInfo.cmake"
   )

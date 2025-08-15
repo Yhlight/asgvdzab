@@ -11,10 +11,13 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/workspace/src/common/types.cpp" "CMakeFiles/chtl_tests.dir/src/common/types.cpp.o" "gcc" "CMakeFiles/chtl_tests.dir/src/common/types.cpp.o.d"
   "/workspace/src/compilers/chtl_compiler.cpp" "CMakeFiles/chtl_tests.dir/src/compilers/chtl_compiler.cpp.o" "gcc" "CMakeFiles/chtl_tests.dir/src/compilers/chtl_compiler.cpp.o.d"
   "/workspace/src/dispatcher/compiler_dispatcher.cpp" "CMakeFiles/chtl_tests.dir/src/dispatcher/compiler_dispatcher.cpp.o" "gcc" "CMakeFiles/chtl_tests.dir/src/dispatcher/compiler_dispatcher.cpp.o.d"
+  "/workspace/src/lexer/chtl_js_tokens.cpp" "CMakeFiles/chtl_tests.dir/src/lexer/chtl_js_tokens.cpp.o" "gcc" "CMakeFiles/chtl_tests.dir/src/lexer/chtl_js_tokens.cpp.o.d"
+  "/workspace/src/lexer/chtl_tokens.cpp" "CMakeFiles/chtl_tests.dir/src/lexer/chtl_tokens.cpp.o" "gcc" "CMakeFiles/chtl_tests.dir/src/lexer/chtl_tokens.cpp.o.d"
   "/workspace/src/scanner/slice_scanner.cpp" "CMakeFiles/chtl_tests.dir/src/scanner/slice_scanner.cpp.o" "gcc" "CMakeFiles/chtl_tests.dir/src/scanner/slice_scanner.cpp.o.d"
   "/workspace/src/scanner/unified_scanner.cpp" "CMakeFiles/chtl_tests.dir/src/scanner/unified_scanner.cpp.o" "gcc" "CMakeFiles/chtl_tests.dir/src/scanner/unified_scanner.cpp.o.d"
   "/workspace/tests/basic_test.cpp" "CMakeFiles/chtl_tests.dir/tests/basic_test.cpp.o" "gcc" "CMakeFiles/chtl_tests.dir/tests/basic_test.cpp.o.d"
   "/workspace/tests/slice_scanner_test.cpp" "CMakeFiles/chtl_tests.dir/tests/slice_scanner_test.cpp.o" "gcc" "CMakeFiles/chtl_tests.dir/tests/slice_scanner_test.cpp.o.d"
+  "/workspace/tests/token_test.cpp" "CMakeFiles/chtl_tests.dir/tests/token_test.cpp.o" "gcc" "CMakeFiles/chtl_tests.dir/tests/token_test.cpp.o.d"
   "" "bin/chtl_tests" "gcc" "CMakeFiles/chtl_tests.dir/link.d"
   )
 

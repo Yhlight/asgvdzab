@@ -200,6 +200,19 @@ slice_scanner_tests/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/build
 .PHONY : slice_scanner_tests/fast
 
+#=============================================================================
+# Target rules for targets named token_tests
+
+# Build rule for target.
+token_tests: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 token_tests
+.PHONY : token_tests
+
+# fast build rule for target.
+token_tests/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/build
+.PHONY : token_tests/fast
+
 src/common/types.o: src/common/types.cpp.o
 .PHONY : src/common/types.o
 
@@ -208,6 +221,7 @@ src/common/types.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/common/types.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/common/types.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/common/types.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/common/types.cpp.o
 .PHONY : src/common/types.cpp.o
 
 src/common/types.i: src/common/types.cpp.i
@@ -218,6 +232,7 @@ src/common/types.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/common/types.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/common/types.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/common/types.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/common/types.cpp.i
 .PHONY : src/common/types.cpp.i
 
 src/common/types.s: src/common/types.cpp.s
@@ -228,6 +243,7 @@ src/common/types.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/common/types.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/common/types.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/common/types.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/common/types.cpp.s
 .PHONY : src/common/types.cpp.s
 
 src/compilers/chtl_compiler.o: src/compilers/chtl_compiler.cpp.o
@@ -238,6 +254,7 @@ src/compilers/chtl_compiler.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/compilers/chtl_compiler.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/compilers/chtl_compiler.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/compilers/chtl_compiler.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/compilers/chtl_compiler.cpp.o
 .PHONY : src/compilers/chtl_compiler.cpp.o
 
 src/compilers/chtl_compiler.i: src/compilers/chtl_compiler.cpp.i
@@ -248,6 +265,7 @@ src/compilers/chtl_compiler.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/compilers/chtl_compiler.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/compilers/chtl_compiler.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/compilers/chtl_compiler.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/compilers/chtl_compiler.cpp.i
 .PHONY : src/compilers/chtl_compiler.cpp.i
 
 src/compilers/chtl_compiler.s: src/compilers/chtl_compiler.cpp.s
@@ -258,6 +276,7 @@ src/compilers/chtl_compiler.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/compilers/chtl_compiler.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/compilers/chtl_compiler.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/compilers/chtl_compiler.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/compilers/chtl_compiler.cpp.s
 .PHONY : src/compilers/chtl_compiler.cpp.s
 
 src/dispatcher/compiler_dispatcher.o: src/dispatcher/compiler_dispatcher.cpp.o
@@ -268,6 +287,7 @@ src/dispatcher/compiler_dispatcher.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/dispatcher/compiler_dispatcher.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/dispatcher/compiler_dispatcher.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/dispatcher/compiler_dispatcher.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/dispatcher/compiler_dispatcher.cpp.o
 .PHONY : src/dispatcher/compiler_dispatcher.cpp.o
 
 src/dispatcher/compiler_dispatcher.i: src/dispatcher/compiler_dispatcher.cpp.i
@@ -278,6 +298,7 @@ src/dispatcher/compiler_dispatcher.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/dispatcher/compiler_dispatcher.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/dispatcher/compiler_dispatcher.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/dispatcher/compiler_dispatcher.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/dispatcher/compiler_dispatcher.cpp.i
 .PHONY : src/dispatcher/compiler_dispatcher.cpp.i
 
 src/dispatcher/compiler_dispatcher.s: src/dispatcher/compiler_dispatcher.cpp.s
@@ -288,7 +309,74 @@ src/dispatcher/compiler_dispatcher.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/dispatcher/compiler_dispatcher.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/dispatcher/compiler_dispatcher.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/dispatcher/compiler_dispatcher.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/dispatcher/compiler_dispatcher.cpp.s
 .PHONY : src/dispatcher/compiler_dispatcher.cpp.s
+
+src/lexer/chtl_js_tokens.o: src/lexer/chtl_js_tokens.cpp.o
+.PHONY : src/lexer/chtl_js_tokens.o
+
+# target to build an object file
+src/lexer/chtl_js_tokens.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/lexer/chtl_js_tokens.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/lexer/chtl_js_tokens.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/lexer/chtl_js_tokens.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/lexer/chtl_js_tokens.cpp.o
+.PHONY : src/lexer/chtl_js_tokens.cpp.o
+
+src/lexer/chtl_js_tokens.i: src/lexer/chtl_js_tokens.cpp.i
+.PHONY : src/lexer/chtl_js_tokens.i
+
+# target to preprocess a source file
+src/lexer/chtl_js_tokens.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/lexer/chtl_js_tokens.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/lexer/chtl_js_tokens.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/lexer/chtl_js_tokens.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/lexer/chtl_js_tokens.cpp.i
+.PHONY : src/lexer/chtl_js_tokens.cpp.i
+
+src/lexer/chtl_js_tokens.s: src/lexer/chtl_js_tokens.cpp.s
+.PHONY : src/lexer/chtl_js_tokens.s
+
+# target to generate assembly for a file
+src/lexer/chtl_js_tokens.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/lexer/chtl_js_tokens.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/lexer/chtl_js_tokens.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/lexer/chtl_js_tokens.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/lexer/chtl_js_tokens.cpp.s
+.PHONY : src/lexer/chtl_js_tokens.cpp.s
+
+src/lexer/chtl_tokens.o: src/lexer/chtl_tokens.cpp.o
+.PHONY : src/lexer/chtl_tokens.o
+
+# target to build an object file
+src/lexer/chtl_tokens.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/lexer/chtl_tokens.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/lexer/chtl_tokens.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/lexer/chtl_tokens.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/lexer/chtl_tokens.cpp.o
+.PHONY : src/lexer/chtl_tokens.cpp.o
+
+src/lexer/chtl_tokens.i: src/lexer/chtl_tokens.cpp.i
+.PHONY : src/lexer/chtl_tokens.i
+
+# target to preprocess a source file
+src/lexer/chtl_tokens.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/lexer/chtl_tokens.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/lexer/chtl_tokens.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/lexer/chtl_tokens.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/lexer/chtl_tokens.cpp.i
+.PHONY : src/lexer/chtl_tokens.cpp.i
+
+src/lexer/chtl_tokens.s: src/lexer/chtl_tokens.cpp.s
+.PHONY : src/lexer/chtl_tokens.s
+
+# target to generate assembly for a file
+src/lexer/chtl_tokens.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/lexer/chtl_tokens.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/lexer/chtl_tokens.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/lexer/chtl_tokens.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/lexer/chtl_tokens.cpp.s
+.PHONY : src/lexer/chtl_tokens.cpp.s
 
 src/main.o: src/main.cpp.o
 .PHONY : src/main.o
@@ -322,6 +410,7 @@ src/scanner/slice_scanner.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/scanner/slice_scanner.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/scanner/slice_scanner.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/scanner/slice_scanner.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/scanner/slice_scanner.cpp.o
 .PHONY : src/scanner/slice_scanner.cpp.o
 
 src/scanner/slice_scanner.i: src/scanner/slice_scanner.cpp.i
@@ -332,6 +421,7 @@ src/scanner/slice_scanner.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/scanner/slice_scanner.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/scanner/slice_scanner.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/scanner/slice_scanner.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/scanner/slice_scanner.cpp.i
 .PHONY : src/scanner/slice_scanner.cpp.i
 
 src/scanner/slice_scanner.s: src/scanner/slice_scanner.cpp.s
@@ -342,6 +432,7 @@ src/scanner/slice_scanner.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/scanner/slice_scanner.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/scanner/slice_scanner.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/scanner/slice_scanner.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/scanner/slice_scanner.cpp.s
 .PHONY : src/scanner/slice_scanner.cpp.s
 
 src/scanner/unified_scanner.o: src/scanner/unified_scanner.cpp.o
@@ -352,6 +443,7 @@ src/scanner/unified_scanner.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/scanner/unified_scanner.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/scanner/unified_scanner.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/scanner/unified_scanner.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/scanner/unified_scanner.cpp.o
 .PHONY : src/scanner/unified_scanner.cpp.o
 
 src/scanner/unified_scanner.i: src/scanner/unified_scanner.cpp.i
@@ -362,6 +454,7 @@ src/scanner/unified_scanner.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/scanner/unified_scanner.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/scanner/unified_scanner.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/scanner/unified_scanner.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/scanner/unified_scanner.cpp.i
 .PHONY : src/scanner/unified_scanner.cpp.i
 
 src/scanner/unified_scanner.s: src/scanner/unified_scanner.cpp.s
@@ -372,6 +465,7 @@ src/scanner/unified_scanner.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/scanner/unified_scanner.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/scanner/unified_scanner.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/scanner/unified_scanner.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/scanner/unified_scanner.cpp.s
 .PHONY : src/scanner/unified_scanner.cpp.s
 
 tests/basic_test.o: tests/basic_test.cpp.o
@@ -425,6 +519,33 @@ tests/slice_scanner_test.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/tests/slice_scanner_test.cpp.s
 .PHONY : tests/slice_scanner_test.cpp.s
 
+tests/token_test.o: tests/token_test.cpp.o
+.PHONY : tests/token_test.o
+
+# target to build an object file
+tests/token_test.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/token_test.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/tests/token_test.cpp.o
+.PHONY : tests/token_test.cpp.o
+
+tests/token_test.i: tests/token_test.cpp.i
+.PHONY : tests/token_test.i
+
+# target to preprocess a source file
+tests/token_test.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/token_test.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/tests/token_test.cpp.i
+.PHONY : tests/token_test.cpp.i
+
+tests/token_test.s: tests/token_test.cpp.s
+.PHONY : tests/token_test.s
+
+# target to generate assembly for a file
+tests/token_test.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/token_test.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/tests/token_test.cpp.s
+.PHONY : tests/token_test.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -440,6 +561,7 @@ help:
 	@echo "... chtl_compiler"
 	@echo "... chtl_tests"
 	@echo "... slice_scanner_tests"
+	@echo "... token_tests"
 	@echo "... src/common/types.o"
 	@echo "... src/common/types.i"
 	@echo "... src/common/types.s"
@@ -449,6 +571,12 @@ help:
 	@echo "... src/dispatcher/compiler_dispatcher.o"
 	@echo "... src/dispatcher/compiler_dispatcher.i"
 	@echo "... src/dispatcher/compiler_dispatcher.s"
+	@echo "... src/lexer/chtl_js_tokens.o"
+	@echo "... src/lexer/chtl_js_tokens.i"
+	@echo "... src/lexer/chtl_js_tokens.s"
+	@echo "... src/lexer/chtl_tokens.o"
+	@echo "... src/lexer/chtl_tokens.i"
+	@echo "... src/lexer/chtl_tokens.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
@@ -464,6 +592,9 @@ help:
 	@echo "... tests/slice_scanner_test.o"
 	@echo "... tests/slice_scanner_test.i"
 	@echo "... tests/slice_scanner_test.s"
+	@echo "... tests/token_test.o"
+	@echo "... tests/token_test.i"
+	@echo "... tests/token_test.s"
 .PHONY : help
 
 
