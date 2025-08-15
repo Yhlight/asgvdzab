@@ -28,7 +28,7 @@ public class TestEnhancedScanning {
             div {
                 style {
                     color: ThemeColor(primary);
-                    background: @Var ThemeColor.secondary;
+                    background: ThemeColor(secondary);
                     font-size: 14px;
                 }
             }
@@ -84,17 +84,18 @@ public class TestEnhancedScanning {
     }
     
     private static void testGlobalStylePureCSS() {
-        System.out.println("\n测试4: 全局style保持纯CSS");
+        System.out.println("\n测试4: 全局style中的变量使用");
         String code = """
             style {
                 .container {
                     width: 100%;
                     max-width: 1200px;
+                    background: ThemeColor(background);
                 }
                 
-                /* 不应该识别为CHTL语法 */
+                /* 全局样式可以使用变量，但不能使用&等局部样式功能 */
                 .theme {
-                    color: #333;
+                    color: ThemeColor(primary);
                     background: white;
                 }
             }

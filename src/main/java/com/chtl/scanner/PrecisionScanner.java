@@ -283,9 +283,12 @@ public class PrecisionScanner {
     private void scanInCSS() {
         // 检查是否退出style块
         if (current() == '}') {
-            // 检查是否真的要退出CSS
-            if (balancer.getCurlyDepth() == 0) {
-                consumeChar(); // }
+            // 简单检查：如果是style块的结束大括号
+            consumeChar(); // }
+            
+            // 向前查看是否还有更多CSS内容
+            skipWhitespace();
+            if (isAtEnd() || current() == '}' || !isCSSContent()) {
                 flushCurrentFragment();
                 contextManager.exitContext();
                 currentFragmentType = FragmentType.CHTL;
@@ -294,21 +297,11 @@ public class PrecisionScanner {
         }
         
         // 处理CHTL变量语法（全局和局部style都支持）
-        // 检查变量函数调用形式：VariableName(property)
+        // 检查变量函数调用形式：VariableName(property) - 这是唯一正确的使用方式
         if (Character.isUpperCase(current()) && isVariableFunctionCall()) {
             flushCurrentFragment();
             currentFragmentType = FragmentType.CHTL;
             scanVariableFunctionCall();
-            flushCurrentFragment();
-            currentFragmentType = FragmentType.CSS;
-            return;
-        }
-        
-        // 检查@Var前缀形式
-        if (current() == '@' && matchKeyword("@Var")) {
-            flushCurrentFragment();
-            currentFragmentType = FragmentType.CHTL;
-            scanOptionalVarPrefix();
             flushCurrentFragment();
             currentFragmentType = FragmentType.CSS;
             return;
@@ -813,6 +806,16 @@ public class PrecisionScanner {
             }
             consumeChar();
         }
+    }
+    
+    /**
+     * 检查是否是CSS内容
+     */
+    private boolean isCSSContent() {
+        // 检查常见的CSS选择器开始
+        char c = current();
+        return c == '.' || c == '#' || c == ':' || c == '[' || 
+               c == '@' || c == '*' || Character.isLetter(c);
     }
     
     /**
