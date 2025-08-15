@@ -1,5 +1,9 @@
 file(REMOVE_RECURSE
   "CMakeFiles/token_tests.dir/link.d"
+  "CMakeFiles/token_tests.dir/src/ast/chtl_ast.cpp.o"
+  "CMakeFiles/token_tests.dir/src/ast/chtl_ast.cpp.o.d"
+  "CMakeFiles/token_tests.dir/src/ast/chtl_js_ast.cpp.o"
+  "CMakeFiles/token_tests.dir/src/ast/chtl_js_ast.cpp.o.d"
   "CMakeFiles/token_tests.dir/src/common/types.cpp.o"
   "CMakeFiles/token_tests.dir/src/common/types.cpp.o.d"
   "CMakeFiles/token_tests.dir/src/compilers/chtl_compiler.cpp.o"

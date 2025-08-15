@@ -1,5 +1,9 @@
 file(REMOVE_RECURSE
   "CMakeFiles/slice_scanner_tests.dir/link.d"
+  "CMakeFiles/slice_scanner_tests.dir/src/ast/chtl_ast.cpp.o"
+  "CMakeFiles/slice_scanner_tests.dir/src/ast/chtl_ast.cpp.o.d"
+  "CMakeFiles/slice_scanner_tests.dir/src/ast/chtl_js_ast.cpp.o"
+  "CMakeFiles/slice_scanner_tests.dir/src/ast/chtl_js_ast.cpp.o.d"
   "CMakeFiles/slice_scanner_tests.dir/src/common/types.cpp.o"
   "CMakeFiles/slice_scanner_tests.dir/src/common/types.cpp.o.d"
   "CMakeFiles/slice_scanner_tests.dir/src/compilers/chtl_compiler.cpp.o"

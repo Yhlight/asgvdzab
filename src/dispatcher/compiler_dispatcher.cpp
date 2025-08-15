@@ -224,17 +224,16 @@ std::vector<CodeSegment> CompilerDispatcher::analyzeDependencies(const std::vect
     std::stable_sort(sorted.begin(), sorted.end(), [](const CodeSegment& a, const CodeSegment& b) {
         auto getPriority = [](CodeSegmentType type) -> int {
             switch (type) {
-                case CodeSegmentType::CONFIGURATION: return 1;
-                case CodeSegmentType::IMPORT: return 2;
-                case CodeSegmentType::NAMESPACE: return 3;
-                case CodeSegmentType::TEMPLATE: return 4;
-                case CodeSegmentType::CUSTOM: return 5;
-                case CodeSegmentType::CSS: return 6;
-                case CodeSegmentType::LOCAL_STYLE: return 7;
-                case CodeSegmentType::CHTL: return 8;
-                case CodeSegmentType::JAVASCRIPT: return 9;
-                case CodeSegmentType::CHTL_JS: return 10;
-                case CodeSegmentType::LOCAL_SCRIPT: return 11;
+                case CodeSegmentType::CHTL_CONFIGURATION: return 1;
+                case CodeSegmentType::CHTL_IMPORT: return 2;
+                case CodeSegmentType::CHTL_NAMESPACE: return 3;
+                case CodeSegmentType::CHTL_TEMPLATE: return 4;
+                case CodeSegmentType::CHTL_CUSTOM: return 5;
+                case CodeSegmentType::CSS_GLOBAL: return 6;
+                case CodeSegmentType::CSS_LOCAL_STYLE: return 7;
+                case CodeSegmentType::CHTL_CORE: return 8;
+                case CodeSegmentType::JAVASCRIPT_STANDARD: return 9;
+                case CodeSegmentType::CHTL_JS_SCRIPT: return 10;
                 default: return 100;
             }
         };

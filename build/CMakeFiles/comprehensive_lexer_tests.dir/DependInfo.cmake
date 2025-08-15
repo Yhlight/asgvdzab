@@ -8,6 +8,8 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
+  "/workspace/src/ast/chtl_ast.cpp" "CMakeFiles/comprehensive_lexer_tests.dir/src/ast/chtl_ast.cpp.o" "gcc" "CMakeFiles/comprehensive_lexer_tests.dir/src/ast/chtl_ast.cpp.o.d"
+  "/workspace/src/ast/chtl_js_ast.cpp" "CMakeFiles/comprehensive_lexer_tests.dir/src/ast/chtl_js_ast.cpp.o" "gcc" "CMakeFiles/comprehensive_lexer_tests.dir/src/ast/chtl_js_ast.cpp.o.d"
   "/workspace/src/common/types.cpp" "CMakeFiles/comprehensive_lexer_tests.dir/src/common/types.cpp.o" "gcc" "CMakeFiles/comprehensive_lexer_tests.dir/src/common/types.cpp.o.d"
   "/workspace/src/compilers/chtl_compiler.cpp" "CMakeFiles/comprehensive_lexer_tests.dir/src/compilers/chtl_compiler.cpp.o" "gcc" "CMakeFiles/comprehensive_lexer_tests.dir/src/compilers/chtl_compiler.cpp.o.d"
   "/workspace/src/dispatcher/compiler_dispatcher.cpp" "CMakeFiles/comprehensive_lexer_tests.dir/src/dispatcher/compiler_dispatcher.cpp.o" "gcc" "CMakeFiles/comprehensive_lexer_tests.dir/src/dispatcher/compiler_dispatcher.cpp.o.d"

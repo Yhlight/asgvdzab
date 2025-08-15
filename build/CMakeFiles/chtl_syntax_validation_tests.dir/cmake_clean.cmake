@@ -1,5 +1,9 @@
 file(REMOVE_RECURSE
   "CMakeFiles/chtl_syntax_validation_tests.dir/link.d"
+  "CMakeFiles/chtl_syntax_validation_tests.dir/src/ast/chtl_ast.cpp.o"
+  "CMakeFiles/chtl_syntax_validation_tests.dir/src/ast/chtl_ast.cpp.o.d"
+  "CMakeFiles/chtl_syntax_validation_tests.dir/src/ast/chtl_js_ast.cpp.o"
+  "CMakeFiles/chtl_syntax_validation_tests.dir/src/ast/chtl_js_ast.cpp.o.d"
   "CMakeFiles/chtl_syntax_validation_tests.dir/src/common/types.cpp.o"
   "CMakeFiles/chtl_syntax_validation_tests.dir/src/common/types.cpp.o.d"
   "CMakeFiles/chtl_syntax_validation_tests.dir/src/compilers/chtl_compiler.cpp.o"

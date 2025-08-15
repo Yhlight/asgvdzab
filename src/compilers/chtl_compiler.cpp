@@ -50,7 +50,7 @@ CompileResult CHTLCompiler::compile(const CodeSegment& segment, const CompileCon
     
     try {
         // 特殊处理TEXT类型
-        if (segment.type == CodeSegmentType::TEXT) {
+        if (segment.type == CodeSegmentType::CHTL_TEXT) {
             // 直接处理文本内容
             std::string content = segment.content;
             // 移除text{}包装
@@ -107,7 +107,7 @@ std::string CHTLCompiler::getName() const {
 }
 
 std::vector<CodeSegmentType> CHTLCompiler::getSupportedTypes() const {
-    return {CodeSegmentType::CHTL, CodeSegmentType::LOCAL_STYLE, CodeSegmentType::TEXT};
+    return {CodeSegmentType::CHTL_CORE, CodeSegmentType::CSS_LOCAL_STYLE, CodeSegmentType::CHTL_TEXT};
 }
 
 void CHTLCompiler::setTemplates(const std::unordered_map<std::string, std::string>& templates) {

@@ -8,6 +8,8 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
+  "/workspace/src/ast/chtl_ast.cpp" "CMakeFiles/chtl_tests.dir/src/ast/chtl_ast.cpp.o" "gcc" "CMakeFiles/chtl_tests.dir/src/ast/chtl_ast.cpp.o.d"
+  "/workspace/src/ast/chtl_js_ast.cpp" "CMakeFiles/chtl_tests.dir/src/ast/chtl_js_ast.cpp.o" "gcc" "CMakeFiles/chtl_tests.dir/src/ast/chtl_js_ast.cpp.o.d"
   "/workspace/src/common/types.cpp" "CMakeFiles/chtl_tests.dir/src/common/types.cpp.o" "gcc" "CMakeFiles/chtl_tests.dir/src/common/types.cpp.o.d"
   "/workspace/src/compilers/chtl_compiler.cpp" "CMakeFiles/chtl_tests.dir/src/compilers/chtl_compiler.cpp.o" "gcc" "CMakeFiles/chtl_tests.dir/src/compilers/chtl_compiler.cpp.o.d"
   "/workspace/src/dispatcher/compiler_dispatcher.cpp" "CMakeFiles/chtl_tests.dir/src/dispatcher/compiler_dispatcher.cpp.o" "gcc" "CMakeFiles/chtl_tests.dir/src/dispatcher/compiler_dispatcher.cpp.o.d"
@@ -18,9 +20,11 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/workspace/src/scanner/slice_scanner.cpp" "CMakeFiles/chtl_tests.dir/src/scanner/slice_scanner.cpp.o" "gcc" "CMakeFiles/chtl_tests.dir/src/scanner/slice_scanner.cpp.o.d"
   "/workspace/src/scanner/unified_scanner.cpp" "CMakeFiles/chtl_tests.dir/src/scanner/unified_scanner.cpp.o" "gcc" "CMakeFiles/chtl_tests.dir/src/scanner/unified_scanner.cpp.o.d"
   "/workspace/tests/basic_test.cpp" "CMakeFiles/chtl_tests.dir/tests/basic_test.cpp.o" "gcc" "CMakeFiles/chtl_tests.dir/tests/basic_test.cpp.o.d"
+  "/workspace/tests/chtl_ast_conformance_test.cpp" "CMakeFiles/chtl_tests.dir/tests/chtl_ast_conformance_test.cpp.o" "gcc" "CMakeFiles/chtl_tests.dir/tests/chtl_ast_conformance_test.cpp.o.d"
   "/workspace/tests/chtl_grammar_conformance_test.cpp" "CMakeFiles/chtl_tests.dir/tests/chtl_grammar_conformance_test.cpp.o" "gcc" "CMakeFiles/chtl_tests.dir/tests/chtl_grammar_conformance_test.cpp.o.d"
   "/workspace/tests/chtl_syntax_validation_test.cpp" "CMakeFiles/chtl_tests.dir/tests/chtl_syntax_validation_test.cpp.o" "gcc" "CMakeFiles/chtl_tests.dir/tests/chtl_syntax_validation_test.cpp.o.d"
   "/workspace/tests/comprehensive_lexer_test.cpp" "CMakeFiles/chtl_tests.dir/tests/comprehensive_lexer_test.cpp.o" "gcc" "CMakeFiles/chtl_tests.dir/tests/comprehensive_lexer_test.cpp.o.d"
+  "/workspace/tests/independent_compiler_architecture_test.cpp" "CMakeFiles/chtl_tests.dir/tests/independent_compiler_architecture_test.cpp.o" "gcc" "CMakeFiles/chtl_tests.dir/tests/independent_compiler_architecture_test.cpp.o.d"
   "/workspace/tests/slice_scanner_test.cpp" "CMakeFiles/chtl_tests.dir/tests/slice_scanner_test.cpp.o" "gcc" "CMakeFiles/chtl_tests.dir/tests/slice_scanner_test.cpp.o.d"
   "/workspace/tests/token_test.cpp" "CMakeFiles/chtl_tests.dir/tests/token_test.cpp.o" "gcc" "CMakeFiles/chtl_tests.dir/tests/token_test.cpp.o.d"
   "" "bin/chtl_tests" "gcc" "CMakeFiles/chtl_tests.dir/link.d"
