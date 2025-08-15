@@ -70,7 +70,7 @@ public class CSSCompiler {
      * 创建CSS解析器
      */
     private CSS3Parser createParser(String input) {
-        ANTLRInputStream inputStream = new ANTLRInputStream(input);
+        CharStreams.fromString inputStream = CharStreams.fromString(input);
         CSS3Lexer lexer = new CSS3Lexer(inputStream);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         return new CSS3Parser(tokens);

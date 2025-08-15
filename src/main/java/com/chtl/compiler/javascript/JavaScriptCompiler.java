@@ -76,7 +76,7 @@ public class JavaScriptCompiler {
      * 创建JavaScript解析器
      */
     private ECMAScriptParser createParser(String input) {
-        ANTLRInputStream inputStream = new ANTLRInputStream(input);
+        CharStreams.fromString inputStream = CharStreams.fromString(input);
         ECMAScriptLexer lexer = new ECMAScriptLexer(inputStream);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         ECMAScriptParser parser = new ECMAScriptParser(tokens);

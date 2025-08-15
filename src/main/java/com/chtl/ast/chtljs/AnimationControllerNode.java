@@ -11,7 +11,7 @@ public class AnimationControllerNode extends AbstractCHTLJSASTNode {
     private AnimationConfigNode config;
     
     public AnimationControllerNode() {
-        super(NodeType.ANIMATION_CONTROLLER);
+        // // super(NodeType.ANIMATION_CONTROLLER); // NodeType not available // NodeType not available
     }
     
     public String getAnimationId() {

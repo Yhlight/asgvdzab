@@ -400,12 +400,12 @@ public class CompilerService {
         }
     }
     
-    private static class IncrementalCompileRequest {
+    public static class IncrementalCompileRequest {
         List<String> changedFiles;
         Map<String, String> fileContents;
     }
     
-    private static class IncrementalResult {
+    public static class IncrementalResult {
         List<String> recompiledFiles;
         Map<String, String> outputs;
         boolean success;

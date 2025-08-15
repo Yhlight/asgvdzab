@@ -501,7 +501,7 @@ public class CHTLCompiler {
     /**
      * 编译结果内部类
      */
-    private static class CompilationOutput {
+    public static class CompilationOutput {
         private String html = "";
         private List<String> cssFiles = new ArrayList<>();
         private List<String> jsFiles = new ArrayList<>();
@@ -518,7 +518,7 @@ public class CHTLCompiler {
     /**
      * 优化输出内部类
      */
-    private static class OptimizedOutput {
+    public static class OptimizedOutput {
         private String html;
         private Map<String, String> sourceMaps;
         
