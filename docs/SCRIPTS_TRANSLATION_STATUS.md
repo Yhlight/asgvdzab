@@ -22,13 +22,9 @@
 #### Linux脚本
 - `scripts/linux/build-compiler.sh` - 编译器构建脚本
 - `scripts/linux/package-cjmod.sh` - CJMOD打包脚本
-
-### 待处理 ⏳
-
-#### Linux脚本
-- `scripts/linux/build-vscode-extension.sh` - VSCode扩展构建脚本
 - `scripts/linux/package-cmod.sh` - CMOD打包脚本
 - `scripts/linux/package-unified.sh` - 统一模块打包脚本
+- `scripts/linux/build-vscode-extension.sh` - VSCode扩展构建脚本
 
 #### macOS脚本
 - `scripts/macos/build-compiler.sh` - 编译器构建脚本
@@ -36,6 +32,10 @@
 - `scripts/macos/package-cjmod.sh` - CJMOD打包脚本
 - `scripts/macos/package-cmod.sh` - CMOD打包脚本
 - `scripts/macos/package-unified.sh` - 统一模块打包脚本
+
+### 待处理 ⏳
+
+无
 
 ## 翻译原则
 

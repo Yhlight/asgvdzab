@@ -1,15 +1,15 @@
 #!/bin/bash
 
-# CJMOD模块打包脚本 - macOS平台
-# 由于macOS和Linux都是Unix-like系统，直接调用Linux版本
+# CJMOD Module Packaging Script - macOS Platform
+# Since macOS and Linux are both Unix-like systems, directly call the Linux version
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 LINUX_SCRIPT="$SCRIPT_DIR/../linux/package-cjmod.sh"
 
 if [ ! -x "$LINUX_SCRIPT" ]; then
-    echo "[ERROR] 找不到Linux版本的package-cjmod.sh脚本"
+    echo "[ERROR] Cannot find Linux version of package-cjmod.sh script"
     exit 1
 fi
 
-# 直接调用Linux版本，传递所有参数
+# Directly call Linux version, passing all arguments
 exec "$LINUX_SCRIPT" "$@"

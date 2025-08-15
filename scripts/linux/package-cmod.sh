@@ -1,16 +1,16 @@
 #!/bin/bash
 
-# CMOD模块打包脚本 - Linux平台
+# CMOD Module Packaging Script - Linux Platform
 
 set -e
 
-# 颜色定义
+# Color definitions
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
-# 打印信息
+# Print functions
 info() {
     echo -e "${GREEN}[INFO]${NC} $1"
 }
@@ -24,28 +24,30 @@ warning() {
     echo -e "${YELLOW}[WARN]${NC} $1"
 }
 
-# 显示使用说明
+# Show usage
 usage() {
-    echo "用法: $0 <module-path> [options]"
+    echo "Usage: $0 <module-path> [options]"
     echo
-    echo "选项:"
-    echo "  -o, --output <dir>      输出目录 (默认: .)"
-    echo "  -n, --name <name>       模块名称 (默认: 从info文件读取)"
-    echo "  -v, --version <ver>     模块版本 (默认: 从info文件读取)"
-    echo "  --no-minify             不压缩CHTL文件"
-    echo "  -h, --help              显示帮助信息"
+    echo "Options:"
+    echo "  -o, --output <dir>      Output directory (default: .)"
+    echo "  -n, --name <name>       Module name (default: read from info file)"
+    echo "  -v, --version <ver>     Module version (default: read from info file)"
+    echo "  --no-export             Don't generate [Export] block"
+    echo "  --sign                  Sign the module"
+    echo "  -h, --help              Show this help message"
     echo
-    echo "示例:"
+    echo "Examples:"
     echo "  $0 src/main/java/com/chtl/module/Chtholly/CMOD -o dist/"
-    echo "  $0 mymodule/CMOD --name MyModule --version 1.0.0"
+    echo "  $0 mymodule/CMOD --sign"
 }
 
-# 解析命令行参数
+# Parse command line arguments
 MODULE_PATH=""
 OUTPUT_DIR="."
 MODULE_NAME=""
 MODULE_VERSION=""
-MINIFY=true
+GENERATE_EXPORT=true
+SIGN_MODULE=false
 
 while [[ $# -gt 0 ]]; do
     case $1 in
@@ -61,8 +63,12 @@ while [[ $# -gt 0 ]]; do
             MODULE_VERSION="$2"
             shift 2
             ;;
-        --no-minify)
-            MINIFY=false
+        --no-export)
+            GENERATE_EXPORT=false
+            shift
+            ;;
+        --sign)
+            SIGN_MODULE=true
             shift
             ;;
         -h|--help)
@@ -70,200 +76,294 @@ while [[ $# -gt 0 ]]; do
             exit 0
             ;;
         *)
-            if [ -z "$MODULE_PATH" ]; then
+            if [[ -z "$MODULE_PATH" ]]; then
                 MODULE_PATH="$1"
+                shift
             else
-                error "未知参数: $1"
+                error "Unknown argument: $1"
             fi
-            shift
             ;;
     esac
 done
 
-# 验证参数
-if [ -z "$MODULE_PATH" ]; then
-    error "请指定CMOD模块路径"
+# Validate arguments
+if [[ -z "$MODULE_PATH" ]]; then
+    error "Module path not specified"
 fi
 
-if [ ! -d "$MODULE_PATH" ]; then
-    error "模块路径不存在: $MODULE_PATH"
+if [[ ! -d "$MODULE_PATH" ]]; then
+    error "Module path does not exist: $MODULE_PATH"
 fi
 
-# 获取模块名（从路径推断）
-INFERRED_NAME=$(basename "$(dirname "$MODULE_PATH")")
-if [ "$INFERRED_NAME" == "CMOD" ] || [ "$INFERRED_NAME" == "cmod" ]; then
-    INFERRED_NAME=$(basename "$(dirname "$(dirname "$MODULE_PATH")")")
-fi
-
-# 检查CMOD结构
-check_cmod_structure() {
-    info "检查CMOD模块结构..."
+# Check module structure
+check_module_structure() {
+    local module_dir="$1"
     
-    if [ ! -d "$MODULE_PATH/src" ]; then
-        error "缺少src目录"
-    fi
-    
-    if [ ! -d "$MODULE_PATH/info" ]; then
-        error "缺少info目录"
-    fi
-    
-    # 检查info文件
-    INFO_FILE="$MODULE_PATH/info/${INFERRED_NAME}.chtl"
-    if [ ! -f "$INFO_FILE" ]; then
-        error "缺少info文件: ${INFERRED_NAME}.chtl"
-    fi
-    
-    # 检查是否包含[Info]块
-    if ! grep -q "^\[Info\]" "$INFO_FILE"; then
-        error "info文件必须包含[Info]块"
-    fi
-    
-    # 检查[Export]块
-    if ! grep -q "^\[Export\]" "$INFO_FILE"; then
-        info "提示: 建议添加[Export]块来明确模块对外接口并优化查询性能"
-        info "      如果不提供，系统将自动生成并导出所有模板"
+    # Check for CMOD structure
+    if [[ -d "$module_dir/CMOD" ]] || [[ -d "$module_dir/cmod" ]]; then
+        # Combined CMOD+CJMOD structure
+        local cmod_dir=""
+        if [[ -d "$module_dir/CMOD" ]]; then
+            cmod_dir="$module_dir/CMOD"
+        else
+            cmod_dir="$module_dir/cmod"
+        fi
+        
+        if [[ ! -d "$cmod_dir/src" ]]; then
+            error "CMOD src directory not found"
+        fi
+        
+        if [[ ! -d "$cmod_dir/info" ]]; then
+            error "CMOD info directory not found"
+        fi
+        
+        echo "$cmod_dir"
     else
-        info "发现[Export]块，将只导出指定的模板"
+        # Pure CMOD structure
+        if [[ ! -d "$module_dir/src" ]]; then
+            error "src directory not found"
+        fi
+        
+        if [[ ! -d "$module_dir/info" ]]; then
+            error "info directory not found"
+        fi
+        
+        echo "$module_dir"
     fi
-    
-    info "CMOD结构检查通过"
 }
 
-# 读取模块信息
+# Read module info
 read_module_info() {
-    info "读取模块信息..."
+    local info_dir="$1/info"
+    local info_file=""
     
-    INFO_FILE="$MODULE_PATH/info/${INFERRED_NAME}.chtl"
+    # Find info.chtl file
+    for file in "$info_dir"/*.chtl; do
+        if [[ -f "$file" ]]; then
+            info_file="$file"
+            break
+        fi
+    done
     
-    # 如果没有指定名称，从info文件读取
-    if [ -z "$MODULE_NAME" ]; then
-        MODULE_NAME=$(grep -o 'name[[:space:]]*=[[:space:]]*"[^"]*"' "$INFO_FILE" | sed 's/.*"\([^"]*\)".*/\1/')
+    if [[ -z "$info_file" ]]; then
+        error "Module info file not found"
     fi
     
-    if [ -z "$MODULE_VERSION" ]; then
-        MODULE_VERSION=$(grep -o 'version[[:space:]]*=[[:space:]]*"[^"]*"' "$INFO_FILE" | sed 's/.*"\([^"]*\)".*/\1/')
+    # Extract name and version if not provided
+    if [[ -z "$MODULE_NAME" ]]; then
+        MODULE_NAME=$(grep -oP 'name\s*=\s*"\K[^"]+' "$info_file" | head -1)
+        if [[ -z "$MODULE_NAME" ]]; then
+            MODULE_NAME=$(basename "$MODULE_PATH")
+        fi
     fi
     
-    if [ -z "$MODULE_NAME" ]; then
-        MODULE_NAME="$INFERRED_NAME"
-        warning "使用推断的模块名称: $MODULE_NAME"
+    if [[ -z "$MODULE_VERSION" ]]; then
+        MODULE_VERSION=$(grep -oP 'version\s*=\s*"\K[^"]+' "$info_file" | head -1)
+        if [[ -z "$MODULE_VERSION" ]]; then
+            MODULE_VERSION="1.0.0"
+        fi
     fi
-    
-    if [ -z "$MODULE_VERSION" ]; then
-        MODULE_VERSION="1.0.0"
-        warning "使用默认版本: $MODULE_VERSION"
-    fi
-    
-    info "模块: $MODULE_NAME v$MODULE_VERSION"
 }
 
-# 创建CMOD包
-create_cmod_package() {
-    info "创建CMOD包..."
+# Process CHTL files
+process_chtl_files() {
+    local src_dir="$1"
+    local output_dir="$2"
     
-    # 创建输出目录
-    mkdir -p "$OUTPUT_DIR"
+    info "Processing CHTL files..."
     
-    # 包文件名
-    PACKAGE_FILE="$OUTPUT_DIR/${MODULE_NAME}-${MODULE_VERSION}.cmod"
+    # Find all CHTL files
+    local chtl_files=()
+    while IFS= read -r -d '' file; do
+        chtl_files+=("$file")
+    done < <(find "$src_dir" -name "*.chtl" -print0)
     
-    # 创建临时目录
-    TEMP_DIR=$(mktemp -d)
-    trap "rm -rf $TEMP_DIR" EXIT
-    
-    # 复制CMOD结构
-    cp -r "$MODULE_PATH"/* "$TEMP_DIR/"
-    
-    # 处理子模块（如果存在）
-    process_submodules "$TEMP_DIR"
-    
-    # 压缩CHTL文件（如果需要）
-    if [ "$MINIFY" = true ]; then
-        info "压缩CHTL文件..."
-        find "$TEMP_DIR" -name "*.chtl" -type f -exec bash -c '
-            file="$1"
-            # 简单的压缩：移除注释和多余空白
-            sed -i "s|//.*$||g; /^[[:space:]]*$/d; s/^[[:space:]]*//; s/[[:space:]]*$//" "$file"
-        ' _ {} \;
+    if [[ ${#chtl_files[@]} -eq 0 ]]; then
+        warning "No CHTL files found"
+        return 0
     fi
     
-    # 创建元信息
-    mkdir -p "$TEMP_DIR/META-INF"
-    cat > "$TEMP_DIR/META-INF/MANIFEST.MF" << EOF
-Manifest-Version: 1.0
-Module-Type: CMOD
+    # Create output directory
+    mkdir -p "$output_dir"
+    
+    # Copy CHTL files maintaining structure
+    for file in "${chtl_files[@]}"; do
+        local rel_path="${file#$src_dir/}"
+        local dest_file="$output_dir/$rel_path"
+        local dest_dir=$(dirname "$dest_file")
+        
+        mkdir -p "$dest_dir"
+        cp "$file" "$dest_file"
+    done
+    
+    info "Processed ${#chtl_files[@]} CHTL files"
+}
+
+# Generate Export block
+generate_export_block() {
+    local src_dir="$1"
+    local info_file="$2"
+    
+    if [[ "$GENERATE_EXPORT" != true ]]; then
+        return 0
+    fi
+    
+    # Check if Export block already exists
+    if grep -q "^\[Export\]" "$info_file"; then
+        info "[Export] block already exists"
+        return 0
+    fi
+    
+    info "Generating [Export] block..."
+    
+    # Analyze CHTL files to extract exportable items
+    local styles=""
+    local elements=""
+    local vars=""
+    
+    # Find all CHTL files
+    while IFS= read -r -d '' file; do
+        # Extract @Style declarations
+        while IFS= read -r style; do
+            styles="$styles$style, "
+        done < <(grep -oP '@Style\s+\K\w+' "$file")
+        
+        # Extract @Element declarations
+        while IFS= read -r element; do
+            elements="$elements$element, "
+        done < <(grep -oP '@Element\s+\K\w+' "$file")
+        
+        # Extract @Var declarations
+        while IFS= read -r var; do
+            vars="$vars$var, "
+        done < <(grep -oP '@Var\s+\K\w+' "$file")
+    done < <(find "$src_dir" -name "*.chtl" -print0)
+    
+    # Remove trailing comma and space
+    styles="${styles%, }"
+    elements="${elements%, }"
+    vars="${vars%, }"
+    
+    # Append Export block to info file
+    {
+        echo ""
+        echo "[Export]"
+        echo "{"
+        [[ -n "$styles" ]] && echo "    @Style $styles;"
+        [[ -n "$elements" ]] && echo "    @Element $elements;"
+        [[ -n "$vars" ]] && echo "    @Var $vars;"
+        echo "}"
+    } >> "$info_file"
+    
+    info "[Export] block generated"
+}
+
+# Create module package
+create_package() {
+    local module_dir="$1"
+    local package_file="$2"
+    
+    info "Creating module package..."
+    
+    # Create temporary directory
+    local temp_dir=$(mktemp -d)
+    local work_dir="$temp_dir/module"
+    mkdir -p "$work_dir"
+    
+    # Copy module structure
+    cp -r "$module_dir"/* "$work_dir/"
+    
+    # Process CHTL files
+    process_chtl_files "$module_dir/src" "$work_dir/src"
+    
+    # Generate Export block if needed
+    local info_file=""
+    for file in "$work_dir/info"/*.chtl; do
+        if [[ -f "$file" ]]; then
+            info_file="$file"
+            break
+        fi
+    done
+    
+    if [[ -n "$info_file" ]]; then
+        generate_export_block "$work_dir/src" "$info_file"
+    fi
+    
+    # Create manifest
+    cat > "$work_dir/MANIFEST.MF" << EOF
 Module-Name: $MODULE_NAME
 Module-Version: $MODULE_VERSION
-Created-By: CMOD Package Tool
-Build-Time: $(date -u +"%Y-%m-%d %H:%M:%S UTC")
+Module-Type: CMOD
+Build-Date: $(date -u +"%Y-%m-%d %H:%M:%S UTC")
 EOF
     
-    # 计算校验和
-    info "计算校验和..."
-    CHECKSUM=$(find "$TEMP_DIR" -type f ! -path "*/META-INF/*" -exec sha256sum {} \; | sort | sha256sum | cut -d' ' -f1)
-    echo "$CHECKSUM" > "$TEMP_DIR/META-INF/CHECKSUM.SHA256"
+    # Create ZIP archive
+    cd "$temp_dir"
+    zip -r "$package_file" module/
     
-    # 创建ZIP包（CMOD使用ZIP格式）
-    cd "$TEMP_DIR"
-    zip -qr "$PACKAGE_FILE" *
-    cd - > /dev/null
+    # Clean up
+    rm -rf "$temp_dir"
     
-    info "CMOD包创建成功: $PACKAGE_FILE"
+    info "Module package created: $package_file"
 }
 
-# 处理子模块
-process_submodules() {
-    local base_dir="$1"
+# Sign module
+sign_module() {
+    local module_file="$1"
     
-    # 查找src目录下的子模块
-    if [ -d "$base_dir/src" ]; then
-        for subdir in "$base_dir/src"/*; do
-            if [ -d "$subdir" ] && [ -d "$subdir/src" ] && [ -d "$subdir/info" ]; then
-                local submodule_name=$(basename "$subdir")
-                info "发现子模块: $submodule_name"
-                
-                # 验证子模块结构
-                if [ ! -f "$subdir/info/${submodule_name}.chtl" ]; then
-                    warning "子模块缺少info文件: ${submodule_name}.chtl"
-                fi
-            fi
-        done
+    info "Signing module..."
+    
+    # Check for signing key
+    local key_file="$HOME/.chtl/keys/module-signing.key"
+    if [[ ! -f "$key_file" ]]; then
+        warning "Signing key not found, skipping signature"
+        return 0
     fi
+    
+    # Create signature
+    openssl dgst -sha256 -sign "$key_file" -out "${module_file}.sig" "$module_file"
+    
+    info "Module signed successfully"
 }
 
-# 显示包信息
-show_package_info() {
-    info "包信息:"
-    echo "  文件: $PACKAGE_FILE"
-    echo "  大小: $(du -h "$PACKAGE_FILE" | cut -f1)"
-    echo "  SHA256: $(sha256sum "$PACKAGE_FILE" | cut -d' ' -f1)"
-    
-    # 列出包内容
-    echo
-    info "包内容:"
-    unzip -l "$PACKAGE_FILE" | tail -n +4 | head -20
-    
-    TOTAL_FILES=$(unzip -l "$PACKAGE_FILE" | tail -n +4 | head -n -2 | wc -l)
-    if [ $TOTAL_FILES -gt 20 ]; then
-        echo "  ... 还有 $((TOTAL_FILES - 20)) 个文件"
-    fi
-}
-
-# 主流程
+# Main process
 main() {
-    echo "==================================="
-    echo "CMOD模块打包工具 - Linux平台"
-    echo "==================================="
-    echo
+    info "CMOD Module Packaging Script"
+    info "============================"
     
-    check_cmod_structure
-    read_module_info
-    create_cmod_package
-    show_package_info
+    # Check module structure
+    MODULE_DIR=$(check_module_structure "$MODULE_PATH")
+    info "Module directory: $MODULE_DIR"
     
+    # Read module info
+    read_module_info "$MODULE_DIR"
+    info "Module name: $MODULE_NAME"
+    info "Module version: $MODULE_VERSION"
+    
+    # Create output directory
+    mkdir -p "$OUTPUT_DIR"
+    
+    # Create package filename
+    PACKAGE_FILE="$OUTPUT_DIR/${MODULE_NAME}-${MODULE_VERSION}.cmod"
+    
+    # Create package
+    create_package "$MODULE_DIR" "$PACKAGE_FILE"
+    
+    # Sign if requested
+    if [[ "$SIGN_MODULE" == true ]]; then
+        sign_module "$PACKAGE_FILE"
+    fi
+    
+    # Show package info
     echo
-    info "打包完成！"
+    info "Package created successfully!"
+    echo "  File: $PACKAGE_FILE"
+    echo "  Size: $(du -h "$PACKAGE_FILE" | cut -f1)"
+    
+    if [[ -f "${PACKAGE_FILE}.sig" ]]; then
+        echo "  Signature: ${PACKAGE_FILE}.sig"
+    fi
 }
 
-# 运行主流程
+# Run main
 main
