@@ -15,9 +15,11 @@ public class CHTLJSParser {
     private List<CHTLJSToken> tokens;
     private int current;
     private List<String> errors;
+    private CHTLJSParserContext context;
     
     public CHTLJSParser() {
         this.errors = new ArrayList<>();
+        this.context = new CHTLJSParserContext();
     }
     
     /**
@@ -58,6 +60,11 @@ public class CHTLJSParser {
         // 增强选择器开始
         if (check(CHTLJSTokenType.DOUBLE_LEFT_BRACE)) {
             return parseEnhancedSelectorExpression();
+        }
+        
+        // 如果到达文件末尾，返回null
+        if (isAtEnd()) {
+            return null;
         }
         
         // 普通JavaScript表达式
@@ -180,6 +187,9 @@ public class CHTLJSParser {
         consume(CHTLJSTokenType.LEFT_PAREN, "期望'('");
         consume(CHTLJSTokenType.LEFT_BRACE, "期望'{'");
         
+        // 进入listen配置状态
+        context.enterState(CHTLJSParserContext.ParseState.IN_LISTEN_CONFIG);
+        
         ListenCallNode listenCall = new ListenCallNode();
         listenCall.setTarget(target);
         
@@ -188,6 +198,7 @@ public class CHTLJSParser {
             String eventName = consume(CHTLJSTokenType.IDENTIFIER, "期望事件名").getValue();
             consume(CHTLJSTokenType.COLON, "期望':'");
             
+            context.setCurrentProperty(eventName);
             EventHandlerNode handler = parseEventHandler(eventName);
             listenCall.addEventHandler(eventName, handler);
             
@@ -198,6 +209,9 @@ public class CHTLJSParser {
         
         consume(CHTLJSTokenType.RIGHT_BRACE, "期望'}'");
         consume(CHTLJSTokenType.RIGHT_PAREN, "期望')'");
+        
+        // 退出listen配置状态
+        context.exitState();
         
         return listenCall;
     }
@@ -257,14 +271,8 @@ public class CHTLJSParser {
     private EventHandlerNode parseEventHandler(String eventName) {
         EventHandlerNode handler = new EventHandlerNode(eventName);
         
-        // 箭头函数
-        if (check(CHTLJSTokenType.LEFT_PAREN)) {
-            handler.setHandlerType(EventHandlerNode.HandlerType.ARROW_FUNCTION);
-            String code = parseArrowFunction();
-            handler.setHandlerCode(code);
-        }
         // function表达式
-        else if (match(CHTLJSTokenType.FUNCTION)) {
+        if (match(CHTLJSTokenType.FUNCTION)) {
             handler.setHandlerType(EventHandlerNode.HandlerType.FUNCTION_EXPRESSION);
             String code = parseFunctionExpression();
             handler.setHandlerCode(code);
@@ -276,35 +284,6 @@ public class CHTLJSParser {
         }
         
         return handler;
-    }
-    
-    /**
-     * 解析箭头函数
-     */
-    private String parseArrowFunction() {
-        StringBuilder code = new StringBuilder();
-        
-        // 参数列表
-        consume(CHTLJSTokenType.LEFT_PAREN, "期望'('");
-        while (!check(CHTLJSTokenType.RIGHT_PAREN) && !isAtEnd()) {
-            code.append(advance().getValue()).append(" ");
-        }
-        consume(CHTLJSTokenType.RIGHT_PAREN, "期望')'");
-        
-        // =>
-        code.append(" => ");
-        advance(); // 跳过=
-        advance(); // 跳过>
-        
-        // 函数体
-        if (check(CHTLJSTokenType.LEFT_BRACE)) {
-            code.append(parseBlock());
-        } else {
-            // 单表达式
-            code.append(parseExpression());
-        }
-        
-        return code.toString();
     }
     
     /**
@@ -335,6 +314,9 @@ public class CHTLJSParser {
         consume(CHTLJSTokenType.LEFT_PAREN, "期望'('");
         consume(CHTLJSTokenType.LEFT_BRACE, "期望'{'");
         
+        // 进入animate配置状态
+        context.enterState(CHTLJSParserContext.ParseState.IN_ANIMATE_CONFIG);
+        
         AnimateCallNode animateCall = new AnimateCallNode();
         AnimationConfigNode config = new AnimationConfigNode();
         animateCall.setConfig(config);
@@ -343,6 +325,7 @@ public class CHTLJSParser {
         while (!check(CHTLJSTokenType.RIGHT_BRACE) && !isAtEnd()) {
             String key = consume(CHTLJSTokenType.IDENTIFIER, "期望配置项").getValue();
             consume(CHTLJSTokenType.COLON, "期望':'");
+            context.setCurrentProperty(key);
             
             switch (key) {
                 case "duration":
@@ -350,15 +333,19 @@ public class CHTLJSParser {
                     break;
                     
                 case "easing":
-                    config.setEasing(parseString());
+                    config.setEasing(parseValueWithUnquotedLiteral());
                     break;
                     
                 case "begin":
+                    context.enterState(CHTLJSParserContext.ParseState.IN_ANIMATION_STATE);
                     parseAnimationState(config.getBeginState());
+                    context.exitState();
                     break;
                     
                 case "end":
+                    context.enterState(CHTLJSParserContext.ParseState.IN_ANIMATION_STATE);
                     parseAnimationState(config.getEndState());
+                    context.exitState();
                     break;
                     
                 case "when":
@@ -370,7 +357,7 @@ public class CHTLJSParser {
                     break;
                     
                 case "direction":
-                    config.setDirection(parseString());
+                    config.setDirection(parseValueWithUnquotedLiteral());
                     break;
                     
                 case "delay":
@@ -390,6 +377,9 @@ public class CHTLJSParser {
         consume(CHTLJSTokenType.RIGHT_BRACE, "期望'}'");
         consume(CHTLJSTokenType.RIGHT_PAREN, "期望')'");
         
+        // 退出animate配置状态
+        context.exitState();
+        
         return animateCall;
     }
     
@@ -402,8 +392,9 @@ public class CHTLJSParser {
         while (!check(CHTLJSTokenType.RIGHT_BRACE) && !isAtEnd()) {
             String property = consume(CHTLJSTokenType.IDENTIFIER, "期望CSS属性").getValue();
             consume(CHTLJSTokenType.COLON, "期望':'");
+            context.setCurrentProperty(property);
             
-            String value = parseValue();
+            String value = parseValueWithUnquotedLiteral();
             state.put(property, value);
             
             if (!match(CHTLJSTokenType.COMMA)) {
@@ -423,6 +414,9 @@ public class CHTLJSParser {
         while (!check(CHTLJSTokenType.RIGHT_BRACKET) && !isAtEnd()) {
             consume(CHTLJSTokenType.LEFT_BRACE, "期望'{'");
             
+            // 进入关键帧状态
+            context.enterState(CHTLJSParserContext.ParseState.IN_KEYFRAME);
+            
             // 解析at
             consume(CHTLJSTokenType.AT, "期望'at'");
             consume(CHTLJSTokenType.COLON, "期望':'");
@@ -438,7 +432,8 @@ public class CHTLJSParser {
                 if (check(CHTLJSTokenType.IDENTIFIER)) {
                     String property = advance().getValue();
                     consume(CHTLJSTokenType.COLON, "期望':'");
-                    String value = parseValue();
+                    context.setCurrentProperty(property);
+                    String value = parseValueWithUnquotedLiteral();
                     keyframe.addCssProperty(property, value);
                     
                     match(CHTLJSTokenType.COMMA, CHTLJSTokenType.SEMICOLON);
@@ -449,6 +444,9 @@ public class CHTLJSParser {
             
             config.addKeyframe(keyframe);
             consume(CHTLJSTokenType.RIGHT_BRACE, "期望'}'");
+            
+            // 退出关键帧状态
+            context.exitState();
             
             if (!match(CHTLJSTokenType.COMMA)) {
                 break;
@@ -546,6 +544,7 @@ public class CHTLJSParser {
                !check(CHTLJSTokenType.RIGHT_BRACE) && 
                !check(CHTLJSTokenType.RIGHT_PAREN) &&
                !check(CHTLJSTokenType.COMMA) &&
+               !check(CHTLJSTokenType.EOF) &&
                !isAtEnd()) {
             
             // 处理嵌套的增强选择器
@@ -553,7 +552,11 @@ public class CHTLJSParser {
                 EnhancedSelectorNode selector = parseEnhancedSelector();
                 expr.append("{{").append(selector.getSelector()).append("}}");
             } else {
-                expr.append(advance().getValue()).append(" ");
+                CHTLJSToken token = advance();
+                if (token.getType() == CHTLJSTokenType.EOF) {
+                    break;
+                }
+                expr.append(token.getValue()).append(" ");
             }
         }
         
@@ -561,6 +564,35 @@ public class CHTLJSParser {
         match(CHTLJSTokenType.SEMICOLON);
         
         return new ExpressionNode(expr.toString().trim());
+    }
+    
+    /**
+     * 解析可能包含无修饰字面量的值
+     */
+    private String parseValueWithUnquotedLiteral() {
+        // 检查是否是字符串字面量
+        if (check(CHTLJSTokenType.STRING_LITERAL)) {
+            return advance().getValue();
+        }
+        
+        // 检查是否允许无修饰字面量
+        if (context.allowsUnquotedLiteral() && check(CHTLJSTokenType.IDENTIFIER)) {
+            CHTLJSToken token = peek();
+            String value = token.getValue();
+            
+            // 验证无修饰字面量是否有效
+            if (context.isValidUnquotedLiteral(value)) {
+                advance();
+                return value;
+            } else {
+                // 如果不是有效的无修饰字面量，尝试解析为标识符
+                error("无效的值: " + value + "。期望: " + 
+                      String.join(", ", context.getUnquotedLiteralSuggestions()));
+            }
+        }
+        
+        // 默认尝试解析为字符串
+        return parseString();
     }
     
     // 辅助方法

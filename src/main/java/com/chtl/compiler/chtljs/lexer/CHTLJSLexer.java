@@ -301,9 +301,20 @@ public class CHTLJSLexer {
     private CHTLJSToken scanIdentifier(int startLine, int startColumn, int startPosition) {
         StringBuilder value = new StringBuilder();
         
+        // 首先按普通标识符规则扫描
         while (!isAtEnd() && isIdentifierPart(current())) {
             value.append(current());
             advance();
+        }
+        
+        // 如果后面跟着连字符，可能是CSS值或缓动函数
+        // 检查是否是特殊的CSS相关上下文
+        if (current() == '-' && !isAtEnd() && Character.isLetter(peek())) {
+            // 继续扫描包含连字符的标识符
+            while (!isAtEnd() && isCssIdentifierPart(current())) {
+                value.append(current());
+                advance();
+            }
         }
         
         String identifier = value.toString();
@@ -418,5 +429,12 @@ public class CHTLJSLexer {
     
     private boolean isIdentifierPart(char ch) {
         return Character.isLetterOrDigit(ch) || ch == '_' || ch == '$';
+    }
+    
+    /**
+     * 检查是否是CSS值标识符的一部分（包括连字符）
+     */
+    private boolean isCssIdentifierPart(char ch) {
+        return isIdentifierPart(ch) || ch == '-';
     }
 }

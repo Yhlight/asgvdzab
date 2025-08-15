@@ -247,7 +247,6 @@ public class CHTLJSGenerator implements CHTLJSASTVisitor {
     
     private void generateEventHandler(EventHandlerNode handler) {
         switch (handler.getHandlerType()) {
-            case ARROW_FUNCTION:
             case FUNCTION_EXPRESSION:
                 output.append(handler.getHandlerCode());
                 break;

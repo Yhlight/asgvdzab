@@ -47,6 +47,7 @@ public enum CHTLJSTokenType {
     STRING_LITERAL("STRING"),   // 字符串
     NUMBER_LITERAL("NUMBER"),   // 数字
     IDENTIFIER("IDENTIFIER"),   // 标识符
+    UNQUOTED_LITERAL("UNQUOTED"), // 无修饰字面量
     
     // JavaScript关键字（部分）
     FUNCTION("function"),       // function
@@ -66,7 +67,6 @@ public enum CHTLJSTokenType {
     MINUS("-"),                // -
     MULTIPLY("*"),             // *
     DIVIDE("/"),               // /
-    FAT_ARROW("=>"),           // => 胖箭头
     
     // 布尔和空值
     TRUE("true"),              // true
