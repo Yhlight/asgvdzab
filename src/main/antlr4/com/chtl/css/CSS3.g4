@@ -292,7 +292,7 @@ unknownAtRule
     ;
 
 unknownBlock
-    : (any | unknownBlock | ';')*
+    : (any | ';')*
     ;
 
 // CDO/CDC
@@ -376,7 +376,7 @@ FUNCTION
     ;
 
 URL
-    : (~['")\s])+
+    : (~['")\r\n\t ])+
     ;
 
 COMMENT
