@@ -20,38 +20,52 @@
 </div>
 ```
 
-### 2. 自引用选择器 `{{&}}`
+### 2. 局部样式块中的 `&` 和局部脚本块中的 `{{&}}`
 
-`{{&}}`用于local style/script块中，引用当前元素：
+**重要**：`&`和`{{&}}`是两个不同的概念！
+
+#### 局部样式块使用 `&`
 
 ```chtl
 <div class="card">
     style {
-        {{&}} {
+        & {
             background: white;
             padding: 20px;
             border-radius: 8px;
         }
         
-        {{&}}:hover {
+        &:hover {
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
         
-        {{&}} .title {
+        & .title {
             font-size: 24px;
             font-weight: bold;
         }
     }
     
+    <h2 class="title">卡片标题</h2>
+    <p>卡片内容</p>
+</div>
+```
+
+#### 局部脚本块使用 `{{&}}`
+
+```chtl
+<div class="interactive-card">
     script {
         {{&}}.listen('click', function() {
             // this 指向当前元素
             this.classList.toggle('active');
         });
+        
+        {{&}}.listen('mouseenter', function() {
+            console.log('鼠标进入');
+        });
     }
     
-    <h2 class="title">卡片标题</h2>
-    <p>卡片内容</p>
+    <p>点击切换状态</p>
 </div>
 ```
 
@@ -61,15 +75,19 @@
 [Template] @Card {
     <div class="card-wrapper">
         style {
-            {{&}} {
+            & {
                 border: 1px solid #ddd;
                 padding: 16px;
+            }
+            
+            &:hover {
+                background-color: #f0f0f0;
             }
         }
         
         script {
             {{&}}.listen('mouseenter', function() {
-                this.style.backgroundColor = '#f0f0f0';
+                console.log('Mouse entered card');
             });
         }
         
@@ -103,7 +121,9 @@ script {
 
 ## 注意事项
 
-1. `{{&}}` 只能在local style/script块中使用
-2. 增强选择器主要用于script块中的DOM操作
-3. CHTL JS不支持箭头函数语法
-4. unquoted literals仅在特定上下文中可用（如animate的参数）
+1. **局部样式块使用 `&`**，表示当前元素的CSS选择器
+2. **局部脚本块使用 `{{&}}`**，表示当前元素的增强选择器
+3. 增强选择器主要用于script块中的DOM操作
+4. CHTL JS不支持箭头函数语法
+5. unquoted literals仅在特定上下文中可用（如animate的参数）
+6. CHTL JS函数参数是无序的，可以任意组合使用
