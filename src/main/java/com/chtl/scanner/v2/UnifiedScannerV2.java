@@ -74,13 +74,8 @@ public class UnifiedScannerV2 {
         map.put(BlockScanner.BlockType.SCRIPT_LOCAL, new BlockProcessor() {
             @Override
             public List<CodeFragment> process(BlockScanner.RawBlock block) {
-                // 局部script：作为CHTL的一部分，完全支持CHTL语法
-                return Collections.singletonList(new CodeFragment(
-                    FragmentType.CHTL,
-                    block.getContent(),
-                    block.getStartPosition(),
-                    block.getContent().length()
-                ));
+                // 局部script：特殊存在，支持CHTL + CHTL JS + JS
+                return processLocalScript(block);
             }
         });
         
@@ -126,6 +121,149 @@ public class UnifiedScannerV2 {
             block.getStartPosition(),
             block.getContent().length()
         ));
+    }
+    
+    /**
+     * 处理局部script块（支持CHTL + CHTL JS + JS）
+     */
+    private List<CodeFragment> processLocalScript(BlockScanner.RawBlock block) {
+        // 局部script是特殊的，需要识别所有CHTL语法
+        String content = block.getContent();
+        List<CodeFragment> fragments = new ArrayList<>();
+        
+        // 提取script标签部分
+        int scriptStart = content.indexOf('{');
+        if (scriptStart != -1) {
+            // script { 部分作为CHTL
+            fragments.add(new CodeFragment(
+                FragmentType.CHTL,
+                content.substring(0, scriptStart + 1),
+                block.getStartPosition(),
+                scriptStart + 1
+            ));
+            
+            // 处理内容
+            int contentEnd = content.lastIndexOf('}');
+            if (contentEnd > scriptStart + 1) {
+                String scriptContent = content.substring(scriptStart + 1, contentEnd);
+                fragments.addAll(processLocalScriptContent(scriptContent, block.getStartPosition() + scriptStart + 1));
+            }
+            
+            // 结束的}
+            if (contentEnd != -1 && contentEnd < content.length()) {
+                fragments.add(new CodeFragment(
+                    FragmentType.CHTL,
+                    content.substring(contentEnd),
+                    block.getStartPosition() + contentEnd,
+                    content.length() - contentEnd
+                ));
+            }
+        } else {
+            // 没有大括号，整体作为CHTL处理
+            fragments.add(new CodeFragment(
+                FragmentType.CHTL,
+                content,
+                block.getStartPosition(),
+                content.length()
+            ));
+        }
+        
+        return fragments;
+    }
+    
+    /**
+     * 处理局部script内容（支持完整CHTL语法）
+     */
+    private List<CodeFragment> processLocalScriptContent(String content, int offset) {
+        List<CodeFragment> fragments = new ArrayList<>();
+        int pos = 0;
+        
+        while (pos < content.length()) {
+            // 检查CHTL特殊语法
+            if (checkCHTLSyntax(content, pos)) {
+                // 找到CHTL语法的结束
+                int chtlEnd = findCHTLSyntaxEnd(content, pos);
+                fragments.add(new CodeFragment(
+                    FragmentType.CHTL,
+                    content.substring(pos, chtlEnd),
+                    offset + pos,
+                    chtlEnd - pos
+                ));
+                pos = chtlEnd;
+                continue;
+            }
+            
+            // 否则按CHTL JS处理
+            List<CodeFragment> jsFragments = processCHTLJSContent(
+                content.substring(pos), 
+                offset + pos
+            );
+            
+            // 合并片段
+            for (CodeFragment frag : jsFragments) {
+                fragments.add(frag);
+            }
+            break;
+        }
+        
+        return fragments;
+    }
+    
+    /**
+     * 检查是否是CHTL特有语法（不是JS或CHTL JS）
+     */
+    private boolean checkCHTLSyntax(String content, int pos) {
+        // 检查CHTL特有的语法标记
+        String[] chtlMarkers = {
+            "[Template]", "[Custom]", "[Configuration]", 
+            "[Import]", "[Namespace]", "[Constraint]",
+            "text ", "slot ", "style {", 
+            "@Element", "@Style", "@Var"
+        };
+        
+        for (String marker : chtlMarkers) {
+            if (pos + marker.length() <= content.length() &&
+                content.substring(pos).startsWith(marker)) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    /**
+     * 找到CHTL语法结束位置
+     */
+    private int findCHTLSyntaxEnd(String content, int start) {
+        // 简化处理：找到下一个分号或大括号结束
+        int pos = start;
+        int braceDepth = 0;
+        
+        while (pos < content.length()) {
+            char c = content.charAt(pos);
+            
+            if (c == '{') {
+                braceDepth++;
+            } else if (c == '}') {
+                if (braceDepth > 0) {
+                    braceDepth--;
+                    if (braceDepth == 0) {
+                        return pos + 1;
+                    }
+                } else {
+                    return pos;
+                }
+            } else if (c == ';' && braceDepth == 0) {
+                return pos + 1;
+            } else if (c == '\n' && braceDepth == 0) {
+                // 某些CHTL语法以换行结束
+                return pos + 1;
+            }
+            
+            pos++;
+        }
+        
+        return content.length();
     }
     
     /**

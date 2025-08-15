@@ -107,13 +107,23 @@ public class TestScannerPerfection {
                 }
                 
                 script {
-                    // 局部script - 完全CHTL语法
+                    // 局部script - 支持CHTL + CHTL JS + JS
+                    [Import] @CJmod from Chtholly;
+                    
                     {{&}}.listen({
                         mouseenter: function() {
+                            // CHTL语法
+                            text "Processing...";
+                            
                             [Origin] @Script {
                                 console.log('Legacy code');
                             }
+                            
+                            // CHTL JS语法
                             {{&}}->animate({duration: 200});
+                            
+                            // 普通JS
+                            let x = 10;
                         }
                     });
                 }
