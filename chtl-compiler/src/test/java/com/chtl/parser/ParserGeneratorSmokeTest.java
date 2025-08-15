@@ -12,11 +12,14 @@ import static org.junit.Assert.*;
 public class ParserGeneratorSmokeTest {
 	@Test
 	public void testChtlToHtml() {
-		String src = "div{ text{ \"Hello\" } script{ {{#app}}->textContent(\"Hi\"); } }";
+		String src = "div{ class: box; style{ .box{ width: 100px; } &:hover{ color: red; } } text{ \"Hello\" } script{ {{#app}}->textContent(\"Hi\"); } }";
 		DocumentNode doc = new CHTLParser(src, new GlobalMap()).parseDocument();
 		String html = new CHTLGenerator().toHtml(doc);
-		assertTrue(html.contains("<div>"));
-		assertTrue(html.contains("<script>"));
+		assertTrue(html.contains("<div"));
+		assertTrue(html.contains(" class=\"box\""));
+		assertTrue(html.contains("<style>"));
+		assertTrue(html.contains(".box{"));
+		assertTrue(html.contains(".box:hover{"));
 	}
 
 	@Test

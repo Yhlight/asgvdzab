@@ -6,6 +6,7 @@ import com.chtl.ast.TemplateNodes.TextNode;
 import com.chtl.ast.TemplateNodes.ScriptNode;
 import com.chtl.ast.TemplateNodes.Attribute;
 import com.chtl.ast.TemplateNodes.StyleProperty;
+import com.chtl.ast.CssRule;
 import com.chtl.lexer.*;
 import com.chtl.runtime.ContextAssistant;
 
@@ -16,13 +17,20 @@ public class CHTLParser {
 	private final List<Token> tokens;
 	private int i = 0;
 	private final ContextAssistant ctx = new ContextAssistant();
+	private final DocumentNode document;
 
 	public CHTLParser(String src, GlobalMap map) {
 		this.tokens = new CHTLLexer(src, map).lex();
+		this.document = new DocumentNode();
+	}
+
+	public CHTLParser(String src, GlobalMap map, DocumentNode doc) {
+		this.tokens = new CHTLLexer(src, map).lex();
+		this.document = doc;
 	}
 
 	public DocumentNode parseDocument() {
-		DocumentNode doc = new DocumentNode();
+		DocumentNode doc = this.document;
 		try (var g = ctx.enter(State.DEFAULT)) {
 			while (!isAtEnd()) {
 				AstOrNone n = parseElementOrText();
@@ -62,7 +70,7 @@ public class CHTLParser {
 				try (var g = ctx.enter(State.IN_STYLE_BLOCK)) {
 					String styleText = collectUntil(CHTLTokenType.RBRACE);
 					consumeType(CHTLTokenType.RBRACE);
-					parseInlineStyle(styleText, el);
+					parseStyleBlock(styleText, el);
 				}
 				continue;
 			}
@@ -74,7 +82,7 @@ public class CHTLParser {
 				}
 				continue;
 			}
-			// 属性：name : value ; 或 name = value ; 其中 value 可为 STRING/IDENT/LITERAL/NUMBER
+			// 属性：name : value ; 或 name = value ;
 			if (checkType(CHTLTokenType.IDENT)) {
 				int save = i;
 				String key = tokens.get(i).getLexeme(); advance();
@@ -87,11 +95,9 @@ public class CHTLParser {
 						el.getAttributes().add(new Attribute(key, v.toString().trim()));
 						continue;
 					} else {
-						// 回退，作为子节点解析
 						i = save;
 					}
 				} else {
-					// 回退还原
 					i = save;
 				}
 			}
@@ -109,33 +115,109 @@ public class CHTLParser {
 		consumeType(CHTLTokenType.RBRACE);
 	}
 
-	private void parseInlineStyle(String styleText, ElementNode el) {
-		// 仅处理 "键 : 值;" 与 "键 = 值;"，值支持字符串与字面量
+	private void parseStyleBlock(String styleText, ElementNode el) {
+		// 分两类：
+		// 1) 内联属性（键:值; 或 键=值;）→ el.inlineStyles
+		// 2) 选择器块（.class/#id/&foo/&:hover/&::before 等）→ 汇总到 document.globalCssRules
 		int p = 0; int n = styleText.length();
 		while (p < n) {
-			// 跳过空白和换行
+			// 跳过空白
 			while (p < n && Character.isWhitespace(styleText.charAt(p))) p++;
 			if (p >= n) break;
-			// 读取键
+			if (styleText.charAt(p) == '.' || styleText.charAt(p) == '#') {
+				char prefix = styleText.charAt(p);
+				int selStart = p; p++;
+				while (p < n && !Character.isWhitespace(styleText.charAt(p)) && styleText.charAt(p) != '{') p++;
+				String selector = styleText.substring(selStart, p).trim();
+				// 自动为元素添加 class/id（若缺失）
+				String name = selector.substring(1);
+				if (prefix == '.') maybeAttachAttribute(el, "class", name);
+				if (prefix == '#') maybeAttachAttribute(el, "id", name);
+				while (p < n && Character.isWhitespace(styleText.charAt(p))) p++;
+				if (p < n && styleText.charAt(p) == '{') {
+					p++;
+					String block = readUntilBraceClose(styleText, p);
+					p += block.length();
+					if (p < n && styleText.charAt(p) == '}') p++;
+					CssRule rule = new CssRule(selector);
+					parseStyleDeclarations(block, rule);
+					this.document.getGlobalCssRules().add(rule);
+				}
+				continue;
+			}
+			if (styleText.charAt(p) == '&') {
+				int selStart = p; p++;
+				// 读取 & 后缀（如 :hover, ::before 或标识符）
+				while (p < n && !Character.isWhitespace(styleText.charAt(p)) && styleText.charAt(p) != '{') p++;
+				String suffix = styleText.substring(selStart + 1, p).trim();
+				String base = deriveBaseSelectorFromElement(el);
+				if (base != null) {
+					String selector = base + suffix;
+					while (p < n && Character.isWhitespace(styleText.charAt(p))) p++;
+					if (p < n && styleText.charAt(p) == '{') {
+						p++;
+						String block = readUntilBraceClose(styleText, p);
+						p += block.length();
+						if (p < n && styleText.charAt(p) == '}') p++;
+						CssRule rule = new CssRule(selector);
+						parseStyleDeclarations(block, rule);
+						this.document.getGlobalCssRules().add(rule);
+					}
+				}
+				continue;
+			}
+			// 尝试解析内联属性
 			int kStart = p;
 			while (p < n && isKeyChar(styleText.charAt(p))) p++;
 			String key = styleText.substring(kStart, p).trim();
-			// 跳过空白
 			while (p < n && Character.isWhitespace(styleText.charAt(p))) p++;
 			if (p < n && (styleText.charAt(p) == ':' || styleText.charAt(p) == '=')) p++;
 			while (p < n && Character.isWhitespace(styleText.charAt(p))) p++;
-			// 读取值直到分号
 			int vStart = p; boolean inStr = false; char q = '\0';
 			while (p < n) {
 				char c = styleText.charAt(p);
-				if (!inStr && c == ';') break;
-				if (!inStr && c == '\n') break;
+				if (!inStr && (c == ';' || c == '\n' || c == '}')) break;
 				if (c == '"' || c == '\'') { if (!inStr) { inStr = true; q = c; } else if (q == c) { inStr = false; } }
 				p++;
 			}
 			String val = styleText.substring(vStart, p).trim();
 			if (p < n && styleText.charAt(p) == ';') p++;
 			if (!key.isEmpty() && !val.isEmpty()) el.getInlineStyles().add(new StyleProperty(key, val));
+		}
+	}
+
+	private String readUntilBraceClose(String s, int from) {
+		int p = from, n = s.length(), depth = 0; StringBuilder b = new StringBuilder();
+		while (p < n) {
+			char c = s.charAt(p);
+			if (c == '{') { depth++; b.append(c); p++; continue; }
+			if (c == '}' && depth == 0) break;
+			if (c == '}' && depth > 0) { depth--; b.append(c); p++; continue; }
+			b.append(c); p++;
+		}
+		return b.toString();
+	}
+
+	private void parseStyleDeclarations(String block, CssRule rule) {
+		int p = 0; int n = block.length();
+		while (p < n) {
+			while (p < n && Character.isWhitespace(block.charAt(p))) p++;
+			int kStart = p;
+			while (p < n && isKeyChar(block.charAt(p))) p++;
+			String key = block.substring(kStart, p).trim();
+			while (p < n && Character.isWhitespace(block.charAt(p))) p++;
+			if (p < n && (block.charAt(p) == ':' || block.charAt(p) == '=')) p++;
+			while (p < n && Character.isWhitespace(block.charAt(p))) p++;
+			int vStart = p; boolean inStr = false; char q = '\0';
+			while (p < n) {
+				char c = block.charAt(p);
+				if (!inStr && (c == ';' || c == '\n' || c == '}')) break;
+				if (c == '"' || c == '\'') { if (!inStr) { inStr = true; q = c; } else if (q == c) { inStr = false; } }
+				p++;
+			}
+			String val = block.substring(vStart, p).trim();
+			if (p < n && block.charAt(p) == ';') p++;
+			if (!key.isEmpty() && !val.isEmpty()) rule.getDeclarations().add(new StyleProperty(key, val));
 		}
 	}
 
@@ -159,4 +241,23 @@ public class CHTLParser {
 	private boolean checkType(CHTLTokenType t) { return !isAtEnd() && tokens.get(i).getType() == t; }
 	private boolean matchType(CHTLTokenType t) { if (checkType(t)) { advance(); return true; } return false; }
 	private void consumeType(CHTLTokenType t) { if (!matchType(t)) throw new IllegalStateException("Expect: " + t + " at " + i); }
+
+	private String deriveBaseSelectorFromElement(ElementNode el) {
+		String cls = null;
+		String id = null;
+		for (Attribute a : el.getAttributes()) {
+			if (a.getName().equals("class")) cls = a.getValue();
+			if (a.getName().equals("id")) id = a.getValue();
+		}
+		if (cls != null && !cls.isEmpty()) return "." + cls;
+		if (id != null && !id.isEmpty()) return "#" + id;
+		return null;
+	}
+
+	private void maybeAttachAttribute(ElementNode el, String name, String value) {
+		for (Attribute a : el.getAttributes()) {
+			if (a.getName().equals(name)) return;
+		}
+		el.getAttributes().add(new Attribute(name, value));
+	}
 }

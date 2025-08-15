@@ -7,6 +7,7 @@ import com.chtl.ast.TemplateNodes.ScriptNode;
 import com.chtl.ast.TemplateNodes.Attribute;
 import com.chtl.ast.TemplateNodes.StyleProperty;
 import com.chtl.ast.AstNode;
+import com.chtl.ast.CssRule;
 import com.chtl.lexer.State;
 import com.chtl.runtime.ContextAssistant;
 
@@ -23,6 +24,17 @@ public class CHTLGenerator {
 					html.append(escape(((TextNode)n).getContent()));
 				}
 			}
+			if (!doc.getGlobalCssRules().isEmpty()) {
+				html.append("<style>");
+				for (CssRule r : doc.getGlobalCssRules()) {
+					html.append(r.getSelector()).append("{");
+					for (StyleProperty p : r.getDeclarations()) {
+						html.append(p.getKey()).append(":").append(p.getValue()).append(";");
+					}
+					html.append("}");
+				}
+				html.append("</style>");
+			}
 		}
 		return html.toString();
 	}
@@ -31,11 +43,9 @@ public class CHTLGenerator {
 		try (var g = ctx.enter(State.IN_ELEMENT_BLOCK)) {
 			StringBuilder s = new StringBuilder();
 			s.append('<').append(el.getTagName());
-			// 普通属性
 			for (Attribute a : el.getAttributes()) {
 				s.append(' ').append(a.getName()).append("=\"").append(escapeAttr(a.getValue())).append("\"");
 			}
-			// 内联样式
 			if (!el.getInlineStyles().isEmpty()) {
 				StringBuilder style = new StringBuilder();
 				for (StyleProperty p : el.getInlineStyles()) {

@@ -10,6 +10,7 @@
 /workspace/chtl-compiler/src/main/java/com/chtl/ast/AstNode.java
 /workspace/chtl-compiler/src/main/java/com/chtl/parser/CHTLJsParser.java
 /workspace/chtl-compiler/src/main/java/com/chtl/pipeline/CompilerDispatcher.java
+/workspace/chtl-compiler/src/main/java/com/chtl/ast/CssRule.java
 /workspace/chtl-compiler/src/main/java/com/chtl/lexer/Token.java
 /workspace/chtl-compiler/src/main/java/com/chtl/model/CodeFragmentType.java
 /workspace/chtl-compiler/target/generated-sources/antlr4/com/chtl/grammar/JavaScriptParser.java

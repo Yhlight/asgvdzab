@@ -63,6 +63,7 @@ com/chtl/ast/TemplateNodes$TemplateStyle.class
 com/chtl/scanner/CHTLUnifiedScanner$Context.class
 com/chtl/ast/OriginImportNodes$ImportCJmod.class
 com/chtl/ast/TemplateNodes$CustomVar.class
+com/chtl/ast/CssRule.class
 com/chtl/ast/OriginImportNodes$Configuration.class
 com/chtl/lexer/State.class
 com/chtl/ast/CHTLJsNodes$Selector$Kind.class
