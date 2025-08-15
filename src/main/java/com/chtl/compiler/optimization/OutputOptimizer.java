@@ -44,6 +44,21 @@ public class OutputOptimizer {
      * 优化编译输出
      */
     public OptimizedOutput optimize(CompilationOutput input) {
+        // 转换为内部格式
+        com.chtl.compiler.CHTLCompiler.CompilationOutput internalInput = 
+            new com.chtl.compiler.CHTLCompiler.CompilationOutput();
+        internalInput.setHtml(input.getHtml());
+        internalInput.setCssFiles(input.getCssFiles());
+        internalInput.setJsFiles(input.getJsFiles());
+        
+        return optimize(internalInput);
+    }
+    
+    /**
+     * 优化编译输出（内部格式）
+     */
+    public com.chtl.compiler.CHTLCompiler.OptimizedOutput optimize(
+            com.chtl.compiler.CHTLCompiler.CompilationOutput input) {
         try (var stateGuard = context.enterState(CompilationContext.State.OPTIMIZING)) {
             OptimizedOutput output = new OptimizedOutput();
             
