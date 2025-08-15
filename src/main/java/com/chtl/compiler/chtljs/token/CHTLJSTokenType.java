@@ -60,11 +60,18 @@ public enum CHTLJSTokenType {
     WHILE("while"),            // while
     
     // 操作符
-    EQUALS("="),               // =
+    EQUAL("="),                // = (改名以匹配词法分析器)
+    EQUALS("="),               // = (保留兼容性)
     PLUS("+"),                 // +
     MINUS("-"),                // -
     MULTIPLY("*"),             // *
     DIVIDE("/"),               // /
+    FAT_ARROW("=>"),           // => 胖箭头
+    
+    // 布尔和空值
+    TRUE("true"),              // true
+    FALSE("false"),            // false
+    NULL("null"),              // null
     
     // 特殊标记
     EOF("EOF"),                // 文件结束

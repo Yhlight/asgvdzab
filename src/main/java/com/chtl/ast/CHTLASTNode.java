@@ -103,6 +103,16 @@ public interface CHTLASTNode {
         // 字面量
         STRING_LITERAL,       // 字符串字面量
         UNQUOTED_LITERAL,     // 无引号字面量
-        NUMBER_LITERAL        // 数字字面量
+        NUMBER_LITERAL,       // 数字字面量
+        
+        // CHTL JS相关
+        CHTLJS_SELECTOR,      // CHTL JS选择器
+        CHTLJS_METHOD_CALL,   // CHTL JS方法调用
+        CHTLJS_ANIMATE,       // CHTL JS动画
+        CHTLJS_OBJECT,        // CHTL JS对象
+        CHTLJS_ARRAY,         // CHTL JS数组
+        CHTLJS_FUNCTION,      // CHTL JS函数
+        CHTLJS_ARROW_FUNCTION,// CHTL JS箭头函数
+        CHTLJS_IDENTIFIER     // CHTL JS标识符
     }
 }
