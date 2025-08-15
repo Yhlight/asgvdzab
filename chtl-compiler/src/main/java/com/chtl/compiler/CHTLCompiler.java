@@ -26,4 +26,9 @@ public class CHTLCompiler {
         // CHTL/模板相关的脚本预处理：此处暂不做转换
         return scriptBlock;
     }
+
+    public String compileChtlToken(String token) {
+        // 严判最小单元：例如 "{{box}}->" 或 "{{id}}"。这里暂时透传，后续结合 CHTL 语义生成目标代码。
+        return token;
+    }
 }

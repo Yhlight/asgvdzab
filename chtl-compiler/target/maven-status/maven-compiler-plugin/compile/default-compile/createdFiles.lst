@@ -1,3 +1,4 @@
+com/chtl/scanner/CHTLUnifiedScanner$Context.class
 com/chtl/grammar/JavaScriptVisitor.class
 com/chtl/model/CodeFragmentType.class
 com/chtl/compiler/JavaScriptCompiler.class
