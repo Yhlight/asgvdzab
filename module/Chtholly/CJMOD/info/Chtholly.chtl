@@ -1,0 +1,38 @@
+// Chtholly CJMOD模块信息
+[Info]
+{
+    name = "chtholly-js";
+    version = "1.0.0";
+    description = "珂朵莉CHTL JS扩展 - 让珂朵莉活在每一行代码中";
+    author = "CHTL Team";
+    license = "MIT";
+    dependencies = "";
+    category = "js-extension";
+    minCHTLVersion = "1.0.0";
+    maxCHTLVersion = "2.0.0";
+}
+
+// CJMOD导出的JS函数
+[Export]
+{
+    // 将图片转换为字符画或像素块
+    printMylove = {
+        params: "config:object";
+        returns: "string";
+        description: "将珂朵莉的图片转换为字符画形式";
+    };
+    
+    // 珂朵莉羽毛飘落效果
+    createFeatherRain = {
+        params: "container:element, count:number";
+        returns: "void";
+        description: "在指定容器中创建羽毛飘落效果";
+    };
+    
+    // 珂朵莉渐变文字
+    createGradientText = {
+        params: "text:string, colors:array";
+        returns: "element";
+        description: "创建具有珂朵莉主题色渐变的文字";
+    };
+}

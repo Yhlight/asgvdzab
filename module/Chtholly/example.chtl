@@ -1,0 +1,197 @@
+// Chtholly模块使用示例
+// "世界上最幸福的女孩"
+
+// 导入Chtholly CMOD模块（UI组件）
+[Import] @Chtl from chtl::Chtholly
+
+// 导入Chtholly CJMOD模块（JS扩展）
+[Import] @CJmod from chtl::Chtholly
+
+// 使用Chtholly主题创建页面
+@Element chtholly::ChthollyPage {
+    
+    // 导航栏
+    @Element chtholly::ChthollyNav["珂朵莉的记忆"] {
+        li { a class="nav-link active" href="#home" { text "首页"; } }
+        li { a class="nav-link" href="#about" { text "关于"; } }
+        li { a class="nav-link" href="#gallery" { text "画廊"; } }
+        li { a class="nav-link" href="#quotes" { text "语录"; } }
+    }
+    
+    // 英雄区域
+    @Element chtholly::ChthollyHero {
+        h1 { 
+            text "珂朵莉·诺塔·瑟尼欧里斯"; 
+        }
+        p { 
+            text "愿你在天国找到幸福"; 
+        }
+        
+        // 添加羽毛飘落效果
+        script {
+            createFeatherRain({{&}}, 20);
+        }
+    }
+    
+    // 关于珂朵莉
+    @Element chtholly::ChthollySection["关于珂朵莉", "黄金妖精中最特别的存在"] {
+        div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;" {
+            
+            @Element chtholly::ChthollyMemory {
+                h3 { text "身份"; }
+                p { text "珂朵莉是黄金妖精，编号为「黄金妖精仓库」第一号。虽然是妖精，但她拥有着人类般丰富的情感。"; }
+            }
+            
+            @Element chtholly::ChthollyMemory {
+                h3 { text "外貌"; }
+                p { text "有着天空般澄澈的蓝色头发和如夕阳般温暖的金色瞳孔，是妖精仓库中最美丽的存在。"; }
+            }
+            
+            @Element chtholly::ChthollyMemory {
+                h3 { text "性格"; }
+                p { text "表面上活泼开朗，实际上内心细腻温柔。她总是为他人着想，哪怕牺牲自己也在所不惜。"; }
+            }
+        }
+    }
+    
+    // 珂朵莉语录
+    @Element chtholly::ChthollySection["珂朵莉语录", "那些触动心灵的话语"] class="light" {
+        div style="max-width: 800px; margin: 0 auto;" {
+            
+            @Element chtholly::ChthollyQuote[
+                "请把我，变成只为你一人存在的东西吧。",
+                "珂朵莉"
+            ];
+            
+            @Element chtholly::ChthollyQuote[
+                "能够遇见你，是我这一生最幸福的事。",
+                "珂朵莉"
+            ];
+            
+            @Element chtholly::ChthollyQuote[
+                "即使明天就是世界末日，我今天也要种下苹果树。",
+                "珂朵莉"
+            ];
+        }
+    }
+    
+    // 画廊
+    @Element chtholly::ChthollySection["记忆画廊", "珍贵的瞬间"] {
+        @Element chtholly::ChthollyGallery {
+            div class="gallery-item" {
+                img src="chtholly-smile.jpg" alt="珂朵莉的微笑";
+                div class="gallery-caption" {
+                    h3 { text "最幸福的微笑"; }
+                    p { text "这是珂朵莉最开心的时刻"; }
+                }
+            }
+            
+            div class="gallery-item" {
+                img src="chtholly-sky.jpg" alt="天空下的珂朵莉";
+                div class="gallery-caption" {
+                    h3 { text "仰望天空"; }
+                    p { text "她总是喜欢看着蓝天"; }
+                }
+            }
+            
+            div class="gallery-item" {
+                img src="chtholly-feather.jpg" alt="羽毛";
+                div class="gallery-caption" {
+                    h3 { text "洁白的羽毛"; }
+                    p { text "如同天使的羽翼"; }
+                }
+            }
+        }
+    }
+    
+    // 特殊效果区域
+    @Element chtholly::ChthollySection["特别的礼物", "为珂朵莉准备的惊喜"] class="blue" {
+        div style="text-align: center;" {
+            
+            // 使用渐变文字
+            h2 {
+                script {
+                    const title = createGradientText(
+                        "♥ Chtholly Forever ♥",
+                        ["#FFD700", "#87CEEB", "#FFD700"]
+                    );
+                    {{&}}.innerHTML = title;
+                }
+            }
+            
+            // 显示字符画
+            pre id="ascii-art" style="font-family: monospace; font-size: 10px; line-height: 1;" {
+                script {
+                    // 将珂朵莉的图片转换成字符画
+                    const asciiArt = printMylove({
+                        url: "chtholly-portrait.jpg",
+                        mode: "Pixel",
+                        width: 60,
+                        height: 30
+                    });
+                    {{#ascii-art}}.textContent = asciiArt;
+                }
+            }
+            
+            button {
+                @Style chtholly::ChthollyButton;
+                @Style chtholly::ChthollyGlow;
+                text "点击播放珂朵莉的歌";
+                
+                script {
+                    {{&}}->listen({
+                        click: function() {
+                            alert("♪ Always in my heart ♪");
+                        }
+                    });
+                }
+            }
+        }
+    }
+    
+    // 页脚
+    footer {
+        @Style chtholly::ChthollyTheme;
+        padding: var(--chtholly-spacing-xl);
+        text-align: center;
+        background: var(--chtholly-deep-blue);
+        color: white;
+        
+        p {
+            margin: 0;
+            text "© 2024 Chtholly Module - 永远的珂朵莉";
+        }
+        
+        p style="margin-top: 1rem; opacity: 0.8;" {
+            text "「愿所有人都能找到属于自己的幸福」";
+        }
+    }
+}
+
+// 添加全局样式
+[Origin] @Style {
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    
+    html {
+        scroll-behavior: smooth;
+    }
+    
+    body {
+        overflow-x: hidden;
+    }
+    
+    // 为模态框准备
+    .modal-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: none;
+    }
+}
