@@ -1,5 +1,63 @@
 # 扫描器增强设计文档
 
+## 更新：真正的增强实现（2024）
+
+### 扫描器已实现的增强
+
+1. **全局样式块支持完整CHTL语法**：
+   - ✅ 变量函数调用：`ThemeColor(primary)`
+   - ✅ 样式组模板使用：`@Style TemplateName;`
+   - ✅ 原始嵌入：`[Origin] @Style { ... }`
+
+2. **精确的语法边界检测**：
+   - ✅ 区分全局和局部样式上下文
+   - ✅ 局部样式特有功能（`&`符号）仅在局部样式中识别
+   - ✅ CHTL JS函数的精确识别
+
+3. **最小单元切割**：
+   - ✅ 保持语义完整性
+   - ✅ 优化片段合并
+
+### 已知限制和改进建议
+
+1. **CSS函数识别问题**：
+   - 当前：`translateY(-2px)` 被错误地分割为 `translate` 和 `Y(-2px)`
+   - 原因：扫描器采用字符级扫描，当遇到大写字母时立即触发变量检查
+   - 建议：实现预读机制，完整识别CSS函数名后再决定是否为CHTL变量
+
+2. **改进方案**：
+   ```java
+   // 建议的改进：完整词汇扫描
+   private boolean shouldTreatAsVariable() {
+       // 收集完整的标识符
+       String identifier = collectIdentifier();
+       
+       // 已知的CSS函数列表
+       Set<String> cssFunctions = Set.of(
+           "translateY", "translateX", "scaleX", "scaleY",
+           "rotateX", "rotateY", "rotateZ", "skewX", "skewY"
+       );
+       
+       if (cssFunctions.contains(identifier)) {
+           return false;
+       }
+       
+       // CHTL变量必须首字母大写
+       return Character.isUpperCase(identifier.charAt(0));
+   }
+   ```
+
+### 扫描器行为总结
+
+当前扫描器能够：
+1. 在全局样式中识别所有CHTL语法（变量、样式组、原始嵌入）
+2. 正确区分局部样式特有功能
+3. 精确切割大部分语法结构
+
+需要改进：
+1. CSS函数与CHTL变量的区分
+2. 更智能的上下文感知
+
 ## 基于CHTL语法文档的关键发现
 
 ### 1. 全局style块的限制

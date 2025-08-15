@@ -296,14 +296,33 @@ public class PrecisionScanner {
             }
         }
         
-        // 处理CHTL变量语法（全局和局部style都支持）
-        // 检查变量函数调用形式：VariableName(property) - 这是唯一正确的使用方式
+        // 处理CHTL语法（全局和局部style都支持）
+        
+        // 1. 检查变量函数调用：VariableName(property)
         if (Character.isUpperCase(current()) && isVariableFunctionCall()) {
             flushCurrentFragment();
             currentFragmentType = FragmentType.CHTL;
             scanVariableFunctionCall();
             flushCurrentFragment();
             currentFragmentType = FragmentType.CSS;
+            return;
+        }
+        
+        // 2. 检查样式组模板使用：@Style TemplateName
+        if (current() == '@' && matchKeyword("@Style")) {
+            flushCurrentFragment();
+            currentFragmentType = FragmentType.CHTL;
+            scanStyleTemplateUsage();
+            flushCurrentFragment();
+            currentFragmentType = FragmentType.CSS;
+            return;
+        }
+        
+        // 3. 检查原始嵌入：[Origin] @Style
+        if (current() == '[' && matchKeyword("[Origin]")) {
+            flushCurrentFragment();
+            currentFragmentType = FragmentType.CHTL;
+            scanOriginBlock();
             return;
         }
         
@@ -327,6 +346,26 @@ public class PrecisionScanner {
         if (current() == '/' && peek() == '*') {
             scanCSSComment();
             return;
+        }
+        
+        // 在CSS属性值中也要检查变量调用
+        // 但要排除CSS函数中的大写字母（如translateY中的Y）
+        if (Character.isUpperCase(current())) {
+            // 检查前一个字符是否是小写字母（表示这可能是camelCase）
+            if (position > 0 && Character.isLowerCase(input.charAt(position - 1))) {
+                // 这是CSS函数的一部分，不是CHTL变量
+                consumeChar();
+                return;
+            }
+            
+            if (isVariableFunctionCall()) {
+                flushCurrentFragment();
+                currentFragmentType = FragmentType.CHTL;
+                scanVariableFunctionCall();
+                flushCurrentFragment();
+                currentFragmentType = FragmentType.CSS;
+                return;
+            }
         }
         
         consumeChar();
@@ -715,18 +754,34 @@ public class PrecisionScanner {
             return false;
         }
         
+        // 收集名称
+        StringBuilder name = new StringBuilder();
         while (!isAtEnd() && (Character.isLetterOrDigit(current()) || current() == '_')) {
+            name.append(current());
             advance();
         }
         
         skipWhitespace();
-        boolean result = current() == '(';
+        boolean hasParenthesis = current() == '(';
         
         // 恢复位置
         position = savePos;
         line = saveLine;
         column = saveColumn;
-        return result;
+        
+        // 检查是否是CSS函数（如 translateY）
+        if (hasParenthesis) {
+            String functionName = name.toString();
+            // CSS函数通常是小写开头或包含连字符后的大写字母
+            if (functionName.matches("^[a-z].*") || // 小写开头的函数
+                functionName.matches(".*[a-z][A-Z].*")) { // camelCase CSS函数
+                return false; // 这是CSS函数
+            }
+            // 检查是否是保留的CHTL变量名（首字母大写）
+            return Character.isUpperCase(functionName.charAt(0));
+        }
+        
+        return hasParenthesis;
     }
     
     /**
@@ -816,6 +871,68 @@ public class PrecisionScanner {
         char c = current();
         return c == '.' || c == '#' || c == ':' || c == '[' || 
                c == '@' || c == '*' || Character.isLetter(c);
+    }
+    
+    /**
+     * 扫描样式组模板使用
+     */
+    private void scanStyleTemplateUsage() {
+        // 消费 @Style
+        consumeKeyword("@Style");
+        skipWhitespace();
+        
+        // 扫描模板名称
+        while (!isAtEnd() && (Character.isLetterOrDigit(current()) || current() == '_')) {
+            consumeChar();
+        }
+        
+        // 扫描可能的分号
+        skipWhitespace();
+        if (current() == ';') {
+            consumeChar();
+        }
+    }
+    
+    /**
+     * 扫描原始嵌入块
+     */
+    private void scanOriginBlock() {
+        // 消费 [Origin]
+        consumeKeyword("[Origin]");
+        skipWhitespace();
+        
+        // 检查 @Style
+        if (matchKeyword("@Style")) {
+            consumeKeyword("@Style");
+            skipWhitespace();
+            
+            // 可能有名称
+            if (Character.isLetter(current())) {
+                while (!isAtEnd() && (Character.isLetterOrDigit(current()) || current() == '_')) {
+                    consumeChar();
+                }
+                skipWhitespace();
+            }
+            
+            // 扫描块内容
+            if (current() == '{') {
+                consumeChar(); // {
+                int braceDepth = 1;
+                
+                while (!isAtEnd() && braceDepth > 0) {
+                    if (current() == '{') {
+                        braceDepth++;
+                    } else if (current() == '}') {
+                        braceDepth--;
+                    }
+                    consumeChar();
+                }
+                
+                // 块结束后回到CSS模式
+                flushCurrentFragment();
+                currentFragmentType = FragmentType.CSS;
+            }
+        }
     }
     
     /**

@@ -8,15 +8,28 @@
 
 ```chtl
 style {
+    body {
+        @Style DefaultTheme;              // ✅ 样式组模板
+        background: ThemeColor(primary);  // ✅ 变量函数
+    }
+    
     .container {
         width: 100%;
-        background: ThemeColor(primary);  // ✅ 可以使用变量
+        color: Colors(text);
+    }
+    
+    [Origin] @Style {                     // ✅ 原始嵌入
+        @media (max-width: 768px) {
+            .container { padding: 0 15px; }
+        }
     }
 }
 ```
 
 **全局样式可以使用的CHTL功能：**
 - ✅ 变量函数调用：`ThemeColor(primary)`
+- ✅ 样式组模板使用：`@Style TemplateName;`
+- ✅ 原始嵌入：`[Origin] @Style { ... }`
 - ✅ 标准CSS语法
 
 **全局样式不能使用的功能：**
@@ -99,7 +112,20 @@ style {
 
 增强的PrecisionScanner会：
 
-1. **在所有CSS上下文中**识别变量函数调用（如 `ThemeColor(primary)`）
-2. **仅在局部样式中**处理 `&` 符号和其他特殊功能
+1. **在所有CSS上下文中**识别CHTL语法：
+   - 变量函数调用：`ThemeColor(primary)`
+   - 样式组模板使用：`@Style TemplateName;`
+   - 原始嵌入：`[Origin] @Style { ... }`
+
+2. **仅在局部样式中**处理特有功能：
+   - `&` 符号（上下文推导）
+   - 自动添加类名
+
 3. **精确切割**CHTL和CSS片段，保持语义完整性
+
 4. **正确区分**全局和局部样式上下文
+
+### 已知限制
+
+- CSS函数（如 `translateY`）与CHTL变量的区分还需改进
+- 建议在未来版本中实现更智能的词法分析
