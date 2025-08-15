@@ -12,9 +12,9 @@ import java.util.regex.Matcher;
  */
 public class StyleProcessor {
     
-    // CHTL语法模式
+    // CHTL语法模式 - 确保是完整的标识符
     private static final Pattern VAR_FUNCTION = Pattern.compile(
-        "([A-Z][a-zA-Z0-9_]*?)\\s*\\("
+        "\\b([A-Z][a-zA-Z0-9_]*?)\\s*\\("
     );
     
     private static final Pattern STYLE_TEMPLATE = Pattern.compile(
@@ -128,8 +128,8 @@ public class StyleProcessor {
                 continue;
             }
             
-            // 排除CSS函数
-            if (!CSS_FUNCTIONS.contains(functionName)) {
+            // 使用注册表检查是否是CHTL变量
+            if (CHTLVariableRegistry.isCHTLVariable(functionName)) {
                 // 找到完整的函数调用
                 int end = findFunctionEnd(content, varMatcher.end() - 1);
                 
