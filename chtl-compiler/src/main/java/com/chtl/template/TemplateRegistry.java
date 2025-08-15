@@ -102,7 +102,6 @@ public class TemplateRegistry {
 	}
 
 	public String substituteVarCalls(String value) {
-		// 形如 Name(key)
 		int p = 0, n = value.length();
 		StringBuilder out = new StringBuilder();
 		while (p < n) {
@@ -111,16 +110,41 @@ public class TemplateRegistry {
 				String name = value.substring(nameStart, p);
 				if (p < n && value.charAt(p) == '(') {
 					p++;
-					int argStart = p; while (p < n && value.charAt(p) != ')') p++;
-					String arg = value.substring(argStart, Math.min(p, n)).trim();
+					int argsStart = p; int depth = 0; boolean inStr = false; char q = '\0';
+					while (p < n) {
+						char c = value.charAt(p);
+						if (!inStr && c == ')') break;
+						if (c == '(' && !inStr) depth++;
+						if (c == ')' && !inStr && depth > 0) depth--;
+						if (c == '"' || c == '\'') { if (!inStr) { inStr = true; q = c; } else if (q == c) { inStr = false; } }
+						p++;
+					}
+					String args = value.substring(argsStart, Math.min(p, n)).trim();
 					if (p < n && value.charAt(p) == ')') p++;
 					VarTemplateDef v = varTemplates.get(name);
 					if (v != null) {
-						String subst = v.variables.getOrDefault(arg, "");
-						out.append(subst);
-						continue;
+						// 支持 key 或 key=value 形式，仅取第一个键的值
+						String chosen = null;
+						if (!args.isEmpty()) {
+							String[] parts = args.split(",");
+							for (String part : parts) {
+								String item = part.trim();
+								if (item.contains("=")) {
+									String[] kv = item.split("=", 2);
+									String key = kv[0].trim();
+									String val = kv[1].trim();
+									chosen = val;
+									break;
+								} else {
+									String key = item;
+									chosen = v.variables.getOrDefault(key, "");
+									break;
+								}
+							}
+						}
+						if (chosen != null) { out.append(chosen); continue; }
 					}
-					out.append(name).append('(').append(arg).append(')');
+					out.append(name).append('(').append(args).append(')');
 					continue;
 				}
 				out.append(name);

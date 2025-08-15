@@ -1,4 +1,5 @@
 com/chtl/lexer/CHTLJsLexerTest.class
 com/chtl/parser/TemplateStyleTest.class
+com/chtl/parser/CustomStyleTest.class
 com/chtl/lexer/CHTLLexerTest.class
 com/chtl/parser/ParserGeneratorSmokeTest.class
