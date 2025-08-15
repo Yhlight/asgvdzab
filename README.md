@@ -84,8 +84,8 @@ java -jar target/chtl-compiler.jar input.chtl -o output/
         // 使用增强选择器绑定事件
         {{&}}.listen({
             click: function() {
-                const anim = animate({
-                    target: this,  // 动画作用于按钮自身
+                // this已经是扩展后的元素，直接调用animate方法
+                this.animate({
                     duration: 200,
                     easing: ease-out,
                     when: [
