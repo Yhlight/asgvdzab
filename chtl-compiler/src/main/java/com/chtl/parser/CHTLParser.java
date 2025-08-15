@@ -5,6 +5,7 @@ import com.chtl.ast.TemplateNodes.ElementNode;
 import com.chtl.ast.TemplateNodes.TextNode;
 import com.chtl.ast.TemplateNodes.ScriptNode;
 import com.chtl.lexer.*;
+import com.chtl.runtime.ContextAssistant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.List;
 public class CHTLParser {
 	private final List<Token> tokens;
 	private int i = 0;
+	private final ContextAssistant ctx = new ContextAssistant();
 
 	public CHTLParser(String src, GlobalMap map) {
 		this.tokens = new CHTLLexer(src, map).lex();
@@ -19,10 +21,12 @@ public class CHTLParser {
 
 	public DocumentNode parseDocument() {
 		DocumentNode doc = new DocumentNode();
-		while (!isAtEnd()) {
-			AstOrNone n = parseElementOrText();
-			if (n != null && n.node != null) doc.addChild(n.node);
-			else advance();
+		try (var g = ctx.enter(State.DEFAULT)) {
+			while (!isAtEnd()) {
+				AstOrNone n = parseElementOrText();
+				if (n != null && n.node != null) doc.addChild(n.node);
+				else advance();
+			}
 		}
 		return doc;
 	}
@@ -30,20 +34,22 @@ public class CHTLParser {
 	private static class AstOrNone { final com.chtl.ast.AstNode node; AstOrNone(com.chtl.ast.AstNode n){this.node=n;} }
 
 	private AstOrNone parseElementOrText() {
-		// element: IDENT '{' ... '}'
 		if (matchType(CHTLTokenType.IDENT)) {
 			String tag = prev().getLexeme();
 			if (matchType(CHTLTokenType.LBRACE)) {
 				ElementNode el = new ElementNode(tag);
-				parseElementBody(el);
+				try (var g = ctx.enter(State.IN_ELEMENT_BLOCK)) {
+					parseElementBody(el);
+				}
 				return new AstOrNone(el);
 			}
 		}
-		// text { STRING | LITERAL }
 		if (matchType(CHTLTokenType.KW_TEXT) && matchType(CHTLTokenType.LBRACE)) {
-			String content = collectUntil(CHTLTokenType.RBRACE);
-			consumeType(CHTLTokenType.RBRACE);
-			return new AstOrNone(new TextNode(content.trim()));
+			try (var g = ctx.enter(State.IN_TEXT_BLOCK)) {
+				String content = collectUntil(CHTLTokenType.RBRACE);
+				consumeType(CHTLTokenType.RBRACE);
+				return new AstOrNone(new TextNode(content.trim()));
+			}
 		}
 		return null;
 	}
@@ -51,17 +57,19 @@ public class CHTLParser {
 	private void parseElementBody(ElementNode el) {
 		while (!isAtEnd() && !checkType(CHTLTokenType.RBRACE)) {
 			if (matchType(CHTLTokenType.KW_STYLE) && matchType(CHTLTokenType.LBRACE)) {
-				// 收集 style 内联文本，后续生成器再解析属性
-				String styleText = collectUntil(CHTLTokenType.RBRACE);
-				consumeType(CHTLTokenType.RBRACE);
-				// 暂存为文本节点，生成阶段再解释为内联样式
-				el.getTexts().add(new TextNode("/*style*/" + styleText));
+				try (var g = ctx.enter(State.IN_STYLE_BLOCK)) {
+					String styleText = collectUntil(CHTLTokenType.RBRACE);
+					consumeType(CHTLTokenType.RBRACE);
+					el.getTexts().add(new TextNode("/*style*/" + styleText));
+				}
 				continue;
 			}
 			if (matchType(CHTLTokenType.KW_SCRIPT) && matchType(CHTLTokenType.LBRACE)) {
-				String js = collectUntil(CHTLTokenType.RBRACE);
-				consumeType(CHTLTokenType.RBRACE);
-				el.getScripts().add(new ScriptNode(js));
+				try (var g = ctx.enter(State.IN_SCRIPT_BLOCK)) {
+					String js = collectUntil(CHTLTokenType.RBRACE);
+					consumeType(CHTLTokenType.RBRACE);
+					el.getScripts().add(new ScriptNode(js));
+				}
 				continue;
 			}
 			AstOrNone child = parseElementOrText();
@@ -71,7 +79,6 @@ public class CHTLParser {
 				} else if (child.node instanceof TextNode) {
 					el.getTexts().add((TextNode) child.node);
 				} else {
-					// 其他类型暂不支持，前进避免死循环
 					advance();
 				}
 			} else advance();

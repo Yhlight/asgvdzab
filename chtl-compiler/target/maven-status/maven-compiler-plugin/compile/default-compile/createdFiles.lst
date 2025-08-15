@@ -37,14 +37,17 @@ com/chtl/model/CodeFragmentType.class
 com/chtl/lexer/CHTLTokenType.class
 com/chtl/ast/TemplateNodes$ScriptNode.class
 com/chtl/ast/OriginImportNodes$OriginHtml.class
+com/chtl/runtime/StateMachine.class
 com/chtl/ast/TemplateNodes$TextNode.class
 com/chtl/grammar/CSSVisitor.class
+com/chtl/runtime/StateMachine$Guard.class
 com/chtl/scanner/CHTLUnifiedScanner.class
 com/chtl/grammar/JavaScriptParser$FileContext.class
 com/chtl/lexer/CHTLLexer.class
 com/chtl/ast/AstNode.class
 com/chtl/ast/TemplateNodes$TemplateVar.class
 com/chtl/model/CodeFragment.class
+com/chtl/runtime/ContextAssistant.class
 com/chtl/compiler/CHTLCompiler.class
 com/chtl/ast/TemplateNodes$TemplateElement.class
 com/chtl/ast/OriginImportNodes$ImportChtl.class

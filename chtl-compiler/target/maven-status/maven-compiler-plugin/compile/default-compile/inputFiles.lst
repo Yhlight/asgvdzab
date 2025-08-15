@@ -16,6 +16,8 @@
 /workspace/chtl-compiler/src/main/java/com/chtl/pipeline/CompilationResultMerger.java
 /workspace/chtl-compiler/src/main/java/com/chtl/ast/DocumentNode.java
 /workspace/chtl-compiler/target/generated-sources/antlr4/com/chtl/grammar/JavaScriptLexer.java
+/workspace/chtl-compiler/src/main/java/com/chtl/runtime/ContextAssistant.java
+/workspace/chtl-compiler/src/main/java/com/chtl/runtime/StateMachine.java
 /workspace/chtl-compiler/src/main/java/com/chtl/Main.java
 /workspace/chtl-compiler/src/main/java/com/chtl/ast/TemplateNodes.java
 /workspace/chtl-compiler/src/main/java/com/chtl/parser/CHTLParser.java

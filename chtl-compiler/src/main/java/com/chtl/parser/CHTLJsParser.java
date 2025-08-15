@@ -2,6 +2,7 @@ package com.chtl.parser;
 
 import com.chtl.ast.CHTLJsNodes.*;
 import com.chtl.lexer.*;
+import com.chtl.runtime.ContextAssistant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,24 +10,31 @@ import java.util.List;
 public class CHTLJsParser {
 	private final List<Token> tokens;
 	private int i = 0;
+	private final ContextAssistant ctx = new ContextAssistant();
 
 	public CHTLJsParser(String src) { this.tokens = new CHTLJsLexer(src).lex(); }
 
 	public Chain parseChain() {
 		Selector sel = null;
-		if (matchType(CHTLJsTokenType.MOUSTACHE_L)) {
-			sel = parseSelectorInside();
-			consumeType(CHTLJsTokenType.MOUSTACHE_R);
-		}
-		Chain chain = new Chain(sel);
-		while (!isAtEnd()) {
-			if (matchType(CHTLJsTokenType.ARROW) || matchType(CHTLJsTokenType.DOT)) {
-				chain.getInvocations().add(parseInvocation());
-			} else {
-				advance();
+		try (var g0 = ctx.enter(State.IN_SCRIPT_BLOCK)) {
+			if (matchType(CHTLJsTokenType.MOUSTACHE_L)) {
+				try (var g = ctx.enter(State.IN_SCRIPT_BLOCK)) {
+					sel = parseSelectorInside();
+				}
+				consumeType(CHTLJsTokenType.MOUSTACHE_R);
 			}
+			Chain chain = new Chain(sel);
+			while (!isAtEnd()) {
+				if (matchType(CHTLJsTokenType.ARROW) || matchType(CHTLJsTokenType.DOT)) {
+					try (var g = ctx.enter(State.IN_SCRIPT_BLOCK)) {
+						chain.getInvocations().add(parseInvocation());
+					}
+				} else {
+					advance();
+				}
+			}
+			return chain;
 		}
-		return chain;
 	}
 
 	private Selector parseSelectorInside() {
@@ -42,7 +50,6 @@ public class CHTLJsParser {
 		if (matchType(CHTLJsTokenType.IDENT)) { name = prev().getLexeme(); }
 		Invocation inv = new Invocation(name);
 		if (matchType(CHTLJsTokenType.LPAREN)) {
-			// 简化：收集到匹配的 ) 为止，按 , 分割（不扩展）
 			StringBuilder sb = new StringBuilder();
 			int depth = 0;
 			while (!isAtEnd()) {
