@@ -2,11 +2,13 @@ package com.chtl.ast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.io.Serializable;
 
 /**
  * CHTL AST节点抽象基类
  */
-public abstract class AbstractCHTLASTNode implements CHTLASTNode {
+public abstract class AbstractCHTLASTNode implements CHTLASTNode, Serializable {
+    private static final long serialVersionUID = 1L;
     protected NodeType nodeType;
     protected CHTLASTNode parent;
     protected List<CHTLASTNode> children;

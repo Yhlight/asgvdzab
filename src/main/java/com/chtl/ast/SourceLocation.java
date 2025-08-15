@@ -1,9 +1,12 @@
 package com.chtl.ast;
 
+import java.io.Serializable;
+
 /**
  * 源代码位置信息
  */
-public class SourceLocation {
+public class SourceLocation implements Serializable {
+    private static final long serialVersionUID = 1L;
     private final int line;
     private final int column;
     private final int startPosition;
