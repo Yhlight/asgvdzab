@@ -112,7 +112,7 @@ public interface CHTLASTNode {
         CHTLJS_OBJECT,        // CHTL JS对象
         CHTLJS_ARRAY,         // CHTL JS数组
         CHTLJS_FUNCTION,      // CHTL JS函数
-        CHTLJS_ARROW_FUNCTION,// CHTL JS箭头函数
+
         CHTLJS_IDENTIFIER     // CHTL JS标识符
     }
 }

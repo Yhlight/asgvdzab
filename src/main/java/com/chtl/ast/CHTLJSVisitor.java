@@ -13,6 +13,6 @@ public interface CHTLJSVisitor extends CHTLASTVisitor {
     void visitCHTLJSObject(CHTLJSObjectNode node);
     void visitCHTLJSArray(CHTLJSArrayNode node);
     void visitCHTLJSFunction(CHTLJSFunctionNode node);
-    void visitCHTLJSArrowFunction(CHTLJSArrowFunctionNode node);
+
     void visitCHTLJSIdentifier(CHTLJSIdentifierNode node);
 }

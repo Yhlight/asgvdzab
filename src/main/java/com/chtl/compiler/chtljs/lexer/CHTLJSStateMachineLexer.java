@@ -181,14 +181,8 @@ public class CHTLJSStateMachineLexer {
             addToken(CHTLJSTokenType.SEMICOLON, ";");
             advance();
         } else if (ch == '=') {
-            if (peek() == '>') {
-                addToken(CHTLJSTokenType.FAT_ARROW, "=>");
-                advance();
-                advance();
-            } else {
-                addToken(CHTLJSTokenType.EQUAL, "=");
-                advance();
-            }
+            addToken(CHTLJSTokenType.EQUAL, "=");
+            advance();
         }
         // 字符串
         else if (ch == '\'') {

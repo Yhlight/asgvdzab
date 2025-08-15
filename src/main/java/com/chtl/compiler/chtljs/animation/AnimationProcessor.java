@@ -200,8 +200,7 @@ public class AnimationProcessor {
                 
                 if (callback instanceof CHTLJSFunctionNode) {
                     processFunctionNode((CHTLJSFunctionNode) callback, js, "      ");
-                } else if (callback instanceof CHTLJSArrowFunctionNode) {
-                    processArrowFunction((CHTLJSArrowFunctionNode) callback, js, "      ");
+
                 }
                 
                 count++;
@@ -222,8 +221,7 @@ public class AnimationProcessor {
             
             if (callback instanceof CHTLJSFunctionNode) {
                 processFunctionNode((CHTLJSFunctionNode) callback, js, "    ");
-            } else if (callback instanceof CHTLJSArrowFunctionNode) {
-                processArrowFunction((CHTLJSArrowFunctionNode) callback, js, "    ");
+
             }
             
             js.append("\n");
@@ -247,28 +245,7 @@ public class AnimationProcessor {
         js.append(indent).append("}");
     }
     
-    /**
-     * 处理箭头函数
-     */
-    private void processArrowFunction(CHTLJSArrowFunctionNode func, StringBuilder js, String indent) {
-        js.append("(");
-        
-        List<String> params = func.getParameters();
-        for (int i = 0; i < params.size(); i++) {
-            if (i > 0) js.append(", ");
-            js.append(params.get(i));
-        }
-        
-        js.append(") => ");
-        
-        if (func.isExpression()) {
-            js.append(func.getBody());
-        } else {
-            js.append("{\n");
-            js.append(indent).append("  ").append(func.getBody()).append("\n");
-            js.append(indent).append("}");
-        }
-    }
+
     
     /**
      * 获取节点值

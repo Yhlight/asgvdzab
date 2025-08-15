@@ -91,8 +91,7 @@ public class EventBindingProcessor {
             
             if (handler instanceof CHTLJSFunctionNode) {
                 processFunctionHandler((CHTLJSFunctionNode) handler, js, indent);
-            } else if (handler instanceof CHTLJSArrowFunctionNode) {
-                processArrowFunctionHandler((CHTLJSArrowFunctionNode) handler, js, indent);
+
             } else if (handler instanceof CHTLJSIdentifierNode) {
                 // 引用已存在的函数
                 js.append(((CHTLJSIdentifierNode) handler).getName());
@@ -137,8 +136,7 @@ public class EventBindingProcessor {
             
             if (handler instanceof CHTLJSFunctionNode) {
                 processFunctionHandler((CHTLJSFunctionNode) handler, js, "    ");
-            } else if (handler instanceof CHTLJSArrowFunctionNode) {
-                processArrowFunctionHandler((CHTLJSArrowFunctionNode) handler, js, "    ");
+
             } else if (handler instanceof CHTLJSIdentifierNode) {
                 js.append(((CHTLJSIdentifierNode) handler).getName());
             }
@@ -195,32 +193,7 @@ public class EventBindingProcessor {
         js.append(indent).append("}");
     }
     
-    /**
-     * 处理箭头函数处理器
-     */
-    private void processArrowFunctionHandler(CHTLJSArrowFunctionNode func,
-                                            StringBuilder js,
-                                            String indent) {
-        js.append("(");
-        
-        // 参数
-        List<String> params = func.getParameters();
-        for (int i = 0; i < params.size(); i++) {
-            if (i > 0) js.append(", ");
-            js.append(params.get(i));
-        }
-        
-        js.append(") => ");
-        
-        // 函数体
-        if (func.isExpression()) {
-            js.append(func.getBody());
-        } else {
-            js.append("{\n");
-            js.append(indent).append("  ").append(func.getBody()).append("\n");
-            js.append(indent).append("}");
-        }
-    }
+
     
     /**
      * 获取选择器字符串

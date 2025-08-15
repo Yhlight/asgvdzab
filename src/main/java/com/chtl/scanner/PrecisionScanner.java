@@ -24,6 +24,8 @@ public class PrecisionScanner {
     private int column;
     private LanguageContextManager contextManager;
     private AutoAddManager autoAddManager;
+    private BraceBalancer braceBalancer;
+    private FragmentMerger fragmentMerger;
     private List<CodeFragment> fragments;
     
     // 当前正在构建的片段
@@ -46,6 +48,8 @@ public class PrecisionScanner {
     public PrecisionScanner(LanguageContextManager contextManager) {
         this.contextManager = contextManager;
         this.autoAddManager = new AutoAddManager(contextManager);
+        this.braceBalancer = new BraceBalancer();
+        this.fragmentMerger = new FragmentMerger();
         this.fragments = new ArrayList<>();
         this.currentBuffer = new StringBuilder();
     }
@@ -67,6 +71,7 @@ public class PrecisionScanner {
         // 重置上下文
         contextManager.reset();
         autoAddManager.reset();
+        braceBalancer.reset();
         
         // 确定初始语言类型
         currentFragmentType = determineInitialFragmentType();
@@ -79,7 +84,16 @@ public class PrecisionScanner {
         // 处理最后的缓冲区
         flushCurrentFragment();
         
-        return fragments;
+        // 应用片段合并优化
+        List<CodeFragment> optimized = fragmentMerger.merge(fragments);
+        
+        // 打印合并统计信息（调试用）
+        if (!fragments.isEmpty()) {
+            FragmentMerger.MergeStats stats = new FragmentMerger.MergeStats(fragments, optimized);
+            System.err.println(stats);
+        }
+        
+        return optimized;
     }
     
     /**
@@ -263,6 +277,7 @@ public class PrecisionScanner {
      * 扫描增强选择器
      */
     private void scanEnhancedSelector() {
+        braceBalancer.enterEnhancedSelector();
         consumeChar(); // {
         consumeChar(); // {
         
@@ -282,6 +297,7 @@ public class PrecisionScanner {
         if (current() == '}' && peek() == '}') {
             consumeChar(); // }
             consumeChar(); // }
+            braceBalancer.exitEnhancedSelector();
         }
         
         // 检查后续是否还是CHTL JS
@@ -297,6 +313,7 @@ public class PrecisionScanner {
      */
     private void scanStringLiteral() {
         char quote = current();
+        braceBalancer.enterString(quote);
         consumeChar();
         
         while (!isAtEnd() && current() != quote) {
@@ -312,6 +329,7 @@ public class PrecisionScanner {
         
         if (current() == quote) {
             consumeChar();
+            braceBalancer.exitString();
         }
     }
     

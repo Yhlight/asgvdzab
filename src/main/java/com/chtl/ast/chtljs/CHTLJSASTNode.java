@@ -64,7 +64,7 @@ public interface CHTLJSASTNode {
         // 表达式
         EXPRESSION,           // 一般表达式
         FUNCTION_EXPRESSION,  // 函数表达式
-        ARROW_FUNCTION,       // 箭头函数
+
         
         // 语句
         STATEMENT,            // 语句
