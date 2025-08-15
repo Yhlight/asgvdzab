@@ -20,7 +20,8 @@ public class CompilationWarning {
         COMPATIBILITY_ISSUE,    // 兼容性问题
         SECURITY_ISSUE,         // 安全问题
         REDEFINITION,           // 重定义
-        MISSING_VALUE           // 缺失值
+        MISSING_VALUE,          // 缺失值
+        IMPORT_IGNORED          // 导入被忽略
     }
     
     public CompilationWarning(String message, SourceLocation location, WarningType type) {
