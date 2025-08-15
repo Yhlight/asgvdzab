@@ -1,3 +1,4 @@
+com/chtl/generator/CHTLJsGenerator.class
 com/chtl/grammar/JavaScriptVisitor.class
 com/chtl/compiler/JavaScriptCompiler.class
 com/chtl/ast/TemplateNodes$CustomElement.class
@@ -10,8 +11,10 @@ com/chtl/grammar/JavaScriptBaseVisitor.class
 com/chtl/ast/CHTLJsNodes$Animate.class
 com/chtl/ast/OriginImportNodes$ImportHtml.class
 com/chtl/lexer/Context.class
+com/chtl/parser/CHTLParser$AstOrNone.class
 com/chtl/grammar/CSSLexer.class
 com/chtl/lexer/CHTLJsTokenType.class
+com/chtl/parser/CHTLParser.class
 com/chtl/ast/OriginImportNodes$OriginJavaScript.class
 com/chtl/ast/OriginImportNodes$OriginStyle.class
 com/chtl/ast/OriginImportNodes.class
@@ -46,6 +49,7 @@ com/chtl/compiler/CHTLCompiler.class
 com/chtl/ast/TemplateNodes$TemplateElement.class
 com/chtl/ast/OriginImportNodes$ImportChtl.class
 com/chtl/ast/OriginImportNodes$ImportJavaScript.class
+com/chtl/parser/CHTLJsParser.class
 com/chtl/grammar/CSSParser.class
 com/chtl/pipeline/CompilerDispatcher.class
 com/chtl/ast/TemplateNodes$StyleGroupUse.class
@@ -62,6 +66,7 @@ com/chtl/ast/CHTLJsNodes$Invocation.class
 com/chtl/ast/TemplateNodes$ElementNode.class
 com/chtl/ast/TemplateNodes$StyleProperty.class
 com/chtl/compiler/CssCompiler.class
+com/chtl/generator/CHTLGenerator.class
 com/chtl/pipeline/CompilationResultMerger.class
 com/chtl/ast/CHTLJsNodes$Chain.class
 com/chtl/ast/CHTLJsNodes$JsNode.class

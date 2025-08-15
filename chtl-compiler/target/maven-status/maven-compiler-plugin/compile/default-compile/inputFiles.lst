@@ -8,6 +8,7 @@
 /workspace/chtl-compiler/src/main/java/com/chtl/model/CodeFragment.java
 /workspace/chtl-compiler/src/main/java/com/chtl/lexer/State.java
 /workspace/chtl-compiler/src/main/java/com/chtl/ast/AstNode.java
+/workspace/chtl-compiler/src/main/java/com/chtl/parser/CHTLJsParser.java
 /workspace/chtl-compiler/src/main/java/com/chtl/pipeline/CompilerDispatcher.java
 /workspace/chtl-compiler/src/main/java/com/chtl/lexer/Token.java
 /workspace/chtl-compiler/src/main/java/com/chtl/model/CodeFragmentType.java
@@ -17,6 +18,7 @@
 /workspace/chtl-compiler/target/generated-sources/antlr4/com/chtl/grammar/JavaScriptLexer.java
 /workspace/chtl-compiler/src/main/java/com/chtl/Main.java
 /workspace/chtl-compiler/src/main/java/com/chtl/ast/TemplateNodes.java
+/workspace/chtl-compiler/src/main/java/com/chtl/parser/CHTLParser.java
 /workspace/chtl-compiler/target/generated-sources/antlr4/com/chtl/grammar/JavaScriptVisitor.java
 /workspace/chtl-compiler/src/main/java/com/chtl/compiler/JavaScriptCompiler.java
 /workspace/chtl-compiler/src/main/java/com/chtl/lexer/CHTLJsLexer.java
@@ -30,4 +32,6 @@
 /workspace/chtl-compiler/target/generated-sources/antlr4/com/chtl/grammar/CSSVisitor.java
 /workspace/chtl-compiler/src/main/java/com/chtl/scanner/CHTLUnifiedScanner.java
 /workspace/chtl-compiler/src/main/java/com/chtl/lexer/Context.java
+/workspace/chtl-compiler/src/main/java/com/chtl/generator/CHTLJsGenerator.java
 /workspace/chtl-compiler/target/generated-sources/antlr4/com/chtl/grammar/CSSBaseVisitor.java
+/workspace/chtl-compiler/src/main/java/com/chtl/generator/CHTLGenerator.java

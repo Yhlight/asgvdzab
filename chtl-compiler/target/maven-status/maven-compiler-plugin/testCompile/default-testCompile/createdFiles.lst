@@ -1,2 +1,3 @@
 com/chtl/lexer/CHTLJsLexerTest.class
 com/chtl/lexer/CHTLLexerTest.class
+com/chtl/parser/ParserGeneratorSmokeTest.class
