@@ -1,0 +1,20 @@
+file(REMOVE_RECURSE
+  "CMakeFiles/chtl_tests.dir/link.d"
+  "CMakeFiles/chtl_tests.dir/src/common/types.cpp.o"
+  "CMakeFiles/chtl_tests.dir/src/common/types.cpp.o.d"
+  "CMakeFiles/chtl_tests.dir/src/compilers/chtl_compiler.cpp.o"
+  "CMakeFiles/chtl_tests.dir/src/compilers/chtl_compiler.cpp.o.d"
+  "CMakeFiles/chtl_tests.dir/src/dispatcher/compiler_dispatcher.cpp.o"
+  "CMakeFiles/chtl_tests.dir/src/dispatcher/compiler_dispatcher.cpp.o.d"
+  "CMakeFiles/chtl_tests.dir/src/scanner/unified_scanner.cpp.o"
+  "CMakeFiles/chtl_tests.dir/src/scanner/unified_scanner.cpp.o.d"
+  "CMakeFiles/chtl_tests.dir/tests/basic_test.cpp.o"
+  "CMakeFiles/chtl_tests.dir/tests/basic_test.cpp.o.d"
+  "bin/chtl_tests"
+  "bin/chtl_tests.pdb"
+)
+
+# Per-language clean rules from dependency scanning.
+foreach(lang CXX)
+  include(CMakeFiles/chtl_tests.dir/cmake_clean_${lang}.cmake OPTIONAL)
+endforeach()
