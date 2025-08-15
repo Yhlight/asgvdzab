@@ -315,77 +315,290 @@ public class UnifiedScannerV2 {
     }
     
     /**
-     * 处理script内容中的CHTL JS语法
+     * 处理script内容中的CHTL JS语法 - 最小单元切割
      */
     private List<CodeFragment> processCHTLJSContent(String content, int offset) {
         List<CodeFragment> fragments = new ArrayList<>();
+        int pos = 0;
         int lastPos = 0;
+        
+        // 字符级别扫描，确保最小单元切割
+        while (pos < content.length()) {
+            char c = content.charAt(pos);
+            
+            // 检查原始嵌入 - 可以在任意位置
+            if (pos + 8 <= content.length() && content.substring(pos, pos + 8).equals("[Origin]")) {
+                // 添加之前的内容
+                if (lastPos < pos) {
+                    addJSFragment(fragments, content, lastPos, pos, offset);
+                }
+                
+                // 处理原始嵌入
+                int originEnd = findOriginEnd(content, pos);
+                fragments.add(new CodeFragment(
+                    FragmentType.CHTL,
+                    content.substring(pos, originEnd),
+                    offset + pos,
+                    originEnd - pos
+                ));
+                
+                lastPos = originEnd;
+                pos = originEnd;
+                continue;
+            }
+            
+            // 检查增强选择器 {{
+            if (c == '{' && pos + 1 < content.length() && content.charAt(pos + 1) == '{') {
+                // 添加之前的JS
+                if (lastPos < pos) {
+                    addJSFragment(fragments, content, lastPos, pos, offset);
+                }
+                
+                // 找到选择器结束
+                int selectorEnd = findEnhancedSelectorEnd(content, pos);
+                fragments.add(new CodeFragment(
+                    FragmentType.CHTL_JS,
+                    content.substring(pos, selectorEnd),
+                    offset + pos,
+                    selectorEnd - pos
+                ));
+                
+                lastPos = selectorEnd;
+                pos = selectorEnd;
+                continue;
+            }
+            
+            // 检查箭头操作符 ->
+            if (c == '-' && pos + 1 < content.length() && content.charAt(pos + 1) == '>') {
+                // 添加之前的JS
+                if (lastPos < pos) {
+                    addJSFragment(fragments, content, lastPos, pos, offset);
+                }
+                
+                // 添加箭头操作符
+                fragments.add(new CodeFragment(
+                    FragmentType.CHTL_JS,
+                    "->",
+                    offset + pos,
+                    2
+                ));
+                
+                lastPos = pos + 2;
+                pos = pos + 2;
+                continue;
+            }
+            
+            // 检查CHTL JS函数调用
+            if (Character.isLetter(c) || c == '.') {
+                String word = extractWord(content, pos);
+                
+                // 检查是否是CHTL JS函数
+                if (isCHTLJSFunction(word, content, pos)) {
+                    // 添加之前的JS
+                    if (lastPos < pos) {
+                        addJSFragment(fragments, content, lastPos, pos, offset);
+                    }
+                    
+                    // 找到函数调用结束
+                    int funcEnd = findFunctionCallEnd(content, pos);
+                    fragments.add(new CodeFragment(
+                        FragmentType.CHTL_JS,
+                        content.substring(pos, funcEnd),
+                        offset + pos,
+                        funcEnd - pos
+                    ));
+                    
+                    lastPos = funcEnd;
+                    pos = funcEnd;
+                    continue;
+                }
+            }
+            
+            // 跳过字符串
+            if (c == '"' || c == '\'' || c == '`') {
+                pos = skipString(content, pos);
+                continue;
+            }
+            
+            // 跳过注释
+            if (c == '/' && pos + 1 < content.length()) {
+                char next = content.charAt(pos + 1);
+                if (next == '/') {
+                    // 单行注释
+                    pos = skipToLineEnd(content, pos);
+                    continue;
+                } else if (next == '*') {
+                    // 多行注释
+                    pos = skipBlockComment(content, pos);
+                    continue;
+                }
+            }
+            
+            pos++;
+        }
+        
+        // 添加剩余的JS
+        if (lastPos < content.length()) {
+            addJSFragment(fragments, content, lastPos, content.length(), offset);
+        }
+        
+        return fragments;
+    }
+    
+    /**
+     * 添加JS片段（可能包含原始嵌入）
+     */
+    private void addJSFragment(List<CodeFragment> fragments, String content, 
+                               int start, int end, int offset) {
+        if (start >= end) return;
+        
+        String jsContent = content.substring(start, end);
+        
+        // 再次检查是否包含原始嵌入
+        if (jsContent.contains("[Origin]")) {
+            // 递归处理可能包含的原始嵌入
+            List<CodeFragment> subFragments = processJSWithOrigin(jsContent, offset + start);
+            fragments.addAll(subFragments);
+        } else {
+            // 纯JS片段
+            fragments.add(new CodeFragment(
+                FragmentType.JS,
+                jsContent,
+                offset + start,
+                end - start
+            ));
+        }
+    }
+    
+    /**
+     * 处理可能包含原始嵌入的JS代码
+     */
+    private List<CodeFragment> processJSWithOrigin(String content, int offset) {
+        List<CodeFragment> fragments = new ArrayList<>();
         int pos = 0;
         
         while (pos < content.length()) {
-            // 查找CHTL JS语法
-            int enhancedSelectorStart = content.indexOf("{{", pos);
-            int listenStart = content.indexOf(".listen(", pos);
-            int delegateStart = content.indexOf(".delegate(", pos);
-            int animateStart = content.indexOf("animate(", pos);
-            int arrowStart = content.indexOf("->", pos);
-            
-            // 找到最近的CHTL JS语法
-            int nextSyntax = Integer.MAX_VALUE;
-            String syntaxType = null;
-            
-            if (enhancedSelectorStart != -1 && enhancedSelectorStart < nextSyntax) {
-                nextSyntax = enhancedSelectorStart;
-                syntaxType = "selector";
-            }
-            if (listenStart != -1 && listenStart < nextSyntax) {
-                nextSyntax = listenStart;
-                syntaxType = "listen";
-            }
-            if (delegateStart != -1 && delegateStart < nextSyntax) {
-                nextSyntax = delegateStart;
-                syntaxType = "delegate";
-            }
-            if (animateStart != -1 && animateStart < nextSyntax) {
-                nextSyntax = animateStart;
-                syntaxType = "animate";
-            }
-            if (arrowStart != -1 && arrowStart < nextSyntax) {
-                nextSyntax = arrowStart;
-                syntaxType = "arrow";
-            }
-            
-            if (syntaxType == null) {
-                // 没有更多CHTL JS语法，添加剩余的JS代码
-                if (lastPos < content.length()) {
+            int originStart = content.indexOf("[Origin]", pos);
+            if (originStart == -1) {
+                // 剩余部分是纯JS
+                if (pos < content.length()) {
                     fragments.add(new CodeFragment(
                         FragmentType.JS,
-                        content.substring(lastPos),
-                        offset + lastPos,
-                        content.length() - lastPos
+                        content.substring(pos),
+                        offset + pos,
+                        content.length() - pos
                     ));
                 }
                 break;
             }
             
-            // 添加语法前的JS代码
-            if (lastPos < nextSyntax) {
+            // 添加原始嵌入之前的JS
+            if (pos < originStart) {
                 fragments.add(new CodeFragment(
                     FragmentType.JS,
-                    content.substring(lastPos, nextSyntax),
-                    offset + lastPos,
-                    nextSyntax - lastPos
+                    content.substring(pos, originStart),
+                    offset + pos,
+                    originStart - pos
                 ));
             }
             
-            // 处理CHTL JS语法
-            int syntaxEnd = processSyntaxElement(content, nextSyntax, syntaxType, fragments, offset);
+            // 处理原始嵌入
+            int originEnd = findOriginEnd(content, originStart);
+            fragments.add(new CodeFragment(
+                FragmentType.CHTL,
+                content.substring(originStart, originEnd),
+                offset + originStart,
+                originEnd - originStart
+            ));
             
-            lastPos = syntaxEnd;
-            pos = syntaxEnd;
+            pos = originEnd;
         }
         
         return fragments;
+    }
+    
+    /**
+     * 提取单词
+     */
+    private String extractWord(String content, int start) {
+        int pos = start;
+        while (pos < content.length() && 
+               (Character.isLetterOrDigit(content.charAt(pos)) || 
+                content.charAt(pos) == '.' || 
+                content.charAt(pos) == '_')) {
+            pos++;
+        }
+        return content.substring(start, pos);
+    }
+    
+    /**
+     * 检查是否是CHTL JS函数
+     */
+    private boolean isCHTLJSFunction(String word, String content, int pos) {
+        // 检查是否是 .listen( 或 .delegate(
+        if (word.endsWith(".listen") || word.endsWith(".delegate")) {
+            int afterWord = pos + word.length();
+            return afterWord < content.length() && content.charAt(afterWord) == '(';
+        }
+        
+        // 检查是否是 animate(
+        if (word.equals("animate")) {
+            int afterWord = pos + word.length();
+            return afterWord < content.length() && content.charAt(afterWord) == '(';
+        }
+        
+        return false;
+    }
+    
+    /**
+     * 查找增强选择器结束位置
+     */
+    private int findEnhancedSelectorEnd(String content, int start) {
+        int pos = start + 2; // 跳过 {{
+        int braceDepth = 2;
+        
+        while (pos < content.length() && braceDepth > 0) {
+            char c = content.charAt(pos);
+            if (c == '{') {
+                braceDepth++;
+            } else if (c == '}') {
+                braceDepth--;
+                if (braceDepth == 0) {
+                    return pos + 1;
+                }
+            } else if (c == '"' || c == '\'' || c == '`') {
+                pos = skipString(content, pos);
+                continue;
+            }
+            pos++;
+        }
+        
+        return pos;
+    }
+    
+    /**
+     * 跳过到行尾
+     */
+    private int skipToLineEnd(String content, int start) {
+        int pos = start;
+        while (pos < content.length() && content.charAt(pos) != '\n') {
+            pos++;
+        }
+        return pos + 1;
+    }
+    
+    /**
+     * 跳过块注释
+     */
+    private int skipBlockComment(String content, int start) {
+        int pos = start + 2; // 跳过 /*
+        while (pos + 1 < content.length()) {
+            if (content.charAt(pos) == '*' && content.charAt(pos + 1) == '/') {
+                return pos + 2;
+            }
+            pos++;
+        }
+        return content.length();
     }
     
     /**
