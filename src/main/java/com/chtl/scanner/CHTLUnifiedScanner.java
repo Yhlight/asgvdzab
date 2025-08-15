@@ -54,14 +54,12 @@ public class CHTLUnifiedScanner {
     public List<CodeFragment> scan(String sourceCode) {
         // logger.debug("开始扫描CHTL源代码，长度: {} 字符", sourceCode.length());
         
-        // 使用增强的PrecisionScanner进行精确扫描
-        LanguageContextManager contextManager = new LanguageContextManager();
-        PrecisionScanner precisionScanner = new PrecisionScanner(contextManager);
-        List<CodeFragment> fragments = precisionScanner.scan(sourceCode);
+        // 使用V2扫描器替代V1
+        com.chtl.scanner.v2.UnifiedScannerV2 scannerV2 = new com.chtl.scanner.v2.UnifiedScannerV2();
+        List<CodeFragment> fragments = scannerV2.scan(sourceCode);
         
-        // 使用FragmentMerger优化片段，但保持最小语义单元
-        FragmentMerger merger = new FragmentMerger();
-        fragments = merger.merge(fragments);
+        // 创建一个虚拟的contextManager用于后处理（V2内部已经处理了上下文）
+        LanguageContextManager contextManager = new LanguageContextManager();
         
         // 后处理：添加额外的元数据
         postProcessFragments(fragments, contextManager);

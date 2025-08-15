@@ -210,18 +210,21 @@ public class UnifiedScannerV2 {
     }
     
     /**
-     * 检查是否是CHTL特有语法（不是JS或CHTL JS）
+     * 检查是否是局部块允许的CHTL语法
      */
     private boolean checkCHTLSyntax(String content, int pos) {
-        // 检查CHTL特有的语法标记
-        String[] chtlMarkers = {
-            "[Template]", "[Custom]", "[Configuration]", 
-            "[Import]", "[Namespace]", "[Constraint]",
-            "text ", "slot ", "style {", 
-            "@Element", "@Style", "@Var"
+        // 局部块只允许使用性的语法，不允许定义性的语法
+        String[] allowedMarkers = {
+            "[Import]",      // 允许导入
+            "[Origin]",      // 允许原始嵌入
+            "text ",         // 允许文本
+            "slot ",         // 允许插槽
+            "@Element",      // 允许使用元素
+            "@Style",        // 允许使用样式
+            // 注意：不允许 [Template]、[Custom]、[Configuration]、[Namespace] 等定义性语法
         };
         
-        for (String marker : chtlMarkers) {
+        for (String marker : allowedMarkers) {
             if (pos + marker.length() <= content.length() &&
                 content.substring(pos).startsWith(marker)) {
                 return true;

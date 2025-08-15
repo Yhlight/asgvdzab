@@ -31,11 +31,16 @@ style {
 ```css
 div {
     style {
-        /* 支持所有CHTL语法 + 局部特性 */
-        color: Colors(primary);
-        @Style CardStyle;
-        &:hover { ... }             /* 局部特有 */
-        [Origin] @Style { ... }
+        /* 支持使用性CHTL语法 + 局部特性 */
+        color: Colors(primary);         /* 变量引用 */
+        @Style CardStyle;               /* 使用样式 */
+        &:hover { ... }                 /* 局部特有 */
+        [Origin] @Style { ... }         /* 原始嵌入 */
+        
+        /* 不支持定义性语法 */
+        /* [Template] - 不允许 */
+        /* [Custom] - 不允许 */
+        /* [Configuration] - 不允许 */
     }
 }
 ```
@@ -57,15 +62,21 @@ script {
 ```javascript
 button {
     script {
-        /* 支持：CHTL + CHTL JS + JS */
-        [Import] @Chtl from Module;     /* CHTL语法 */
-        [Template] @Var Config { ... }  /* CHTL语法 */
+        /* 支持：使用性CHTL + CHTL JS + JS */
+        [Import] @Chtl from Module;     /* 允许导入 */
+        @Element MyButton;              /* 使用元素 */
+        text "Hello";                   /* 文本内容 */
+        slot { }                        /* 插槽 */
         
         {{&}}.listen({ ... });          /* CHTL JS */
-        text "Hello";                   /* CHTL语法 */
-        
         [Origin] @Script { ... }        /* 原始嵌入 */
         console.log("test");            /* 纯JS */
+        
+        /* 不支持定义性语法 */
+        /* [Template] - 不允许 */
+        /* [Custom] - 不允许 */
+        /* [Configuration] - 不允许 */
+        /* [Namespace] - 不允许 */
     }
 }
 ```
@@ -101,12 +112,21 @@ UnifiedScannerV2 (主入口)
         └── processOrigin()
 ```
 
+## 局部块的语法限制
+
+### 使用性语法 vs 定义性语法
+- **使用性语法**（允许）：`[Import]`、`@Element`、`@Style`、`text`、`slot`、`[Origin]`
+- **定义性语法**（不允许）：`[Template]`、`[Custom]`、`[Configuration]`、`[Namespace]`、`[Constraint]`
+
+局部块是用于"使用"而非"定义"，这确保了代码结构的清晰性。
+
 ## 成果
 
 1. **职权分明**：CHTL语法和CHTL JS语法各司其职
 2. **精确切割**：字符级别的CHTL JS识别
 3. **灵活扩展**：原始嵌入可在任意位置使用
 4. **高性能**：块级扫描 + 哈希表查找
-5. **特殊支持**：局部script的独特地位得到完整支持
+5. **合理限制**：局部块只支持使用性语法
+6. **完全替换**：V2扫描器已完全替换V1
 
-扫描器V2已经达到"尽善尽美"的要求，可以投入实际开发使用。
+扫描器V2已经达到"尽善尽美"的要求，现已作为默认扫描器投入使用。

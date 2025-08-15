@@ -142,14 +142,24 @@ public class StyleProcessor {
             }
         }
         
-        // 查找样式模板使用
+        // 查找样式模板使用（局部样式块只允许使用，不允许定义）
         Matcher styleMatcher = STYLE_TEMPLATE.matcher(content);
         while (styleMatcher.find()) {
+            String matched = styleMatcher.group();
+            
+            // 局部样式块不允许定义性语法
+            if (isLocalStyle && 
+                (matched.contains("[Template]") || 
+                 matched.contains("[Custom]") || 
+                 matched.contains("[Configuration]"))) {
+                continue; // 跳过定义性语法
+            }
+            
             syntaxMap.put(styleMatcher.start(), new SyntaxInfo(
                 SyntaxType.STYLE_TEMPLATE,
                 styleMatcher.start(),
                 styleMatcher.end(),
-                styleMatcher.group()
+                matched
             ));
         }
         
