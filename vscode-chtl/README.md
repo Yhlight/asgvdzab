@@ -72,7 +72,7 @@ Open VS Code settings and search for "CHTL" to configure:
         class = "card";
         
         h2 {
-            slot name="title" { }
+            slot { }
         }
         
         div {
@@ -99,9 +99,7 @@ Open VS Code settings and search for "CHTL" to configure:
 // 使用示例
 body {
     @Element Card {
-        slot name="title" {
-            text { Welcome to CHTL }
-        }
+        text { Welcome to CHTL }
         text { This is a simple card component. }
     }
 }

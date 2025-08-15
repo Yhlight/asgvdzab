@@ -1,18 +1,16 @@
-# CHTL JS animate方法API指南
+# CHTL JS animate函数API指南
 
 ## 概述
 
-`animate`是CHTL JS为DOM元素扩展的方法，用于创建流畅的Web动画。当通过增强选择器`{{}}`获取元素时，元素会自动拥有`animate`方法。该方法返回一个动画控制对象，允许开发者精确控制动画的播放状态。
+`animate`是CHTL JS提供的全局函数，用于创建流畅的Web动画。该函数通过`target`参数指定要动画的元素，并返回一个动画控制对象，允许开发者精确控制动画的播放状态。
 
 ## 基本用法
 
 ```chtl
 script {
-    // 通过增强选择器获取元素，自动拥有animate方法
-    const box = {{.box}};
-    
-    // 直接在元素上调用animate方法
-    const animation = box.animate({
+    // 使用增强选择器作为target
+    const anim = animate({
+        target: {{.box}},      // 必需：指定动画目标
         duration: 1000,        // 动画持续时间（毫秒）
         easing: ease-in-out,   // 缓动函数
         delay: 100,           // 延迟开始（毫秒）
@@ -48,9 +46,19 @@ script {
 }
 ```
 
+## target参数支持的格式
+
+`target`参数支持以下几种格式：
+
+1. **增强选择器**：`{{.class}}`、`{{#id}}`、`{{element}}`
+2. **DOM元素**：直接传入DOM元素对象
+3. **选择器数组**：`[{{.class1}}, {{.class2}}]` - 同时动画多个元素
+4. **DOM元素数组**：`[element1, element2]`
+5. **NodeList/HTMLCollection**：`document.querySelectorAll('.items')`
+
 ## 动画控制对象
 
-`animate`方法返回一个控制对象，提供以下方法：
+`animate`函数返回一个控制对象，提供以下方法：
 
 ### 方法列表
 
@@ -108,6 +116,7 @@ if (animation.isPaused()) {
 
 | 参数 | 类型 | 默认值 | 说明 |
 |------|------|--------|------|
+| `target` | 见上方说明 | **必需** | 动画目标元素 |
 | `duration` | number | 1000 | 动画持续时间（毫秒） |
 | `easing` | string | 'linear' | 缓动函数：linear, ease, ease-in, ease-out, ease-in-out |
 | `delay` | number | 0 | 动画开始前的延迟（毫秒） |
@@ -130,11 +139,9 @@ div {
         script {
             {{&}}.listen({
                 click: function() {
-                    // 获取要动画的元素
-                    const box = {{.box}};
-                    
-                    // 在元素上调用animate方法
-                    const anim = box.animate({
+                    // 创建复杂动画
+                    const anim = animate({
+                        target: {{.box}},  // 指定目标元素
                         duration: 2000,
                         easing: ease-in-out,
                         
@@ -187,29 +194,29 @@ div {
 
 ## 更多示例
 
-### 1. 链式调用
+### 1. 使用增强选择器数组
 
 ```chtl
 script {
-    // 可以链式调用多个方法
-    {{.card}}
-        .animate({
-            duration: 500,
-            begin: { opacity: 0 },
-            end: { opacity: 1 }
-        })
-        .onComplete(function() {
-            console.log('淡入完成');
-        });
+    // 同时动画多个元素
+    const anim = animate({
+        target: [{{.card1}}, {{.card2}}, {{.card3}}],
+        duration: 500,
+        begin: { opacity: 0 },
+        end: { opacity: 1 }
+    });
 }
 ```
 
-### 2. 同时动画多个属性
+### 2. 使用DOM元素
 
 ```chtl
 script {
-    // 获取元素并动画多个属性
-    {{.card}}.animate({
+    // 获取DOM元素后使用
+    const box = {{.box}};
+    
+    animate({
+        target: box,
         duration: 800,
         easing: ease-out,
         begin: {
@@ -233,8 +240,9 @@ script {
     // 配合事件处理器
     {{#myButton}}.listen({
         click: function() {
-            // this已经是扩展后的元素，直接调用animate
-            this.animate({
+            // 使用this作为target
+            animate({
+                target: this,
                 duration: 200,
                 when: [
                     { at: 0.0, transform: 'scale(1)' },
@@ -247,61 +255,60 @@ script {
 }
 ```
 
-### 4. 多元素动画
+### 4. 使用NodeList
 
 ```chtl
 script {
-    // 为多个元素添加相同动画
+    // 直接使用querySelectorAll的结果
     const cards = document.querySelectorAll('.card');
     
-    cards.forEach(card => {
-        // 扩展元素并添加动画
-        _chtl.extendElement(card).animate({
-            duration: 600,
-            delay: 100 * Array.from(cards).indexOf(card), // 交错动画
-            begin: { opacity: 0, transform: 'translateY(20px)' },
-            end: { opacity: 1, transform: 'translateY(0)' }
-        });
+    animate({
+        target: cards,  // NodeList作为target
+        duration: 600,
+        begin: { opacity: 0, transform: 'translateY(20px)' },
+        end: { opacity: 1, transform: 'translateY(0)' }
     });
 }
 ```
 
 ## 注意事项
 
-1. **通过增强选择器`{{}}`获取的元素会自动拥有`animate`方法**
-2. 对于原生DOM元素，需要使用`_chtl.extendElement()`扩展后才能使用`animate`
+1. **`target`参数是必需的** - 必须指定要动画的元素
+2. `target`支持多种格式：增强选择器、DOM元素、数组等
 3. 动画自动开始播放，无需手动调用`play()`
-4. 支持链式调用：`element.animate(...).pause().onComplete(fn).play()`
+4. 支持链式调用：`anim.pause().onComplete(fn).play()`
 5. `reverse()`方法会交换`begin`和`end`状态
 6. 暂停时会记录当前进度，恢复时从暂停位置继续
 7. `stop()`方法会将元素重置到`begin`状态
 8. 支持所有CSS属性的动画，包括transform、opacity、color等
 9. 数值属性会自动插值，非数值属性在50%时切换
+10. 当target包含多个元素时，返回的控制器会同时控制所有元素
 
-## API一致性
+## CHTL JS核心API
 
-CHTL JS为DOM元素扩展了三个核心方法：
+CHTL JS提供了三个核心功能：
 
 ```chtl
-// 1. listen - 事件监听
+// 1. listen - 事件监听（元素方法）
 {{.element}}.listen({
     click: handler,
     mouseenter: handler
 });
 
-// 2. delegate - 事件委托
+// 2. delegate - 事件委托（元素方法）
 {{.container}}.delegate({
     target: {{.item}},  // 或元素数组
     click: handler,
     mouseenter: handler
 });
 
-// 3. animate - 动画
-{{.element}}.animate({
+// 3. animate - 动画（全局函数）
+const anim = animate({
+    target: {{.element}} || [{{.elem1}}, {{.elem2}}] || DOM对象,
     duration: 1000,
     begin: { opacity: 0 },
     end: { opacity: 1 }
 });
 ```
 
-这三个方法提供了统一、直观的API，让DOM操作更加优雅。
+`listen`和`delegate`是元素方法，需要明确的对象调用。而`animate`是全局函数，通过`target`参数指定动画对象，返回控制器以便精确控制动画。

@@ -195,14 +195,9 @@ public class CHTLJSGenerator implements CHTLJSASTVisitor {
         output.append("        }\n");
         output.append("    },\n\n");
         
-        // 为DOM元素添加animate方法
+        // 为DOM元素添加方法
         output.append("    extendElement: function(element) {\n");
         output.append("        if (!element || element._chtlExtended) return element;\n");
-        output.append("        \n");
-        output.append("        // 添加animate方法\n");
-        output.append("        element.animate = function(config) {\n");
-        output.append("            return _chtl.createAnimation(this, config);\n");
-        output.append("        };\n");
         output.append("        \n");
         output.append("        // 添加listen方法\n");
         output.append("        element.listen = function(events) {\n");
@@ -218,7 +213,68 @@ public class CHTLJSGenerator implements CHTLJSASTVisitor {
         output.append("        return element;\n");
         output.append("    },\n\n");
         
-        output.append("    // 创建动画的内部实现\n");
+        output.append("    // animate函数 - 返回动画控制对象\n");
+        output.append("    animate: function(config) {\n");
+        output.append("        // 解析target参数\n");
+        output.append("        const target = config.target;\n");
+        output.append("        if (!target) {\n");
+        output.append("            console.error('animate: 必须指定target参数');\n");
+        output.append("            return null;\n");
+        output.append("        }\n");
+        output.append("        \n");
+        output.append("        // 获取要动画的元素列表\n");
+        output.append("        let elements = [];\n");
+        output.append("        \n");
+        output.append("        if (typeof target === 'string') {\n");
+        output.append("            // 增强选择器字符串\n");
+        output.append("            elements = [_chtl.query(target)];\n");
+        output.append("        } else if (target instanceof Element) {\n");
+        output.append("            // 单个DOM元素\n");
+        output.append("            elements = [target];\n");
+        output.append("        } else if (Array.isArray(target)) {\n");
+        output.append("            // 数组形式\n");
+        output.append("            elements = target.map(t => {\n");
+        output.append("                if (typeof t === 'string') {\n");
+        output.append("                    return _chtl.query(t);\n");
+        output.append("                }\n");
+        output.append("                return t;\n");
+        output.append("            }).filter(el => el instanceof Element);\n");
+        output.append("        } else if (target instanceof NodeList || target instanceof HTMLCollection) {\n");
+        output.append("            // NodeList或HTMLCollection\n");
+        output.append("            elements = Array.from(target);\n");
+        output.append("        }\n");
+        output.append("        \n");
+        output.append("        if (elements.length === 0) {\n");
+        output.append("            console.error('animate: 无法找到目标元素');\n");
+        output.append("            return null;\n");
+        output.append("        }\n");
+        output.append("        \n");
+        output.append("        // 为每个元素创建动画\n");
+        output.append("        const animations = elements.map(element => \n");
+        output.append("            _chtl.createAnimation(element, config)\n");
+        output.append("        );\n");
+        output.append("        \n");
+        output.append("        // 如果只有一个元素，返回单个控制器\n");
+        output.append("        if (animations.length === 1) {\n");
+        output.append("            return animations[0];\n");
+        output.append("        }\n");
+        output.append("        \n");
+        output.append("        // 多个元素时，返回组合控制器\n");
+        output.append("        return {\n");
+        output.append("            play: () => animations.forEach(a => a.play()),\n");
+        output.append("            pause: () => animations.forEach(a => a.pause()),\n");
+        output.append("            stop: () => animations.forEach(a => a.stop()),\n");
+        output.append("            reverse: () => animations.forEach(a => a.reverse()),\n");
+        output.append("            onComplete: (fn) => {\n");
+        output.append("                animations.forEach(a => a.onComplete(fn));\n");
+        output.append("                return this;\n");
+        output.append("            },\n");
+        output.append("            isPlaying: () => animations.some(a => a.isPlaying()),\n");
+        output.append("            isPaused: () => animations.some(a => a.isPaused())\n");
+        output.append("        };\n");
+        output.append("    },\n\n");
+        
+        output.append("    // 创建单个元素的动画\n");
         output.append("    createAnimation: function(element, config) {\n");
         output.append("        // 动画配置\n");
         output.append("        const duration = config.duration || 1000;\n");
@@ -474,6 +530,10 @@ public class CHTLJSGenerator implements CHTLJSASTVisitor {
         output.append("    }\n");
         
         output.append("};\n\n");
+        
+        // 全局animate函数
+        output.append("// 全局animate函数\n");
+        output.append("const animate = _chtl.animate.bind(_chtl);\n\n");
     }
     
     private String transformSelector(EnhancedSelectorNode node) {
