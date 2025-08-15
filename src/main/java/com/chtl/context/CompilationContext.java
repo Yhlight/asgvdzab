@@ -81,7 +81,8 @@ public class CompilationContext {
         CONFIGURATION,           // 配置组内部
         VAR_GROUP_DEFINITION,    // 变量组定义
         CONSTRAINT_DEFINITION,   // 约束定义
-        CONSTRAINT_CHECKING,     // 约束检查
+        CONSTRAINT_CHECKING,
+        OPTIMIZING,     // 约束检查
         CUSTOM_OPERATION,        // 自定义操作（delete/insert等）
         INHERIT_STATEMENT        // 继承语句
     }
