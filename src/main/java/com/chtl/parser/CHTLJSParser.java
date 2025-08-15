@@ -1,4 +1,7 @@
 package com.chtl.parser;
+import com.chtl.ast.CHTLASTNode;
+import com.chtl.context.CHTLJSContext;
+import com.chtl.exception.CompilationException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

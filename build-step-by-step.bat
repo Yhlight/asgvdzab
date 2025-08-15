@@ -20,6 +20,7 @@ call :runFix FixANTLRClasses.java
 call :runFix FixAllCompilationErrors.java
 call :runFix CreateMissingNodes.java
 call :runFix FixAllImports.java
+call :runFix FixRemainingIssues.java
 
 echo.
 echo ===================================

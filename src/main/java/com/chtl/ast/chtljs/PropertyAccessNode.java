@@ -1,4 +1,5 @@
 package com.chtl.ast.chtljs;
+import com.chtl.ast.NodeType;
 
 /**
  * 属性访问节点

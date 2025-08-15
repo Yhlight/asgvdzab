@@ -1,4 +1,5 @@
-package com.chtl.ast.chtljs;import com.chtl.ast.NodeType;
+package com.chtl.ast.chtljs;
+import com.chtl.model.SourceLocation;import com.chtl.ast.NodeType;
 
 
 import com.chtl.ast.SourceLocation;

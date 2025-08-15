@@ -1,4 +1,5 @@
 package com.chtl.ast.chtljs;
+import com.chtl.ast.NodeType;
 
 /**
  * CHTL JS事件处理器节点
