@@ -26,6 +26,7 @@
 /workspace/chtl-compiler/src/main/java/com/chtl/compiler/JavaScriptCompiler.java
 /workspace/chtl-compiler/src/main/java/com/chtl/lexer/CHTLJsLexer.java
 /workspace/chtl-compiler/src/main/java/com/chtl/compiler/CHTLCompiler.java
+/workspace/chtl-compiler/src/main/java/com/chtl/template/TemplateRegistry.java
 /workspace/chtl-compiler/src/main/java/com/chtl/ast/OriginImportNodes.java
 /workspace/chtl-compiler/target/generated-sources/antlr4/com/chtl/grammar/CSSLexer.java
 /workspace/chtl-compiler/target/generated-sources/antlr4/com/chtl/grammar/CSSParser.java

@@ -9,15 +9,19 @@ import com.chtl.ast.TemplateNodes.StyleProperty;
 import com.chtl.ast.CssRule;
 import com.chtl.lexer.*;
 import com.chtl.runtime.ContextAssistant;
+import com.chtl.template.TemplateRegistry;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class CHTLParser {
 	private final List<Token> tokens;
 	private int i = 0;
 	private final ContextAssistant ctx = new ContextAssistant();
 	private final DocumentNode document;
+	private final TemplateRegistry templates = new TemplateRegistry();
 
 	public CHTLParser(String src, GlobalMap map) {
 		this.tokens = new CHTLLexer(src, map).lex();
@@ -116,20 +120,28 @@ public class CHTLParser {
 	}
 
 	private void parseStyleBlock(String styleText, ElementNode el) {
-		// 分两类：
-		// 1) 内联属性（键:值; 或 键=值;）→ el.inlineStyles
-		// 2) 选择器块（.class/#id/&foo/&:hover/&::before 等）→ 汇总到 document.globalCssRules
 		int p = 0; int n = styleText.length();
 		while (p < n) {
-			// 跳过空白
 			while (p < n && Character.isWhitespace(styleText.charAt(p))) p++;
 			if (p >= n) break;
+			// 模板样式使用：@Style Name; 合并到内联样式
+			if (styleText.startsWith("@Style", p)) {
+				p += "@Style".length();
+				while (p < n && Character.isWhitespace(styleText.charAt(p))) p++;
+				int nameStart = p; while (p < n && (Character.isLetterOrDigit(styleText.charAt(p)) || styleText.charAt(p) == '_' || styleText.charAt(p) == '-')) p++;
+				String name = styleText.substring(nameStart, p);
+				while (p < n && styleText.charAt(p) != ';') p++;
+				if (p < n && styleText.charAt(p) == ';') p++;
+				Set<String> visiting = new HashSet<>();
+				List<StyleProperty> props = templates.resolveStyleInlineProperties(name, visiting);
+				el.getInlineStyles().addAll(props);
+				continue;
+			}
 			if (styleText.charAt(p) == '.' || styleText.charAt(p) == '#') {
 				char prefix = styleText.charAt(p);
 				int selStart = p; p++;
 				while (p < n && !Character.isWhitespace(styleText.charAt(p)) && styleText.charAt(p) != '{') p++;
 				String selector = styleText.substring(selStart, p).trim();
-				// 自动为元素添加 class/id（若缺失）
 				String name = selector.substring(1);
 				if (prefix == '.') maybeAttachAttribute(el, "class", name);
 				if (prefix == '#') maybeAttachAttribute(el, "id", name);
@@ -147,7 +159,6 @@ public class CHTLParser {
 			}
 			if (styleText.charAt(p) == '&') {
 				int selStart = p; p++;
-				// 读取 & 后缀（如 :hover, ::before 或标识符）
 				while (p < n && !Character.isWhitespace(styleText.charAt(p)) && styleText.charAt(p) != '{') p++;
 				String suffix = styleText.substring(selStart + 1, p).trim();
 				String base = deriveBaseSelectorFromElement(el);
@@ -166,7 +177,6 @@ public class CHTLParser {
 				}
 				continue;
 			}
-			// 尝试解析内联属性
 			int kStart = p;
 			while (p < n && isKeyChar(styleText.charAt(p))) p++;
 			String key = styleText.substring(kStart, p).trim();
@@ -181,6 +191,7 @@ public class CHTLParser {
 				p++;
 			}
 			String val = styleText.substring(vStart, p).trim();
+			val = templates.substituteVarCalls(val);
 			if (p < n && styleText.charAt(p) == ';') p++;
 			if (!key.isEmpty() && !val.isEmpty()) el.getInlineStyles().add(new StyleProperty(key, val));
 		}

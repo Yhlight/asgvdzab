@@ -21,6 +21,7 @@ com/chtl/ast/OriginImportNodes$OriginStyle.class
 com/chtl/ast/OriginImportNodes.class
 com/chtl/ast/OriginImportNodes$ImportStyle.class
 com/chtl/api/CHTLCompilerService.class
+com/chtl/template/TemplateRegistry.class
 com/chtl/grammar/CSSBaseVisitor.class
 com/chtl/pipeline/CompilerDispatcher$1.class
 com/chtl/grammar/JavaScriptLexer.class
@@ -41,6 +42,7 @@ com/chtl/ast/OriginImportNodes$OriginHtml.class
 com/chtl/runtime/StateMachine.class
 com/chtl/ast/TemplateNodes$TextNode.class
 com/chtl/grammar/CSSVisitor.class
+com/chtl/template/TemplateRegistry$StyleTemplateDef.class
 com/chtl/runtime/StateMachine$Guard.class
 com/chtl/scanner/CHTLUnifiedScanner.class
 com/chtl/grammar/JavaScriptParser$FileContext.class
@@ -73,6 +75,8 @@ com/chtl/ast/TemplateNodes$StyleProperty.class
 com/chtl/compiler/CssCompiler.class
 com/chtl/generator/CHTLGenerator.class
 com/chtl/pipeline/CompilationResultMerger.class
+com/chtl/template/TemplateRegistry$ElementTemplateDef.class
+com/chtl/template/TemplateRegistry$VarTemplateDef.class
 com/chtl/ast/CHTLJsNodes$Chain.class
 com/chtl/ast/CHTLJsNodes$JsNode.class
 com/chtl/grammar/CSSParser$FileContext.class
