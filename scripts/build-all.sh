@@ -136,6 +136,28 @@ main() {
             build_vscode
             ;;
         module)
+            if [ $# -lt 1 ]; then
+                echo "错误: 'module' 命令需要指定模块路径"
+                echo "用法: $0 module <module-path> [--type cmod|cjmod|unified]"
+                exit 1
+            fi
+            MODULE_PATH="$1"
+            MODULE_TYPE="unified"
+            shift
+            
+            # 解析模块类型
+            while [[ $# -gt 0 ]]; do
+                case $1 in
+                    --type)
+                        MODULE_TYPE="$2"
+                        shift 2
+                        ;;
+                    *)
+                        shift
+                        ;;
+                esac
+            done
+            
             build_module
             ;;
         clean)
@@ -195,17 +217,32 @@ build_module() {
         error "请指定模块路径"
     fi
     
-    info "开始打包模块: $MODULE_PATH"
+    MODULE_TYPE="${MODULE_TYPE:-unified}"  # 默认为unified
+    
+    info "开始打包模块: $MODULE_PATH (类型: $MODULE_TYPE)"
     
     # 转到项目根目录
     cd ..
     
+    # 根据模块类型选择相应的打包脚本
+    case "$MODULE_TYPE" in
+        cmod|CMOD)
+            PACKAGE_SCRIPT="package-cmod"
+            ;;
+        cjmod|CJMOD)
+            PACKAGE_SCRIPT="package-cjmod"
+            ;;
+        unified|*)
+            PACKAGE_SCRIPT="package-unified"
+            ;;
+    esac
+    
     if [ "$PLATFORM" == "windows" ]; then
         # Windows使用批处理文件
-        cmd.exe /c "scripts\\$PLATFORM\\package-module.bat $MODULE_PATH"
+        cmd.exe /c "scripts\\$PLATFORM\\${PACKAGE_SCRIPT}.bat $MODULE_PATH"
     else
         # Linux和macOS使用Shell脚本
-        bash "scripts/$PLATFORM/package-module.sh" "$MODULE_PATH"
+        bash "scripts/$PLATFORM/${PACKAGE_SCRIPT}.sh" "$MODULE_PATH"
     fi
     
     info "模块打包完成"

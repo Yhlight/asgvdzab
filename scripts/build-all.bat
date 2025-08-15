@@ -42,8 +42,16 @@ if "%1"=="clean" (
 if "%1"=="module" (
     set "BUILD_TARGET=module"
     set "MODULE_PATH=%2"
+    set "MODULE_TYPE=unified"
     shift
     shift
+    REM 继续解析module特定参数
+    :parse_module_type
+    if "%1"=="--type" (
+        set "MODULE_TYPE=%2"
+        shift
+        shift
+    )
     goto :parse_args
 )
 if "%1"=="--skip-tests" (
@@ -108,9 +116,22 @@ if "%MODULE_PATH%"=="" (
     echo %RED%[ERROR]%NC% 请指定模块路径
     exit /b 1
 )
-echo %GREEN%[INFO]%NC% 开始打包模块: %MODULE_PATH%
+
+if "%MODULE_TYPE%"=="" set MODULE_TYPE=unified
+
+echo %GREEN%[INFO]%NC% 开始打包模块: %MODULE_PATH% (类型: %MODULE_TYPE%)
 cd /d "%~dp0.."
-call "scripts\windows\package-module.bat" "%MODULE_PATH%"
+
+REM 根据模块类型选择相应的打包脚本
+if /i "%MODULE_TYPE%"=="cmod" (
+    set PACKAGE_SCRIPT=package-cmod
+) else if /i "%MODULE_TYPE%"=="cjmod" (
+    set PACKAGE_SCRIPT=package-cjmod
+) else (
+    set PACKAGE_SCRIPT=package-unified
+)
+
+call "scripts\windows\%PACKAGE_SCRIPT%.bat" "%MODULE_PATH%"
 if %errorlevel% neq 0 (
     echo %RED%[ERROR]%NC% 模块打包失败
     exit /b 1
@@ -214,7 +235,7 @@ echo 选项:
 echo   all              构建所有组件（默认）
 echo   compiler         仅构建编译器
 echo   vscode           仅构建VSCode插件
-echo   module ^<path^>    打包指定模块
+echo   module ^<path^> [--type cmod^|cjmod^|unified]    打包指定模块
 echo   clean            清理构建文件
 echo   --skip-tests     跳过测试
 echo   -h, --help, /?   显示帮助信息
