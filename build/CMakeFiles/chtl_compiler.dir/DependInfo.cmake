@@ -13,6 +13,8 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/workspace/src/dispatcher/compiler_dispatcher.cpp" "CMakeFiles/chtl_compiler.dir/src/dispatcher/compiler_dispatcher.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/dispatcher/compiler_dispatcher.cpp.o.d"
   "/workspace/src/lexer/chtl_js_tokens.cpp" "CMakeFiles/chtl_compiler.dir/src/lexer/chtl_js_tokens.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/lexer/chtl_js_tokens.cpp.o.d"
   "/workspace/src/lexer/chtl_tokens.cpp" "CMakeFiles/chtl_compiler.dir/src/lexer/chtl_tokens.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/lexer/chtl_tokens.cpp.o.d"
+  "/workspace/src/lexer/global_map.cpp" "CMakeFiles/chtl_compiler.dir/src/lexer/global_map.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/lexer/global_map.cpp.o.d"
+  "/workspace/src/lexer/lexer_state.cpp" "CMakeFiles/chtl_compiler.dir/src/lexer/lexer_state.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/lexer/lexer_state.cpp.o.d"
   "/workspace/src/main.cpp" "CMakeFiles/chtl_compiler.dir/src/main.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/main.cpp.o.d"
   "/workspace/src/scanner/slice_scanner.cpp" "CMakeFiles/chtl_compiler.dir/src/scanner/slice_scanner.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/scanner/slice_scanner.cpp.o.d"
   "/workspace/src/scanner/unified_scanner.cpp" "CMakeFiles/chtl_compiler.dir/src/scanner/unified_scanner.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/scanner/unified_scanner.cpp.o.d"

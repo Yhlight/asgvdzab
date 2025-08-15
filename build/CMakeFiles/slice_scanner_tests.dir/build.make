@@ -156,10 +156,38 @@ CMakeFiles/slice_scanner_tests.dir/src/lexer/chtl_tokens.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/slice_scanner_tests.dir/src/lexer/chtl_tokens.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/lexer/chtl_tokens.cpp -o CMakeFiles/slice_scanner_tests.dir/src/lexer/chtl_tokens.cpp.s
 
+CMakeFiles/slice_scanner_tests.dir/src/lexer/global_map.cpp.o: CMakeFiles/slice_scanner_tests.dir/flags.make
+CMakeFiles/slice_scanner_tests.dir/src/lexer/global_map.cpp.o: /workspace/src/lexer/global_map.cpp
+CMakeFiles/slice_scanner_tests.dir/src/lexer/global_map.cpp.o: CMakeFiles/slice_scanner_tests.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/slice_scanner_tests.dir/src/lexer/global_map.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/slice_scanner_tests.dir/src/lexer/global_map.cpp.o -MF CMakeFiles/slice_scanner_tests.dir/src/lexer/global_map.cpp.o.d -o CMakeFiles/slice_scanner_tests.dir/src/lexer/global_map.cpp.o -c /workspace/src/lexer/global_map.cpp
+
+CMakeFiles/slice_scanner_tests.dir/src/lexer/global_map.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/slice_scanner_tests.dir/src/lexer/global_map.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/lexer/global_map.cpp > CMakeFiles/slice_scanner_tests.dir/src/lexer/global_map.cpp.i
+
+CMakeFiles/slice_scanner_tests.dir/src/lexer/global_map.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/slice_scanner_tests.dir/src/lexer/global_map.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/lexer/global_map.cpp -o CMakeFiles/slice_scanner_tests.dir/src/lexer/global_map.cpp.s
+
+CMakeFiles/slice_scanner_tests.dir/src/lexer/lexer_state.cpp.o: CMakeFiles/slice_scanner_tests.dir/flags.make
+CMakeFiles/slice_scanner_tests.dir/src/lexer/lexer_state.cpp.o: /workspace/src/lexer/lexer_state.cpp
+CMakeFiles/slice_scanner_tests.dir/src/lexer/lexer_state.cpp.o: CMakeFiles/slice_scanner_tests.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/slice_scanner_tests.dir/src/lexer/lexer_state.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/slice_scanner_tests.dir/src/lexer/lexer_state.cpp.o -MF CMakeFiles/slice_scanner_tests.dir/src/lexer/lexer_state.cpp.o.d -o CMakeFiles/slice_scanner_tests.dir/src/lexer/lexer_state.cpp.o -c /workspace/src/lexer/lexer_state.cpp
+
+CMakeFiles/slice_scanner_tests.dir/src/lexer/lexer_state.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/slice_scanner_tests.dir/src/lexer/lexer_state.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/lexer/lexer_state.cpp > CMakeFiles/slice_scanner_tests.dir/src/lexer/lexer_state.cpp.i
+
+CMakeFiles/slice_scanner_tests.dir/src/lexer/lexer_state.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/slice_scanner_tests.dir/src/lexer/lexer_state.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/lexer/lexer_state.cpp -o CMakeFiles/slice_scanner_tests.dir/src/lexer/lexer_state.cpp.s
+
 CMakeFiles/slice_scanner_tests.dir/src/scanner/slice_scanner.cpp.o: CMakeFiles/slice_scanner_tests.dir/flags.make
 CMakeFiles/slice_scanner_tests.dir/src/scanner/slice_scanner.cpp.o: /workspace/src/scanner/slice_scanner.cpp
 CMakeFiles/slice_scanner_tests.dir/src/scanner/slice_scanner.cpp.o: CMakeFiles/slice_scanner_tests.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/slice_scanner_tests.dir/src/scanner/slice_scanner.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/slice_scanner_tests.dir/src/scanner/slice_scanner.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/slice_scanner_tests.dir/src/scanner/slice_scanner.cpp.o -MF CMakeFiles/slice_scanner_tests.dir/src/scanner/slice_scanner.cpp.o.d -o CMakeFiles/slice_scanner_tests.dir/src/scanner/slice_scanner.cpp.o -c /workspace/src/scanner/slice_scanner.cpp
 
 CMakeFiles/slice_scanner_tests.dir/src/scanner/slice_scanner.cpp.i: cmake_force
@@ -173,7 +201,7 @@ CMakeFiles/slice_scanner_tests.dir/src/scanner/slice_scanner.cpp.s: cmake_force
 CMakeFiles/slice_scanner_tests.dir/src/scanner/unified_scanner.cpp.o: CMakeFiles/slice_scanner_tests.dir/flags.make
 CMakeFiles/slice_scanner_tests.dir/src/scanner/unified_scanner.cpp.o: /workspace/src/scanner/unified_scanner.cpp
 CMakeFiles/slice_scanner_tests.dir/src/scanner/unified_scanner.cpp.o: CMakeFiles/slice_scanner_tests.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/slice_scanner_tests.dir/src/scanner/unified_scanner.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/slice_scanner_tests.dir/src/scanner/unified_scanner.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/slice_scanner_tests.dir/src/scanner/unified_scanner.cpp.o -MF CMakeFiles/slice_scanner_tests.dir/src/scanner/unified_scanner.cpp.o.d -o CMakeFiles/slice_scanner_tests.dir/src/scanner/unified_scanner.cpp.o -c /workspace/src/scanner/unified_scanner.cpp
 
 CMakeFiles/slice_scanner_tests.dir/src/scanner/unified_scanner.cpp.i: cmake_force
@@ -192,6 +220,8 @@ slice_scanner_tests_OBJECTS = \
 "CMakeFiles/slice_scanner_tests.dir/src/dispatcher/compiler_dispatcher.cpp.o" \
 "CMakeFiles/slice_scanner_tests.dir/src/lexer/chtl_js_tokens.cpp.o" \
 "CMakeFiles/slice_scanner_tests.dir/src/lexer/chtl_tokens.cpp.o" \
+"CMakeFiles/slice_scanner_tests.dir/src/lexer/global_map.cpp.o" \
+"CMakeFiles/slice_scanner_tests.dir/src/lexer/lexer_state.cpp.o" \
 "CMakeFiles/slice_scanner_tests.dir/src/scanner/slice_scanner.cpp.o" \
 "CMakeFiles/slice_scanner_tests.dir/src/scanner/unified_scanner.cpp.o"
 
@@ -204,12 +234,14 @@ bin/slice_scanner_tests: CMakeFiles/slice_scanner_tests.dir/src/compilers/chtl_c
 bin/slice_scanner_tests: CMakeFiles/slice_scanner_tests.dir/src/dispatcher/compiler_dispatcher.cpp.o
 bin/slice_scanner_tests: CMakeFiles/slice_scanner_tests.dir/src/lexer/chtl_js_tokens.cpp.o
 bin/slice_scanner_tests: CMakeFiles/slice_scanner_tests.dir/src/lexer/chtl_tokens.cpp.o
+bin/slice_scanner_tests: CMakeFiles/slice_scanner_tests.dir/src/lexer/global_map.cpp.o
+bin/slice_scanner_tests: CMakeFiles/slice_scanner_tests.dir/src/lexer/lexer_state.cpp.o
 bin/slice_scanner_tests: CMakeFiles/slice_scanner_tests.dir/src/scanner/slice_scanner.cpp.o
 bin/slice_scanner_tests: CMakeFiles/slice_scanner_tests.dir/src/scanner/unified_scanner.cpp.o
 bin/slice_scanner_tests: CMakeFiles/slice_scanner_tests.dir/build.make
 bin/slice_scanner_tests: CMakeFiles/slice_scanner_tests.dir/compiler_depend.ts
 bin/slice_scanner_tests: CMakeFiles/slice_scanner_tests.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Linking CXX executable bin/slice_scanner_tests"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Linking CXX executable bin/slice_scanner_tests"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/slice_scanner_tests.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

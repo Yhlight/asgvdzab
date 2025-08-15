@@ -80,6 +80,9 @@ void EnhancedSelector::parse() {
         return;
     }
     
+    // 初始化类型
+    type = EnhancedSelectorType::AUTO_DETECT;
+    
     // 检查索引访问 element[0]
     size_t bracketPos = trimmed.find('[');
     if (bracketPos != std::string::npos) {
@@ -93,16 +96,20 @@ void EnhancedSelector::parse() {
         }
     }
     
-    // 检查选择器类型
+    // 解析基础选择器部分（不覆盖INDEXED类型）
     if (trimmed[0] == '.') {
         // 类选择器
-        type = EnhancedSelectorType::CLASS_NAME;
+        if (type != EnhancedSelectorType::INDEXED) {
+            type = EnhancedSelectorType::CLASS_NAME;
+        }
         parsed.className = trimmed.substr(1);
         
         // 检查后代选择器
         size_t spacePos = parsed.className.find(' ');
         if (spacePos != std::string::npos) {
-            type = EnhancedSelectorType::DESCENDANT;
+            if (type != EnhancedSelectorType::INDEXED) {
+                type = EnhancedSelectorType::DESCENDANT;
+            }
             std::string rest = parsed.className.substr(spacePos + 1);
             parsed.className = parsed.className.substr(0, spacePos);
             
@@ -115,13 +122,17 @@ void EnhancedSelector::parse() {
         }
     } else if (trimmed[0] == '#') {
         // ID选择器
-        type = EnhancedSelectorType::ID_NAME;
+        if (type != EnhancedSelectorType::INDEXED) {
+            type = EnhancedSelectorType::ID_NAME;
+        }
         parsed.idName = trimmed.substr(1);
         
         // 检查后代选择器
         size_t spacePos = parsed.idName.find(' ');
         if (spacePos != std::string::npos) {
-            type = EnhancedSelectorType::DESCENDANT;
+            if (type != EnhancedSelectorType::INDEXED) {
+                type = EnhancedSelectorType::DESCENDANT;
+            }
             std::string rest = parsed.idName.substr(spacePos + 1);
             parsed.idName = parsed.idName.substr(0, spacePos);
             
@@ -136,7 +147,9 @@ void EnhancedSelector::parse() {
         // 检查是否包含空格（后代选择器）
         size_t spacePos = trimmed.find(' ');
         if (spacePos != std::string::npos) {
-            type = EnhancedSelectorType::DESCENDANT;
+            if (type != EnhancedSelectorType::INDEXED) {
+                type = EnhancedSelectorType::DESCENDANT;
+            }
             parsed.tagName = trimmed.substr(0, spacePos);
             
             std::string rest = trimmed.substr(spacePos + 1);
