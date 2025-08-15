@@ -119,6 +119,16 @@ check_cjmod_structure() {
         error "缺少info文件: ${INFERRED_NAME}.chtl"
     fi
     
+    # 检查是否包含[Info]块
+    if ! grep -q "^\[Info\]" "$INFO_FILE"; then
+        warning "info文件缺少[Info]块"
+    fi
+    
+    # 确保CJMOD不使用[Export]块
+    if grep -q "^\[Export\]" "$INFO_FILE"; then
+        warning "CJMOD不应该使用[Export]块，建议移除"
+    fi
+    
     # 检查是否有Java源文件
     if ! find "$MODULE_PATH/src" -name "*.java" -type f | grep -q .; then
         error "没有找到Java源文件"

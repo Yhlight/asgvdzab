@@ -11,3 +11,17 @@
     minCHTLVersion = "1.0.0";
     maxCHTLVersion = "2.0.0";
 }
+
+// 导出声明 - 优化查询性能，明确模块对外接口
+[Export]
+{
+    // 导出的变量模板
+    @Var ChthollyColors, ChthollyFonts, ChthollySpacing;
+    
+    // 导出的样式模板
+    @Style ChthollyBase, ChthollyCard, ChthollyButton;
+    
+    // 导出的元素模板
+    @Element ChthollyPage, ChthollyTitle, ChthollyCard, 
+             ChthollyButton, ChthollyGallery;
+}

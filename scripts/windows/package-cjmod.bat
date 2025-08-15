@@ -133,6 +133,18 @@ if not exist "%INFO_FILE%" (
     exit /b 1
 )
 
+REM 检查是否包含[Info]块
+findstr /b "[Info]" "%INFO_FILE%" >nul 2>&1
+if errorlevel 1 (
+    call :warning "info文件缺少[Info]块"
+)
+
+REM 确保CJMOD不使用[Export]块
+findstr /b "[Export]" "%INFO_FILE%" >nul 2>&1
+if not errorlevel 1 (
+    call :warning "CJMOD不应该使用[Export]块，建议移除"
+)
+
 REM 检查是否有Java源文件
 dir /b /s "%MODULE_PATH%\src\*.java" >nul 2>&1
 if errorlevel 1 (
