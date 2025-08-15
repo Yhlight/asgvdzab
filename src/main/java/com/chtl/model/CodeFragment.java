@@ -1,46 +1,93 @@
 package com.chtl.model;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
- * 代码片段模型
+ * 代码片段
+ * 表示扫描器识别出的一段特定语言的代码
  */
 public class CodeFragment {
-    private final FragmentType type;
-    private final String content;
-    private final int sourcePosition;
-    private final int startPos;
-    private final int endPos;
+    private FragmentType type;
+    private String content;
+    private int startPosition;
+    private int length;
+    private int line;
+    private int column;
+    private Map<String, Object> metadata;
     
-    public CodeFragment(FragmentType type, String content, int sourcePosition) {
+    public CodeFragment(FragmentType type, String content, int startPosition, int length) {
         this.type = type;
         this.content = content;
-        this.sourcePosition = sourcePosition;
-        this.startPos = sourcePosition;
-        this.endPos = sourcePosition + content.length();
+        this.startPosition = startPosition;
+        this.length = length;
+        this.metadata = new HashMap<>();
     }
     
+    // Getters and Setters
     public FragmentType getType() {
         return type;
+    }
+    
+    public void setType(FragmentType type) {
+        this.type = type;
     }
     
     public String getContent() {
         return content;
     }
     
-    public int getSourcePosition() {
-        return sourcePosition;
+    public void setContent(String content) {
+        this.content = content;
     }
     
-    public int getStartPos() {
-        return startPos;
+    public int getStartPosition() {
+        return startPosition;
     }
     
-    public int getEndPos() {
-        return endPos;
+    public void setStartPosition(int startPosition) {
+        this.startPosition = startPosition;
+    }
+    
+    public int getLength() {
+        return length;
+    }
+    
+    public void setLength(int length) {
+        this.length = length;
+    }
+    
+    public int getLine() {
+        return line;
+    }
+    
+    public void setLine(int line) {
+        this.line = line;
+    }
+    
+    public int getColumn() {
+        return column;
+    }
+    
+    public void setColumn(int column) {
+        this.column = column;
+    }
+    
+    public void setMetadata(String key, Object value) {
+        metadata.put(key, value);
+    }
+    
+    public Object getMetadata(String key) {
+        return metadata.get(key);
+    }
+    
+    public Map<String, Object> getAllMetadata() {
+        return new HashMap<>(metadata);
     }
     
     @Override
     public String toString() {
-        return String.format("CodeFragment{type=%s, position=%d, contentLength=%d}", 
-            type, sourcePosition, content.length());
+        return String.format("CodeFragment[type=%s, line=%d, col=%d, len=%d]", 
+            type, line, column, length);
     }
 }

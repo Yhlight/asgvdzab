@@ -4,38 +4,28 @@ package com.chtl.model;
  * 代码片段类型枚举
  */
 public enum FragmentType {
-    /**
-     * CHTL主体代码
-     */
-    CHTL("CHTL主体代码"),
+    CHTL("CHTL"),
+    CHTL_JS("CHTL_JS"),
+    JS("JavaScript"),              // 标准JavaScript
+    JAVASCRIPT("JavaScript"),      // 别名，为了兼容性
+    CSS("CSS"),
+    HTML("HTML"),
+    CHTL_LOCAL_STYLE("CHTL_LOCAL_STYLE"),
+    CHTL_LOCAL_SCRIPT("CHTL_LOCAL_SCRIPT"),
+    MIXED("MIXED");
     
-    /**
-     * CHTL局部样式（style块）
-     */
-    CHTL_LOCAL_STYLE("CHTL局部样式"),
+    private final String displayName;
     
-    /**
-     * CHTL JS代码（包含CHTL JS特有语法）
-     */
-    CHTL_JS("CHTL JS代码"),
-    
-    /**
-     * 纯CSS代码（全局样式）
-     */
-    CSS("CSS代码"),
-    
-    /**
-     * 纯JavaScript代码
-     */
-    JAVASCRIPT("JavaScript代码");
-    
-    private final String description;
-    
-    FragmentType(String description) {
-        this.description = description;
+    FragmentType(String displayName) {
+        this.displayName = displayName;
     }
     
-    public String getDescription() {
-        return description;
+    public String getDisplayName() {
+        return displayName;
+    }
+    
+    @Override
+    public String toString() {
+        return displayName;
     }
 }
