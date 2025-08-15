@@ -287,7 +287,9 @@ public class CHTLJSParser {
                     // 单个选择器: {{选择器}}
                     delegateCall.addTargetElement(parseEnhancedSelector());
                 } else {
-                    error("target必须是增强选择器或增强选择器数组");
+                    // 也可以是JS表达式（DOM对象）
+                    CHTLJSASTNode targetExpr = parseExpression();
+                    delegateCall.setTargetExpression(targetExpr);
                 }
             } else {
                 // 其他都是事件处理器
@@ -709,5 +711,13 @@ public class CHTLJSParser {
     
     public List<String> getErrors() {
         return errors;
+    }
+    
+    /**
+     * 记录警告信息
+     */
+    private void warning(String message) {
+        // 暂时将警告当作错误处理
+        error("警告: " + message);
     }
 }

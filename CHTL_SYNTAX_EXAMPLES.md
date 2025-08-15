@@ -96,7 +96,7 @@
 }
 ```
 
-### 4. CHTL JS中的unquoted literals
+### 4. CHTL JS中的unquoted literals和事件支持
 
 ```chtl
 script {
@@ -106,15 +106,35 @@ script {
         easing: ease-in-out,    // unquoted literal
         fill: forwards          // unquoted literal
     });
-    
-    // listen函数
-    {{.btn}}.listen('click', function() {
-        // 事件处理
+
+    // listen函数 - 支持所有标准JS事件
+    {{.btn}}.listen({
+        click: function() { /* 点击事件 */ },
+        mouseenter: function() { /* 鼠标进入 */ },
+        mouseleave: function() { /* 鼠标离开 */ },
+        focus: function() { /* 获得焦点 */ },
+        blur: function() { /* 失去焦点 */ },
+        input: function() { /* 输入事件 */ },
+        change: function() { /* 改变事件 */ },
+        submit: function() { /* 提交事件 */ },
+        keydown: function(e) { /* 键盘按下 */ },
+        keyup: function(e) { /* 键盘释放 */ },
+        // ... 支持所有DOM事件
     });
-    
-    // delegate函数
-    {{.container}}.delegate('.item', 'click', function() {
-        // 委托事件处理
+
+    // delegate函数 - 支持DOM对象作为target
+    {{.container}}.delegate({
+        target: {{.item}},              // 增强选择器
+        click: handleClick,
+        mouseenter: handleHover
+    });
+
+    // 或使用JS表达式获取DOM对象
+    {{body}}.delegate({
+        target: document.querySelectorAll('.dynamic-item'),  // DOM NodeList
+        click: function(e) {
+            console.log('Delegated click on', e.target);
+        }
     });
 }
 ```
