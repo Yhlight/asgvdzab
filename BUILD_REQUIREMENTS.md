@@ -1,62 +1,62 @@
-# CHTL Compiler Build Requirements
+# CHTL编译器构建要求
 
-## Overview
+## 概述
 
-This document outlines the requirements for building the CHTL compiler from source.
+本文档说明了从源代码构建CHTL编译器所需的环境要求。
 
-## System Requirements
+## 系统要求
 
-### Operating Systems
-- **Windows**: Windows 10 or later
-- **macOS**: macOS 10.14 (Mojave) or later
-- **Linux**: Ubuntu 18.04+, CentOS 7+, or any modern Linux distribution
+### 操作系统
+- **Windows**: Windows 10或更高版本
+- **macOS**: macOS 10.14 (Mojave)或更高版本
+- **Linux**: Ubuntu 18.04+、CentOS 7+或任何现代Linux发行版
 
-### Hardware Requirements
-- **RAM**: Minimum 4GB, recommended 8GB
-- **Disk Space**: At least 2GB free space
-- **CPU**: x64 architecture
+### 硬件要求
+- **内存**: 最低4GB，推荐8GB
+- **磁盘空间**: 至少2GB可用空间
+- **CPU**: x64架构
 
-## Software Requirements
+## 软件要求
 
-### Core Dependencies
+### 核心依赖
 
-#### 1. Java Development Kit (JDK)
-- **Version**: Java 17 or higher
-- **Download**: 
+#### 1. Java开发工具包 (JDK)
+- **版本**: Java 17或更高版本
+- **下载地址**: 
   - Oracle JDK: https://www.oracle.com/java/technologies/downloads/
   - OpenJDK: https://adoptium.net/
   - Amazon Corretto: https://aws.amazon.com/corretto/
 
-**Verification**:
+**验证安装**:
 ```bash
 java --version
-# Should output: java 17.x.x or higher
+# 应该输出: java 17.x.x 或更高版本
 ```
 
 #### 2. Apache Maven
-- **Version**: 3.6.0 or higher
-- **Download**: https://maven.apache.org/download.cgi
+- **版本**: 3.6.0或更高版本
+- **下载地址**: https://maven.apache.org/download.cgi
 
-**Verification**:
+**验证安装**:
 ```bash
 mvn --version
-# Should show Maven 3.6.0 or higher
+# 应该显示 Maven 3.6.0 或更高版本
 ```
 
-### Platform-Specific Requirements
+### 平台特定要求
 
 #### Windows
-- **PowerShell**: Version 5.1 or higher (for build scripts)
-- **Command Prompt**: Required for batch scripts
+- **PowerShell**: 5.1或更高版本（用于构建脚本）
+- **命令提示符**: 批处理脚本所需
 
 #### macOS
-- **Xcode Command Line Tools**: Required for development tools
+- **Xcode命令行工具**: 开发工具所需
   ```bash
   xcode-select --install
   ```
 
 #### Linux
-- **Build Essential**: Basic compilation tools
+- **基础编译工具**: 基本编译工具
   ```bash
   # Ubuntu/Debian
   sudo apt-get install build-essential
@@ -65,24 +65,24 @@ mvn --version
   sudo yum groupinstall "Development Tools"
   ```
 
-### Optional Dependencies
+### 可选依赖
 
-#### For VSCode Extension Development
-- **Node.js**: Version 16.x or higher
-- **npm**: Version 8.x or higher
-- **VSCode**: Latest stable version
+#### VSCode扩展开发
+- **Node.js**: 16.x或更高版本
+- **npm**: 8.x或更高版本
+- **VSCode**: 最新稳定版
 
-**Installation**:
+**安装**:
 ```bash
-# Download from https://nodejs.org/
-node --version  # Should be 16.x or higher
-npm --version   # Should be 8.x or higher
+# 从 https://nodejs.org/ 下载
+node --version  # 应该是 16.x 或更高版本
+npm --version   # 应该是 8.x 或更高版本
 ```
 
-## Environment Setup
+## 环境设置
 
-### 1. Set JAVA_HOME
-The JAVA_HOME environment variable must point to your JDK installation.
+### 1. 设置JAVA_HOME
+JAVA_HOME环境变量必须指向JDK安装目录。
 
 **Windows**:
 ```batch
@@ -95,35 +95,35 @@ setx PATH "%PATH%;%JAVA_HOME%\bin"
 export JAVA_HOME=/usr/lib/jvm/java-17-openjdk
 export PATH=$JAVA_HOME/bin:$PATH
 
-# Add to ~/.bashrc or ~/.zshrc for persistence
+# 添加到 ~/.bashrc 或 ~/.zshrc 以便持久化
 echo 'export JAVA_HOME=/usr/lib/jvm/java-17-openjdk' >> ~/.bashrc
 echo 'export PATH=$JAVA_HOME/bin:$PATH' >> ~/.bashrc
 ```
 
-### 2. Configure Maven
-Ensure Maven can find the JDK:
+### 2. 配置Maven
+确保Maven能找到JDK：
 
-**Verify Maven Java version**:
+**验证Maven使用的Java版本**:
 ```bash
 mvn --version
-# Should show: Java version: 17.x.x
+# 应该显示: Java version: 17.x.x
 ```
 
-## Build Process
+## 构建过程
 
-### Quick Build
+### 快速构建
 ```bash
-# Clone the repository
+# 克隆仓库
 git clone <repository-url>
 cd chtl-compiler
 
-# Build the compiler
+# 构建编译器
 mvn clean package
 
-# The compiled JAR will be in target/
+# 编译后的JAR文件将在 target/ 目录下
 ```
 
-### Platform-Specific Build Scripts
+### 平台特定构建脚本
 
 **Windows**:
 ```batch
@@ -133,68 +133,68 @@ scripts\windows\build-compiler.bat
 **Linux/macOS**:
 ```bash
 ./scripts/linux/build-compiler.sh
-# or
+# 或
 ./scripts/mac/build-compiler.sh
 ```
 
-## Troubleshooting
+## 故障排除
 
-### Common Issues
+### 常见问题
 
-1. **Java version mismatch**
-   - Error: `Unsupported class file major version`
-   - Solution: Ensure Java 17+ is installed and JAVA_HOME is set correctly
+1. **Java版本不匹配**
+   - 错误: `Unsupported class file major version`
+   - 解决方案: 确保安装了Java 17+并正确设置了JAVA_HOME
 
-2. **Maven not found**
-   - Error: `mvn: command not found`
-   - Solution: Install Maven and add to PATH
+2. **找不到Maven**
+   - 错误: `mvn: command not found`
+   - 解决方案: 安装Maven并添加到PATH
 
-3. **Out of memory during build**
-   - Error: `java.lang.OutOfMemoryError`
-   - Solution: Increase Maven memory:
+3. **构建时内存不足**
+   - 错误: `java.lang.OutOfMemoryError`
+   - 解决方案: 增加Maven内存:
      ```bash
      export MAVEN_OPTS="-Xmx2048m -XX:MaxPermSize=512m"
      ```
 
-4. **Permission denied on Linux/macOS**
-   - Error: `Permission denied`
-   - Solution: Make scripts executable:
+4. **Linux/macOS上权限被拒绝**
+   - 错误: `Permission denied`
+   - 解决方案: 使脚本可执行:
      ```bash
      chmod +x scripts/linux/*.sh
      ```
 
-### Build Verification
+### 构建验证
 
-After successful build, verify the installation:
+构建成功后，验证安装：
 
 ```bash
-# Check if JAR was created
+# 检查JAR文件是否创建
 ls target/chtl-compiler*.jar
 
-# Run the compiler
+# 运行编译器
 java -jar target/chtl-compiler.jar --version
 ```
 
-## IDE Setup
+## IDE设置
 
 ### IntelliJ IDEA
-1. Import as Maven project
-2. Set Project SDK to Java 17
-3. Enable annotation processing
+1. 作为Maven项目导入
+2. 设置项目SDK为Java 17
+3. 启用注解处理
 
 ### Eclipse
-1. Install m2e plugin
-2. Import as Maven project
-3. Set compiler compliance to Java 17
+1. 安装m2e插件
+2. 作为Maven项目导入
+3. 设置编译器兼容性为Java 17
 
 ### VS Code
-1. Install Java Extension Pack
-2. Install Maven for Java
-3. Open folder and let VS Code configure the project
+1. 安装Java扩展包
+2. 安装Maven for Java
+3. 打开文件夹，让VS Code配置项目
 
-## CI/CD Requirements
+## CI/CD要求
 
-For automated builds:
+自动化构建配置：
 
 ### GitHub Actions
 ```yaml
@@ -205,9 +205,9 @@ For automated builds:
 ```
 
 ### Jenkins
-- Install JDK 17
-- Install Maven plugin
-- Configure Maven installation
+- 安装JDK 17
+- 安装Maven插件
+- 配置Maven安装
 
 ### Docker
 ```dockerfile
@@ -217,45 +217,45 @@ COPY . .
 RUN mvn clean package
 ```
 
-## Module Development Requirements
+## 模块开发要求
 
-For CJMOD development:
-- CHTL Compiler (built from source)
-- Java IDE with Maven support
-- Basic understanding of Java interfaces
+CJMOD开发需要：
+- CHTL编译器（从源代码构建）
+- 支持Maven的Java IDE
+- 对Java接口的基本了解
 
-## Testing Requirements
+## 测试要求
 
-- **JUnit**: Version 5.x (included in pom.xml)
-- **Memory**: Additional 2GB for running full test suite
-- **Time**: Full test suite takes ~5-10 minutes
+- **JUnit**: 5.x版本（包含在pom.xml中）
+- **内存**: 运行完整测试套件需要额外2GB
+- **时间**: 完整测试套件需要约5-10分钟
 
-## Security Considerations
+## 安全考虑
 
-- Always verify downloaded JDK/Maven from official sources
-- Use HTTPS for all downloads
-- Verify checksums when available
-- Keep dependencies updated
+- 始终从官方来源验证下载的JDK/Maven
+- 所有下载使用HTTPS
+- 可用时验证校验和
+- 保持依赖项更新
 
-## Getting Help
+## 获取帮助
 
-If you encounter build issues:
+如果遇到构建问题：
 
-1. Check this document first
-2. Review the [FAQ](docs/FAQ.md)
-3. Search existing issues on GitHub
-4. Create a new issue with:
-   - OS and version
-   - Java version (`java --version`)
-   - Maven version (`mvn --version`)
-   - Complete error message
-   - Steps to reproduce
+1. 首先查看本文档
+2. 查看[常见问题](docs/FAQ.md)
+3. 搜索GitHub上的现有问题
+4. 创建新问题时包含：
+   - 操作系统和版本
+   - Java版本（`java --version`）
+   - Maven版本（`mvn --version`）
+   - 完整错误信息
+   - 重现步骤
 
-## Next Steps
+## 下一步
 
-After successfully building the compiler:
+成功构建编译器后：
 
-1. Run tests: `mvn test`
-2. Build modules: See [Module Development Guide](docs/CJMOD_DEVELOPMENT_GUIDE.md)
-3. Try examples: See [examples/](examples/) directory
-4. Read the [CHTL Syntax Documentation](CHTL语法文档.md)
+1. 运行测试: `mvn test`
+2. 构建模块: 参见[模块开发指南](docs/CJMOD_DEVELOPMENT_GUIDE.md)
+3. 尝试示例: 参见[examples/](examples/)目录
+4. 阅读[CHTL语法文档](CHTL语法文档.md)
