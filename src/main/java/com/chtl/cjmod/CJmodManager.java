@@ -152,9 +152,6 @@ public class CJmodManager {
         // Java JAR加载器
         registerLoader(new JavaJarLoader());
         
-        // 本地库加载器
-        registerLoader(new NativeLibraryLoader());
-        
         // 目录加载器
         registerLoader(new DirectoryModuleLoader());
     }
