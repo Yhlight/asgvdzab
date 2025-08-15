@@ -261,12 +261,47 @@ public class PrecisionScanner {
      * 在CSS中扫描
      */
     private void scanInCSS() {
+        // 检查是否退出局部style块
         if (current() == '}' && 
             contextManager.getCurrentContextType() == LanguageContextManager.ContextType.LOCAL_STYLE) {
             consumeChar(); // }
             flushCurrentFragment();
             contextManager.exitContext();
             currentFragmentType = FragmentType.CHTL;
+            return;
+        }
+        
+        // 检查CHTL特殊语法
+        if (current() == '@') {
+            // 检查是否是@Var
+            if (matchKeywordAt(position, "@Var")) {
+                flushCurrentFragment();
+                currentFragmentType = FragmentType.CHTL;
+                scanCHTLVarReference();
+                flushCurrentFragment();
+                currentFragmentType = FragmentType.CSS;
+                return;
+            }
+            // 检查是否是@Style
+            else if (matchKeywordAt(position, "@Style")) {
+                flushCurrentFragment();
+                currentFragmentType = FragmentType.CHTL;
+                scanCHTLStyleReference();
+                flushCurrentFragment();
+                currentFragmentType = FragmentType.CSS;
+                return;
+            }
+        }
+        
+        // 处理CSS字符串，避免误判
+        if (current() == '"' || current() == '\'') {
+            scanCSSString();
+            return;
+        }
+        
+        // 处理CSS注释
+        if (current() == '/' && peek() == '*') {
+            scanCSSComment();
             return;
         }
         
