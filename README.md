@@ -62,7 +62,7 @@ java -jar target/chtl-compiler.jar input.chtl -o output/
 [Template] @Element MyButton {
     button {
         class = "btn my-button";
-        slot;
+        slot { }
     }
     
     style {
@@ -85,6 +85,7 @@ java -jar target/chtl-compiler.jar input.chtl -o output/
         {{&}}.listen({
             click: function() {
                 const anim = animate({
+                    target: this,  // 动画作用于按钮自身
                     duration: 200,
                     easing: ease-out,
                     when: [

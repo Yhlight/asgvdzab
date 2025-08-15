@@ -8,8 +8,12 @@
 
 ```chtl
 script {
+    // 获取目标元素（必须）
+    const element = {{.box}};
+    
     // 创建动画并获取控制对象
     const animation = animate({
+        target: element,       // 目标元素（必需参数）
         duration: 1000,        // 动画持续时间（毫秒）
         easing: ease-in-out,   // 缓动函数
         delay: 100,           // 延迟开始（毫秒）
@@ -105,14 +109,15 @@ if (animation.isPaused()) {
 
 | 参数 | 类型 | 默认值 | 说明 |
 |------|------|--------|------|
+| `target` | Element/string | **必需** | 目标DOM元素或选择器 |
 | `duration` | number | 1000 | 动画持续时间（毫秒） |
-| `easing` | string | 'linear' | 缓动函数名称（支持unquoted literal） |
+| `easing` | string | 'linear' | 缓动函数：linear, ease, ease-in, ease-out, ease-in-out |
 | `delay` | number | 0 | 动画开始前的延迟（毫秒） |
 | `loop` | number | 1 | 循环次数，-1表示无限循环 |
 | `direction` | string | 'normal' | 播放方向：normal, reverse, alternate |
 | `begin` | object | {} | 动画起始状态的CSS属性 |
 | `end` | object | {} | 动画结束状态的CSS属性 |
-| `when` | array | [] | 关键帧数组 |
+| `when` | array | [] | 关键帧数组，每个元素包含at(0-1)和CSS属性 |
 | `callback` | function | null | 动画完成时的回调函数 |
 
 ## 完整示例
@@ -127,10 +132,12 @@ div {
         script {
             {{&}}.listen({
                 click: function() {
+                    // 获取要动画的元素
                     const box = {{.box}};
                     
                     // 创建复杂动画
                     const anim = animate({
+                        target: box,        // 指定目标元素
                         duration: 2000,
                         easing: ease-in-out,
                         
@@ -181,10 +188,75 @@ div {
 }
 ```
 
+## 更多示例
+
+### 1. 使用选择器作为目标
+
+```chtl
+script {
+    // 可以直接传入选择器字符串
+    animate({
+        target: '.my-element',
+        duration: 500,
+        begin: { opacity: 0 },
+        end: { opacity: 1 }
+    });
+}
+```
+
+### 2. 同时动画多个属性
+
+```chtl
+script {
+    const card = {{.card}};
+    
+    animate({
+        target: card,
+        duration: 800,
+        easing: ease-out,
+        begin: {
+            opacity: 0,
+            transform: 'translateY(20px) scale(0.9)',
+            'background-color': '#ffffff'
+        },
+        end: {
+            opacity: 1,
+            transform: 'translateY(0) scale(1)',
+            'background-color': '#f0f0f0'
+        }
+    });
+}
+```
+
+### 3. 使用增强选择器直接动画
+
+```chtl
+script {
+    // 配合CHTL JS的增强选择器
+    {{#myButton}}.listen({
+        click: function() {
+            // 动画自身
+            animate({
+                target: this,
+                duration: 200,
+                when: [
+                    { at: 0.0, transform: 'scale(1)' },
+                    { at: 0.5, transform: 'scale(0.95)' },
+                    { at: 1.0, transform: 'scale(1)' }
+                ]
+            });
+        }
+    });
+}
+```
+
 ## 注意事项
 
-1. 动画自动开始播放，无需手动调用`play()`
-2. 支持链式调用：`animation.pause().onComplete(fn).play()`
-3. `reverse()`方法会交换`begin`和`end`状态
-4. 暂停时会记录当前进度，恢复时从暂停位置继续
-5. `stop()`方法会将元素重置到`begin`状态
+1. **`target`参数是必需的** - 必须指定要动画的DOM元素
+2. 动画自动开始播放，无需手动调用`play()`
+3. 支持链式调用：`animation.pause().onComplete(fn).play()`
+4. `reverse()`方法会交换`begin`和`end`状态
+5. 暂停时会记录当前进度，恢复时从暂停位置继续
+6. `stop()`方法会将元素重置到`begin`状态
+7. 支持所有CSS属性的动画，包括transform、opacity、color等
+8. 数值属性会自动插值，非数值属性在50%时切换

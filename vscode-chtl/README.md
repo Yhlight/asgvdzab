@@ -72,12 +72,12 @@ Open VS Code settings and search for "CHTL" to configure:
         class = "card";
         
         h2 {
-            slot name="title";
+            slot name="title" { }
         }
         
         div {
             class = "content";
-            slot;
+            slot { }
         }
         
         style {
