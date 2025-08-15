@@ -10,35 +10,22 @@ set "RED=[91m"
 set "YELLOW=[93m"
 set "NC=[0m"
 
-REM Print messages
-:info
-echo %GREEN%[INFO]%NC% %~1
-goto :eof
-
-:error
-echo %RED%[ERROR]%NC% %~1 >&2
-exit /b 1
-
-:warning
-echo %YELLOW%[WARN]%NC% %~1
-goto :eof
-
 REM Main process starts
-echo ===================================
-echo CHTL Compiler Build Script - Windows
-echo ===================================
+echo %GREEN%===================================%NC%
+echo %GREEN%CHTL Compiler Build Script - Windows%NC%
+echo %GREEN%===================================%NC%
 echo.
 
 REM Switch to project root
 cd /d "%~dp0\..\.."
 
 REM Check environment
-call :info "Checking build environment..."
+echo %GREEN%[INFO]%NC% Checking build environment...
 
 REM Check Java
 where java >nul 2>&1
 if %errorlevel% neq 0 (
-    call :error "Java not found, please install Java 17 or higher"
+    echo %RED%[ERROR]%NC% Java not found, please install Java 17 or higher >&2
     exit /b 1
 )
 
@@ -50,38 +37,37 @@ set JAVA_VERSION_STR=%JAVA_VERSION_STR:"=%
 for /f "delims=. tokens=1" %%i in ("%JAVA_VERSION_STR%") do (
     set JAVA_VERSION=%%i
 )
-
 if %JAVA_VERSION% lss 17 (
-    call :error "Java 17 or higher required, current version: %JAVA_VERSION%"
+    echo %RED%[ERROR]%NC% Java 17 or higher required, current version: %JAVA_VERSION% >&2
     exit /b 1
 )
 
 REM Check Maven
 where mvn >nul 2>&1
 if %errorlevel% neq 0 (
-    call :error "Maven not found, please install Maven 3.6+"
+    echo %RED%[ERROR]%NC% Maven not found, please install Maven 3.6+ >&2
     exit /b 1
 )
 
-call :info "Environment check passed"
+echo %GREEN%[INFO]%NC% Environment check passed
 
 REM Clean build directories
-call :info "Cleaning build directories..."
+echo %GREEN%[INFO]%NC% Cleaning build directories...
 if exist target rmdir /s /q target
 if exist build rmdir /s /q build
 if exist dist rmdir /s /q dist
 
 REM Compile project
-call :info "Compiling CHTL compiler..."
-call mvn clean package -DskipTests
+echo %GREEN%[INFO]%NC% Compiling CHTL compiler...
+mvn clean package -DskipTests
 if %errorlevel% neq 0 (
-    call :error "Compilation failed"
+    echo %RED%[ERROR]%NC% Compilation failed >&2
     exit /b 1
 )
-call :info "Compilation successful"
+echo %GREEN%[INFO]%NC% Compilation successful
 
 REM Prepare modules
-call :info "Preparing official modules..."
+echo %GREEN%[INFO]%NC% Preparing official modules...
 
 REM Create temporary module directory
 set "TEMP_MODULE_DIR=build\modules"
@@ -94,7 +80,7 @@ if exist "src\main\java\com\chtl\module" (
 
 REM Build Chtholly module (if exists)
 if exist "%TEMP_MODULE_DIR%\Chtholly" (
-    call :info "Building Chtholly module..."
+    echo %GREEN%[INFO]%NC% Building Chtholly module...
     
     REM Compile CJMOD part
     if exist "%TEMP_MODULE_DIR%\Chtholly\CJMOD\src" (
@@ -105,7 +91,7 @@ if exist "%TEMP_MODULE_DIR%\Chtholly" (
         
         REM Compile Java files
         dir /s /b src\*.java > java_files.txt
-        javac -cp "..\..\..\..\..\target\chtl-compiler.jar" -d build @java_files.txt
+        javac -cp "..\..\..\..\..\target\chtl-compiler-1.0.jar" -d build @java_files.txt
         del java_files.txt
         
         REM Package as JAR
@@ -115,12 +101,12 @@ if exist "%TEMP_MODULE_DIR%\Chtholly" (
     )
 )
 
-call :info "Module preparation complete"
+echo %GREEN%[INFO]%NC% Module preparation complete
 
 REM Create release package
-call :info "Creating release package..."
+echo %GREEN%[INFO]%NC% Creating release package...
 
-REM Create distribution directory
+REM Create release directory
 set "DIST_DIR=dist\chtl-compiler-windows"
 mkdir "%DIST_DIR%\bin" 2>nul
 mkdir "%DIST_DIR%\lib" 2>nul
@@ -133,19 +119,18 @@ copy target\chtl-compiler*.jar "%DIST_DIR%\lib\chtl-compiler.jar" >nul
 
 REM Copy dependencies
 if exist "target\lib" (
-    xcopy /y "target\lib\*.jar" "%DIST_DIR%\lib\" >nul
+    xcopy /s /e /y "target\lib\*" "%DIST_DIR%\lib\" >nul
 )
 
 REM Copy modules
-if exist "build\modules" (
-    xcopy /s /e /y "build\modules\*" "%DIST_DIR%\modules\" >nul
+if exist "%TEMP_MODULE_DIR%" (
+    xcopy /s /e /y "%TEMP_MODULE_DIR%\*" "%DIST_DIR%\modules\" >nul
 )
 
-REM Create launch script
+REM Create launcher script
 echo @echo off > "%DIST_DIR%\bin\chtl.bat"
-echo REM CHTL Compiler Launch Script >> "%DIST_DIR%\bin\chtl.bat"
+echo REM CHTL Compiler Launcher >> "%DIST_DIR%\bin\chtl.bat"
 echo. >> "%DIST_DIR%\bin\chtl.bat"
-echo setlocal >> "%DIST_DIR%\bin\chtl.bat"
 echo set "SCRIPT_DIR=%%~dp0" >> "%DIST_DIR%\bin\chtl.bat"
 echo set "BASE_DIR=%%SCRIPT_DIR%%\.." >> "%DIST_DIR%\bin\chtl.bat"
 echo. >> "%DIST_DIR%\bin\chtl.bat"
@@ -160,9 +145,8 @@ echo java -cp "%%CLASSPATH%%" com.chtl.cli.CHTLCLI %%* >> "%DIST_DIR%\bin\chtl.b
 
 REM Create cjmod command script
 echo @echo off > "%DIST_DIR%\bin\cjmod.bat"
-echo REM CJMOD Management Tool Launch Script >> "%DIST_DIR%\bin\cjmod.bat"
+echo REM CJMOD Management Tool >> "%DIST_DIR%\bin\cjmod.bat"
 echo. >> "%DIST_DIR%\bin\cjmod.bat"
-echo setlocal >> "%DIST_DIR%\bin\cjmod.bat"
 echo set "SCRIPT_DIR=%%~dp0" >> "%DIST_DIR%\bin\cjmod.bat"
 echo set "BASE_DIR=%%SCRIPT_DIR%%\.." >> "%DIST_DIR%\bin\cjmod.bat"
 echo. >> "%DIST_DIR%\bin\cjmod.bat"
@@ -176,10 +160,10 @@ echo REM Run CJMOD CLI >> "%DIST_DIR%\bin\cjmod.bat"
 echo java -cp "%%CLASSPATH%%" com.chtl.cli.CJmodCLI %%* >> "%DIST_DIR%\bin\cjmod.bat"
 
 REM Copy documentation
-copy README.md "%DIST_DIR%\docs\" >nul
-copy BUILD_REQUIREMENTS.md "%DIST_DIR%\docs\" >nul
+if exist "README.md" copy README.md "%DIST_DIR%\docs\" >nul
+if exist "CHTL语法文档.md" copy "CHTL语法文档.md" "%DIST_DIR%\docs\" >nul
 
-REM Create configuration file
+REM Create config file
 (
 echo # CHTL Compiler Configuration
 echo.
@@ -198,10 +182,10 @@ echo # Log level
 echo log.level=INFO
 ) > "%DIST_DIR%\config\chtl.conf"
 
-call :info "Release package created successfully"
+echo %GREEN%[INFO]%NC% Release package created successfully
 
-REM Package release files
-call :info "Packaging release files..."
+REM Package release file
+echo %GREEN%[INFO]%NC% Packaging release file...
 
 cd dist
 
@@ -213,20 +197,21 @@ REM Create installation script
 echo @echo off
 echo REM CHTL Compiler Installation Script
 echo.
-echo set INSTALL_DIR=C:\Program Files\CHTL
+echo setlocal
 echo.
-echo echo Installing CHTL compiler to %%INSTALL_DIR%% ...
+echo set "INSTALL_DIR=C:\chtl"
+echo.
+echo echo Installing CHTL compiler to %%INSTALL_DIR%%...
 echo.
 echo REM Check administrator privileges
 echo net session ^>nul 2^>^&1
 echo if %%errorlevel%% neq 0 ^(
-echo     echo Please run this script as administrator
+echo     echo Please run as administrator
 echo     pause
 echo     exit /b 1
 echo ^)
 echo.
 echo REM Extract files
-echo echo Extracting files...
 echo powershell -Command "Expand-Archive -Path 'chtl-compiler-windows.zip' -DestinationPath '.' -Force"
 echo.
 echo REM Create installation directory
@@ -236,22 +221,21 @@ echo REM Copy files
 echo xcopy /s /e /y "chtl-compiler-windows\*" "%%INSTALL_DIR%%\" ^>nul
 echo.
 echo REM Add to PATH
-echo echo Adding to system PATH...
 echo setx /M PATH "%%PATH%%;%%INSTALL_DIR%%\bin"
 echo.
 echo echo Installation complete!
-echo echo Please restart Command Prompt and run 'chtl --version' to verify installation
+echo echo Please restart command prompt to use 'chtl' command
 echo pause
 ) > install.bat
 
 cd ..
 
-call :info "Packaging complete: dist\chtl-compiler-windows.zip"
+echo %GREEN%[INFO]%NC% Package complete: dist\chtl-compiler-windows.zip
 
 REM Display build information
-call :info "Build information:"
+echo.
+echo %GREEN%[INFO]%NC% Build information:
 echo   Platform: Windows
-echo   Java version: %JAVA_VERSION%
 echo   Build time: %date% %time%
 
 if exist "dist\chtl-compiler-windows.zip" (
@@ -259,12 +243,13 @@ if exist "dist\chtl-compiler-windows.zip" (
 )
 
 echo.
-call :info "Build completed!"
+echo %GREEN%===================================%NC%
+echo %GREEN%Build completed successfully!%NC%
+echo %GREEN%===================================%NC%
 echo.
 echo Usage:
-echo   1. Extract: Unzip dist\chtl-compiler-windows.zip
-echo   2. Install: Run dist\install.bat as administrator
+echo   1. Extract: Expand dist\chtl-compiler-windows.zip
+echo   2. Install: Run install.bat as administrator
 echo   3. Use: chtl input.chtl -o output\
 
 endlocal
-exit /b 0

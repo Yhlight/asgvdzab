@@ -125,40 +125,42 @@ echo %GREEN%========================================%NC%
 goto :end
 
 :build_compiler
-echo %GREEN%[INFO]%NC% Starting compiler build...
-cd /d "%~dp0\windows"
-call build-compiler.bat
-if errorlevel 1 (
-    echo %RED%[ERROR]%NC% Compiler build failed
-    exit /b 1
-)
-cd /d "%~dp0\.."
-exit /b 0
+    echo %GREEN%[INFO]%NC% Starting compiler build...
+    pushd "%~dp0\windows"
+    call build-compiler.bat
+    set BUILD_RESULT=%errorlevel%
+    popd
+    if %BUILD_RESULT% neq 0 (
+        echo %RED%[ERROR]%NC% Compiler build failed
+        exit /b 1
+    )
+    exit /b 0
 
 :build_modules
-echo %GREEN%[INFO]%NC% Building official modules...
-REM Build Chtholly module
-if exist "src\main\java\com\chtl\module\Chtholly" (
-    echo %GREEN%[INFO]%NC% Building Chtholly module...
-    cd /d "%~dp0\windows"
-    call package-unified.bat "%~dp0\..\src\main\java\com\chtl\module\Chtholly"
-    if errorlevel 1 (
-        echo %YELLOW%[WARN]%NC% Chtholly module build failed, continuing...
+    echo %GREEN%[INFO]%NC% Building official modules...
+    REM Build Chtholly module
+    if exist "%~dp0\..\src\main\java\com\chtl\module\Chtholly" (
+        echo %GREEN%[INFO]%NC% Building Chtholly module...
+        pushd "%~dp0\windows"
+        call package-unified.bat "%~dp0\..\src\main\java\com\chtl\module\Chtholly"
+        if errorlevel 1 (
+            echo %YELLOW%[WARN]%NC% Chtholly module build failed, continuing...
+        )
+        popd
     )
-    cd /d "%~dp0\.."
-)
-exit /b 0
+    exit /b 0
 
 :build_vscode
-echo %GREEN%[INFO]%NC% Starting VSCode extension build...
-cd /d "%~dp0\windows"
-call build-vscode-extension.bat
-if errorlevel 1 (
-    echo %RED%[ERROR]%NC% VSCode extension build failed
-    exit /b 1
-)
-cd /d "%~dp0\.."
-exit /b 0
+    echo %GREEN%[INFO]%NC% Starting VSCode extension build...
+    pushd "%~dp0\windows"
+    call build-vscode-extension.bat
+    set BUILD_RESULT=%errorlevel%
+    popd
+    if %BUILD_RESULT% neq 0 (
+        echo %RED%[ERROR]%NC% VSCode extension build failed
+        exit /b 1
+    )
+    exit /b 0
 
 :build_module
 if "%MODULE_PATH%"=="" (
