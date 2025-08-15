@@ -5,9 +5,9 @@ import com.chtl.ast.*;
 /**
  * 注释节点
  * 对应CHTL中的三种注释：
- * - // 行注释
- * - /* */ 块注释
- * - -- 生成器识别的注释
+ * 1. 行注释 (双斜线)
+ * 2. 块注释 (斜线星号)
+ * 3. 生成器识别的注释 (双横线)
  */
 public class CommentNode extends AbstractCHTLASTNode {
     
