@@ -9,6 +9,7 @@ public enum CHTLJSTokenType {
     DOUBLE_LEFT_BRACE("{{"),     // {{ 增强选择器开始
     DOUBLE_RIGHT_BRACE("}}"),    // }} 增强选择器结束
     ARROW("->"),                 // -> 箭头操作符（等价于.）
+    AMPERSAND("&"),              // & 自引用符号（用于{{&}}）
     
     // 选择器类型标记（在{{}}内部使用）
     DOT("."),                    // . 类选择器

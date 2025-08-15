@@ -171,6 +171,9 @@ public class CHTLJSLexer {
                     advance();
                     return new CHTLJSToken(CHTLJSTokenType.DIVIDE, "/", startLine, startColumn, startPosition);
                 }
+            case '&':
+                advance();
+                return new CHTLJSToken(CHTLJSTokenType.AMPERSAND, "&", startLine, startColumn, startPosition);
         }
         
         // 检查字符串
