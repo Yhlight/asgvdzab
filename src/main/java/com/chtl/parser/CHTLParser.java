@@ -4,7 +4,7 @@ import com.chtl.ast.*;
 import com.chtl.ast.node.*;
 import com.chtl.compiler.chtl.token.CHTLToken;
 import com.chtl.compiler.chtl.token.CHTLTokenType;
-import com.chtl.compiler.chtl.lexer.CHTLLexer;
+import com.chtl.compiler.chtl.lexer.CHTLStateMachineLexer;
 
 import java.util.*;
 
@@ -28,7 +28,7 @@ public class CHTLParser {
      * 解析CHTL源代码
      */
     public RootNode parse(String source) {
-        CHTLLexer lexer = new CHTLLexer(source);
+        CHTLStateMachineLexer lexer = new CHTLStateMachineLexer(source);
         this.tokens = lexer.tokenize();
         this.current = 0;
         this.errors.clear();
@@ -601,8 +601,30 @@ public class CHTLParser {
             if (check(CHTLTokenType.IDENTIFIER)) {
                 String varName = advance().getValue();
                 consume(CHTLTokenType.COLON, "期望':'");
-                CHTLASTNode value = parseLiteral();
+                
+                // 收集所有值直到分号
+                StringBuilder valueBuilder = new StringBuilder();
+                while (!check(CHTLTokenType.SEMICOLON) && !isAtEnd()) {
+                    CHTLToken token = advance();
+                    if (valueBuilder.length() > 0) {
+                        valueBuilder.append(" ");
+                    }
+                    valueBuilder.append(token.getValue());
+                }
+                
                 consume(CHTLTokenType.SEMICOLON, "期望';'");
+                
+                // 创建值节点
+                String valueStr = valueBuilder.toString();
+                CHTLASTNode value;
+                if (valueStr.startsWith("\"") && valueStr.endsWith("\"")) {
+                    value = new StringLiteralNode(valueStr.substring(1, valueStr.length() - 1), '"');
+                } else if (valueStr.startsWith("'") && valueStr.endsWith("'")) {
+                    value = new StringLiteralNode(valueStr.substring(1, valueStr.length() - 1), '\'');
+                } else {
+                    value = new UnquotedLiteralNode(valueStr);
+                }
+                
                 varGroup.addVariable(varName, value);
             } else {
                 error("期望变量定义");

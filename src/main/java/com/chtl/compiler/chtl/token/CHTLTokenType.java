@@ -19,6 +19,12 @@ public enum CHTLTokenType {
     RIGHT_BRACKET("]"),           // ]
     LEFT_PAREN("("),              // (
     RIGHT_PAREN(")"),             // )
+    SLASH("/"),                   // /
+    MINUS("-"),                   // -
+    GREATER_THAN(">"),            // >
+    LESS_THAN("<"),               // <
+    EXCLAMATION("!"),             // !
+    AT("@"),                      // @
     
     // 字符串字面量
     STRING_LITERAL("STRING"),     // "..." 或 '...'
@@ -61,6 +67,8 @@ public enum CHTLTokenType {
     FROM("from"),                 // from
     AS("as"),                     // as
     EXCEPT("except"),             // except
+    TOP("top"),                   // top
+    BOTTOM("bottom"),             // bottom
     
     // 注释
     LINE_COMMENT("//"),           // // 注释
