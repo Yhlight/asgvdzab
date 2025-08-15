@@ -48,8 +48,19 @@ public class ImportManager {
         String fromPath = importNode.getFromPath();
         ImportStatementNode.ImportType type = importNode.getImportType();
         
+        // 检查是否使用官方模块前缀
+        boolean isOfficialModule = false;
+        if (fromPath.startsWith("chtl::")) {
+            isOfficialModule = true;
+            fromPath = fromPath.substring(6); // 移除 "chtl::" 前缀
+        }
+        
         // 标准化路径表达
         fromPath = normalizePath(fromPath);
+        
+        // 更新importNode中的fromPath（移除前缀后的）
+        // 这样后续方法使用的都是标准化后的路径
+        importNode.setFromPath(fromPath);
         
         // 检查重复导入
         String importKey = generateImportKey(type, fromPath);
@@ -74,13 +85,13 @@ public class ImportManager {
                 case HTML:
                 case STYLE:
                 case JAVASCRIPT:
-                    result = processResourceImport(importNode);
+                    result = processResourceImport(importNode, isOfficialModule);
                     break;
                 case CHTL:
-                    result = processCHTLImport(importNode);
+                    result = processCHTLImport(importNode, isOfficialModule);
                     break;
                 case CJMOD:
-                    result = processCJModImport(importNode);
+                    result = processCJModImport(importNode, isOfficialModule);
                     break;
                 default:
                     result = processOtherImport(importNode);
@@ -99,10 +110,19 @@ public class ImportManager {
     /**
      * 处理资源导入（HTML, Style, JavaScript）
      */
-    private ImportResult processResourceImport(ImportStatementNode importNode) {
+    private ImportResult processResourceImport(ImportStatementNode importNode, boolean isOfficialModule) {
         String fromPath = importNode.getFromPath();
         String asName = importNode.getAsName();
         ImportStatementNode.ImportType type = importNode.getImportType();
+        
+        // 资源导入不支持官方模块前缀
+        if (isOfficialModule) {
+            context.addError(new CompilationError(
+                "Official module prefix 'chtl::' is not supported for resource imports",
+                CompilationError.ErrorType.IMPORT_ERROR
+            ));
+            return new ImportResult(false, "Invalid prefix");
+        }
         
         // 如果没有as语法，直接跳过
         if (asName == null) {
@@ -156,16 +176,17 @@ public class ImportManager {
     /**
      * 处理CHTL导入
      */
-    private ImportResult processCHTLImport(ImportStatementNode importNode) {
+    private ImportResult processCHTLImport(ImportStatementNode importNode, boolean isOfficialModule) {
         String fromPath = importNode.getFromPath();
         
         // 检查是否是通配符导入
-        if (fromPath.endsWith(".*") || fromPath.endsWith("/*")) {
-            return processWildcardImport(importNode);
+        if (fromPath.equals("*") || fromPath.endsWith(".*") || fromPath.endsWith("/*")) {
+            return processWildcardImport(importNode, isOfficialModule);
         }
         
         // 查找CHTL文件
-        List<Path> foundFiles = findCHTLFiles(fromPath);
+        List<Path> foundFiles = isOfficialModule ? 
+            findOfficialCHTLFiles(fromPath) : findCHTLFiles(fromPath);
         
         if (foundFiles.isEmpty()) {
             context.addError(new CompilationError(
@@ -190,11 +211,12 @@ public class ImportManager {
     /**
      * 处理CJMod导入
      */
-    private ImportResult processCJModImport(ImportStatementNode importNode) {
+    private ImportResult processCJModImport(ImportStatementNode importNode, boolean isOfficialModule) {
         String fromPath = importNode.getFromPath();
         
         // 查找CJMod文件
-        List<Path> foundFiles = findCJModFiles(fromPath);
+        List<Path> foundFiles = isOfficialModule ? 
+            findOfficialCJModFiles(fromPath) : findCJModFiles(fromPath);
         
         if (foundFiles.isEmpty()) {
             context.addError(new CompilationError(
@@ -219,14 +241,18 @@ public class ImportManager {
     /**
      * 处理通配符导入
      */
-    private ImportResult processWildcardImport(ImportStatementNode importNode) {
+    private ImportResult processWildcardImport(ImportStatementNode importNode, boolean isOfficialModule) {
         String fromPath = importNode.getFromPath();
         
         // 解析通配符模式
         String basePath;
         String pattern;
         
-        if (fromPath.contains("/*")) {
+        if (fromPath.equals("*")) {
+            // 处理单独的 * (来自 chtl::*)
+            basePath = "";
+            pattern = "*";
+        } else if (fromPath.contains("/*")) {
             // 处理 path/* 格式
             basePath = fromPath.substring(0, fromPath.indexOf("/*"));
             pattern = "*";
@@ -245,7 +271,15 @@ public class ImportManager {
             return new ImportResult(false, "Invalid wildcard pattern: " + fromPath);
         }
         
-        Path targetDir = resolvePath(basePath);
+        Path targetDir;
+        if (isOfficialModule) {
+            // 官方模块只在官方目录查找
+            targetDir = basePath.isEmpty() ? officialModuleDirectory : 
+                                           officialModuleDirectory.resolve(basePath);
+        } else {
+            targetDir = basePath.isEmpty() ? currentDirectory : resolvePath(basePath);
+        }
+        
         if (!Files.isDirectory(targetDir)) {
             context.addError(new CompilationError(
                 "Directory not found for wildcard import: " + basePath,
@@ -446,6 +480,51 @@ public class ImportManager {
         }
         
         return Collections.emptyList();
+    }
+    
+    /**
+     * 查找官方CHTL模块文件
+     * 只在官方模块目录中查找
+     */
+    private List<Path> findOfficialCHTLFiles(String fromPath) {
+        List<Path> foundFiles = new ArrayList<>();
+        
+        // 检查是否带后缀名
+        boolean hasExtension = fromPath.endsWith(".cmod") || fromPath.endsWith(".chtl");
+        
+        if (hasExtension) {
+            // 带后缀名，直接在官方模块目录查找
+            foundFiles.addAll(searchInOfficialModules(fromPath));
+        } else {
+            // 不带后缀名，优先查找.cmod文件
+            foundFiles.addAll(searchInOfficialModules(fromPath + ".cmod"));
+            if (foundFiles.isEmpty()) {
+                foundFiles.addAll(searchInOfficialModules(fromPath + ".chtl"));
+            }
+        }
+        
+        return foundFiles;
+    }
+    
+    /**
+     * 查找官方CJMod模块文件
+     * 只在官方模块目录中查找
+     */
+    private List<Path> findOfficialCJModFiles(String fromPath) {
+        List<Path> foundFiles = new ArrayList<>();
+        
+        // 检查是否带后缀名
+        boolean hasExtension = fromPath.endsWith(".cjmod");
+        
+        if (hasExtension) {
+            // 带后缀名，直接在官方模块目录查找
+            foundFiles.addAll(searchInOfficialModules(fromPath));
+        } else {
+            // 不带后缀名，添加.cjmod后缀
+            foundFiles.addAll(searchInOfficialModules(fromPath + ".cjmod"));
+        }
+        
+        return foundFiles;
     }
     
     /**
