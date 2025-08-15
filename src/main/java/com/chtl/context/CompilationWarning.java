@@ -18,7 +18,9 @@ public class CompilationWarning {
         POTENTIAL_ERROR,        // 潜在错误
         NAMING_CONVENTION,      // 命名约定
         COMPATIBILITY_ISSUE,    // 兼容性问题
-        SECURITY_ISSUE          // 安全问题
+        SECURITY_ISSUE,         // 安全问题
+        REDEFINITION,           // 重定义
+        MISSING_VALUE           // 缺失值
     }
     
     public CompilationWarning(String message, SourceLocation location, WarningType type) {

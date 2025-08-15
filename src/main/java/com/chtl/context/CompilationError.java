@@ -19,7 +19,8 @@ public class CompilationError {
         TYPE_MISMATCH,          // 类型不匹配
         INVALID_OPERATION,      // 无效操作
         IMPORT_ERROR,           // 导入错误
-        CONFIGURATION_ERROR     // 配置错误
+        CONFIGURATION_ERROR,    // 配置错误
+        CIRCULAR_DEPENDENCY     // 循环依赖
     }
     
     public CompilationError(String message, SourceLocation location, ErrorType type) {

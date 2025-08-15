@@ -68,6 +68,19 @@ public class ElementNode extends AbstractCHTLASTNode {
         return index != null;
     }
     
+    /**
+     * 设置属性值
+     * 如果属性已存在，更新其值；否则创建新属性
+     */
+    public void setAttribute(String name, String value) {
+        AttributeNode existing = getAttribute(name);
+        if (existing != null) {
+            existing.setValue(new UnquotedLiteralNode(value));
+        } else {
+            addAttribute(new AttributeNode(name, new UnquotedLiteralNode(value)));
+        }
+    }
+    
     @Override
     public void accept(CHTLASTVisitor visitor) {
         visitor.visitElement(this);
