@@ -1,4 +1,18 @@
 package com.chtl.compiler.cmod;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Serializable;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import com.chtl.ast.node.RootNode;
+import com.chtl.compiler.cmod.CmodUnpacker.CmodInfo;
+import com.chtl.compiler.cmod.CmodUnpacker.CompiledModule;
+import com.chtl.compiler.cmod.CmodUnpacker.UnpackResult;
+
 
 import com.chtl.ast.*;
 import com.chtl.ast.node.*;

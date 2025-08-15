@@ -1,4 +1,14 @@
 package com.chtl.compiler.optimization;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.chtl.compiler.CHTLCompiler.CompilationOutput;
+import com.chtl.compiler.CHTLCompiler.OptimizedOutput;
+import com.chtl.compiler.optimization.OutputOptimizer.CssFile;
+import com.chtl.compiler.optimization.OutputOptimizer.FileContent;
+import com.chtl.compiler.optimization.OutputOptimizer.JsFile;
+import com.chtl.compiler.optimization.OutputOptimizer.SourceFile;
+
 
 import com.chtl.context.CompilationContext;
 import com.chtl.scanner.ScannerStateMachine;

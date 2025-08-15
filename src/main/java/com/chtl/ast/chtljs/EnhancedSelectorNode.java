@@ -1,4 +1,5 @@
-package com.chtl.ast.chtljs;
+package com.chtl.ast.chtljs;import com.chtl.compiler.chtljs.selector.SelectorType;
+
 
 /**
  * 增强选择器节点

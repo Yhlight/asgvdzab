@@ -1,4 +1,5 @@
-package com.chtl.javascript;
+package com.chtl.javascript;import org.antlr.v4.runtime.tree.ParseTreeVisitor;
+
 import org.antlr.v4.runtime.tree.*;
 
 public interface ECMAScriptVisitor<T> extends ParseTreeVisitor<T> {

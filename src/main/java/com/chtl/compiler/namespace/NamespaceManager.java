@@ -1,4 +1,22 @@
 package com.chtl.compiler.namespace;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import com.chtl.ast.CHTLASTNode;
+import com.chtl.ast.node.ConstraintNode;
+import com.chtl.ast.node.CustomDefinitionNode;
+import com.chtl.ast.node.NamespaceNode;
+import com.chtl.ast.node.TemplateDefinitionNode;
+import com.chtl.compiler.namespace.NamespaceManager.Definition;
+import com.chtl.compiler.namespace.NamespaceManager.MergedNamespace;
+import com.chtl.model.ElementNode;
+
 
 import com.chtl.ast.*;
 import com.chtl.ast.node.*;

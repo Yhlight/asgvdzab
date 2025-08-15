@@ -1,4 +1,42 @@
 package com.chtl.generator;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import com.chtl.ast.CHTLASTNode;
+import com.chtl.ast.CHTLASTVisitor;
+import com.chtl.ast.chtljs.CHTLJSASTNode;
+import com.chtl.ast.node.CommentNode;
+import com.chtl.ast.node.ConfigurationNode;
+import com.chtl.ast.node.ConstraintNode;
+import com.chtl.ast.node.CustomDefinitionNode;
+import com.chtl.ast.node.CustomOperationNode;
+import com.chtl.ast.node.CustomUsageNode;
+import com.chtl.ast.node.ImportStatementNode;
+import com.chtl.ast.node.InheritStatementNode;
+import com.chtl.ast.node.NamespaceNode;
+import com.chtl.ast.node.NumberLiteralNode;
+import com.chtl.ast.node.OriginBlockNode;
+import com.chtl.ast.node.RootNode;
+import com.chtl.ast.node.ScriptBlockNode;
+import com.chtl.ast.node.SpecializationNode;
+import com.chtl.ast.node.StringLiteralNode;
+import com.chtl.ast.node.StyleBlockNode;
+import com.chtl.ast.node.StylePropertyNode;
+import com.chtl.ast.node.StyleRuleNode;
+import com.chtl.ast.node.StyleSelectorNode;
+import com.chtl.ast.node.TemplateDefinitionNode;
+import com.chtl.ast.node.TemplateUsageNode;
+import com.chtl.ast.node.UnquotedLiteralNode;
+import com.chtl.ast.node.VarGroupDefinitionNode;
+import com.chtl.ast.node.VarGroupUsageNode;
+import com.chtl.model.AttributeNode;
+import com.chtl.model.ElementNode;
+import com.chtl.model.TextNode;
+import com.chtl.parser.CHTLJSParser;
+
 
 import com.chtl.ast.*;
 import com.chtl.ast.node.*;

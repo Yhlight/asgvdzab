@@ -1,4 +1,24 @@
 package com.chtl.cjmod;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import com.chtl.cjmod.CJmodManager.LoadedModule;
+import com.chtl.cjmod.JavaJarLoader.ModuleDescriptor;
+import com.chtl.compiler.cjmod.CJmodInterface;
+
 
 import java.io.*;
 import java.net.*;

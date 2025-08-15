@@ -1,4 +1,30 @@
 package com.chtl.core.parallel;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import com.chtl.compiler.chtl.token.CHTLToken;
+import com.chtl.core.parallel.ParallelCompilationEngine.ContentChunk;
+import com.chtl.core.parallel.ParallelCompilationEngine.FragmentProcessTask;
+import com.chtl.core.parallel.ParallelCompilationEngine.GenerationUnit;
+import com.chtl.core.parallel.ParallelCompilationEngine.NamedThreadFactory;
+import com.chtl.core.parallel.ParallelCompilationEngine.ParseTask;
+import com.chtl.core.parallel.ParallelCompilationEngine.ProcessedFragment;
+import com.chtl.core.parallel.ParallelCompilationEngine.TaskDependencyManager;
+import com.chtl.core.parallel.ParallelCompilationEngine.TaskGraph;
+import com.chtl.core.parallel.ParallelCompilationEngine.TaskGraphExecutor;
+import com.chtl.core.parallel.ParallelCompilationEngine.TokenGroup;
+import com.chtl.model.FragmentType;
+
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveTask;
 

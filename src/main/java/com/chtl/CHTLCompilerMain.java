@@ -1,4 +1,11 @@
 package com.chtl;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+import com.chtl.compiler.CompilationResult;
+import com.chtl.compiler.cmod.CmodPackager;
+import com.chtl.compiler.cmod.CmodUnpacker;
+
 
 import com.chtl.scanner.CHTLUnifiedScanner;
 import com.chtl.model.CodeFragment;

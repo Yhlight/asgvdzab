@@ -1,4 +1,20 @@
 package com.chtl.context;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.chtl.ast.chtljs.ArrowOperationNode;
+import com.chtl.ast.chtljs.CHTLJSASTNode;
+import com.chtl.ast.chtljs.EnhancedSelectorNode;
+import com.chtl.ast.chtljs.EventHandlerNode;
+import com.chtl.ast.chtljs.PropertyAccessNode;
+import com.chtl.compiler.chtljs.CHTLJSSystem.DelegationInfo;
+import com.chtl.context.CHTLJSContext.NodeGuard;
+import com.chtl.context.CHTLJSContext.StateGuard;
+import com.chtl.scanner.State;
+
 
 import com.chtl.ast.chtljs.*;
 import java.util.*;

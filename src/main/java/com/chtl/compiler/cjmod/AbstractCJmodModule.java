@@ -1,4 +1,13 @@
 package com.chtl.compiler.cjmod;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.chtl.compiler.cjmod.CJmodInterface.MethodDescriptor;
+import com.chtl.compiler.cjmod.CJmodInterface.ObjectDescriptor;
+import com.chtl.compiler.cjmod.CJmodInterface.ParameterDescriptor;
+
 
 import com.chtl.ast.chtljs.CHTLJSASTNode;
 import com.chtl.context.CHTLJSContext;

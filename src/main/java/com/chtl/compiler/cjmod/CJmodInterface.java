@@ -1,4 +1,7 @@
-package com.chtl.compiler.cjmod;
+package com.chtl.compiler.cjmod;import com.chtl.compiler.cjmod.CJmodInterface.MethodDescriptor;
+import com.chtl.compiler.cjmod.CJmodInterface.ObjectDescriptor;
+import com.chtl.compiler.cjmod.CJmodInterface.ParameterDescriptor;
+
 
 import com.chtl.ast.chtljs.CHTLJSASTNode;
 import com.chtl.context.CHTLJSContext;

@@ -1,4 +1,13 @@
-package com.chtl.javascript;
+package com.chtl.javascript;import org.antlr.v4.runtime.Parser;
+import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.TokenStream;
+
+import com.chtl.compiler.javascript.JavaScriptCompiler.ECMAScriptParser;
+import com.chtl.javascript.ECMAScriptParser.FunctionDeclarationContext;
+import com.chtl.javascript.ECMAScriptParser.ProgramContext;
+import com.chtl.javascript.ECMAScriptParser.VariableStatementContext;
+import com.chtl.javascript.ECMAScriptParser.WithStatementContext;
+
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
 import org.antlr.v4.runtime.atn.ATN;

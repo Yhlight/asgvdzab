@@ -1,4 +1,21 @@
 package com.chtl.parser;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
+import com.chtl.ast.CHTLASTNode;
+import com.chtl.ast.node.CustomDefinitionNode;
+import com.chtl.ast.node.CustomOperationNode;
+import com.chtl.ast.node.NumberLiteralNode;
+import com.chtl.ast.node.RootNode;
+import com.chtl.ast.node.StringLiteralNode;
+import com.chtl.ast.node.StyleBlockNode;
+import com.chtl.ast.node.TemplateDefinitionNode;
+import com.chtl.ast.node.UnquotedLiteralNode;
+import com.chtl.ast.node.VarGroupDefinitionNode;
+import com.chtl.model.ElementNode;
+
 
 import com.chtl.ast.*;
 import com.chtl.ast.node.*;

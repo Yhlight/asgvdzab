@@ -1,4 +1,20 @@
 package com.chtl.parser;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import com.chtl.ast.chtljs.AnimateCallNode;
+import com.chtl.ast.chtljs.AnimationConfigNode;
+import com.chtl.ast.chtljs.AnimationKeyframeNode;
+import com.chtl.ast.chtljs.ArrowOperationNode;
+import com.chtl.ast.chtljs.CHTLJSASTNode;
+import com.chtl.ast.chtljs.DelegateCallNode;
+import com.chtl.ast.chtljs.EnhancedSelectorNode;
+import com.chtl.ast.chtljs.EventHandlerNode;
+import com.chtl.ast.chtljs.ExpressionNode;
+import com.chtl.ast.chtljs.ListenCallNode;
+import com.chtl.ast.chtljs.PropertyAccessNode;
+
 
 import com.chtl.ast.chtljs.*;
 import com.chtl.compiler.chtljs.token.CHTLJSToken;

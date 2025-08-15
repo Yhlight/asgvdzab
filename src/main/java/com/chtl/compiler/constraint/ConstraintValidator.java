@@ -1,4 +1,13 @@
-package com.chtl.compiler.constraint;
+package com.chtl.compiler.constraint;import com.chtl.ast.CHTLASTNode;
+import com.chtl.ast.node.ConstraintNode;
+import com.chtl.ast.node.CustomDefinitionNode;
+import com.chtl.ast.node.CustomUsageNode;
+import com.chtl.ast.node.NamespaceNode;
+import com.chtl.ast.node.TemplateDefinitionNode;
+import com.chtl.ast.node.TemplateUsageNode;
+import com.chtl.ast.node.VarGroupDefinitionNode;
+import com.chtl.model.ElementNode;
+
 
 import com.chtl.ast.*;
 import com.chtl.ast.node.*;

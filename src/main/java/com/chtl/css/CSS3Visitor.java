@@ -1,4 +1,5 @@
-package com.chtl.css;
+package com.chtl.css;import org.antlr.v4.runtime.tree.ParseTreeVisitor;
+
 import org.antlr.v4.runtime.tree.*;
 
 public interface CSS3Visitor<T> extends ParseTreeVisitor<T> {

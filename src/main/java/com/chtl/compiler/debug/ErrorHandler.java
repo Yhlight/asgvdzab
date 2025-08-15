@@ -1,4 +1,13 @@
 package com.chtl.compiler.debug;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.chtl.context.CompilationContext;
+import com.chtl.context.CompilationError;
+import com.chtl.context.CompilationWarning;
+
 
 import com.chtl.context.*;
 import com.chtl.ast.SourceLocation;

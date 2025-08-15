@@ -1,4 +1,9 @@
 package com.chtl.compiler.optimization.sourcemap;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.chtl.compiler.optimization.sourcemap.SourceMap.Mapping;
+
 
 import java.util.*;
 

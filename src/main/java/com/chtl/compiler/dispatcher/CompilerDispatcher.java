@@ -1,4 +1,6 @@
-package com.chtl.compiler.dispatcher;
+package com.chtl.compiler.dispatcher;import com.chtl.compiler.CHTLCompiler;
+import com.chtl.compiler.CompilationResult;
+
 
 import com.chtl.compiler.chtl.CHTLCompiler;
 import com.chtl.compiler.chtljs.CHTLJSCompiler;

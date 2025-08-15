@@ -1,4 +1,6 @@
-package com.chtl.model;
+package com.chtl.model;import com.chtl.model.StyleNode.StyleProperty;
+import com.chtl.model.StyleNode.StyleRule;
+
 
 import java.util.ArrayList;
 import java.util.List;

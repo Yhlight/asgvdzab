@@ -1,4 +1,5 @@
-package com.chtl.core.parallel;
+package com.chtl.core.parallel;import com.chtl.compiler.CompilationResult;
+
 
 public class CompilationResult {
     private final boolean success;

@@ -1,4 +1,25 @@
 package com.chtl.generator;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import com.chtl.ast.chtljs.AnimateCallNode;
+import com.chtl.ast.chtljs.AnimationConfigNode;
+import com.chtl.ast.chtljs.AnimationControllerNode;
+import com.chtl.ast.chtljs.AnimationKeyframeNode;
+import com.chtl.ast.chtljs.ArrowOperationNode;
+import com.chtl.ast.chtljs.CHTLJSASTNode;
+import com.chtl.ast.chtljs.CHTLJSASTVisitor;
+import com.chtl.ast.chtljs.DelegateCallNode;
+import com.chtl.ast.chtljs.EnhancedSelectorNode;
+import com.chtl.ast.chtljs.EventHandlerNode;
+import com.chtl.ast.chtljs.ExpressionNode;
+import com.chtl.ast.chtljs.ListenCallNode;
+import com.chtl.ast.chtljs.PropertyAccessNode;
+import com.chtl.compiler.chtljs.CHTLJSSystem.DelegationInfo;
+
 
 import com.chtl.ast.chtljs.*;
 import java.util.*;

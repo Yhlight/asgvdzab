@@ -1,4 +1,8 @@
-package com.chtl.compiler.optimization;
+package com.chtl.compiler.optimization;import com.chtl.compiler.optimization.OptimizationOptions.CssOptions;
+import com.chtl.compiler.optimization.OptimizationOptions.HtmlOptions;
+import com.chtl.compiler.optimization.OptimizationOptions.JsOptions;
+import com.chtl.compiler.optimization.OptimizationOptions.SourceMapOptions;
+
 
 /**
  * 优化选项配置

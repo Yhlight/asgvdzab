@@ -1,4 +1,11 @@
-package com.chtl.compiler.css;
+package com.chtl.compiler.css;import org.antlr.v4.runtime.CharStreams;
+import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.tree.ParseTree;
+
+import com.chtl.compiler.CompilationResult;
+import com.chtl.compiler.css.CSSCompiler.CSSOptimizingVisitor;
+import com.chtl.css.CSS3BaseVisitor;
+
 
 import com.chtl.css.CSS3Lexer;
 import com.chtl.css.CSS3Parser;

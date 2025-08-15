@@ -1,4 +1,13 @@
 package com.chtl.cjmod;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.List;
+
+import com.chtl.cjmod.JavaJarLoader.ModuleDescriptor;
+import com.chtl.compiler.cjmod.CJmodInterface;
+
 
 import java.io.*;
 import java.net.*;

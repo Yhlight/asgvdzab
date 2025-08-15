@@ -1,4 +1,26 @@
 package com.chtl.compiler.style;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Set;
+
+import com.chtl.ast.CHTLASTNode;
+import com.chtl.ast.node.CustomDefinitionNode;
+import com.chtl.ast.node.CustomOperationNode;
+import com.chtl.ast.node.CustomUsageNode;
+import com.chtl.ast.node.NumberLiteralNode;
+import com.chtl.ast.node.StringLiteralNode;
+import com.chtl.ast.node.StyleBlockNode;
+import com.chtl.ast.node.StylePropertyNode;
+import com.chtl.ast.node.StyleRuleNode;
+import com.chtl.ast.node.StyleSelectorNode;
+import com.chtl.ast.node.TemplateDefinitionNode;
+import com.chtl.ast.node.TemplateUsageNode;
+import com.chtl.ast.node.UnquotedLiteralNode;
+import com.chtl.compiler.style.StyleSystem.ElementContext;
+import com.chtl.context.CompilationError;
+import com.chtl.model.ElementNode;
+
 
 import com.chtl.ast.*;
 import com.chtl.ast.node.*;

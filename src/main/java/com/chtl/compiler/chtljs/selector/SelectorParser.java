@@ -1,4 +1,9 @@
 package com.chtl.compiler.chtljs.selector;
+import java.util.List;
+
+import com.chtl.ast.node.CHTLJSSelectorNode;
+import com.chtl.context.CompilationError;
+
 
 import com.chtl.ast.node.*;
 import com.chtl.context.CompilationContext;

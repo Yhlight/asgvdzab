@@ -1,4 +1,13 @@
-package com.chtl.compiler.javascript;
+package com.chtl.compiler.javascript;import org.antlr.v4.runtime.CharStreams;
+import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.TokenStream;
+import org.antlr.v4.runtime.tree.ParseTree;
+
+import com.chtl.compiler.CompilationResult;
+import com.chtl.compiler.javascript.JavaScriptCompiler.ECMAScriptParser;
+import com.chtl.compiler.javascript.JavaScriptCompiler.JavaScriptOptimizingVisitor;
+import com.chtl.javascript.ECMAScriptBaseVisitor;
+
 
 import com.chtl.javascript.ECMAScriptLexer;
 import com.chtl.javascript.ECMAScriptParser;

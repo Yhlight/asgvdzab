@@ -1,4 +1,20 @@
 package com.chtl.core.error;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import com.chtl.core.error.GlobalErrorHandler.CompilationFailedException;
+import com.chtl.core.error.GlobalErrorHandler.ErrorBuilder;
+import com.chtl.core.error.GlobalErrorHandler.ErrorSummary;
+import com.chtl.core.error.GlobalErrorHandler.PlaceholderRegistry;
+import com.chtl.core.error.GlobalErrorHandler.RecoveryPoint;
+import com.chtl.core.error.GlobalErrorHandler.TypeRecovery;
+import com.chtl.core.error.GlobalErrorHandler.WarningBuilder;
+
 
 import com.chtl.context.CompilationError;
 import com.chtl.context.CompilationWarning;

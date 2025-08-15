@@ -1,4 +1,16 @@
 package com.chtl.cjmod;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+
+import com.chtl.cjmod.CJmodInterface.FunctionResult;
+import com.chtl.cjmod.CJmodInterface.FunctionSignature;
+import com.chtl.cjmod.CJmodInterface.Parameter;
+import com.chtl.compiler.cjmod.CJmodInterface;
+import com.chtl.compiler.cjmod.CJmodManager.ModuleInfo;
+
 
 import java.util.*;
 

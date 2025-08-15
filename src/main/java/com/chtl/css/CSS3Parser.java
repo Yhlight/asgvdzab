@@ -1,4 +1,12 @@
-package com.chtl.css;
+package com.chtl.css;import org.antlr.v4.runtime.Parser;
+import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.TokenStream;
+
+import com.chtl.css.CSS3Parser.DeclarationContext;
+import com.chtl.css.CSS3Parser.MediaContext;
+import com.chtl.css.CSS3Parser.RulesetContext;
+import com.chtl.css.CSS3Parser.StylesheetContext;
+
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
 import org.antlr.v4.runtime.atn.ATN;

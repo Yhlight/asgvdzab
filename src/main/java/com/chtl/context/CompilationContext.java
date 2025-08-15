@@ -1,4 +1,22 @@
 package com.chtl.context;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.chtl.ast.CHTLASTNode;
+import com.chtl.ast.node.ConfigurationNode;
+import com.chtl.ast.node.CustomDefinitionNode;
+import com.chtl.ast.node.TemplateDefinitionNode;
+import com.chtl.ast.node.VarGroupDefinitionNode;
+import com.chtl.context.CHTLJSContext.NodeGuard;
+import com.chtl.context.CHTLJSContext.StateGuard;
+import com.chtl.context.CompilationContext.NamespaceGuard;
+import com.chtl.context.CompilationContext.Scope;
+import com.chtl.context.CompilationContext.ScopeGuard;
+import com.chtl.scanner.State;
+
 
 import com.chtl.ast.*;
 import com.chtl.ast.node.*;

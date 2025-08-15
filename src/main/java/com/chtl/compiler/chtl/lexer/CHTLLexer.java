@@ -1,4 +1,11 @@
 package com.chtl.compiler.chtl.lexer;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.chtl.compiler.chtl.CHTLParser.Token;
+
 
 import com.chtl.compiler.chtl.token.CHTLToken;
 import com.chtl.compiler.chtl.token.CHTLTokenType;

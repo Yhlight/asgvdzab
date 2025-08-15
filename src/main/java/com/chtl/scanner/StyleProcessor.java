@@ -1,4 +1,11 @@
 package com.chtl.scanner;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import com.chtl.scanner.StyleProcessor.SyntaxInfo;
+
 
 import com.chtl.model.CodeFragment;
 import com.chtl.model.FragmentType;

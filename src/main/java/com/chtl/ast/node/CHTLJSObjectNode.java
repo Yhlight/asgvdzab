@@ -1,35 +1,25 @@
-package com.chtl.ast.node;
+package com.chtl.ast.node;import com.chtl.ast.AbstractCHTLASTNode;
+import com.chtl.ast.CHTLASTNode;
+import com.chtl.ast.CHTLASTVisitor;
 
-import com.chtl.ast.*;
-import java.util.*;
 
-/**
- * CHTL JS对象节点
- * 表示对象字面量 { key: value }
- */
-public class CHTLJSObjectNode extends CHTLJSExpressionNode {
+import com.chtl.ast.CHTLJSVisitor;
+import java.util.Map;
+import java.util.LinkedHashMap;
+
+public class CHTLJSObjectNode extends AbstractCHTLASTNode {
     private Map<String, CHTLASTNode> properties;
-    
+
     public CHTLJSObjectNode() {
-        super(NodeType.CHTLJS_OBJECT);
         this.properties = new LinkedHashMap<>();
     }
-    
-    public Map<String, CHTLASTNode> getProperties() {
-        return properties;
+
+    public Map<String, CHTLASTNode> getProperties() { return properties; }
+
+    public void setProperty(String key, CHTLASTNode value) {
+        properties.put(key, value);
     }
-    
-    public void addProperty(String key, CHTLASTNode value) {
-        if (value != null) {
-            properties.put(key, value);
-            value.setParent(this);
-        }
-    }
-    
-    public CHTLASTNode getProperty(String key) {
-        return properties.get(key);
-    }
-    
+
     @Override
     public void accept(CHTLASTVisitor visitor) {
         if (visitor instanceof CHTLJSVisitor) {

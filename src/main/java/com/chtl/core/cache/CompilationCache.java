@@ -1,4 +1,24 @@
 package com.chtl.core.cache;
+import java.io.IOException;
+import java.io.Serializable;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+
+import com.chtl.compiler.chtl.token.CHTLToken;
+import com.chtl.core.cache.CompilationCache.ASTCacheData;
+import com.chtl.core.cache.CompilationCache.CacheEntry;
+import com.chtl.core.cache.CompilationCache.CacheStatistics;
+import com.chtl.core.cache.CompilationCache.DependenciesCacheData;
+import com.chtl.core.cache.CompilationCache.OutputCacheData;
+import com.chtl.core.cache.CompilationCache.TokensCacheData;
+
 
 import com.chtl.ast.CHTLASTNode;
 import com.chtl.lexer.CHTLToken;

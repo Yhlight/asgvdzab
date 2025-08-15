@@ -1,4 +1,36 @@
 package com.chtl.compiler;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import com.chtl.ast.CHTLASTNode;
+import com.chtl.ast.SourceLocation;
+import com.chtl.ast.chtljs.CHTLJSASTNode;
+import com.chtl.ast.node.ImportStatementNode;
+import com.chtl.ast.node.NamespaceNode;
+import com.chtl.compiler.CHTLCompiler.CompilationOutput;
+import com.chtl.compiler.CHTLCompiler.OptimizedOutput;
+import com.chtl.compiler.chtl.CHTLParser;
+import com.chtl.compiler.chtl.lexer.CHTLStateMachineLexer;
+import com.chtl.compiler.chtl.token.CHTLToken;
+import com.chtl.compiler.chtljs.lexer.CHTLJSStateMachineLexer;
+import com.chtl.compiler.chtljs.token.CHTLJSToken;
+import com.chtl.compiler.debug.DebugInfo;
+import com.chtl.compiler.debug.ErrorHandler;
+import com.chtl.compiler.dispatcher.CompilerDispatcher;
+import com.chtl.compiler.optimization.OutputOptimizer;
+import com.chtl.context.CHTLJSContext;
+import com.chtl.context.CompilationError;
+import com.chtl.generator.CHTLGenerator;
+import com.chtl.generator.CHTLJSGenerator;
+import com.chtl.parser.CHTLJSParser;
+
 
 import com.chtl.scanner.CHTLUnifiedScanner;
 import com.chtl.scanner.Fragment;

@@ -1,4 +1,7 @@
 package com.chtl.compiler.optimization.html;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 
 import com.chtl.context.CompilationContext;
 import com.chtl.compiler.optimization.OptimizationOptions.HtmlOptions;
