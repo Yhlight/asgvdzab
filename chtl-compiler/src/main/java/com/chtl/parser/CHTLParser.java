@@ -4,6 +4,8 @@ import com.chtl.ast.DocumentNode;
 import com.chtl.ast.TemplateNodes.ElementNode;
 import com.chtl.ast.TemplateNodes.TextNode;
 import com.chtl.ast.TemplateNodes.ScriptNode;
+import com.chtl.ast.TemplateNodes.Attribute;
+import com.chtl.ast.TemplateNodes.StyleProperty;
 import com.chtl.lexer.*;
 import com.chtl.runtime.ContextAssistant;
 
@@ -60,7 +62,7 @@ public class CHTLParser {
 				try (var g = ctx.enter(State.IN_STYLE_BLOCK)) {
 					String styleText = collectUntil(CHTLTokenType.RBRACE);
 					consumeType(CHTLTokenType.RBRACE);
-					el.getTexts().add(new TextNode("/*style*/" + styleText));
+					parseInlineStyle(styleText, el);
 				}
 				continue;
 			}
@@ -71,6 +73,27 @@ public class CHTLParser {
 					el.getScripts().add(new ScriptNode(js));
 				}
 				continue;
+			}
+			// 属性：name : value ; 或 name = value ; 其中 value 可为 STRING/IDENT/LITERAL/NUMBER
+			if (checkType(CHTLTokenType.IDENT)) {
+				int save = i;
+				String key = tokens.get(i).getLexeme(); advance();
+				if (matchType(CHTLTokenType.COLON) || matchType(CHTLTokenType.EQUAL)) {
+					StringBuilder v = new StringBuilder();
+					while (!isAtEnd() && !checkType(CHTLTokenType.SEMICOLON) && !checkType(CHTLTokenType.RBRACE)) {
+						v.append(advance().getLexeme());
+					}
+					if (matchType(CHTLTokenType.SEMICOLON)) {
+						el.getAttributes().add(new Attribute(key, v.toString().trim()));
+						continue;
+					} else {
+						// 回退，作为子节点解析
+						i = save;
+					}
+				} else {
+					// 回退还原
+					i = save;
+				}
 			}
 			AstOrNone child = parseElementOrText();
 			if (child != null && child.node != null) {
@@ -85,6 +108,38 @@ public class CHTLParser {
 		}
 		consumeType(CHTLTokenType.RBRACE);
 	}
+
+	private void parseInlineStyle(String styleText, ElementNode el) {
+		// 仅处理 "键 : 值;" 与 "键 = 值;"，值支持字符串与字面量
+		int p = 0; int n = styleText.length();
+		while (p < n) {
+			// 跳过空白和换行
+			while (p < n && Character.isWhitespace(styleText.charAt(p))) p++;
+			if (p >= n) break;
+			// 读取键
+			int kStart = p;
+			while (p < n && isKeyChar(styleText.charAt(p))) p++;
+			String key = styleText.substring(kStart, p).trim();
+			// 跳过空白
+			while (p < n && Character.isWhitespace(styleText.charAt(p))) p++;
+			if (p < n && (styleText.charAt(p) == ':' || styleText.charAt(p) == '=')) p++;
+			while (p < n && Character.isWhitespace(styleText.charAt(p))) p++;
+			// 读取值直到分号
+			int vStart = p; boolean inStr = false; char q = '\0';
+			while (p < n) {
+				char c = styleText.charAt(p);
+				if (!inStr && c == ';') break;
+				if (!inStr && c == '\n') break;
+				if (c == '"' || c == '\'') { if (!inStr) { inStr = true; q = c; } else if (q == c) { inStr = false; } }
+				p++;
+			}
+			String val = styleText.substring(vStart, p).trim();
+			if (p < n && styleText.charAt(p) == ';') p++;
+			if (!key.isEmpty() && !val.isEmpty()) el.getInlineStyles().add(new StyleProperty(key, val));
+		}
+	}
+
+	private boolean isKeyChar(char c) { return Character.isLetterOrDigit(c) || c == '-' || c == '_'; }
 
 	private String collectUntil(CHTLTokenType end) {
 		StringBuilder sb = new StringBuilder();

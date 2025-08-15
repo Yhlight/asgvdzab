@@ -82,8 +82,17 @@ public class TemplateNodes {
 		public List<StyleProperty> getOverrides() { return overrides; }
 	}
 
+	public static class Attribute {
+		private final String name;
+		private final String value;
+		public Attribute(String name, String value) { this.name = name; this.value = value; }
+		public String getName() { return name; }
+		public String getValue() { return value; }
+	}
+
 	public static class ElementNode implements AstNode {
 		private final String tagName; // HTML 标签
+		private final List<Attribute> attributes = new ArrayList<>();
 		private final List<StyleProperty> inlineStyles = new ArrayList<>();
 		private final List<StyleGroupUse> styleGroupUses = new ArrayList<>();
 		private final List<ElementNode> children = new ArrayList<>();
@@ -93,6 +102,7 @@ public class TemplateNodes {
 
 		public ElementNode(String tagName) { this.tagName = tagName; }
 		public String getTagName() { return tagName; }
+		public List<Attribute> getAttributes() { return attributes; }
 		public List<StyleProperty> getInlineStyles() { return inlineStyles; }
 		public List<StyleGroupUse> getStyleGroupUses() { return styleGroupUses; }
 		public List<ElementNode> getChildren() { return children; }

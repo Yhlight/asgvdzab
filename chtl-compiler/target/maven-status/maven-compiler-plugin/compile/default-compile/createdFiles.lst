@@ -7,6 +7,7 @@ com/chtl/ast/TemplateNodes$CustomStyle.class
 com/chtl/ast/CHTLJsNodes$Selector.class
 com/chtl/lexer/CHTLJsLexer.class
 com/chtl/ast/CHTLJsNodes.class
+com/chtl/ast/TemplateNodes$Attribute.class
 com/chtl/grammar/JavaScriptBaseVisitor.class
 com/chtl/ast/CHTLJsNodes$Animate.class
 com/chtl/ast/OriginImportNodes$ImportHtml.class
