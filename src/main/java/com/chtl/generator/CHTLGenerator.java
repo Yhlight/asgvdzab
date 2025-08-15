@@ -248,7 +248,9 @@ public class CHTLGenerator implements CHTLASTVisitor {
     
     @Override
     public void visitCustomDefinition(CustomDefinitionNode node) {
-        // 自定义定义不生成代码，只在使用时展开
+        // 自定义定义不直接生成代码
+        // 但需要存储定义以供后续使用
+        // 在实际的编译器实现中，这里应该将定义存储到符号表中
     }
     
     @Override
@@ -259,6 +261,11 @@ public class CHTLGenerator implements CHTLASTVisitor {
     @Override
     public void visitCustomOperation(CustomOperationNode node) {
         // TODO: 实现自定义操作逻辑
+    }
+    
+    @Override
+    public void visitSpecialization(SpecializationNode node) {
+        // 特例化操作不生成代码，在CustomDefinition展开时处理
     }
     
     @Override

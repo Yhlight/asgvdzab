@@ -69,8 +69,6 @@ public enum CHTLTokenType {
     EXCEPT("except"),             // except
     TOP("top"),                   // top
     BOTTOM("bottom"),             // bottom
-    DELETE("delete"),             // delete
-    INSERT("insert"),             // insert
     
     // 注释
     LINE_COMMENT("//"),           // // 注释

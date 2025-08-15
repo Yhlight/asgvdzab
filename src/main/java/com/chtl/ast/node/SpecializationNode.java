@@ -1,12 +1,13 @@
 package com.chtl.ast.node;
 
 import java.io.Serializable;
+import com.chtl.ast.*;
 
 /**
  * 特例化操作节点
  * 用于[Custom]定义中的特殊操作
  */
-public class SpecializationNode extends AbstractASTNode implements Serializable {
+public class SpecializationNode extends AbstractCHTLASTNode implements Serializable {
     private static final long serialVersionUID = 1L;
     
     /**
@@ -23,7 +24,7 @@ public class SpecializationNode extends AbstractASTNode implements Serializable 
     
     private SpecializationType type;
     private String target;      // 操作目标
-    private ASTNode value;      // 操作值
+    private CHTLASTNode value;      // 操作值
     private int position = -1;  // 位置（用于删除/插入操作）
     
     public SpecializationNode(SpecializationType type) {
@@ -48,11 +49,11 @@ public class SpecializationNode extends AbstractASTNode implements Serializable 
         this.target = target;
     }
     
-    public ASTNode getValue() {
+    public CHTLASTNode getValue() {
         return value;
     }
     
-    public void setValue(ASTNode value) {
+    public void setValue(CHTLASTNode value) {
         this.value = value;
     }
     
@@ -65,8 +66,8 @@ public class SpecializationNode extends AbstractASTNode implements Serializable 
     }
     
     @Override
-    public void accept(ASTVisitor visitor) {
-        visitor.visit(this);
+    public void accept(CHTLASTVisitor visitor) {
+        visitor.visitSpecialization(this);
     }
     
     @Override

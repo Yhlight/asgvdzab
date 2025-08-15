@@ -9,7 +9,7 @@ import java.util.List;
  * 对应CHTL中的[Custom] @Type Name { }
  * Custom支持特例化操作，比Template更灵活
  */
-public class CustomDefinitionNode extends AbstractASTNode implements Serializable {
+public class CustomDefinitionNode extends AbstractCHTLASTNode implements Serializable {
     private static final long serialVersionUID = 1L;
     
     /**
@@ -33,7 +33,7 @@ public class CustomDefinitionNode extends AbstractASTNode implements Serializabl
     
     private CustomType customType;
     private String name;
-    private List<ASTNode> body = new ArrayList<>();
+    private List<CHTLASTNode> body = new ArrayList<>();
     private List<String> inherits = new ArrayList<>(); // 继承的模板或自定义
     private List<SpecializationNode> specializations = new ArrayList<>(); // 特例化操作
     
@@ -60,11 +60,11 @@ public class CustomDefinitionNode extends AbstractASTNode implements Serializabl
         this.name = name;
     }
     
-    public List<ASTNode> getBody() {
+    public List<CHTLASTNode> getBody() {
         return body;
     }
     
-    public void addBodyNode(ASTNode node) {
+    public void addBodyNode(CHTLASTNode node) {
         this.body.add(node);
     }
     
@@ -85,8 +85,8 @@ public class CustomDefinitionNode extends AbstractASTNode implements Serializabl
     }
     
     @Override
-    public void accept(ASTVisitor visitor) {
-        visitor.visit(this);
+    public void accept(CHTLASTVisitor visitor) {
+        visitor.visitCustomDefinition(this);
     }
     
     @Override

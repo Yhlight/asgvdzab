@@ -31,6 +31,7 @@ public interface CHTLASTVisitor {
     void visitCustomDefinition(CustomDefinitionNode node);
     void visitCustomUsage(CustomUsageNode node);
     void visitCustomOperation(CustomOperationNode node);
+    void visitSpecialization(SpecializationNode node);
     
     // 原始嵌入
     void visitOriginBlock(OriginBlockNode node);
