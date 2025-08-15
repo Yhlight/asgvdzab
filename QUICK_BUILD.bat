@@ -11,16 +11,23 @@ REM Try different build scripts in order of preference
 echo Attempting to build CHTL compiler...
 echo.
 
-REM Try ordered build first
+REM Try auto-detect build first
+if exist "scripts\windows\build-auto.bat" (
+    echo [1/4] Trying auto-detect build...
+    call scripts\windows\build-auto.bat
+    if exist "target\chtl-compiler-1.0.jar" goto :success
+)
+
+REM Try ordered build
 if exist "scripts\windows\build-ordered.bat" (
-    echo [1/3] Trying ordered build...
+    echo [2/4] Trying ordered build...
     call scripts\windows\build-ordered.bat
     if exist "target\chtl-compiler-1.0.jar" goto :success
 )
 
 REM Try minimal build
 if exist "scripts\windows\build-minimal.bat" (
-    echo [2/3] Trying minimal build...
+    echo [3/4] Trying minimal build...
     call scripts\windows\build-minimal.bat
     if exist "target\chtl-compiler.jar" (
         ren target\chtl-compiler.jar chtl-compiler-1.0.jar
@@ -30,7 +37,7 @@ if exist "scripts\windows\build-minimal.bat" (
 
 REM Try complete build
 if exist "scripts\build-all-complete.bat" (
-    echo [3/3] Trying complete build...
+    echo [4/4] Trying complete build...
     call scripts\build-all-complete.bat --skip-vscode
     if exist "target\chtl-compiler-1.0.jar" goto :success
 )

@@ -83,7 +83,7 @@ REM COMPILATION PHASE 2: Interfaces
 echo.
 echo [PHASE 2] Compiling interfaces...
 (
-echo src\main\java\com\chtl\ast\visitor\CHTLASTVisitor.java
+echo src\main\java\com\chtl\ast\CHTLASTVisitor.java
 echo src\main\java\com\chtl\ast\CHTLASTNode.java
 echo src\main\java\com\chtl\chtljs\ast\CHTLJSASTVisitor.java
 echo src\main\java\com\chtl\chtljs\ast\CHTLJSASTNode.java
