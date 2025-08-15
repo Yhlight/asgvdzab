@@ -62,20 +62,25 @@ public class UnifiedScannerV2 {
             }
         });
         
-        // Script块处理器 - 支持CHTL JS语法，但不支持CHTL语法
+        // Script块处理器
         map.put(BlockScanner.BlockType.SCRIPT_GLOBAL, new BlockProcessor() {
             @Override
             public List<CodeFragment> process(BlockScanner.RawBlock block) {
-                // 全局script也需要处理CHTL JS语法
-                return processCHTLJS(block);
+                // 全局script：支持CHTL JS语法 + 原始嵌入[Origin]
+                return processGlobalScript(block);
             }
         });
         
         map.put(BlockScanner.BlockType.SCRIPT_LOCAL, new BlockProcessor() {
             @Override
             public List<CodeFragment> process(BlockScanner.RawBlock block) {
-                // 局部script支持CHTL JS语法（包括{{&}}自引用）
-                return processCHTLJS(block);
+                // 局部script：作为CHTL的一部分，完全支持CHTL语法
+                return Collections.singletonList(new CodeFragment(
+                    FragmentType.CHTL,
+                    block.getContent(),
+                    block.getStartPosition(),
+                    block.getContent().length()
+                ));
             }
         });
         
@@ -121,6 +126,124 @@ public class UnifiedScannerV2 {
             block.getStartPosition(),
             block.getContent().length()
         ));
+    }
+    
+    /**
+     * 处理全局script块（支持CHTL JS语法 + 原始嵌入）
+     */
+    private List<CodeFragment> processGlobalScript(BlockScanner.RawBlock block) {
+        String content = block.getContent();
+        List<CodeFragment> fragments = new ArrayList<>();
+        
+        // 检查是否包含原始嵌入
+        if (content.contains("[Origin]")) {
+            return processScriptWithOrigin(block);
+        }
+        
+        // 否则处理CHTL JS语法
+        return processCHTLJS(block);
+    }
+    
+    /**
+     * 处理包含原始嵌入的script块
+     */
+    private List<CodeFragment> processScriptWithOrigin(BlockScanner.RawBlock block) {
+        List<CodeFragment> fragments = new ArrayList<>();
+        String content = block.getContent();
+        int position = 0;
+        
+        while (position < content.length()) {
+            // 查找[Origin]块
+            int originStart = content.indexOf("[Origin]", position);
+            if (originStart == -1) {
+                // 剩余部分作为CHTL JS处理
+                String remaining = content.substring(position);
+                if (!remaining.trim().isEmpty()) {
+                    BlockScanner.RawBlock subBlock = new BlockScanner.RawBlock(
+                        BlockScanner.BlockType.SCRIPT_GLOBAL,
+                        remaining,
+                        block.getStartPosition() + position,
+                        block.getLine(),
+                        block.getColumn()
+                    );
+                    fragments.addAll(processCHTLJS(subBlock));
+                }
+                break;
+            }
+            
+            // 添加[Origin]之前的内容
+            if (originStart > position) {
+                String before = content.substring(position, originStart);
+                BlockScanner.RawBlock subBlock = new BlockScanner.RawBlock(
+                    BlockScanner.BlockType.SCRIPT_GLOBAL,
+                    before,
+                    block.getStartPosition() + position,
+                    block.getLine(),
+                    block.getColumn()
+                );
+                fragments.addAll(processCHTLJS(subBlock));
+            }
+            
+            // 找到[Origin]块的结束
+            int originEnd = findOriginEnd(content, originStart);
+            
+            // 添加[Origin]块作为CHTL
+            fragments.add(new CodeFragment(
+                FragmentType.CHTL,
+                content.substring(originStart, originEnd),
+                block.getStartPosition() + originStart,
+                originEnd - originStart
+            ));
+            
+            position = originEnd;
+        }
+        
+        return fragments;
+    }
+    
+    /**
+     * 查找[Origin]块的结束位置
+     */
+    private int findOriginEnd(String content, int start) {
+        // 跳过[Origin]标记
+        int pos = start + 8;
+        while (pos < content.length() && Character.isWhitespace(content.charAt(pos))) {
+            pos++;
+        }
+        
+        // 必须跟着@Script
+        if (!content.startsWith("@Script", pos)) {
+            return pos; // 错误的语法，返回当前位置
+        }
+        
+        pos += 7; // 跳过@Script
+        while (pos < content.length() && Character.isWhitespace(content.charAt(pos))) {
+            pos++;
+        }
+        
+        // 找到开始的{
+        if (pos < content.length() && content.charAt(pos) == '{') {
+            // 匹配大括号
+            int braceDepth = 1;
+            pos++;
+            
+            while (pos < content.length() && braceDepth > 0) {
+                char c = content.charAt(pos);
+                if (c == '{') {
+                    braceDepth++;
+                } else if (c == '}') {
+                    braceDepth--;
+                } else if (c == '"' || c == '\'') {
+                    // 跳过字符串
+                    pos = skipString(content, pos);
+                }
+                pos++;
+            }
+            
+            return pos;
+        }
+        
+        return pos;
     }
     
     /**
