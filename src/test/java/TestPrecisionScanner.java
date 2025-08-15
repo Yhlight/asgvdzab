@@ -26,6 +26,12 @@ public class TestPrecisionScanner {
         
         // 测试6: 最小单元切割示例
         testCase6();
+        
+        // 测试7: 超细致切割 - 混合代码
+        testCase7();
+        
+        // 测试8: 超细致切割 - 深度嵌套
+        testCase8();
     }
     
     private static void testCase1() {
@@ -105,13 +111,43 @@ public class TestPrecisionScanner {
                       "});";
         
         runScanner(input);
+    }
+    
+    private static void testCase7() {
+        System.out.println("\n测试7: 超细致切割 - 混合代码");
+        String input = "const data = {{#myDiv}}.dataset.value;\n" +
+                      "{{button}}->animate({\n" +
+                      "    duration: 500,\n" +
+                      "    callback: function() {\n" +
+                      "        const elem = {{.container}};\n" +
+                      "        elem.innerHTML = printMylove({\n" +
+                      "            url: data\n" +
+                      "        });\n" +
+                      "    }\n" +
+                      "});\n" +
+                      "console.log('done');";
         
-        // 期望输出：
-        // 片段1 [CHTL]: // 根据您的示例\n
-        // 片段2 [CHTL_JS]: {{box}}
-        // 片段3 [CHTL或JS]: .addEventListener('click', () => {\n    console.log('Box clicked!');\n});\n\n
-        // 片段4 [CHTL或JS]: const str = 
-        // 片段5 [CHTL_JS]: printMylove({\n    url: 'chtholly.jpg',\n    mode: 'Pixel'\n});
+        runScanner(input);
+    }
+    
+    private static void testCase8() {
+        System.out.println("\n测试8: 超细致切割 - 深度嵌套");
+        String input = "{{outer}}->listen({\n" +
+                      "    mouseover: function() {\n" +
+                      "        {{inner}}->animate({\n" +
+                      "            opacity: 1,\n" +
+                      "            callback: function() {\n" +
+                      "                const result = printMylove({\n" +
+                      "                    url: {{img}}.src,\n" +
+                      "                    mode: 'ASCII'\n" +
+                      "                });\n" +
+                      "                {{output}}.textContent = result;\n" +
+                      "            }\n" +
+                      "        });\n" +
+                      "    }\n" +
+                      "});";
+        
+        runScanner(input);
     }
     
     private static void runScanner(String input) {
@@ -129,7 +165,14 @@ public class TestPrecisionScanner {
         for (int i = 0; i < fragments.size(); i++) {
             CodeFragment fragment = fragments.get(i);
             System.out.printf("片段 %d [%s]:\n", i + 1, fragment.getType());
-            System.out.println(fragment.getContent());
+            
+            // 显示内容，转义换行符以便查看
+            String content = fragment.getContent();
+            if (content.contains("\n")) {
+                System.out.println(content.replace("\n", "\\n"));
+            } else {
+                System.out.println(content);
+            }
             System.out.println("---");
         }
         
