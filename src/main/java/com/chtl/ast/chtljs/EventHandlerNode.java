@@ -1,34 +1,27 @@
 package com.chtl.ast.chtljs;
 
 /**
- * 事件处理器节点
- * 对应listen或delegate中的事件处理函数
+ * CHTL JS事件处理器节点
  */
-public class EventHandlerNode extends AbstractCHTLJSASTNode {
+public class EventHandlerNode extends CHTLJSASTNode {
+    private HandlerType handlerType;
+    private String handlerCode;
     
     public enum HandlerType {
-        FUNCTION_EXPRESSION,   // function() { }
-        ARROW_FUNCTION,       // () => { }
-        FUNCTION_REFERENCE    // 函数引用，如 handleClick
+        FUNCTION_EXPRESSION,  // function() { }
+        FUNCTION_REFERENCE    // functionName
     }
     
-    private String eventName;
-    private HandlerType handlerType;
-    private String handlerCode; // 处理函数的代码或引用名
-    
-    public EventHandlerNode(String eventName) {
+    public EventHandlerNode() {
         super(NodeType.EVENT_HANDLER);
-        this.eventName = eventName;
     }
     
-    public String getEventName() {
-        return eventName;
+    @Override
+    public void accept(CHTLJSASTVisitor visitor) {
+        visitor.visitEventHandler(this);
     }
     
-    public void setEventName(String eventName) {
-        this.eventName = eventName;
-    }
-    
+    // Getters and Setters
     public HandlerType getHandlerType() {
         return handlerType;
     }
@@ -43,10 +36,5 @@ public class EventHandlerNode extends AbstractCHTLJSASTNode {
     
     public void setHandlerCode(String handlerCode) {
         this.handlerCode = handlerCode;
-    }
-    
-    @Override
-    public void accept(CHTLJSASTVisitor visitor) {
-        visitor.visitEventHandler(this);
     }
 }
