@@ -1,4 +1,6 @@
-package com.chtl.ast.node;import com.chtl.ast.AbstractCHTLASTNode;
+package com.chtl.ast.node;
+
+import com.chtl.ast.AbstractCHTLASTNode;
 import com.chtl.ast.CHTLASTNode;
 import com.chtl.ast.CHTLASTVisitor;
 
@@ -11,6 +13,7 @@ public class CHTLJSObjectNode extends AbstractCHTLASTNode {
     private Map<String, CHTLASTNode> properties;
 
     public CHTLJSObjectNode() {
+        super(NodeType.CHTL_JS_EXPRESSION);
         this.properties = new LinkedHashMap<>();
     }
 

@@ -1,4 +1,6 @@
-package com.chtl.parser;import com.chtl.ast.CHTLASTNode;
+package com.chtl.parser;
+
+import com.chtl.ast.CHTLASTNode;
 import com.chtl.ast.node.CustomDefinitionNode;
 import com.chtl.ast.node.CustomOperationNode;
 import com.chtl.ast.node.CustomUsageNode;

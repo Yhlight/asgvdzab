@@ -1,4 +1,6 @@
-package com.chtl.ast.chtljs;import com.chtl.ast.NodeType;
+package com.chtl.ast.chtljs;
+
+import com.chtl.ast.NodeType;
 
 
 import com.chtl.chtljs.ast.AbstractCHTLJSASTNode;

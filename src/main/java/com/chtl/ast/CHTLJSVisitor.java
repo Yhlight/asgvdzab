@@ -1,4 +1,6 @@
-package com.chtl.ast;import com.chtl.ast.node.CHTLJSAnimateNode;
+package com.chtl.ast;
+
+import com.chtl.ast.node.CHTLJSAnimateNode;
 import com.chtl.ast.node.CHTLJSArrayNode;
 import com.chtl.ast.node.CHTLJSFunctionNode;
 import com.chtl.ast.node.CHTLJSIdentifierNode;

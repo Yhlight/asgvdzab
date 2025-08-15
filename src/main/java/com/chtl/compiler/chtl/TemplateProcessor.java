@@ -1,4 +1,6 @@
-package com.chtl.compiler.chtl;import com.chtl.model.CHTLNode;
+package com.chtl.compiler.chtl;
+
+import com.chtl.model.CHTLNode;
 import com.chtl.model.CustomNode;
 import com.chtl.model.ElementNode;
 import com.chtl.model.ScriptNode;

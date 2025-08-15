@@ -1,4 +1,6 @@
-package com.chtl.dispatcher;import com.chtl.compiler.dispatcher.CompilerDispatcher;
+package com.chtl.dispatcher;
+
+import com.chtl.compiler.dispatcher.CompilerDispatcher;
 
 
 public class CompilerDispatcher {

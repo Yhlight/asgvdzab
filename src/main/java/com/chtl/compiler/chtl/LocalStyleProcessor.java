@@ -1,4 +1,6 @@
-package com.chtl.compiler.chtl;import com.chtl.compiler.style.LocalStyleProcessor;
+package com.chtl.compiler.chtl;
+
+import com.chtl.compiler.style.LocalStyleProcessor;
 
 
 import org.slf4j.Logger;

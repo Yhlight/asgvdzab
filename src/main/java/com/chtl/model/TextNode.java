@@ -21,6 +21,6 @@ public class TextNode extends CHTLNode {
     
     @Override
     public void accept(CHTLNodeVisitor visitor) {
-        visitor.visit(this);
+        visitor.visitTextNode(this);
     }
 }

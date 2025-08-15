@@ -1,4 +1,6 @@
-package com.chtl.ast.node;import com.chtl.ast.AbstractCHTLASTNode;
+package com.chtl.ast.node;
+
+import com.chtl.ast.AbstractCHTLASTNode;
 import com.chtl.ast.CHTLASTVisitor;
 
 
@@ -8,6 +10,7 @@ public class CHTLJSIdentifierNode extends AbstractCHTLASTNode {
     private String name;
 
     public CHTLJSIdentifierNode(String name) {
+        super(NodeType.CHTL_JS_EXPRESSION);
         this.name = name;
     }
 

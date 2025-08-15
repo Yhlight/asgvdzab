@@ -1,4 +1,6 @@
-package com.chtl.ast.node;import com.chtl.ast.AbstractCHTLASTNode;
+package com.chtl.ast.node;
+
+import com.chtl.ast.AbstractCHTLASTNode;
 import com.chtl.ast.CHTLASTNode;
 import com.chtl.ast.CHTLASTVisitor;
 
@@ -13,6 +15,7 @@ public class CHTLJSFunctionNode extends AbstractCHTLASTNode {
     private CHTLASTNode body;
 
     public CHTLJSFunctionNode(String name) {
+        super(NodeType.CHTL_JS_EXPRESSION);
         this.name = name;
         this.parameters = new ArrayList<>();
     }

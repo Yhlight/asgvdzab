@@ -1,4 +1,6 @@
-package com.chtl.ast.node;import com.chtl.ast.AbstractCHTLASTNode;
+package com.chtl.ast.node;
+
+import com.chtl.ast.AbstractCHTLASTNode;
 import com.chtl.ast.CHTLASTNode;
 import com.chtl.ast.CHTLASTVisitor;
 
@@ -12,6 +14,7 @@ public class CHTLJSMethodCallNode extends AbstractCHTLASTNode {
     private List<CHTLASTNode> arguments;
     
     public CHTLJSMethodCallNode(String methodName) {
+        super(NodeType.CHTL_JS_EXPRESSION);
         this.methodName = methodName;
         this.arguments = new ArrayList<>();
     }

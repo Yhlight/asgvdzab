@@ -1,4 +1,6 @@
-package com.chtl.scanner;import com.chtl.scanner.DynamicBlockScanner.DynamicBlock;
+package com.chtl.scanner;
+
+import com.chtl.scanner.DynamicBlockScanner.DynamicBlock;
 
 
 import java.util.*;

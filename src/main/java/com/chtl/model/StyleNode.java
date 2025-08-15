@@ -1,4 +1,6 @@
-package com.chtl.model;import com.chtl.model.StyleNode.StyleProperty;
+package com.chtl.model;
+
+import com.chtl.model.StyleNode.StyleProperty;
 import com.chtl.model.StyleNode.StyleRule;
 
 
@@ -32,7 +34,7 @@ public class StyleNode extends CHTLNode {
     
     @Override
     public void accept(CHTLNodeVisitor visitor) {
-        visitor.visit(this);
+        visitor.visitStyleNode(this);
     }
     
     /**

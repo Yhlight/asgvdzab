@@ -1,4 +1,6 @@
-package com.chtl.compiler.constraint;import com.chtl.ast.CHTLASTNode;
+package com.chtl.compiler.constraint;
+
+import com.chtl.ast.CHTLASTNode;
 import com.chtl.ast.node.ConstraintNode;
 
 

@@ -27,6 +27,6 @@ public class ScriptNode extends CHTLNode {
     
     @Override
     public void accept(CHTLNodeVisitor visitor) {
-        visitor.visit(this);
+        visitor.visitScriptNode(this);
     }
 }

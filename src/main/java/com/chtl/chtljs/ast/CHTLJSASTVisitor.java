@@ -1,4 +1,6 @@
-package com.chtl.chtljs.ast;import com.chtl.ast.chtljs.CHTLJSASTNode;
+package com.chtl.chtljs.ast;
+
+import com.chtl.ast.chtljs.CHTLJSASTNode;
 import com.chtl.ast.chtljs.CHTLJSASTVisitor;
 
 

@@ -1,4 +1,6 @@
-package com.chtl.ast.node;import com.chtl.model.CustomType;
+package com.chtl.ast.node;
+
+import com.chtl.model.CustomType;
 
 
 import com.chtl.ast.AbstractCHTLASTNode;

@@ -39,6 +39,6 @@ public class CustomNode extends CHTLNode {
     
     @Override
     public void accept(CHTLNodeVisitor visitor) {
-        visitor.visit(this);
+        visitor.visitCustomNode(this);
     }
 }

@@ -1,4 +1,6 @@
-package com.chtl.compiler.chtl;import com.chtl.model.AttributeNode;
+package com.chtl.compiler.chtl;
+
+import com.chtl.model.AttributeNode;
 import com.chtl.model.CHTLNode;
 import com.chtl.model.CHTLNodeVisitor;
 import com.chtl.model.CustomNode;

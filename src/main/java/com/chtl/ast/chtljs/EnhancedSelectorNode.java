@@ -1,4 +1,6 @@
-package com.chtl.ast.chtljs;import com.chtl.compiler.chtljs.selector.SelectorType;
+package com.chtl.ast.chtljs;
+
+import com.chtl.compiler.chtljs.selector.SelectorType;
 
 
 /**

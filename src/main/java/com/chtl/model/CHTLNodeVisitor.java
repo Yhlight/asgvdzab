@@ -1,14 +1,15 @@
 package com.chtl.model;
 
 /**
- * CHTL节点访问者接口
+ * Visitor interface for CHTLNode hierarchy.
+ * Implements the visitor pattern for traversing CHTL nodes.
  */
 public interface CHTLNodeVisitor {
-    void visit(ElementNode node);
-    void visit(TextNode node);
-    void visit(AttributeNode node);
-    void visit(StyleNode node);
-    void visit(ScriptNode node);
-    void visit(TemplateNode node);
-    void visit(CustomNode node);
+    void visitTemplateNode(TemplateNode node);
+    void visitScriptNode(ScriptNode node);
+    void visitStyleNode(StyleNode node);
+    void visitCustomNode(CustomNode node);
+    void visitElementNode(ElementNode node);
+    void visitTextNode(TextNode node);
+    void visitAttributeNode(AttributeNode node);
 }

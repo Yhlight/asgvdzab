@@ -1,4 +1,6 @@
-package com.chtl.compiler.cjmod;import com.chtl.compiler.cjmod.CJmodInterface.MethodDescriptor;
+package com.chtl.compiler.cjmod;
+
+import com.chtl.compiler.cjmod.CJmodInterface.MethodDescriptor;
 import com.chtl.compiler.cjmod.CJmodInterface.ObjectDescriptor;
 import com.chtl.compiler.cjmod.CJmodInterface.ParameterDescriptor;
 

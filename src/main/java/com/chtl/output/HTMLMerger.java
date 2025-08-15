@@ -1,4 +1,6 @@
-package com.chtl.output;import com.chtl.compiler.CompilationResult;
+package com.chtl.output;
+
+import com.chtl.compiler.CompilationResult;
 import com.chtl.output.HTMLMerger.HTMLBuilder;
 
 

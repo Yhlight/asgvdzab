@@ -28,6 +28,6 @@ public class ElementNode extends CHTLNode {
     
     @Override
     public void accept(CHTLNodeVisitor visitor) {
-        visitor.visit(this);
+        visitor.visitElementNode(this);
     }
 }
