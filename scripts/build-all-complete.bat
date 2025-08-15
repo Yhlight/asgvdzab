@@ -27,7 +27,7 @@ goto :parse_args
 REM Build compiler
 if "%BUILD_COMPILER%"=="true" (
     echo [1/3] Building CHTL compiler...
-    call "%~dp0\windows\build-compiler-simple.bat"
+    call "%~dp0\windows\build-compiler-staged.bat"
     if %errorlevel% neq 0 (
         echo [ERROR] Compiler build failed
         exit /b 1
