@@ -55,4 +55,5 @@ set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/token_tests.dir/DependInfo.cmake"
   "CMakeFiles/comprehensive_lexer_tests.dir/DependInfo.cmake"
   "CMakeFiles/chtl_syntax_validation_tests.dir/DependInfo.cmake"
+  "CMakeFiles/chtl_grammar_conformance_tests.dir/DependInfo.cmake"
   )

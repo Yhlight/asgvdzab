@@ -239,6 +239,19 @@ chtl_syntax_validation_tests/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/build
 .PHONY : chtl_syntax_validation_tests/fast
 
+#=============================================================================
+# Target rules for targets named chtl_grammar_conformance_tests
+
+# Build rule for target.
+chtl_grammar_conformance_tests: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 chtl_grammar_conformance_tests
+.PHONY : chtl_grammar_conformance_tests
+
+# fast build rule for target.
+chtl_grammar_conformance_tests/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/build
+.PHONY : chtl_grammar_conformance_tests/fast
+
 src/common/types.o: src/common/types.cpp.o
 .PHONY : src/common/types.o
 
@@ -250,6 +263,7 @@ src/common/types.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/common/types.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/common/types.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/common/types.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/common/types.cpp.o
 .PHONY : src/common/types.cpp.o
 
 src/common/types.i: src/common/types.cpp.i
@@ -263,6 +277,7 @@ src/common/types.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/common/types.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/common/types.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/common/types.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/common/types.cpp.i
 .PHONY : src/common/types.cpp.i
 
 src/common/types.s: src/common/types.cpp.s
@@ -276,6 +291,7 @@ src/common/types.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/common/types.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/common/types.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/common/types.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/common/types.cpp.s
 .PHONY : src/common/types.cpp.s
 
 src/compilers/chtl_compiler.o: src/compilers/chtl_compiler.cpp.o
@@ -289,6 +305,7 @@ src/compilers/chtl_compiler.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/compilers/chtl_compiler.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/compilers/chtl_compiler.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/compilers/chtl_compiler.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/compilers/chtl_compiler.cpp.o
 .PHONY : src/compilers/chtl_compiler.cpp.o
 
 src/compilers/chtl_compiler.i: src/compilers/chtl_compiler.cpp.i
@@ -302,6 +319,7 @@ src/compilers/chtl_compiler.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/compilers/chtl_compiler.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/compilers/chtl_compiler.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/compilers/chtl_compiler.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/compilers/chtl_compiler.cpp.i
 .PHONY : src/compilers/chtl_compiler.cpp.i
 
 src/compilers/chtl_compiler.s: src/compilers/chtl_compiler.cpp.s
@@ -315,6 +333,7 @@ src/compilers/chtl_compiler.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/compilers/chtl_compiler.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/compilers/chtl_compiler.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/compilers/chtl_compiler.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/compilers/chtl_compiler.cpp.s
 .PHONY : src/compilers/chtl_compiler.cpp.s
 
 src/dispatcher/compiler_dispatcher.o: src/dispatcher/compiler_dispatcher.cpp.o
@@ -328,6 +347,7 @@ src/dispatcher/compiler_dispatcher.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/dispatcher/compiler_dispatcher.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/dispatcher/compiler_dispatcher.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/dispatcher/compiler_dispatcher.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/dispatcher/compiler_dispatcher.cpp.o
 .PHONY : src/dispatcher/compiler_dispatcher.cpp.o
 
 src/dispatcher/compiler_dispatcher.i: src/dispatcher/compiler_dispatcher.cpp.i
@@ -341,6 +361,7 @@ src/dispatcher/compiler_dispatcher.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/dispatcher/compiler_dispatcher.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/dispatcher/compiler_dispatcher.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/dispatcher/compiler_dispatcher.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/dispatcher/compiler_dispatcher.cpp.i
 .PHONY : src/dispatcher/compiler_dispatcher.cpp.i
 
 src/dispatcher/compiler_dispatcher.s: src/dispatcher/compiler_dispatcher.cpp.s
@@ -354,6 +375,7 @@ src/dispatcher/compiler_dispatcher.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/dispatcher/compiler_dispatcher.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/dispatcher/compiler_dispatcher.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/dispatcher/compiler_dispatcher.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/dispatcher/compiler_dispatcher.cpp.s
 .PHONY : src/dispatcher/compiler_dispatcher.cpp.s
 
 src/lexer/chtl_js_tokens.o: src/lexer/chtl_js_tokens.cpp.o
@@ -367,6 +389,7 @@ src/lexer/chtl_js_tokens.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/lexer/chtl_js_tokens.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/lexer/chtl_js_tokens.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/lexer/chtl_js_tokens.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/lexer/chtl_js_tokens.cpp.o
 .PHONY : src/lexer/chtl_js_tokens.cpp.o
 
 src/lexer/chtl_js_tokens.i: src/lexer/chtl_js_tokens.cpp.i
@@ -380,6 +403,7 @@ src/lexer/chtl_js_tokens.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/lexer/chtl_js_tokens.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/lexer/chtl_js_tokens.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/lexer/chtl_js_tokens.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/lexer/chtl_js_tokens.cpp.i
 .PHONY : src/lexer/chtl_js_tokens.cpp.i
 
 src/lexer/chtl_js_tokens.s: src/lexer/chtl_js_tokens.cpp.s
@@ -393,6 +417,7 @@ src/lexer/chtl_js_tokens.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/lexer/chtl_js_tokens.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/lexer/chtl_js_tokens.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/lexer/chtl_js_tokens.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/lexer/chtl_js_tokens.cpp.s
 .PHONY : src/lexer/chtl_js_tokens.cpp.s
 
 src/lexer/chtl_tokens.o: src/lexer/chtl_tokens.cpp.o
@@ -406,6 +431,7 @@ src/lexer/chtl_tokens.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/lexer/chtl_tokens.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/lexer/chtl_tokens.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/lexer/chtl_tokens.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/lexer/chtl_tokens.cpp.o
 .PHONY : src/lexer/chtl_tokens.cpp.o
 
 src/lexer/chtl_tokens.i: src/lexer/chtl_tokens.cpp.i
@@ -419,6 +445,7 @@ src/lexer/chtl_tokens.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/lexer/chtl_tokens.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/lexer/chtl_tokens.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/lexer/chtl_tokens.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/lexer/chtl_tokens.cpp.i
 .PHONY : src/lexer/chtl_tokens.cpp.i
 
 src/lexer/chtl_tokens.s: src/lexer/chtl_tokens.cpp.s
@@ -432,6 +459,7 @@ src/lexer/chtl_tokens.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/lexer/chtl_tokens.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/lexer/chtl_tokens.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/lexer/chtl_tokens.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/lexer/chtl_tokens.cpp.s
 .PHONY : src/lexer/chtl_tokens.cpp.s
 
 src/lexer/global_map.o: src/lexer/global_map.cpp.o
@@ -445,6 +473,7 @@ src/lexer/global_map.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/lexer/global_map.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/lexer/global_map.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/lexer/global_map.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/lexer/global_map.cpp.o
 .PHONY : src/lexer/global_map.cpp.o
 
 src/lexer/global_map.i: src/lexer/global_map.cpp.i
@@ -458,6 +487,7 @@ src/lexer/global_map.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/lexer/global_map.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/lexer/global_map.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/lexer/global_map.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/lexer/global_map.cpp.i
 .PHONY : src/lexer/global_map.cpp.i
 
 src/lexer/global_map.s: src/lexer/global_map.cpp.s
@@ -471,6 +501,7 @@ src/lexer/global_map.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/lexer/global_map.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/lexer/global_map.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/lexer/global_map.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/lexer/global_map.cpp.s
 .PHONY : src/lexer/global_map.cpp.s
 
 src/lexer/lexer_state.o: src/lexer/lexer_state.cpp.o
@@ -484,6 +515,7 @@ src/lexer/lexer_state.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/lexer/lexer_state.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/lexer/lexer_state.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/lexer/lexer_state.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/lexer/lexer_state.cpp.o
 .PHONY : src/lexer/lexer_state.cpp.o
 
 src/lexer/lexer_state.i: src/lexer/lexer_state.cpp.i
@@ -497,6 +529,7 @@ src/lexer/lexer_state.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/lexer/lexer_state.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/lexer/lexer_state.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/lexer/lexer_state.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/lexer/lexer_state.cpp.i
 .PHONY : src/lexer/lexer_state.cpp.i
 
 src/lexer/lexer_state.s: src/lexer/lexer_state.cpp.s
@@ -510,6 +543,7 @@ src/lexer/lexer_state.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/lexer/lexer_state.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/lexer/lexer_state.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/lexer/lexer_state.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/lexer/lexer_state.cpp.s
 .PHONY : src/lexer/lexer_state.cpp.s
 
 src/main.o: src/main.cpp.o
@@ -547,6 +581,7 @@ src/scanner/slice_scanner.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/scanner/slice_scanner.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/scanner/slice_scanner.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/scanner/slice_scanner.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/scanner/slice_scanner.cpp.o
 .PHONY : src/scanner/slice_scanner.cpp.o
 
 src/scanner/slice_scanner.i: src/scanner/slice_scanner.cpp.i
@@ -560,6 +595,7 @@ src/scanner/slice_scanner.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/scanner/slice_scanner.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/scanner/slice_scanner.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/scanner/slice_scanner.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/scanner/slice_scanner.cpp.i
 .PHONY : src/scanner/slice_scanner.cpp.i
 
 src/scanner/slice_scanner.s: src/scanner/slice_scanner.cpp.s
@@ -573,6 +609,7 @@ src/scanner/slice_scanner.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/scanner/slice_scanner.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/scanner/slice_scanner.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/scanner/slice_scanner.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/scanner/slice_scanner.cpp.s
 .PHONY : src/scanner/slice_scanner.cpp.s
 
 src/scanner/unified_scanner.o: src/scanner/unified_scanner.cpp.o
@@ -586,6 +623,7 @@ src/scanner/unified_scanner.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/scanner/unified_scanner.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/scanner/unified_scanner.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/scanner/unified_scanner.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/scanner/unified_scanner.cpp.o
 .PHONY : src/scanner/unified_scanner.cpp.o
 
 src/scanner/unified_scanner.i: src/scanner/unified_scanner.cpp.i
@@ -599,6 +637,7 @@ src/scanner/unified_scanner.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/scanner/unified_scanner.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/scanner/unified_scanner.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/scanner/unified_scanner.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/scanner/unified_scanner.cpp.i
 .PHONY : src/scanner/unified_scanner.cpp.i
 
 src/scanner/unified_scanner.s: src/scanner/unified_scanner.cpp.s
@@ -612,6 +651,7 @@ src/scanner/unified_scanner.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/scanner/unified_scanner.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/scanner/unified_scanner.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/scanner/unified_scanner.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/scanner/unified_scanner.cpp.s
 .PHONY : src/scanner/unified_scanner.cpp.s
 
 tests/basic_test.o: tests/basic_test.cpp.o
@@ -637,6 +677,33 @@ tests/basic_test.s: tests/basic_test.cpp.s
 tests/basic_test.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/basic_test.cpp.s
 .PHONY : tests/basic_test.cpp.s
+
+tests/chtl_grammar_conformance_test.o: tests/chtl_grammar_conformance_test.cpp.o
+.PHONY : tests/chtl_grammar_conformance_test.o
+
+# target to build an object file
+tests/chtl_grammar_conformance_test.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/chtl_grammar_conformance_test.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/tests/chtl_grammar_conformance_test.cpp.o
+.PHONY : tests/chtl_grammar_conformance_test.cpp.o
+
+tests/chtl_grammar_conformance_test.i: tests/chtl_grammar_conformance_test.cpp.i
+.PHONY : tests/chtl_grammar_conformance_test.i
+
+# target to preprocess a source file
+tests/chtl_grammar_conformance_test.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/chtl_grammar_conformance_test.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/tests/chtl_grammar_conformance_test.cpp.i
+.PHONY : tests/chtl_grammar_conformance_test.cpp.i
+
+tests/chtl_grammar_conformance_test.s: tests/chtl_grammar_conformance_test.cpp.s
+.PHONY : tests/chtl_grammar_conformance_test.s
+
+# target to generate assembly for a file
+tests/chtl_grammar_conformance_test.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/chtl_grammar_conformance_test.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/tests/chtl_grammar_conformance_test.cpp.s
+.PHONY : tests/chtl_grammar_conformance_test.cpp.s
 
 tests/chtl_syntax_validation_test.o: tests/chtl_syntax_validation_test.cpp.o
 .PHONY : tests/chtl_syntax_validation_test.o
@@ -759,6 +826,7 @@ help:
 	@echo "... list_install_components"
 	@echo "... rebuild_cache"
 	@echo "... chtl_compiler"
+	@echo "... chtl_grammar_conformance_tests"
 	@echo "... chtl_syntax_validation_tests"
 	@echo "... chtl_tests"
 	@echo "... comprehensive_lexer_tests"
@@ -797,6 +865,9 @@ help:
 	@echo "... tests/basic_test.o"
 	@echo "... tests/basic_test.i"
 	@echo "... tests/basic_test.s"
+	@echo "... tests/chtl_grammar_conformance_test.o"
+	@echo "... tests/chtl_grammar_conformance_test.i"
+	@echo "... tests/chtl_grammar_conformance_test.s"
 	@echo "... tests/chtl_syntax_validation_test.o"
 	@echo "... tests/chtl_syntax_validation_test.i"
 	@echo "... tests/chtl_syntax_validation_test.s"

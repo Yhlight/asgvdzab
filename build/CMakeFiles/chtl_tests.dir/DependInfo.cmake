@@ -18,6 +18,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/workspace/src/scanner/slice_scanner.cpp" "CMakeFiles/chtl_tests.dir/src/scanner/slice_scanner.cpp.o" "gcc" "CMakeFiles/chtl_tests.dir/src/scanner/slice_scanner.cpp.o.d"
   "/workspace/src/scanner/unified_scanner.cpp" "CMakeFiles/chtl_tests.dir/src/scanner/unified_scanner.cpp.o" "gcc" "CMakeFiles/chtl_tests.dir/src/scanner/unified_scanner.cpp.o.d"
   "/workspace/tests/basic_test.cpp" "CMakeFiles/chtl_tests.dir/tests/basic_test.cpp.o" "gcc" "CMakeFiles/chtl_tests.dir/tests/basic_test.cpp.o.d"
+  "/workspace/tests/chtl_grammar_conformance_test.cpp" "CMakeFiles/chtl_tests.dir/tests/chtl_grammar_conformance_test.cpp.o" "gcc" "CMakeFiles/chtl_tests.dir/tests/chtl_grammar_conformance_test.cpp.o.d"
   "/workspace/tests/chtl_syntax_validation_test.cpp" "CMakeFiles/chtl_tests.dir/tests/chtl_syntax_validation_test.cpp.o" "gcc" "CMakeFiles/chtl_tests.dir/tests/chtl_syntax_validation_test.cpp.o.d"
   "/workspace/tests/comprehensive_lexer_test.cpp" "CMakeFiles/chtl_tests.dir/tests/comprehensive_lexer_test.cpp.o" "gcc" "CMakeFiles/chtl_tests.dir/tests/comprehensive_lexer_test.cpp.o.d"
   "/workspace/tests/slice_scanner_test.cpp" "CMakeFiles/chtl_tests.dir/tests/slice_scanner_test.cpp.o" "gcc" "CMakeFiles/chtl_tests.dir/tests/slice_scanner_test.cpp.o.d"

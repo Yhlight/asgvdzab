@@ -20,6 +20,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/chtl_tests.dir/src/scanner/unified_scanner.cpp.o.d"
   "CMakeFiles/chtl_tests.dir/tests/basic_test.cpp.o"
   "CMakeFiles/chtl_tests.dir/tests/basic_test.cpp.o.d"
+  "CMakeFiles/chtl_tests.dir/tests/chtl_grammar_conformance_test.cpp.o"
+  "CMakeFiles/chtl_tests.dir/tests/chtl_grammar_conformance_test.cpp.o.d"
   "CMakeFiles/chtl_tests.dir/tests/chtl_syntax_validation_test.cpp.o"
   "CMakeFiles/chtl_tests.dir/tests/chtl_syntax_validation_test.cpp.o.d"
   "CMakeFiles/chtl_tests.dir/tests/comprehensive_lexer_test.cpp.o"

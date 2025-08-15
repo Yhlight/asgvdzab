@@ -253,8 +253,7 @@ bool LexerStateManager::transitionOnToken(const CHTLToken& token) {
             }
             break;
             
-        case CHTLTokenType::COLON:
-        case CHTLTokenType::EQUALS:
+        case CHTLTokenType::COLON_EQUALS:
             setExpectingValue(true);
             break;
             

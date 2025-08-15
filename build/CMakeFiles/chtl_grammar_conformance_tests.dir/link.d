@@ -1,0 +1,121 @@
+bin/chtl_grammar_conformance_tests: \
+  /lib/x86_64-linux-gnu/Scrt1.o \
+  /lib/x86_64-linux-gnu/crti.o \
+  /usr/lib/gcc/x86_64-linux-gnu/14/crtbeginS.o \
+  CMakeFiles/chtl_grammar_conformance_tests.dir/tests/chtl_grammar_conformance_test.cpp.o \
+  CMakeFiles/chtl_grammar_conformance_tests.dir/src/common/types.cpp.o \
+  CMakeFiles/chtl_grammar_conformance_tests.dir/src/compilers/chtl_compiler.cpp.o \
+  CMakeFiles/chtl_grammar_conformance_tests.dir/src/dispatcher/compiler_dispatcher.cpp.o \
+  CMakeFiles/chtl_grammar_conformance_tests.dir/src/lexer/chtl_js_tokens.cpp.o \
+  CMakeFiles/chtl_grammar_conformance_tests.dir/src/lexer/chtl_tokens.cpp.o \
+  CMakeFiles/chtl_grammar_conformance_tests.dir/src/lexer/global_map.cpp.o \
+  CMakeFiles/chtl_grammar_conformance_tests.dir/src/lexer/lexer_state.cpp.o \
+  CMakeFiles/chtl_grammar_conformance_tests.dir/src/scanner/slice_scanner.cpp.o \
+  CMakeFiles/chtl_grammar_conformance_tests.dir/src/scanner/unified_scanner.cpp.o \
+  /usr/lib/gcc/x86_64-linux-gnu/14/libstdc++.so \
+  /lib/x86_64-linux-gnu/libm.so \
+  /lib/x86_64-linux-gnu/libm.so \
+  /lib/x86_64-linux-gnu/libm.so \
+  /lib/x86_64-linux-gnu/libm.so.6 \
+  /lib/x86_64-linux-gnu/libmvec.so.1 \
+  /usr/lib/gcc/x86_64-linux-gnu/14/libgcc_s.so \
+  /usr/lib/gcc/x86_64-linux-gnu/14/libgcc_s.so \
+  /usr/lib/gcc/x86_64-linux-gnu/14/libgcc_s.so \
+  /lib/x86_64-linux-gnu/libgcc_s.so.1 \
+  /usr/lib/gcc/x86_64-linux-gnu/14/libgcc.a \
+  /usr/lib/gcc/x86_64-linux-gnu/14/libgcc.a \
+  /lib/x86_64-linux-gnu/libc.so \
+  /lib/x86_64-linux-gnu/libc.so \
+  /lib/x86_64-linux-gnu/libc.so \
+  /lib/x86_64-linux-gnu/libc.so.6 \
+  /usr/lib/x86_64-linux-gnu/libc_nonshared.a \
+  /lib64/ld-linux-x86-64.so.2 \
+  /usr/lib/gcc/x86_64-linux-gnu/14/libgcc_s.so \
+  /usr/lib/gcc/x86_64-linux-gnu/14/libgcc_s.so \
+  /usr/lib/gcc/x86_64-linux-gnu/14/libgcc_s.so \
+  /lib/x86_64-linux-gnu/libgcc_s.so.1 \
+  /usr/lib/gcc/x86_64-linux-gnu/14/libgcc.a \
+  /usr/lib/gcc/x86_64-linux-gnu/14/libgcc.a \
+  /usr/lib/gcc/x86_64-linux-gnu/14/crtendS.o \
+  /lib/x86_64-linux-gnu/crtn.o \
+  /lib64/ld-linux-x86-64.so.2
+
+/lib/x86_64-linux-gnu/Scrt1.o:
+
+/lib/x86_64-linux-gnu/crti.o:
+
+/usr/lib/gcc/x86_64-linux-gnu/14/crtbeginS.o:
+
+CMakeFiles/chtl_grammar_conformance_tests.dir/tests/chtl_grammar_conformance_test.cpp.o:
+
+CMakeFiles/chtl_grammar_conformance_tests.dir/src/common/types.cpp.o:
+
+CMakeFiles/chtl_grammar_conformance_tests.dir/src/compilers/chtl_compiler.cpp.o:
+
+CMakeFiles/chtl_grammar_conformance_tests.dir/src/dispatcher/compiler_dispatcher.cpp.o:
+
+CMakeFiles/chtl_grammar_conformance_tests.dir/src/lexer/chtl_js_tokens.cpp.o:
+
+CMakeFiles/chtl_grammar_conformance_tests.dir/src/lexer/chtl_tokens.cpp.o:
+
+CMakeFiles/chtl_grammar_conformance_tests.dir/src/lexer/global_map.cpp.o:
+
+CMakeFiles/chtl_grammar_conformance_tests.dir/src/lexer/lexer_state.cpp.o:
+
+CMakeFiles/chtl_grammar_conformance_tests.dir/src/scanner/slice_scanner.cpp.o:
+
+CMakeFiles/chtl_grammar_conformance_tests.dir/src/scanner/unified_scanner.cpp.o:
+
+/usr/lib/gcc/x86_64-linux-gnu/14/libstdc++.so:
+
+/lib/x86_64-linux-gnu/libm.so:
+
+/lib/x86_64-linux-gnu/libm.so:
+
+/lib/x86_64-linux-gnu/libm.so:
+
+/lib/x86_64-linux-gnu/libm.so.6:
+
+/lib/x86_64-linux-gnu/libmvec.so.1:
+
+/usr/lib/gcc/x86_64-linux-gnu/14/libgcc_s.so:
+
+/usr/lib/gcc/x86_64-linux-gnu/14/libgcc_s.so:
+
+/usr/lib/gcc/x86_64-linux-gnu/14/libgcc_s.so:
+
+/lib/x86_64-linux-gnu/libgcc_s.so.1:
+
+/usr/lib/gcc/x86_64-linux-gnu/14/libgcc.a:
+
+/usr/lib/gcc/x86_64-linux-gnu/14/libgcc.a:
+
+/lib/x86_64-linux-gnu/libc.so:
+
+/lib/x86_64-linux-gnu/libc.so:
+
+/lib/x86_64-linux-gnu/libc.so:
+
+/lib/x86_64-linux-gnu/libc.so.6:
+
+/usr/lib/x86_64-linux-gnu/libc_nonshared.a:
+
+/lib64/ld-linux-x86-64.so.2:
+
+/usr/lib/gcc/x86_64-linux-gnu/14/libgcc_s.so:
+
+/usr/lib/gcc/x86_64-linux-gnu/14/libgcc_s.so:
+
+/usr/lib/gcc/x86_64-linux-gnu/14/libgcc_s.so:
+
+/lib/x86_64-linux-gnu/libgcc_s.so.1:
+
+/usr/lib/gcc/x86_64-linux-gnu/14/libgcc.a:
+
+/usr/lib/gcc/x86_64-linux-gnu/14/libgcc.a:
+
+/usr/lib/gcc/x86_64-linux-gnu/14/crtendS.o:
+
+/lib/x86_64-linux-gnu/crtn.o:
+
+/lib64/ld-linux-x86-64.so.2:

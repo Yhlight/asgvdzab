@@ -25,8 +25,7 @@ enum class CHTLTokenType {
     LPAREN,              // (
     RPAREN,              // )
     SEMICOLON,           // ;
-    COLON,               // :
-    EQUALS,              // =  (CE对等式：与:完全等价)
+    COLON_EQUALS,        // : 或 = (CE对等式：完全等价)
     COMMA,               // ,
     DOT,                 // .
     HASH,                // #

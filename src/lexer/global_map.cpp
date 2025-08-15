@@ -511,6 +511,29 @@ std::pair<SymbolType, std::string> SymbolUtils::parseSymbolReference(const std::
             type = SymbolType::CUSTOM_VAR;
             name = trimmed.substr(4);
         }
+    } else if (trimmed.find("[Origin]") == 0) {
+        trimmed = trimmed.substr(8); // 移除 "[Origin]"
+        trimmed.erase(0, trimmed.find_first_not_of(" \t"));
+        
+        if (trimmed.find("@Html") == 0) {
+            type = SymbolType::ORIGIN_HTML;
+            name = trimmed.substr(5);
+        } else if (trimmed.find("@Style") == 0) {
+            type = SymbolType::ORIGIN_STYLE;
+            name = trimmed.substr(6);
+        } else if (trimmed.find("@JavaScript") == 0) {
+            type = SymbolType::ORIGIN_JAVASCRIPT;
+            name = trimmed.substr(11);
+        }
+    } else if (trimmed.find("[Import]") == 0) {
+        type = SymbolType::IMPORT;
+        name = trimmed; // 保留完整内容用于导入解析
+    } else if (trimmed.find("[Namespace]") == 0) {
+        type = SymbolType::NAMESPACE;
+        name = trimmed.substr(11);
+    } else if (trimmed.find("[Configuration]") == 0) {
+        type = SymbolType::CONFIGURATION;
+        name = trimmed.substr(15);
     } else if (trimmed.find("@Style") == 0) {
         type = SymbolType::TEMPLATE_STYLE; // 默认为模板
         name = trimmed.substr(6);

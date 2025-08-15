@@ -313,8 +313,7 @@ std::string CHTLTokenUtils::tokenTypeToString(CHTLTokenType type) {
         case CHTLTokenType::LPAREN: return "LPAREN";
         case CHTLTokenType::RPAREN: return "RPAREN";
         case CHTLTokenType::SEMICOLON: return "SEMICOLON";
-        case CHTLTokenType::COLON: return "COLON";
-        case CHTLTokenType::EQUALS: return "EQUALS";
+                    case CHTLTokenType::COLON_EQUALS: return "COLON_EQUALS";
         case CHTLTokenType::COMMA: return "COMMA";
         case CHTLTokenType::DOT: return "DOT";
         case CHTLTokenType::HASH: return "HASH";
@@ -372,8 +371,7 @@ bool CHTLTokenUtils::isKeywordType(CHTLTokenType type) {
 }
 
 bool CHTLTokenUtils::isOperatorType(CHTLTokenType type) {
-    return type == CHTLTokenType::COLON ||
-           type == CHTLTokenType::EQUALS ||
+    return type == CHTLTokenType::COLON_EQUALS ||
            type == CHTLTokenType::DOT ||
            type == CHTLTokenType::HASH ||
            type == CHTLTokenType::AMPERSAND;
