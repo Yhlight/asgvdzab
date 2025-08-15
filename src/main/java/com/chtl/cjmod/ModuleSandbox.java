@@ -357,7 +357,7 @@ public class ModuleSandbox {
         synchronized (securityManagerLock) {
             if (securityManager == null) {
                 securityManager = new SandboxSecurityManager();
-                System.setSecurityManager(securityManager);
+                // System.setSecurityManager(...); // Deprecated in Java 17+
             }
         }
     }
@@ -438,7 +438,7 @@ public class ModuleSandbox {
                 
                 if (executorThread.isAlive()) {
                     // 强制停止（不推荐，但作为最后手段）
-                    executorThread.stop();
+                    executorThread.interrupt(); // stop() is deprecated
                 }
             }
         }

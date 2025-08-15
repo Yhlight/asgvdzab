@@ -1,6 +1,8 @@
 package com.chtl.ast.chtljs;
 
-import com.chtl.ast.NodeType;
+import com.chtl.chtljs.ast.AbstractCHTLJSASTNode;
+
+
 
 /**
  * 动画控制器节点
@@ -11,7 +13,7 @@ public class AnimationControllerNode extends AbstractCHTLJSASTNode {
     private AnimationConfigNode config;
     
     public AnimationControllerNode() {
-        // // super(NodeType.ANIMATION_CONTROLLER); // NodeType not available // NodeType not available
+        // // super(); // NodeType not available // NodeType not available
     }
     
     public String getAnimationId() {

@@ -3,10 +3,16 @@ package com.chtl.lexer;
 public class CHTLToken {
     private String type;
     private String value;
+    private int line;
+    private int column;
+
     public CHTLToken(String type, String value) {
         this.type = type;
         this.value = value;
     }
+
     public String getType() { return type; }
     public String getValue() { return value; }
+    public int getLine() { return line; }
+    public int getColumn() { return column; }
 }

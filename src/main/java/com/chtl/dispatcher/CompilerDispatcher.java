@@ -1,5 +1,7 @@
 package com.chtl.dispatcher;
 
 public class CompilerDispatcher {
-    // Stub implementation
+    public void dispatch(String fragmentType, String content) {
+        // Stub implementation
+    }
 }
