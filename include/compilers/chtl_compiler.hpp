@@ -1,331 +1,242 @@
 #pragma once
 
-#include "dispatcher/compiler_dispatcher.hpp"
-#include <string>
-#include <vector>
-#include <unordered_map>
+#include "core/compiler_dispatcher.hpp"
 #include <memory>
+#include <unordered_map>
+#include <string>
 
 namespace chtl {
 
 /**
- * CHTL抽象语法树节点基类
+ * CHTL编译器实现
+ * 负责编译CHTL片段（主要是局部style使用）
+ * 使用手写解析器，专门处理CHTL语法
  */
-class ASTNode {
+class CHTLCompiler : public ICHTLCompiler {
 public:
-    virtual ~ASTNode() = default;
-    virtual std::string toString() const = 0;
-};
-
-/**
- * 编译器内部元素节点 (Legacy)
- */
-class CompilerElementNode : public ASTNode {
-public:
-    std::string tagName;                                    // 标签名
-    std::unordered_map<std::string, std::string> attributes; // 属性
-    std::vector<std::unique_ptr<ASTNode>> children;         // 子节点
-    std::string localStyle;                                 // 局部样式
-    std::string localScript;                                // 局部脚本
-
-    CompilerElementNode(const std::string& tag) : tagName(tag) {}
-    std::string toString() const override;
-};
-
-/**
- * 编译器内部文本节点 (Legacy)
- */
-class CompilerTextNode : public ASTNode {
-public:
-    std::string content;
-
-    CompilerTextNode(const std::string& text) : content(text) {}
-    std::string toString() const override;
-};
-
-/**
- * 编译器内部模板节点 (Legacy)
- */
-class CompilerTemplateNode : public ASTNode {
-public:
-    std::string templateType; // @Style, @Element, @Var
-    std::string name;
-    std::string content;
-    
-    CompilerTemplateNode(const std::string& type, const std::string& templateName) 
-        : templateType(type), name(templateName) {}
-    std::string toString() const override;
-};
-
-/**
- * 编译器内部自定义节点 (Legacy)
- */
-class CompilerCustomNode : public ASTNode {
-public:
-    std::string customType; // @Style, @Element, @Var
-    std::string name;
-    std::string content;
-    
-    CompilerCustomNode(const std::string& type, const std::string& customName) 
-        : customType(type), name(customName) {}
-    std::string toString() const override;
-};
-
-/**
- * CHTL编译器
- * 负责解析和编译CHTL语法，处理局部样式
- */
-class CHTLCompiler : public ICompiler {
-public:
-    /**
-     * 构造函数
-     */
     CHTLCompiler();
-
-    /**
-     * 析构函数
-     */
-    ~CHTLCompiler() = default;
-
-    /**
-     * 编译代码片段
-     * @param segment 代码片段
-     * @param config 编译配置
-     * @return 编译结果
-     */
-    CompileResult compile(const CodeSegment& segment, const CompileConfig& config) override;
-
-    /**
-     * 获取编译器名称
-     * @return 编译器名称
-     */
-    std::string getName() const override;
-
-    /**
-     * 获取支持的代码片段类型
-     * @return 支持的类型列表
-     */
-    std::vector<CodeSegmentType> getSupportedTypes() const override;
-
-    /**
-     * 设置模板库
-     * @param templates 模板映射
-     */
-    void setTemplates(const std::unordered_map<std::string, std::string>& templates);
-
-    /**
-     * 设置自定义库
-     * @param customs 自定义映射
-     */
-    void setCustoms(const std::unordered_map<std::string, std::string>& customs);
-
+    virtual ~CHTLCompiler();
+    
+    // 基础编译器接口
+    std::string getId() const override;
+    std::string getVersion() const override;
+    bool initialize() override;
+    void cleanup() override;
+    CompilationResult compile(const CodeFragment& fragment) override;
+    
+    // CHTL编译器特有接口
+    bool supportsLocalStyle() const override;
+    CompilationResult compileLocalStyle(const CodeFragment& fragment) override;
+    
+    // CHTL特有功能
+    void setTemplateVariables(const std::unordered_map<std::string, std::string>& variables);
+    void setCustomVariables(const std::unordered_map<std::string, std::string>& variables);
+    void setStyleGroups(const std::unordered_map<std::string, std::string>& groups);
+    
 private:
+    bool initialized_;
+    std::unordered_map<std::string, std::string> templateVariables_;
+    std::unordered_map<std::string, std::string> customVariables_;
+    std::unordered_map<std::string, std::string> styleGroups_;
+    
     /**
-     * 解析器状态
+     * 编译CHTL模板变量
      */
-    struct ParserState {
-        std::string source;
-        size_t position;
-        size_t line;
-        size_t column;
-        CompileResult result;
+    std::string compileTemplateVariables(const std::string& content);
+    
+    /**
+     * 编译自定义变量
+     */
+    std::string compileCustomVariables(const std::string& content);
+    
+    /**
+     * 编译变量组语法
+     */
+    std::string compileVariableGroups(const std::string& content);
+    
+    /**
+     * 编译样式组
+     */
+    std::string compileStyleGroups(const std::string& content);
+    
+    /**
+     * 编译继承语句
+     */
+    std::string compileInheritStatements(const std::string& content);
+    
+    /**
+     * 编译删除语句
+     */
+    std::string compileDeleteStatements(const std::string& content);
+    
+    /**
+     * 编译from语句
+     */
+    std::string compileFromStatements(const std::string& content);
+    
+    /**
+     * 处理生成器注释
+     */
+    std::string processGeneratorComments(const std::string& content);
+    
+    /**
+     * 编译局部样式块
+     */
+    std::string compileLocalStyleBlock(const std::string& content);
+    
+    /**
+     * 解析变量引用 {{variable}}
+     */
+    std::string parseVariableReference(const std::string& varRef);
+    
+    /**
+     * 解析HTML变量引用 {{{variable}}}
+     */
+    std::string parseHtmlVariableReference(const std::string& varRef);
+    
+    /**
+     * 解析无转义变量引用 {{&variable}}
+     */
+    std::string parseUnescapedVariableReference(const std::string& varRef);
+    
+    /**
+     * 验证CHTL语法
+     */
+    bool validateChtlSyntax(const std::string& content, std::vector<std::string>& errors);
+    
+    /**
+     * 生成CSS选择器
+     */
+    std::string generateCssSelector(const std::string& selector);
+    
+    /**
+     * 应用样式继承
+     */
+    std::string applyStyleInheritance(const std::string& baseStyle, const std::string& inheritedStyle);
+    
+    /**
+     * 处理样式删除
+     */
+    std::string processStyleDeletion(const std::string& style, const std::string& deleteRule);
+    
+    /**
+     * 优化输出CSS
+     */
+    std::string optimizeCssOutput(const std::string& css);
+};
 
-        ParserState() : position(0), line(1), column(1) {}
+/**
+ * CHTL语法解析器
+ * 专门用于解析CHTL特有语法
+ */
+class CHTLSyntaxParser {
+public:
+    struct VariableReference {
+        std::string name;
+        std::string type;        // "template", "custom", "html", "unescaped"
+        size_t startPos;
+        size_t endPos;
+        std::string defaultValue;
     };
-
-    ParserState state_;
-    CompileConfig config_;
-    std::unordered_map<std::string, std::string> templates_;
-    std::unordered_map<std::string, std::string> customs_;
-    std::string generatedCSS_;     // 生成的全局CSS
-    std::string generatedJS_;      // 生成的全局JS
-    size_t classCounter_;          // 自动生成的类名计数器
-
+    
+    struct StyleGroup {
+        std::string name;
+        std::string baseGroup;   // 继承的基础组
+        std::vector<std::string> properties;
+        std::vector<std::string> deletedProperties;
+        bool isCustom;
+    };
+    
+    struct FromStatement {
+        std::string namespace_;
+        std::vector<std::string> imports;
+        std::string asAlias;
+        std::vector<std::string> except;
+    };
+    
     /**
-     * 解析CHTL代码
-     * @param source 源代码
-     * @return AST根节点
+     * 解析变量引用
      */
-    std::unique_ptr<ASTNode> parse(const std::string& source);
-
+    static std::vector<VariableReference> parseVariableReferences(const std::string& content);
+    
     /**
-     * 解析元素
-     * @return 元素节点
+     * 解析样式组定义
      */
-    std::unique_ptr<CompilerElementNode> parseElement();
-
+    static std::vector<StyleGroup> parseStyleGroups(const std::string& content);
+    
     /**
-     * 解析文本节点
-     * @return 文本节点
+     * 解析from语句
      */
-    std::unique_ptr<CompilerTextNode> parseText();
-
+    static std::vector<FromStatement> parseFromStatements(const std::string& content);
+    
     /**
-     * 解析模板
-     * @return 模板节点
+     * 解析继承语句
      */
-    std::unique_ptr<CompilerTemplateNode> parseTemplate();
-
+    static std::vector<std::pair<std::string, std::string>> parseInheritStatements(const std::string& content);
+    
     /**
-     * 解析自定义
-     * @return 自定义节点
+     * 解析删除语句
      */
-    std::unique_ptr<CompilerCustomNode> parseCustom();
-
+    static std::vector<std::pair<std::string, std::string>> parseDeleteStatements(const std::string& content);
+    
     /**
-     * 解析属性
-     * @param element 元素节点
+     * 验证变量名合法性
      */
-    void parseAttributes(CompilerElementNode* element);
-
+    static bool isValidVariableName(const std::string& name);
+    
     /**
-     * 解析局部样式块
-     * @param element 元素节点
+     * 验证样式组名合法性
      */
-    void parseLocalStyle(CompilerElementNode* element);
+    static bool isValidStyleGroupName(const std::string& name);
+};
 
+/**
+ * CHTL代码生成器
+ * 将解析后的CHTL语法转换为HTML/CSS输出
+ */
+class CHTLCodeGenerator {
+public:
+    CHTLCodeGenerator();
+    
     /**
-     * 解析局部脚本块
-     * @param element 元素节点
+     * 生成HTML输出
      */
-    void parseLocalScript(CompilerElementNode* element);
-
+    std::string generateHtml(const std::string& template_, const std::unordered_map<std::string, std::string>& variables);
+    
     /**
-     * 处理局部样式
-     * @param styleContent 样式内容
-     * @param elementId 元素ID（用于生成唯一类名）
-     * @return 处理后的内联样式和全局样式
+     * 生成CSS输出
      */
-    std::pair<std::string, std::string> processLocalStyle(const std::string& styleContent, const std::string& elementId);
-
+    std::string generateCss(const std::vector<CHTLSyntaxParser::StyleGroup>& styleGroups);
+    
     /**
-     * 生成HTML
-     * @param node AST节点
-     * @return HTML字符串
+     * 应用变量替换
      */
-    std::string generateHTML(const ASTNode* node);
-
+    std::string applyVariableSubstitution(const std::string& content, const std::unordered_map<std::string, std::string>& variables);
+    
     /**
-     * 生成元素HTML
-     * @param element 元素节点
-     * @return HTML字符串
+     * 生成唯一CSS类名
      */
-    std::string generateElementHTML(const CompilerElementNode* element);
-
+    std::string generateUniqueClassName(const std::string& baseName);
+    
     /**
-     * 生成文本HTML
-     * @param text 文本节点
-     * @return HTML字符串
+     * 压缩CSS输出
      */
-    std::string generateTextHTML(const CompilerTextNode* text);
-
+    std::string compressCss(const std::string& css);
+    
+private:
+    int classNameCounter_;
+    std::unordered_map<std::string, std::string> classNameMapping_;
+    
     /**
-     * 处理模板引用
-     * @param templateRef 模板引用
-     * @return 处理后的内容
+     * 转义HTML特殊字符
      */
-    std::string processTemplateReference(const std::string& templateRef);
-
+    std::string escapeHtml(const std::string& text);
+    
     /**
-     * 处理自定义引用
-     * @param customRef 自定义引用
-     * @return 处理后的内容
+     * 处理样式组继承
      */
-    std::string processCustomReference(const std::string& customRef);
-
-    /**
-     * 生成唯一类名
-     * @return 类名
-     */
-    std::string generateUniqueClassName();
-
-    /**
-     * 当前字符
-     * @return 当前字符
-     */
-    char currentChar();
-
-    /**
-     * 前进一个字符
-     * @return 前进后的字符
-     */
-    char advance();
-
-    /**
-     * 查看下一个字符
-     * @param offset 偏移量
-     * @return 字符
-     */
-    char peek(size_t offset = 1);
-
-    /**
-     * 跳过空白字符
-     */
-    void skipWhitespace();
-
-    /**
-     * 读取标识符
-     * @return 标识符
-     */
-    std::string readIdentifier();
-
-    /**
-     * 读取字符串字面量
-     * @param delimiter 分隔符
-     * @return 字符串内容
-     */
-    std::string readStringLiteral(char delimiter);
-
-    /**
-     * 读取无修饰字面量
-     * @param stopChars 停止字符
-     * @return 字面量内容
-     */
-    std::string readUnquotedLiteral(const std::string& stopChars = ";{}:");
-
-    /**
-     * 读取块内容
-     * @return 块内容
-     */
-    std::string readBlock();
-
-    /**
-     * 匹配字符串
-     * @param str 要匹配的字符串
-     * @return 是否匹配成功
-     */
-    bool match(const std::string& str);
-
-    /**
-     * 期望字符
-     * @param expected 期望的字符
-     * @return 是否匹配成功
-     */
-    bool expect(char expected);
-
-    /**
-     * 是否到达文件末尾
-     * @return 是否到达末尾
-     */
-    bool isAtEnd();
-
-    /**
-     * 报告错误
-     * @param message 错误消息
-     */
-    void reportError(const std::string& message);
-
-    /**
-     * 报告警告
-     * @param message 警告消息
-     */
-    void reportWarning(const std::string& message);
-
-    /**
-     * 获取当前位置信息
-     * @return 位置字符串
-     */
-    std::string getCurrentPosition();
+    std::string resolveStyleInheritance(const CHTLSyntaxParser::StyleGroup& group, 
+                                      const std::vector<CHTLSyntaxParser::StyleGroup>& allGroups);
 };
 
 } // namespace chtl

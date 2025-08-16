@@ -47,6 +47,8 @@ file(GLOB_RECURSE CHTL_CORE_SOURCES
     "src/cjmod/*.cpp"
     "src/network/*.cpp"
     "src/compiler/*.cpp"
+    "src/core/*.cpp"
+    "src/constraints/*.cpp"
 )
 
 file(GLOB_RECURSE CHTL_COMPILER_SOURCES
@@ -126,6 +128,13 @@ if(EXISTS "${CMAKE_SOURCE_DIR}/tests")
         add_executable(js_compiler_test tests/js_compiler_test.cpp)
         target_link_libraries(js_compiler_test chtl_test_lib)
         target_include_directories(js_compiler_test PRIVATE ${CHTL_INCLUDE_DIRS})
+    endif()
+    
+    # 统一编译器架构测试
+    if(EXISTS "${CMAKE_SOURCE_DIR}/tests/unified_compiler_test.cpp")
+        add_executable(unified_compiler_test tests/unified_compiler_test.cpp)
+        target_link_libraries(unified_compiler_test chtl_test_lib)
+        target_include_directories(unified_compiler_test PRIVATE ${CHTL_INCLUDE_DIRS})
     endif()
 endif()
 

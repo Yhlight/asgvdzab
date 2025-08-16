@@ -1,0 +1,663 @@
+#include "core/chtl_unified_scanner.hpp"
+#include <regex>
+#include <iostream>
+#include <algorithm>
+#include <sstream>
+#include <cctype>
+
+namespace chtl {
+
+// ==================== MinimalUnit 实现 ====================
+
+const std::vector<std::string>& MinimalUnit::getChtlMinimalPatterns() {
+    static std::vector<std::string> patterns = {
+        // 变量引用模式
+        R"(\{\{[^}]+\}\})",                    // {{variable}}
+        R"(\{\{\{[^}]+\}\}\})",                // {{{htmlContent}}}
+        R"(\{\{&[^}]+\}\})",                   // {{&unescaped}}
+        
+        // CHTL语法模式
+        R"(@(?:Var|Style|Element)\s+\w+)",     // @Var/@Style/@Element
+        R"(\[(?:Custom|Template|Origin|Import|Namespace)\])", // 块标记
+        R"(\w+\(\w+(?:\s*=\s*[^)]+)?\))",       // 变量组语法
+        R"(\w+\s+from\s+[\w./]+)",             // from语句
+        R"(inherit\s+@?\w+)",                  // inherit语句
+        R"(delete\s+@?\w+(?:\.\w+)?)",         // delete语句
+        R"(--[^\r\n]*)",                       // 生成器注释
+        
+        // 运算符和连接符
+        R"(->)",                               // 箭头操作符
+        R"(\+\+|--)",                          // 自增自减
+        R"([+\-*/=<>!&|]+)",                   // 其他操作符
+    };
+    return patterns;
+}
+
+const std::vector<std::string>& MinimalUnit::getChtlJsMinimalPatterns() {
+    static std::vector<std::string> patterns = {
+        // CHTL JS混合模式（继承CHTL模式）
+        R"(\{\{[^}]+\}\})",                    // {{variable}}
+        R"(\{\{\{[^}]+\}\}\})",                // {{{htmlContent}}}
+        R"(\{\{&[^}]+\}\})",                   // {{&unescaped}}
+        
+        // CHTL语法在JS中
+        R"(\w+\(\w+(?:\s*=\s*[^)]+)?\))",       // 变量组语法
+        R"(\w+\s+from\s+[\w./]+)",             // from语句
+        R"(\[Origin\]\s+@\w+)",                // 原始嵌入
+        R"(--[^\r\n]*)",                       // 生成器注释
+        
+        // JavaScript语法模式
+        R"(function\s+\w+\s*\([^)]*\))",       // 函数定义
+        R"(\w+\s*=\s*\([^)]*\)\s*=>)",         // 箭头函数
+        R"(\w+\.\w+\s*\([^)]*\))",             // 方法调用
+        R"(new\s+\w+\s*\([^)]*\))",            // 构造函数
+        R"(\w+\[[\w"']+\])",                   // 数组/对象访问
+        
+        // 运算符
+        R"(->)",                               // 箭头操作符（CHTL特有）
+        R"(=>)",                               // 箭头函数（JS）
+        R"(\+\+|--)",                          // 自增自减
+        R"([+\-*/=<>!&|]+)",                   // 其他操作符
+    };
+    return patterns;
+}
+
+bool MinimalUnit::isCompleteChtlUnit(const std::string& fragment) {
+    // 检查CHTL语法的完整性
+    
+    // 检查变量引用完整性
+    if (fragment.find("{{") != std::string::npos) {
+        size_t start = fragment.find("{{");
+        size_t end = fragment.find("}}", start);
+        if (end == std::string::npos) return false;
+    }
+    
+    // 检查块标记完整性
+    if (fragment.find("[") != std::string::npos) {
+        size_t start = fragment.find("[");
+        size_t end = fragment.find("]", start);
+        if (end == std::string::npos) return false;
+    }
+    
+    // 检查变量组语法完整性
+    std::regex varGroupPattern(R"(\w+\()");
+    std::sregex_iterator iter(fragment.begin(), fragment.end(), varGroupPattern);
+    std::sregex_iterator end;
+    
+    for (; iter != end; ++iter) {
+        size_t start = iter->position() + iter->length() - 1;
+        size_t parenEnd = fragment.find(")", start);
+        if (parenEnd == std::string::npos) return false;
+    }
+    
+    return true;
+}
+
+bool MinimalUnit::isCompleteChtlJsUnit(const std::string& fragment) {
+    // 先检查CHTL部分的完整性
+    if (!isCompleteChtlUnit(fragment)) return false;
+    
+    // 检查JavaScript语法的完整性
+    
+    // 检查函数定义完整性
+    if (fragment.find("function") != std::string::npos) {
+        std::regex funcPattern(R"(function\s+\w+\s*\()");
+        if (std::regex_search(fragment, funcPattern)) {
+            size_t braceStart = fragment.find("{");
+            if (braceStart == std::string::npos) return false;
+            // 检查大括号平衡
+            if (!SliceValidator::areBracesBalanced(fragment.substr(braceStart))) return false;
+        }
+    }
+    
+    // 检查箭头函数完整性
+    if (fragment.find("=>") != std::string::npos) {
+        std::regex arrowPattern(R"(\([^)]*\)\s*=>)");
+        if (std::regex_search(fragment, arrowPattern)) {
+            size_t arrowPos = fragment.find("=>");
+            size_t braceStart = fragment.find("{", arrowPos);
+            if (braceStart != std::string::npos) {
+                if (!SliceValidator::areBracesBalanced(fragment.substr(braceStart))) return false;
+            }
+        }
+    }
+    
+    return true;
+}
+
+std::vector<size_t> MinimalUnit::findMinimalUnitBoundaries(const std::string& content, CodeFragmentType type) {
+    std::vector<size_t> boundaries;
+    boundaries.push_back(0); // 起始边界
+    
+    const auto& patterns = (type == CodeFragmentType::CHTL_FRAGMENT) ? 
+                          getChtlMinimalPatterns() : getChtlJsMinimalPatterns();
+    
+    for (const auto& pattern : patterns) {
+        std::regex regex(pattern);
+        std::sregex_iterator iter(content.begin(), content.end(), regex);
+        std::sregex_iterator end;
+        
+        for (; iter != end; ++iter) {
+            const auto& match = *iter;
+            boundaries.push_back(match.position());
+            boundaries.push_back(match.position() + match.length());
+        }
+    }
+    
+    boundaries.push_back(content.length()); // 结束边界
+    
+    // 排序并去重
+    std::sort(boundaries.begin(), boundaries.end());
+    boundaries.erase(std::unique(boundaries.begin(), boundaries.end()), boundaries.end());
+    
+    return boundaries;
+}
+
+// ==================== CHTLUnifiedScanner 实现 ====================
+
+CHTLUnifiedScanner::CHTLUnifiedScanner() 
+    : initialSliceSize_(1024), maxExpansions_(10), debugMode_(false) {
+}
+
+std::vector<CodeFragment> CHTLUnifiedScanner::scanAndSlice(const std::string& sourceCode) {
+    debugLog("开始精准代码切割，源代码长度: " + std::to_string(sourceCode.length()));
+    
+    // 第一阶段：基于可变长度切片的粗切割
+    auto slices = performInitialSlicing(sourceCode);
+    debugLog("完成初始切片，共 " + std::to_string(slices.size()) + " 个切片");
+    
+    std::vector<CodeFragment> allFragments;
+    
+    // 第二阶段：对每个切片进行处理
+    for (auto& slice : slices) {
+        // 提取切片内容
+        std::string sliceContent = sourceCode.substr(slice.position, slice.length);
+        
+        // 识别片段类型
+        CodeFragmentType fragmentType = identifyFragmentType(sliceContent);
+        
+        // 第三阶段：最小单元精确切割
+        auto fragments = performMinimalUnitCutting(sliceContent, fragmentType, slice.position);
+        
+        // 添加到结果中
+        allFragments.insert(allFragments.end(), fragments.begin(), fragments.end());
+    }
+    
+    // 第四阶段：合并连续的相同类型片段（基于上下文）
+    auto mergedFragments = mergeContextualFragments(allFragments);
+    
+    debugLog("切割完成，共产生 " + std::to_string(mergedFragments.size()) + " 个精确片段");
+    
+    return mergedFragments;
+}
+
+std::vector<SliceInfo> CHTLUnifiedScanner::performInitialSlicing(const std::string& sourceCode) {
+    std::vector<SliceInfo> slices;
+    size_t currentPos = 0;
+    size_t totalLength = sourceCode.length();
+    
+    while (currentPos < totalLength) {
+        SliceInfo slice;
+        slice.position = currentPos;
+        slice.length = std::min(initialSliceSize_, totalLength - currentPos);
+        
+        debugSliceInfo(slice, sourceCode);
+        
+        // 验证切片边界并进行扩增
+        size_t expansions = 0;
+        while (validateSliceBoundary(sourceCode, slice) && expansions < maxExpansions_) {
+            if (!expandSlice(sourceCode, slice)) {
+                break;
+            }
+            expansions++;
+            debugLog("切片扩增 " + std::to_string(expansions) + " 次，原因: " + slice.reason);
+        }
+        
+        slices.push_back(slice);
+        currentPos = slice.position + slice.length;
+    }
+    
+    return slices;
+}
+
+bool CHTLUnifiedScanner::validateSliceBoundary(const std::string& sourceCode, SliceInfo& slice) {
+    size_t endPos = slice.position + slice.length;
+    
+    // 检查是否在源代码末尾
+    if (endPos >= sourceCode.length()) {
+        return false;
+    }
+    
+    // 检查是否在字符串或注释中间切断
+    if (SliceValidator::isInStringOrComment(sourceCode, endPos)) {
+        slice.needsExpansion = true;
+        slice.reason = "在字符串或注释中间切断";
+        return true;
+    }
+    
+    // 检查是否可能开始新的CHTL或CHTL JS片段
+    if (mightStartNewFragment(sourceCode, endPos)) {
+        slice.needsExpansion = true;
+        slice.reason = "可能截断CHTL/CHTL JS片段开始";
+        return true;
+    }
+    
+    // 检查当前切片的完整性
+    std::string sliceContent = sourceCode.substr(slice.position, slice.length);
+    CodeFragmentType type = identifyFragmentType(sliceContent);
+    
+    if (type == CodeFragmentType::CHTL_FRAGMENT || type == CodeFragmentType::CHTL_JS_FRAGMENT) {
+        if (!isChtlFragmentComplete(sliceContent, type)) {
+            slice.needsExpansion = true;
+            slice.reason = "CHTL/CHTL JS片段不完整";
+            return true;
+        }
+    }
+    
+    return false;
+}
+
+bool CHTLUnifiedScanner::expandSlice(const std::string& sourceCode, SliceInfo& slice) {
+    size_t totalLength = sourceCode.length();
+    size_t currentEnd = slice.position + slice.length;
+    
+    if (currentEnd >= totalLength) {
+        return false;
+    }
+    
+    // 计算扩增大小（初始切片大小的25%）
+    size_t expansionSize = initialSliceSize_ / 4;
+    if (expansionSize < 64) expansionSize = 64;
+    
+    size_t newLength = std::min(slice.length + expansionSize, totalLength - slice.position);
+    
+    if (newLength == slice.length) {
+        return false; // 无法再扩增
+    }
+    
+    slice.length = newLength;
+    slice.expansionSize += expansionSize;
+    
+    return true;
+}
+
+CodeFragmentType CHTLUnifiedScanner::identifyFragmentType(const std::string& content, const std::string& context) {
+    // 检查是否包含CHTL特有语法
+    bool hasChtlSyntax = false;
+    bool hasJsSyntax = false;
+    
+    // CHTL语法检查
+    std::vector<std::regex> chtlPatterns = {
+        std::regex(R"(@(?:Var|Style|Element)\s+\w+)"),
+        std::regex(R"(\[(?:Custom|Template|Origin|Import|Namespace)\])"),
+        std::regex(R"(\w+\s+from\s+[\w./]+)"),
+        std::regex(R"(inherit\s+@?\w+)"),
+        std::regex(R"(delete\s+@?\w+)"),
+        std::regex(R"(\w+\(\w+\s*(?:=\s*[^)]+)?\))"),  // 变量组语法
+        std::regex(R"(--.*)"),  // 生成器注释
+    };
+    
+    for (const auto& pattern : chtlPatterns) {
+        if (std::regex_search(content, pattern)) {
+            hasChtlSyntax = true;
+            break;
+        }
+    }
+    
+    // JavaScript语法检查
+    std::vector<std::regex> jsPatterns = {
+        std::regex(R"(\b(?:function|var|let|const|if|else|for|while|return|class)\b)"),
+        std::regex(R"(\w+\s*=\s*\([^)]*\)\s*=>)"),  // 箭头函数
+        std::regex(R"(\w+\.\w+\s*\()"),  // 方法调用
+        std::regex(R"(new\s+\w+\s*\()"),  // 构造函数
+    };
+    
+    for (const auto& pattern : jsPatterns) {
+        if (std::regex_search(content, pattern)) {
+            hasJsSyntax = true;
+            break;
+        }
+    }
+    
+    // CSS语法检查
+    std::vector<std::regex> cssPatterns = {
+        std::regex(R"([.#]?[\w-]+\s*\{[^}]*\})"),  // CSS选择器和规则
+        std::regex(R"([\w-]+\s*:\s*[^;]+;)"),  // CSS属性
+        std::regex(R"(@(?:media|import|keyframes|charset))"),  // CSS @规则
+    };
+    
+    bool hasCssSyntax = false;
+    for (const auto& pattern : cssPatterns) {
+        if (std::regex_search(content, pattern)) {
+            hasCssSyntax = true;
+            break;
+        }
+    }
+    
+    // 根据检测结果确定类型
+    if (hasChtlSyntax && hasJsSyntax) {
+        return CodeFragmentType::CHTL_JS_FRAGMENT;
+    } else if (hasChtlSyntax) {
+        return CodeFragmentType::CHTL_FRAGMENT;
+    } else if (hasCssSyntax) {
+        return CodeFragmentType::CSS_FRAGMENT;
+    } else if (hasJsSyntax) {
+        return CodeFragmentType::JS_FRAGMENT;
+    } else {
+        // 默认根据上下文判断
+        if (context == "style") return CodeFragmentType::CSS_FRAGMENT;
+        if (context == "script") return CodeFragmentType::JS_FRAGMENT;
+        return CodeFragmentType::CHTL_FRAGMENT;
+    }
+}
+
+std::vector<CodeFragment> CHTLUnifiedScanner::performMinimalUnitCutting(const std::string& content, CodeFragmentType type, size_t basePos) {
+    std::vector<CodeFragment> fragments;
+    
+    if (type == CodeFragmentType::CSS_FRAGMENT || type == CodeFragmentType::JS_FRAGMENT) {
+        // CSS和JS片段不需要最小单元切割，直接返回
+        CodeFragment fragment;
+        fragment.type = type;
+        fragment.content = content;
+        fragment.startPos = basePos;
+        fragment.endPos = basePos + content.length();
+        fragment.startLine = calculateLineNumber(content, 0);
+        fragment.endLine = calculateLineNumber(content, content.length());
+        fragment.isMinimalUnit = false;
+        
+        fragments.push_back(fragment);
+        return fragments;
+    }
+    
+    // 对CHTL和CHTL JS进行最小单元切割
+    auto boundaries = MinimalUnit::findMinimalUnitBoundaries(content, type);
+    
+    for (size_t i = 0; i < boundaries.size() - 1; ++i) {
+        size_t start = boundaries[i];
+        size_t end = boundaries[i + 1];
+        
+        if (start >= end) continue;
+        
+        std::string fragmentContent = content.substr(start, end - start);
+        
+        // 跳过空白片段
+        if (fragmentContent.find_first_not_of(" \t\n\r") == std::string::npos) {
+            continue;
+        }
+        
+        CodeFragment fragment;
+        fragment.type = type;
+        fragment.content = fragmentContent;
+        fragment.startPos = basePos + start;
+        fragment.endPos = basePos + end;
+        fragment.startLine = calculateLineNumber(content, start);
+        fragment.endLine = calculateLineNumber(content, end);
+        fragment.isMinimalUnit = true;
+        
+        fragments.push_back(fragment);
+    }
+    
+    return fragments;
+}
+
+bool CHTLUnifiedScanner::isChtlFragmentComplete(const std::string& fragment, CodeFragmentType type) {
+    if (type == CodeFragmentType::CHTL_FRAGMENT) {
+        return MinimalUnit::isCompleteChtlUnit(fragment);
+    } else if (type == CodeFragmentType::CHTL_JS_FRAGMENT) {
+        return MinimalUnit::isCompleteChtlJsUnit(fragment);
+    }
+    return true;
+}
+
+bool CHTLUnifiedScanner::mightStartNewFragment(const std::string& text, size_t position) {
+    if (position >= text.length()) return false;
+    
+    // 检查可能的CHTL语法开始模式
+    std::vector<std::string> startPatterns = {
+        "{{", "@", "[", "inherit", "delete", "--"
+    };
+    
+    for (const auto& pattern : startPatterns) {
+        if (position + pattern.length() <= text.length()) {
+            if (text.substr(position, pattern.length()) == pattern) {
+                return true;
+            }
+        }
+    }
+    
+    return false;
+}
+
+std::vector<CodeFragment> CHTLUnifiedScanner::mergeContextualFragments(const std::vector<CodeFragment>& fragments) {
+    if (fragments.empty()) return fragments;
+    
+    std::vector<CodeFragment> merged;
+    CodeFragment current = fragments[0];
+    
+    for (size_t i = 1; i < fragments.size(); ++i) {
+        const auto& next = fragments[i];
+        
+        if (shouldMergeWithNext(current, next)) {
+            // 合并片段
+            current.content += next.content;
+            current.endPos = next.endPos;
+            current.endLine = next.endLine;
+            current.isContextDependent = true;
+            
+            debugLog("合并片段: " + current.content.substr(0, 50) + "...");
+        } else {
+            // 不合并，添加当前片段并开始新片段
+            merged.push_back(current);
+            current = next;
+        }
+    }
+    
+    merged.push_back(current);
+    return merged;
+}
+
+bool CHTLUnifiedScanner::shouldMergeWithNext(const CodeFragment& current, const CodeFragment& next) {
+    // 类型相同且都是最小单元
+    if (current.type != next.type || !current.isMinimalUnit || !next.isMinimalUnit) {
+        return false;
+    }
+    
+    // 位置连续
+    if (current.endPos != next.startPos) {
+        return false;
+    }
+    
+    // CHTL和CHTL JS片段的特殊合并规则
+    if (current.type == CodeFragmentType::CHTL_FRAGMENT || current.type == CodeFragmentType::CHTL_JS_FRAGMENT) {
+        // 检查是否应该保持分离（例如，操作符前后）
+        std::string currentTrimmed = current.content;
+        std::string nextTrimmed = next.content;
+        
+        // 去除前后空白
+        currentTrimmed.erase(0, currentTrimmed.find_first_not_of(" \t\n\r"));
+        currentTrimmed.erase(currentTrimmed.find_last_not_of(" \t\n\r") + 1);
+        nextTrimmed.erase(0, nextTrimmed.find_first_not_of(" \t\n\r"));
+        nextTrimmed.erase(nextTrimmed.find_last_not_of(" \t\n\r") + 1);
+        
+        // 特殊分离规则：操作符独立
+        if (currentTrimmed == "->" || nextTrimmed == "->" ||
+            currentTrimmed == "++" || nextTrimmed == "++" ||
+            currentTrimmed == "--" || nextTrimmed == "--") {
+            return false;
+        }
+        
+        // 变量引用应该保持完整
+        if (currentTrimmed.find("{{") != std::string::npos && nextTrimmed.find("}}") != std::string::npos) {
+            return true;
+        }
+    }
+    
+    return false;
+}
+
+size_t CHTLUnifiedScanner::calculateLineNumber(const std::string& content, size_t position) {
+    if (position >= content.length()) {
+        return std::count(content.begin(), content.end(), '\n') + 1;
+    }
+    
+    return std::count(content.begin(), content.begin() + position, '\n') + 1;
+}
+
+void CHTLUnifiedScanner::debugLog(const std::string& message) {
+    if (debugMode_) {
+        std::cout << "[CHTLUnifiedScanner] " << message << std::endl;
+    }
+}
+
+void CHTLUnifiedScanner::debugSliceInfo(const SliceInfo& slice, const std::string& content) {
+    if (debugMode_) {
+        std::string preview = content.substr(slice.position, std::min(slice.length, size_t(50)));
+        std::replace(preview.begin(), preview.end(), '\n', ' ');
+        debugLog("切片 [" + std::to_string(slice.position) + ":" + 
+                std::to_string(slice.position + slice.length) + "] \"" + preview + "...\"");
+    }
+}
+
+// ==================== SliceValidator 实现 ====================
+
+bool SliceValidator::validateChtlFragment(const std::string& fragment) {
+    return MinimalUnit::isCompleteChtlUnit(fragment);
+}
+
+bool SliceValidator::validateChtlJsFragment(const std::string& fragment) {
+    return MinimalUnit::isCompleteChtlJsUnit(fragment);
+}
+
+bool SliceValidator::isInStringOrComment(const std::string& content, size_t position) {
+    if (position >= content.length()) return false;
+    
+    bool inSingleString = false;
+    bool inDoubleString = false;
+    bool inTemplateString = false;
+    bool inSingleComment = false;
+    bool inMultiComment = false;
+    bool escaped = false;
+    
+    for (size_t i = 0; i < position; ++i) {
+        char ch = content[i];
+        
+        if (escaped) {
+            escaped = false;
+            continue;
+        }
+        
+        if (inSingleComment) {
+            if (ch == '\n' || ch == '\r') {
+                inSingleComment = false;
+            }
+            continue;
+        }
+        
+        if (inMultiComment) {
+            if (ch == '*' && i + 1 < content.length() && content[i + 1] == '/') {
+                inMultiComment = false;
+                i++; // 跳过 '/'
+            }
+            continue;
+        }
+        
+        if (ch == '\\' && (inSingleString || inDoubleString || inTemplateString)) {
+            escaped = true;
+            continue;
+        }
+        
+        if (!inSingleString && !inDoubleString && !inTemplateString) {
+            if (ch == '/' && i + 1 < content.length()) {
+                if (content[i + 1] == '/') {
+                    inSingleComment = true;
+                    i++; // 跳过第二个 '/'
+                    continue;
+                } else if (content[i + 1] == '*') {
+                    inMultiComment = true;
+                    i++; // 跳过 '*'
+                    continue;
+                }
+            }
+        }
+        
+        if (!inSingleComment && !inMultiComment) {
+            if (ch == '\'' && !inDoubleString && !inTemplateString) {
+                inSingleString = !inSingleString;
+            } else if (ch == '"' && !inSingleString && !inTemplateString) {
+                inDoubleString = !inDoubleString;
+            } else if (ch == '`' && !inSingleString && !inDoubleString) {
+                inTemplateString = !inTemplateString;
+            }
+        }
+    }
+    
+    return inSingleString || inDoubleString || inTemplateString || inSingleComment || inMultiComment;
+}
+
+bool SliceValidator::areBracesBalanced(const std::string& fragment) {
+    int braceCount = 0;
+    bool inString = false;
+    bool escaped = false;
+    
+    for (char ch : fragment) {
+        if (escaped) {
+            escaped = false;
+            continue;
+        }
+        
+        if (ch == '\\' && inString) {
+            escaped = true;
+            continue;
+        }
+        
+        if (ch == '"' || ch == '\'' || ch == '`') {
+            inString = !inString;
+            continue;
+        }
+        
+        if (!inString) {
+            if (ch == '{') {
+                braceCount++;
+            } else if (ch == '}') {
+                braceCount--;
+            }
+        }
+    }
+    
+    return braceCount == 0;
+}
+
+bool SliceValidator::areParenthesesBalanced(const std::string& fragment) {
+    int parenCount = 0;
+    bool inString = false;
+    bool escaped = false;
+    
+    for (char ch : fragment) {
+        if (escaped) {
+            escaped = false;
+            continue;
+        }
+        
+        if (ch == '\\' && inString) {
+            escaped = true;
+            continue;
+        }
+        
+        if (ch == '"' || ch == '\'' || ch == '`') {
+            inString = !inString;
+            continue;
+        }
+        
+        if (!inString) {
+            if (ch == '(') {
+                parenCount++;
+            } else if (ch == ')') {
+                parenCount--;
+            }
+        }
+    }
+    
+    return parenCount == 0;
+}
+
+} // namespace chtl
