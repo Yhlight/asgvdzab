@@ -44,7 +44,14 @@ endif()
 # 收集源文件
 file(GLOB_RECURSE SCANNER_SOURCES src/scanner/*.cpp)
 file(GLOB_RECURSE DISPATCHER_SOURCES src/dispatcher/*.cpp)
-file(GLOB_RECURSE CHTL_COMPILER_SOURCES src/compiler/chtl/*.cpp)
+# CHTL编译器源文件
+set(CHTL_COMPILER_SOURCES
+    src/compiler/chtl/chtl_compiler.cpp
+    src/compiler/chtl/chtl_lexer.cpp
+    src/compiler/chtl/chtl_parser.cpp
+    src/compiler/chtl/chtl_ast.cpp
+    src/compiler/chtl/chtl_global_map.cpp
+)
 file(GLOB_RECURSE CHTL_JS_COMPILER_SOURCES src/compiler/chtl_js/*.cpp)
 file(GLOB_RECURSE CSS_COMPILER_SOURCES src/compiler/css/*.cpp)
 file(GLOB_RECURSE JS_COMPILER_SOURCES src/compiler/javascript/*.cpp)

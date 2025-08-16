@@ -72,10 +72,11 @@ struct CompilerOptions {
 enum class TokenType {
     // 字面量
     IDENTIFIER,
-    STRING_LITERAL,
+    STRING_LITERAL,      // "string", 'string'
     NUMBER_LITERAL,
+    UNQUOTED_LITERAL,    // 无修饰字面量（无引号的字符串）
     
-    // 关键字
+    // 关键字 - 基础
     KEYWORD_TEXT,
     KEYWORD_STYLE,
     KEYWORD_SCRIPT,
@@ -84,28 +85,50 @@ enum class TokenType {
     KEYWORD_IMPORT,
     KEYWORD_NAMESPACE,
     KEYWORD_ORIGIN,
+    KEYWORD_CONFIGURATION,
+    
+    // 关键字 - 模板相关
     KEYWORD_INHERIT,
     KEYWORD_DELETE,
     KEYWORD_INSERT,
     KEYWORD_EXCEPT,
+    KEYWORD_FROM,
+    KEYWORD_AS,
+    
+    // 关键字 - 自定义相关
+    KEYWORD_AFTER,
+    KEYWORD_BEFORE,
+    KEYWORD_REPLACE,
+    KEYWORD_AT,
+    KEYWORD_TOP,
+    KEYWORD_BOTTOM,
     
     // 符号
-    LEFT_BRACE,
-    RIGHT_BRACE,
-    LEFT_BRACKET,
-    RIGHT_BRACKET,
-    LEFT_PAREN,
-    RIGHT_PAREN,
-    SEMICOLON,
-    COLON,
-    EQUALS,
-    COMMA,
-    DOT,
-    AT,
-    AMPERSAND,
+    LEFT_BRACE,          // {
+    RIGHT_BRACE,         // }
+    LEFT_BRACKET,        // [
+    RIGHT_BRACKET,       // ]
+    LEFT_PAREN,          // (
+    RIGHT_PAREN,         // )
+    SEMICOLON,           // ;
+    COLON,               // :
+    EQUALS,              // =
+    COMMA,               // ,
+    DOT,                 // .
+    AT,                  // @
+    AMPERSAND,           // &
+    ARROW,               // -> (CHTL JS)
+    DOUBLE_LEFT_BRACE,   // {{ (CHTL JS增强选择器)
+    DOUBLE_RIGHT_BRACE,  // }} (CHTL JS增强选择器)
+    HASH,                // #
+    DOUBLE_DASH,         // -- (会被生成器识别的注释)
+    
+    // 注释
+    SINGLE_LINE_COMMENT, // //
+    MULTI_LINE_COMMENT,  // /* */
+    SEMANTIC_COMMENT,    // -- (语义注释)
     
     // 特殊
-    COMMENT,
     WHITESPACE,
     NEWLINE,
     EOF_TOKEN,

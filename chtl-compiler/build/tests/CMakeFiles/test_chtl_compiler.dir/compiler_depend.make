@@ -261,6 +261,7 @@ tests/CMakeFiles/test_chtl_compiler.dir/test_chtl_compiler.cpp.o: /workspace/cht
   /workspace/chtl-compiler/include/compiler/base_compiler.h \
   /workspace/chtl-compiler/include/compiler/chtl/chtl_ast.h \
   /workspace/chtl-compiler/include/compiler/chtl/chtl_compiler.h \
+  /workspace/chtl-compiler/include/compiler/chtl/chtl_global_map.h \
   /workspace/chtl-compiler/include/compiler/chtl/chtl_lexer.h \
   /workspace/chtl-compiler/include/compiler/chtl/chtl_parser.h
 
@@ -308,6 +309,8 @@ tests/test_chtl_compiler: libchtl_compiler_core.a \
 libchtl_scanner.a:
 
 libchtl_compiler_core.a:
+
+/workspace/chtl-compiler/include/compiler/chtl/chtl_global_map.h:
 
 /workspace/chtl-compiler/include/compiler/chtl/chtl_compiler.h:
 

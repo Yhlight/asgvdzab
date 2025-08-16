@@ -325,6 +325,30 @@ src/compiler/base_compiler.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler_core.dir/build.make CMakeFiles/chtl_compiler_core.dir/src/compiler/base_compiler.cpp.s
 .PHONY : src/compiler/base_compiler.cpp.s
 
+src/compiler/chtl/chtl_ast.o: src/compiler/chtl/chtl_ast.cpp.o
+.PHONY : src/compiler/chtl/chtl_ast.o
+
+# target to build an object file
+src/compiler/chtl/chtl_ast.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler_core.dir/build.make CMakeFiles/chtl_compiler_core.dir/src/compiler/chtl/chtl_ast.cpp.o
+.PHONY : src/compiler/chtl/chtl_ast.cpp.o
+
+src/compiler/chtl/chtl_ast.i: src/compiler/chtl/chtl_ast.cpp.i
+.PHONY : src/compiler/chtl/chtl_ast.i
+
+# target to preprocess a source file
+src/compiler/chtl/chtl_ast.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler_core.dir/build.make CMakeFiles/chtl_compiler_core.dir/src/compiler/chtl/chtl_ast.cpp.i
+.PHONY : src/compiler/chtl/chtl_ast.cpp.i
+
+src/compiler/chtl/chtl_ast.s: src/compiler/chtl/chtl_ast.cpp.s
+.PHONY : src/compiler/chtl/chtl_ast.s
+
+# target to generate assembly for a file
+src/compiler/chtl/chtl_ast.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler_core.dir/build.make CMakeFiles/chtl_compiler_core.dir/src/compiler/chtl/chtl_ast.cpp.s
+.PHONY : src/compiler/chtl/chtl_ast.cpp.s
+
 src/compiler/chtl/chtl_compiler.o: src/compiler/chtl/chtl_compiler.cpp.o
 .PHONY : src/compiler/chtl/chtl_compiler.o
 
@@ -348,6 +372,30 @@ src/compiler/chtl/chtl_compiler.s: src/compiler/chtl/chtl_compiler.cpp.s
 src/compiler/chtl/chtl_compiler.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler_core.dir/build.make CMakeFiles/chtl_compiler_core.dir/src/compiler/chtl/chtl_compiler.cpp.s
 .PHONY : src/compiler/chtl/chtl_compiler.cpp.s
+
+src/compiler/chtl/chtl_global_map.o: src/compiler/chtl/chtl_global_map.cpp.o
+.PHONY : src/compiler/chtl/chtl_global_map.o
+
+# target to build an object file
+src/compiler/chtl/chtl_global_map.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler_core.dir/build.make CMakeFiles/chtl_compiler_core.dir/src/compiler/chtl/chtl_global_map.cpp.o
+.PHONY : src/compiler/chtl/chtl_global_map.cpp.o
+
+src/compiler/chtl/chtl_global_map.i: src/compiler/chtl/chtl_global_map.cpp.i
+.PHONY : src/compiler/chtl/chtl_global_map.i
+
+# target to preprocess a source file
+src/compiler/chtl/chtl_global_map.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler_core.dir/build.make CMakeFiles/chtl_compiler_core.dir/src/compiler/chtl/chtl_global_map.cpp.i
+.PHONY : src/compiler/chtl/chtl_global_map.cpp.i
+
+src/compiler/chtl/chtl_global_map.s: src/compiler/chtl/chtl_global_map.cpp.s
+.PHONY : src/compiler/chtl/chtl_global_map.s
+
+# target to generate assembly for a file
+src/compiler/chtl/chtl_global_map.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler_core.dir/build.make CMakeFiles/chtl_compiler_core.dir/src/compiler/chtl/chtl_global_map.cpp.s
+.PHONY : src/compiler/chtl/chtl_global_map.cpp.s
 
 src/compiler/chtl/chtl_lexer.o: src/compiler/chtl/chtl_lexer.cpp.o
 .PHONY : src/compiler/chtl/chtl_lexer.o
@@ -615,9 +663,15 @@ help:
 	@echo "... src/compiler/base_compiler.o"
 	@echo "... src/compiler/base_compiler.i"
 	@echo "... src/compiler/base_compiler.s"
+	@echo "... src/compiler/chtl/chtl_ast.o"
+	@echo "... src/compiler/chtl/chtl_ast.i"
+	@echo "... src/compiler/chtl/chtl_ast.s"
 	@echo "... src/compiler/chtl/chtl_compiler.o"
 	@echo "... src/compiler/chtl/chtl_compiler.i"
 	@echo "... src/compiler/chtl/chtl_compiler.s"
+	@echo "... src/compiler/chtl/chtl_global_map.o"
+	@echo "... src/compiler/chtl/chtl_global_map.i"
+	@echo "... src/compiler/chtl/chtl_global_map.s"
 	@echo "... src/compiler/chtl/chtl_lexer.o"
 	@echo "... src/compiler/chtl/chtl_lexer.i"
 	@echo "... src/compiler/chtl/chtl_lexer.s"

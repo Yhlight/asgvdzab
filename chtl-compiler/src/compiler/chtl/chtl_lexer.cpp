@@ -1,297 +1,342 @@
 #include "compiler/chtl/chtl_lexer.h"
 #include "common/utils.h"
 #include <cctype>
+#include <unordered_map>
 
 namespace chtl {
 namespace compiler {
 
-// 静态关键字映射
-const std::unordered_map<std::string, TokenType> CHTLLexer::keywords_ = {
+// 关键字映射表
+static const std::unordered_map<std::string, TokenType> KEYWORDS = {
+    // 基础关键字
     {"text", TokenType::KEYWORD_TEXT},
     {"style", TokenType::KEYWORD_STYLE},
     {"script", TokenType::KEYWORD_SCRIPT},
-    {"inherit", TokenType::KEYWORD_INHERIT},
-    {"delete", TokenType::KEYWORD_DELETE},
-    {"insert", TokenType::KEYWORD_INSERT},
-    {"except", TokenType::KEYWORD_EXCEPT},
     {"Template", TokenType::KEYWORD_TEMPLATE},
     {"Custom", TokenType::KEYWORD_CUSTOM},
     {"Import", TokenType::KEYWORD_IMPORT},
     {"Namespace", TokenType::KEYWORD_NAMESPACE},
-    {"Origin", TokenType::KEYWORD_ORIGIN}
+    {"Origin", TokenType::KEYWORD_ORIGIN},
+    {"Configuration", TokenType::KEYWORD_CONFIGURATION},
+    
+    // 模板相关
+    {"inherit", TokenType::KEYWORD_INHERIT},
+    {"delete", TokenType::KEYWORD_DELETE},
+    {"insert", TokenType::KEYWORD_INSERT},
+    {"except", TokenType::KEYWORD_EXCEPT},
+    {"from", TokenType::KEYWORD_FROM},
+    {"as", TokenType::KEYWORD_AS},
+    
+    // 自定义相关
+    {"after", TokenType::KEYWORD_AFTER},
+    {"before", TokenType::KEYWORD_BEFORE},
+    {"replace", TokenType::KEYWORD_REPLACE},
+    {"at", TokenType::KEYWORD_AT},
+    {"top", TokenType::KEYWORD_TOP},
+    {"bottom", TokenType::KEYWORD_BOTTOM}
 };
 
-CHTLLexer::CHTLLexer() 
-    : position_(0), line_(1), column_(1), hasCurrentToken_(false) {
+CHTLLexer::CHTLLexer(const std::string& source, const std::string& filename)
+    : source_(source), filename_(filename), position_(0), 
+      line_(1), column_(1), lastTokenType_(TokenType::UNKNOWN) {
 }
 
 CHTLLexer::~CHTLLexer() = default;
 
-void CHTLLexer::init(const std::string& source, const std::string& filename) {
-    source_ = source;
-    filename_ = filename;
-    position_ = 0;
-    line_ = 1;
-    column_ = 1;
-    errors_.clear();
-    hasCurrentToken_ = false;
-}
-
 Token CHTLLexer::nextToken() {
-    skipWhitespace();
+    skipWhitespaceAndComments();
     
-    if (isEOF()) {
-        return makeEOFToken();
+    if (isAtEnd()) {
+        return makeToken(TokenType::EOF_TOKEN);
     }
     
-    char ch = peek();
+    markTokenStart();
+    char ch = advance();
     
-    // 处理注释
-    if (ch == '/' && peek(1) == '/') {
-        skipComment();
-        return nextToken();
-    }
-    if (ch == '/' && peek(1) == '*') {
-        skipComment();
-        return nextToken();
+    // 处理双字符符号
+    if (ch == '-' && peek() == '-') {
+        // 语义注释 --
+        advance();
+        return scanSemanticComment();
     }
     
-    // 处理标识符和关键字
-    if (isIdentifierStart(ch)) {
-        return scanIdentifier();
+    if (ch == '-' && peek() == '>') {
+        // 箭头操作符 -> (CHTL JS)
+        advance();
+        return makeToken(TokenType::ARROW);
+    }
+    
+    if (ch == '{' && peek() == '{') {
+        // 双左花括号 {{ (CHTL JS增强选择器)
+        advance();
+        return makeToken(TokenType::DOUBLE_LEFT_BRACE);
+    }
+    
+    if (ch == '}' && peek() == '}') {
+        // 双右花括号 }}
+        advance();
+        return makeToken(TokenType::DOUBLE_RIGHT_BRACE);
     }
     
     // 处理字符串字面量
     if (ch == '"' || ch == '\'') {
-        return scanString();
+        return scanString(ch);
     }
     
-    // 处理数字
-    if (isDigit(ch)) {
+    // 处理数字字面量
+    if (std::isdigit(ch)) {
         return scanNumber();
     }
     
-    // 处理符号
-    return scanSymbol();
-}
-
-Token CHTLLexer::peekToken() {
-    if (!hasCurrentToken_) {
-        currentToken_ = nextToken();
-        hasCurrentToken_ = true;
+    // 处理标识符和关键字
+    if (std::isalpha(ch) || ch == '_') {
+        return scanIdentifier();
     }
-    return currentToken_;
-}
-
-Token CHTLLexer::consumeToken() {
-    if (hasCurrentToken_) {
-        hasCurrentToken_ = false;
-        return currentToken_;
-    }
-    return nextToken();
-}
-
-bool CHTLLexer::isEOF() const {
-    return position_ >= source_.length();
-}
-
-SourceLocation CHTLLexer::getCurrentLocation() const {
-    return SourceLocation(line_, column_, position_, filename_);
-}
-
-void CHTLLexer::skipWhitespace() {
-    while (!isEOF() && isWhitespace(peek())) {
-        advance();
-    }
-}
-
-void CHTLLexer::skipComment() {
-    if (peek() == '/' && peek(1) == '/') {
-        // 单行注释
-        advance(); // /
-        advance(); // /
-        while (!isEOF() && peek() != '\n') {
-            advance();
-        }
-    } else if (peek() == '/' && peek(1) == '*') {
-        // 多行注释
-        advance(); // /
-        advance(); // *
-        while (!isEOF()) {
-            if (peek() == '*' && peek(1) == '/') {
-                advance(); // *
-                advance(); // /
-                break;
+    
+    // 处理单字符符号
+    switch (ch) {
+        case '{': return makeToken(TokenType::LEFT_BRACE);
+        case '}': return makeToken(TokenType::RIGHT_BRACE);
+        case '[': return makeToken(TokenType::LEFT_BRACKET);
+        case ']': return makeToken(TokenType::RIGHT_BRACKET);
+        case '(': return makeToken(TokenType::LEFT_PAREN);
+        case ')': return makeToken(TokenType::RIGHT_PAREN);
+        case ';': return makeToken(TokenType::SEMICOLON);
+        case ':': return makeToken(TokenType::COLON);
+        case '=': return makeToken(TokenType::EQUALS);
+        case ',': return makeToken(TokenType::COMMA);
+        case '.': return makeToken(TokenType::DOT);
+        case '@': return makeToken(TokenType::AT);
+        case '&': return makeToken(TokenType::AMPERSAND);
+        case '#': return makeToken(TokenType::HASH);
+        default:
+            // 处理无修饰字面量
+            if (canStartUnquotedLiteral(ch)) {
+                return scanUnquotedLiteral();
             }
-            advance();
+            return makeToken(TokenType::UNKNOWN);
+    }
+}
+
+bool CHTLLexer::hasMoreTokens() const {
+    return position_ < source_.length();
+}
+
+void CHTLLexer::reset() {
+    position_ = 0;
+    line_ = 1;
+    column_ = 1;
+    lastTokenType_ = TokenType::UNKNOWN;
+}
+
+void CHTLLexer::skipWhitespaceAndComments() {
+    while (!isAtEnd()) {
+        char ch = peek();
+        
+        // 跳过空白字符
+        if (std::isspace(ch)) {
+            if (ch == '\n') {
+                line_++;
+                column_ = 1;
+            } else {
+                column_++;
+            }
+            position_++;
+            continue;
         }
-    }
-}
-
-Token CHTLLexer::scanIdentifier() {
-    size_t start = position_;
-    size_t startColumn = column_;
-    
-    while (!isEOF() && isIdentifierPart(peek())) {
-        advance();
-    }
-    
-    std::string value = source_.substr(start, position_ - start);
-    
-    // 检查是否是关键字
-    auto it = keywords_.find(value);
-    TokenType type = (it != keywords_.end()) ? it->second : TokenType::IDENTIFIER;
-    
-    Token token = makeToken(type, value);
-    token.location.column = startColumn;
-    return token;
-}
-
-Token CHTLLexer::scanString() {
-    size_t start = position_;
-    size_t startColumn = column_;
-    char quote = peek();
-    advance(); // 跳过开始引号
-    
-    std::string value;
-    while (!isEOF() && peek() != quote) {
-        if (peek() == '\\') {
-            advance();
-            if (!isEOF()) {
-                char escape = peek();
-                switch (escape) {
-                    case 'n': value += '\n'; break;
-                    case 't': value += '\t'; break;
-                    case 'r': value += '\r'; break;
-                    case '\\': value += '\\'; break;
-                    case '\'': value += '\''; break;
-                    case '"': value += '"'; break;
-                    default: value += escape; break;
+        
+        // 跳过单行注释 //
+        if (ch == '/' && peekNext() == '/') {
+            position_ += 2;
+            column_ += 2;
+            while (!isAtEnd() && peek() != '\n') {
+                position_++;
+                column_++;
+            }
+            continue;
+        }
+        
+        // 跳过多行注释 /* */
+        if (ch == '/' && peekNext() == '*') {
+            position_ += 2;
+            column_ += 2;
+            while (!isAtEnd()) {
+                if (peek() == '*' && peekNext() == '/') {
+                    position_ += 2;
+                    column_ += 2;
+                    break;
                 }
-                advance();
+                if (peek() == '\n') {
+                    line_++;
+                    column_ = 1;
+                } else {
+                    column_++;
+                }
+                position_++;
             }
+            continue;
+        }
+        
+        break;
+    }
+}
+
+Token CHTLLexer::scanString(char delimiter) {
+    std::string value;
+    
+    while (!isAtEnd() && peek() != delimiter) {
+        if (peek() == '\\' && peekNext() == delimiter) {
+            // 转义字符
+            advance(); // 跳过反斜杠
+            value += advance();
+        } else if (peek() == '\n') {
+            // 字符串中的换行
+            line_++;
+            column_ = 1;
+            value += advance();
         } else {
-            value += peek();
-            advance();
+            value += advance();
         }
     }
     
-    if (!isEOF()) {
-        advance(); // 跳过结束引号
-    } else {
-        addError("Unterminated string literal");
+    if (isAtEnd()) {
+        return makeErrorToken("Unterminated string");
     }
     
-    Token token = makeToken(TokenType::STRING_LITERAL, value);
-    token.location.column = startColumn;
-    return token;
+    advance(); // 跳过结束引号
+    return makeToken(TokenType::STRING_LITERAL, value);
 }
 
 Token CHTLLexer::scanNumber() {
-    size_t start = position_;
-    size_t startColumn = column_;
-    
-    while (!isEOF() && isDigit(peek())) {
+    while (!isAtEnd() && std::isdigit(peek())) {
         advance();
     }
     
-    // 处理小数部分
-    if (peek() == '.' && isDigit(peek(1))) {
-        advance(); // .
-        while (!isEOF() && isDigit(peek())) {
+    // 处理小数点
+    if (peek() == '.' && std::isdigit(peekNext())) {
+        advance(); // 消耗小数点
+        while (!isAtEnd() && std::isdigit(peek())) {
             advance();
         }
     }
     
-    std::string value = source_.substr(start, position_ - start);
-    Token token = makeToken(TokenType::NUMBER_LITERAL, value);
-    token.location.column = startColumn;
-    return token;
+    return makeToken(TokenType::NUMBER_LITERAL);
 }
 
-Token CHTLLexer::scanSymbol() {
-    size_t startColumn = column_;
-    char ch = advance();
-    TokenType type = TokenType::UNKNOWN;
-    std::string value(1, ch);
+Token CHTLLexer::scanIdentifier() {
+    while (!isAtEnd() && (std::isalnum(peek()) || peek() == '_')) {
+        advance();
+    }
     
-    switch (ch) {
-        case '{': type = TokenType::LEFT_BRACE; break;
-        case '}': type = TokenType::RIGHT_BRACE; break;
-        case '[': type = TokenType::LEFT_BRACKET; break;
-        case ']': type = TokenType::RIGHT_BRACKET; break;
-        case '(': type = TokenType::LEFT_PAREN; break;
-        case ')': type = TokenType::RIGHT_PAREN; break;
-        case ';': type = TokenType::SEMICOLON; break;
-        case ':': type = TokenType::COLON; break;
-        case '=': type = TokenType::EQUALS; break;
-        case ',': type = TokenType::COMMA; break;
-        case '.': type = TokenType::DOT; break;
-        case '@': type = TokenType::AT; break;
-        case '&': type = TokenType::AMPERSAND; break;
-        default:
-            type = TokenType::UNKNOWN;
+    std::string value = source_.substr(tokenStartPos_, position_ - tokenStartPos_);
+    
+    // 检查是否是关键字
+    auto it = KEYWORDS.find(value);
+    if (it != KEYWORDS.end()) {
+        return makeToken(it->second, value);
+    }
+    
+    return makeToken(TokenType::IDENTIFIER, value);
+}
+
+Token CHTLLexer::scanUnquotedLiteral() {
+    // 无修饰字面量可以包含除了某些特殊字符外的任何字符
+    while (!isAtEnd()) {
+        char ch = peek();
+        // 遇到这些字符时结束无修饰字面量
+        if (ch == '{' || ch == '}' || ch == ';' || ch == ':' || ch == '=' ||
+            ch == ',' || ch == '\n' || ch == '[' || ch == ']' || 
+            ch == '(' || ch == ')' || std::isspace(ch)) {
             break;
+        }
+        advance();
     }
     
-    Token token = makeToken(type, value);
-    token.location.column = startColumn;
-    return token;
+    std::string value = source_.substr(tokenStartPos_, position_ - tokenStartPos_);
+    return makeToken(TokenType::UNQUOTED_LITERAL, value);
 }
 
-bool CHTLLexer::isIdentifierStart(char ch) const {
-    return std::isalpha(ch) || ch == '_';
-}
-
-bool CHTLLexer::isIdentifierPart(char ch) const {
-    return std::isalnum(ch) || ch == '_';
-}
-
-bool CHTLLexer::isDigit(char ch) const {
-    return std::isdigit(ch);
-}
-
-bool CHTLLexer::isWhitespace(char ch) const {
-    return ch == ' ' || ch == '\t' || ch == '\n' || ch == '\r';
-}
-
-char CHTLLexer::peek(size_t offset) const {
-    size_t pos = position_ + offset;
-    if (pos >= source_.length()) {
-        return '\0';
+Token CHTLLexer::scanSemanticComment() {
+    // 跳过 -- 后的空格
+    while (!isAtEnd() && peek() == ' ') {
+        advance();
     }
-    return source_[pos];
+    
+    // 读取到行尾
+    std::string comment;
+    while (!isAtEnd() && peek() != '\n') {
+        comment += advance();
+    }
+    
+    return makeToken(TokenType::SEMANTIC_COMMENT, comment);
+}
+
+bool CHTLLexer::canStartUnquotedLiteral(char ch) const {
+    // 根据上下文判断是否可以开始无修饰字面量
+    // 在属性值或text内容位置时允许
+    if (lastTokenType_ == TokenType::COLON || 
+        lastTokenType_ == TokenType::EQUALS ||
+        lastTokenType_ == TokenType::LEFT_BRACE) {
+        // 不是特殊字符且不是空白
+        return ch != '{' && ch != '}' && ch != ';' && ch != ':' && 
+               ch != '=' && ch != ',' && ch != '[' && ch != ']' && 
+               ch != '(' && ch != ')' && !std::isspace(ch);
+    }
+    return false;
 }
 
 char CHTLLexer::advance() {
-    if (isEOF()) {
-        return '\0';
-    }
-    
-    char ch = source_[position_++];
-    if (ch == '\n') {
-        line_++;
-        column_ = 1;
-    } else {
-        column_++;
-    }
-    return ch;
+    column_++;
+    return source_[position_++];
 }
 
-void CHTLLexer::addError(const std::string& message) {
-    errors_.push_back(utils::formatError(filename_, line_, column_, message));
+char CHTLLexer::peek() const {
+    if (isAtEnd()) return '\0';
+    return source_[position_];
+}
+
+char CHTLLexer::peekNext() const {
+    if (position_ + 1 >= source_.length()) return '\0';
+    return source_[position_ + 1];
+}
+
+bool CHTLLexer::isAtEnd() const {
+    return position_ >= source_.length();
+}
+
+void CHTLLexer::markTokenStart() {
+    tokenStartPos_ = position_;
+    tokenStartLine_ = line_;
+    tokenStartColumn_ = column_;
 }
 
 Token CHTLLexer::makeToken(TokenType type, const std::string& value) {
-    Token token;
-    token.type = type;
-    token.value = value;
-    token.location = getCurrentLocation();
+    Token token(type);
+    
+    if (value.empty() && tokenStartPos_ < position_) {
+        token.value = source_.substr(tokenStartPos_, position_ - tokenStartPos_);
+    } else {
+        token.value = value;
+    }
+    
+    token.location.filename = filename_;
+    token.location.line = tokenStartLine_;
+    token.location.column = tokenStartColumn_;
+    token.location.offset = tokenStartPos_;
+    
+    lastTokenType_ = type;
     return token;
 }
 
-Token CHTLLexer::makeEOFToken() {
-    return makeToken(TokenType::EOF_TOKEN, "");
+Token CHTLLexer::makeErrorToken(const std::string& message) {
+    Token token(TokenType::UNKNOWN);
+    token.value = message;
+    token.location.filename = filename_;
+    token.location.line = tokenStartLine_;
+    token.location.column = tokenStartColumn_;
+    token.location.offset = tokenStartPos_;
+    
+    return token;
 }
 
 } // namespace compiler

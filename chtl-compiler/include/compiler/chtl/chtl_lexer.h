@@ -3,76 +3,64 @@
 
 #include <string>
 #include <vector>
-#include <memory>
-#include <unordered_map>
 #include "common/types.h"
 
 namespace chtl {
 namespace compiler {
 
+// CHTL词法分析器
 class CHTLLexer {
 public:
-    CHTLLexer();
+    CHTLLexer(const std::string& source, const std::string& filename = "<input>");
     ~CHTLLexer();
-    
-    // 初始化词法分析器
-    void init(const std::string& source, const std::string& filename = "<input>");
     
     // 获取下一个token
     Token nextToken();
     
-    // 预览下一个token（不消耗）
-    Token peekToken();
+    // 是否还有更多token
+    bool hasMoreTokens() const;
     
-    // 消耗并返回下一个token
-    Token consumeToken();
+    // 重置词法分析器
+    void reset();
     
-    // 检查是否到达文件末尾
-    bool isEOF() const;
-    
-    // 获取当前位置
-    SourceLocation getCurrentLocation() const;
-    
-    // 获取错误信息
-    const std::vector<std::string>& getErrors() const { return errors_; }
-
 private:
     std::string source_;
     std::string filename_;
     size_t position_;
     size_t line_;
     size_t column_;
-    std::vector<std::string> errors_;
-    Token currentToken_;
-    bool hasCurrentToken_;
     
-    // 关键字映射
-    static const std::unordered_map<std::string, TokenType> keywords_;
+    // 用于记录token起始位置
+    size_t tokenStartPos_;
+    size_t tokenStartLine_;
+    size_t tokenStartColumn_;
     
-    // 词法分析辅助方法
-    void skipWhitespace();
-    void skipComment();
-    Token scanIdentifier();
-    Token scanString();
+    // 上一个token类型（用于上下文相关的词法分析）
+    TokenType lastTokenType_;
+    
+    // 跳过空白字符和注释
+    void skipWhitespaceAndComments();
+    
+    // 扫描各种token类型
+    Token scanString(char delimiter);
     Token scanNumber();
-    Token scanSymbol();
+    Token scanIdentifier();
+    Token scanUnquotedLiteral();
+    Token scanSemanticComment();
     
-    // 字符判断方法
-    bool isIdentifierStart(char ch) const;
-    bool isIdentifierPart(char ch) const;
-    bool isDigit(char ch) const;
-    bool isWhitespace(char ch) const;
+    // 判断是否可以开始无修饰字面量
+    bool canStartUnquotedLiteral(char ch) const;
     
-    // 获取下一个字符
-    char peek(size_t offset = 0) const;
+    // 辅助方法
     char advance();
-    
-    // 错误处理
-    void addError(const std::string& message);
+    char peek() const;
+    char peekNext() const;
+    bool isAtEnd() const;
+    void markTokenStart();
     
     // 创建token
     Token makeToken(TokenType type, const std::string& value = "");
-    Token makeEOFToken();
+    Token makeErrorToken(const std::string& message);
 };
 
 } // namespace compiler

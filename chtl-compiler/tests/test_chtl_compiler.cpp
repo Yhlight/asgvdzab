@@ -20,7 +20,8 @@ div {
 }
 )";
     
-    auto result = compiler.compile(segment);
+    CompilerOptions options;
+    auto result = compiler.compile(segment, options);
     
     assert(result.success);
     assert(!result.output.empty());

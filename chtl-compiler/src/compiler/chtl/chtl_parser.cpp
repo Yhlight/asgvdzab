@@ -10,16 +10,16 @@ CHTLParser::CHTLParser() : lexer_(nullptr) {
 
 CHTLParser::~CHTLParser() = default;
 
-std::shared_ptr<ast::DocumentNode> CHTLParser::parse(CHTLLexer& lexer) {
+std::shared_ptr<ast::DocumentNode> CHTLParser::parse(CHTLLexer& lexer, CHTLContext& context) {
     lexer_ = &lexer;
     errors_.clear();
     warnings_.clear();
     
     auto document = std::make_shared<ast::DocumentNode>();
-    document->setLocation(lexer_->getCurrentLocation());
+    document->location = SourceLocation();
     
     // 获取第一个token
-    advance();
+    currentToken_ = lexer_->nextToken();
     
     // 解析顶层元素
     while (!isAtEnd()) {
@@ -33,131 +33,131 @@ std::shared_ptr<ast::DocumentNode> CHTLParser::parse(CHTLLexer& lexer) {
 }
 
 std::shared_ptr<ast::ASTNode> CHTLParser::parseTopLevel() {
-    // 跳过空白和注释
-    while (match(TokenType::WHITESPACE) || match(TokenType::COMMENT)) {
-        // 继续
-    }
+    skipWhitespaceAndComments();
     
-    if (isAtEnd()) {
-        return nullptr;
-    }
-    
-    // 检查特殊标记
+    // 检查各种顶层结构
     if (check(TokenType::LEFT_BRACKET)) {
         // [Template], [Custom], [Import], [Namespace], [Origin], [Configuration]
-        advance(); // [
-        if (check(TokenType::IDENTIFIER)) {
-            std::string keyword = currentToken_.value;
-            if (keyword == "Template") {
-                advance(); // Template
-                consume(TokenType::RIGHT_BRACKET, "Expected ']' after 'Template'");
-                return parseTemplate();
-            } else if (keyword == "Custom") {
-                advance(); // Custom
-                consume(TokenType::RIGHT_BRACKET, "Expected ']' after 'Custom'");
-                return parseCustom();
-            } else if (keyword == "Import") {
-                advance(); // Import
-                consume(TokenType::RIGHT_BRACKET, "Expected ']' after 'Import'");
-                return parseImport();
-            } else if (keyword == "Namespace") {
-                advance(); // Namespace
-                consume(TokenType::RIGHT_BRACKET, "Expected ']' after 'Namespace'");
-                return parseNamespace();
-            } else if (keyword == "Origin") {
-                advance(); // Origin
-                consume(TokenType::RIGHT_BRACKET, "Expected ']' after 'Origin'");
-                return parseOrigin();
-            } else if (keyword == "Configuration") {
-                advance(); // Configuration
-                consume(TokenType::RIGHT_BRACKET, "Expected ']' after 'Configuration'");
-                return parseConfiguration();
-            }
+        if (matchKeyword("Template")) {
+            return parseTemplate();
+        } else if (matchKeyword("Custom")) {
+            return parseCustom();
+        } else if (matchKeyword("Import")) {
+            return parseImport();
+        } else if (matchKeyword("Namespace")) {
+            return parseNamespace();
+        } else if (matchKeyword("Origin")) {
+            return parseOrigin();
+        } else if (matchKeyword("Configuration")) {
+            return parseConfiguration();
         }
-        error("Unknown bracket expression");
-        return nullptr;
     }
     
-    // 检查元素
+    // 检查关键字
+    if (check(TokenType::KEYWORD_TEXT)) {
+        return parseText();
+    }
+    if (check(TokenType::KEYWORD_STYLE)) {
+        return parseStyle();
+    }
+    if (check(TokenType::KEYWORD_SCRIPT)) {
+        return parseScript();
+    }
+    
+    // 检查元素（IDENTIFIER但不是关键字）
     if (check(TokenType::IDENTIFIER)) {
-        std::string identifier = currentToken_.value;
-        
-        // 检查是否是关键字
-        if (identifier == "text") {
-            return parseText();
-        } else if (identifier == "style") {
-            return parseStyle();
-        } else if (identifier == "script") {
-            return parseScript();
-        } else {
-            // 假设是HTML元素
-            return parseElement();
-        }
+        return parseElement();
     }
     
+    // 错误：无法识别的顶层结构
     error("Unexpected token at top level");
-    advance(); // 跳过错误的token
+    advance();
     return nullptr;
 }
 
 std::shared_ptr<ast::ElementNode> CHTLParser::parseElement() {
     auto element = std::make_shared<ast::ElementNode>();
-    element->setLocation(currentToken_.location);
+    element->location = currentToken_.location;
     
-    // 元素名
-    element->tagName = currentToken_.value;
-    advance();
+    // 解析元素名（当前token应该是IDENTIFIER）
+    if (check(TokenType::IDENTIFIER)) {
+        element->tagName = advance().value;
+    } else {
+        error("Expected element name");
+        return element;
+    }
     
-    // 解析属性（在{之前）
+    skipWhitespaceAndComments();
+    
+    // 解析属性（在花括号之前）
     while (!check(TokenType::LEFT_BRACE) && !isAtEnd()) {
         if (check(TokenType::IDENTIFIER)) {
             auto attr = parseAttribute();
-            element->attributes[attr.first] = attr.second;
-            
-            // 特殊处理id和class
-            if (attr.first == "id") {
-                element->id = attr.second;
-            } else if (attr.first == "class") {
-                element->className = attr.second;
-                element->classList = utils::split(attr.second, ' ');
+            if (attr) {
+                element->attributes.push_back(attr);
+                
+                // 特殊处理id和class
+                if (attr->name == "id") {
+                    element->id = attr->value;
+                } else if (attr->name == "class") {
+                    element->className = attr->value;
+                }
             }
         } else {
-            advance(); // 跳过其他token
+            break;
+        }
+        skipWhitespaceAndComments();
+    }
+    
+    // 解析元素体
+    consume(TokenType::LEFT_BRACE, "Expected '{' after element name");
+    
+    while (!check(TokenType::RIGHT_BRACE) && !isAtEnd()) {
+        skipWhitespaceAndComments();
+        
+        if (check(TokenType::KEYWORD_TEXT)) {
+            advance(); // consume 'text'
+            element->children.push_back(parseText());
+        } else if (check(TokenType::KEYWORD_STYLE)) {
+            advance(); // consume 'style'
+            element->children.push_back(parseStyle());
+        } else if (check(TokenType::KEYWORD_SCRIPT)) {
+            advance(); // consume 'script'
+            element->children.push_back(parseScript());
+        } else if (check(TokenType::IDENTIFIER)) {
+            // 嵌套元素
+            element->children.push_back(parseElement());
+        } else if (!check(TokenType::RIGHT_BRACE)) {
+            error("Unexpected token in element body");
+            advance();
         }
     }
     
-    // 解析子元素
-    if (consume(TokenType::LEFT_BRACE, "Expected '{' after element name")) {
-        while (!check(TokenType::RIGHT_BRACE) && !isAtEnd()) {
-            auto child = parseTopLevel();
-            if (child) {
-                element->children.push_back(child);
-            }
-        }
-        consume(TokenType::RIGHT_BRACE, "Expected '}' to close element");
-    }
+    consume(TokenType::RIGHT_BRACE, "Expected '}' to close element");
     
     return element;
 }
 
 std::shared_ptr<ast::TextNode> CHTLParser::parseText() {
     auto text = std::make_shared<ast::TextNode>();
-    text->setLocation(currentToken_.location);
+    text->location = currentToken_.location;
     
-    advance(); // text
+    skipWhitespaceAndComments();
     consume(TokenType::LEFT_BRACE, "Expected '{' after 'text'");
+    skipWhitespaceAndComments();
     
     // 解析文本内容
     if (check(TokenType::STRING_LITERAL)) {
-        text->content = currentToken_.value;
-        advance();
-    } else if (check(TokenType::IDENTIFIER)) {
-        // 无引号字面量
-        text->content = currentToken_.value;
+        text->content = advance().value;
+        text->isLiteral = false;
+    } else if (check(TokenType::UNQUOTED_LITERAL) || check(TokenType::IDENTIFIER)) {
+        text->content = advance().value;
         text->isLiteral = true;
-        advance();
+    } else {
+        error("Expected text content");
     }
     
+    skipWhitespaceAndComments();
     consume(TokenType::RIGHT_BRACE, "Expected '}' to close text block");
     
     return text;
@@ -165,60 +165,99 @@ std::shared_ptr<ast::TextNode> CHTLParser::parseText() {
 
 std::shared_ptr<ast::StyleNode> CHTLParser::parseStyle() {
     auto style = std::make_shared<ast::StyleNode>();
-    style->setLocation(currentToken_.location);
+    style->location = currentToken_.location;
     
-    advance(); // style
+    // 检查是否是局部样式（在元素内部）
+    // TODO: 实现上下文检查
+    style->isLocal = false;
+    
+    skipWhitespaceAndComments();
     consume(TokenType::LEFT_BRACE, "Expected '{' after 'style'");
     
-    // TODO: 实现样式规则解析
-    // 这里需要解析CSS语法
+    // 收集样式内容直到遇到 }
+    std::stringstream content;
+    int braceDepth = 1;
     
-    consume(TokenType::RIGHT_BRACE, "Expected '}' to close style block");
+    while (braceDepth > 0 && !isAtEnd()) {
+        Token token = advance();
+        if (token.type == TokenType::LEFT_BRACE) {
+            braceDepth++;
+        } else if (token.type == TokenType::RIGHT_BRACE) {
+            braceDepth--;
+            if (braceDepth > 0) {
+                content << token.value;
+            }
+        } else {
+            content << token.value;
+            // 添加空格保持格式
+            if (token.type != TokenType::WHITESPACE && !isAtEnd()) {
+                Token next = peek();
+                if (next.type != TokenType::RIGHT_BRACE && 
+                    next.type != TokenType::LEFT_BRACE &&
+                    next.type != TokenType::SEMICOLON &&
+                    next.type != TokenType::COLON) {
+                    content << " ";
+                }
+            }
+        }
+    }
     
+    style->content = content.str();
     return style;
 }
 
 std::shared_ptr<ast::ScriptNode> CHTLParser::parseScript() {
     auto script = std::make_shared<ast::ScriptNode>();
-    script->setLocation(currentToken_.location);
+    script->location = currentToken_.location;
     
-    advance(); // script
+    // 检查是否是局部脚本（在元素内部）
+    // TODO: 实现上下文检查
+    script->isLocal = false;
+    
+    skipWhitespaceAndComments();
     consume(TokenType::LEFT_BRACE, "Expected '{' after 'script'");
     
-    // TODO: 收集脚本内容直到}
+    // 收集脚本内容直到遇到 }
+    std::stringstream content;
+    int braceDepth = 1;
     
-    consume(TokenType::RIGHT_BRACE, "Expected '}' to close script block");
+    while (braceDepth > 0 && !isAtEnd()) {
+        Token token = advance();
+        if (token.type == TokenType::LEFT_BRACE) {
+            braceDepth++;
+        } else if (token.type == TokenType::RIGHT_BRACE) {
+            braceDepth--;
+            if (braceDepth > 0) {
+                content << token.value;
+            }
+        } else {
+            content << token.value;
+            // 添加空格保持格式
+            if (token.type != TokenType::WHITESPACE && !isAtEnd()) {
+                Token next = peek();
+                if (next.type != TokenType::RIGHT_BRACE && 
+                    next.type != TokenType::LEFT_BRACE &&
+                    next.type != TokenType::SEMICOLON &&
+                    next.type != TokenType::COLON) {
+                    content << " ";
+                }
+            }
+        }
+    }
     
+    script->content = content.str();
     return script;
 }
 
-std::pair<std::string, std::string> CHTLParser::parseAttribute() {
-    std::string name = currentToken_.value;
-    advance();
-    
-    // CE对等式：: 和 = 是等价的
-    if (!match(TokenType::COLON) && !match(TokenType::EQUALS)) {
-        error("Expected ':' or '=' after attribute name");
-        return {name, ""};
+// 辅助方法实现
+void CHTLParser::skipWhitespaceAndComments() {
+    while (match(TokenType::WHITESPACE) || 
+           match(TokenType::SINGLE_LINE_COMMENT) ||
+           match(TokenType::MULTI_LINE_COMMENT)) {
+        // 跳过空白和注释
     }
-    
-    std::string value;
-    if (check(TokenType::STRING_LITERAL)) {
-        value = currentToken_.value;
-        advance();
-    } else if (check(TokenType::IDENTIFIER)) {
-        // 无引号字面量
-        value = currentToken_.value;
-        advance();
-    }
-    
-    // 分号是可选的
-    match(TokenType::SEMICOLON);
-    
-    return {name, value};
 }
 
-// 辅助方法实现
 bool CHTLParser::match(TokenType type) {
     if (check(type)) {
         advance();
@@ -227,36 +266,51 @@ bool CHTLParser::match(TokenType type) {
     return false;
 }
 
-bool CHTLParser::consume(TokenType type, const std::string& message) {
-    if (check(type)) {
-        advance();
-        return true;
-    }
+Token CHTLParser::consume(TokenType type, const std::string& message) {
+    if (check(type)) return advance();
     
     error(message);
-    return false;
+    return currentToken_;
 }
 
-void CHTLParser::advance() {
+Token CHTLParser::advance() {
     if (!isAtEnd()) {
+        previousToken_ = currentToken_;
         currentToken_ = lexer_->nextToken();
     }
+    return previousToken_;
 }
 
-Token CHTLParser::peek() {
-    return lexer_->peekToken();
+Token CHTLParser::peek() const {
+    return currentToken_;
 }
 
-bool CHTLParser::check(TokenType type) {
+Token CHTLParser::previous() const {
+    return previousToken_;
+}
+
+bool CHTLParser::check(TokenType type) const {
     if (isAtEnd()) return false;
     return currentToken_.type == type;
 }
 
-bool CHTLParser::checkKeyword(const std::string& keyword) {
+bool CHTLParser::checkKeyword(const std::string& keyword) const {
     return check(TokenType::IDENTIFIER) && currentToken_.value == keyword;
 }
 
-bool CHTLParser::isAtEnd() {
+bool CHTLParser::matchKeyword(const std::string& keyword) {
+    if (match(TokenType::LEFT_BRACKET)) {
+        if (checkKeyword(keyword)) {
+            advance(); // consume keyword
+            if (match(TokenType::RIGHT_BRACKET)) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+bool CHTLParser::isAtEnd() const {
     return currentToken_.type == TokenType::EOF_TOKEN;
 }
 
@@ -319,7 +373,57 @@ std::shared_ptr<ast::OriginNode> CHTLParser::parseOrigin() {
 }
 
 std::shared_ptr<ast::ConfigurationNode> CHTLParser::parseConfiguration() {
+    // TODO: 实现配置解析
     return std::make_shared<ast::ConfigurationNode>();
+}
+
+std::vector<std::shared_ptr<ast::AttributeNode>> CHTLParser::parseAttributes() {
+    std::vector<std::shared_ptr<ast::AttributeNode>> attributes;
+    
+    while (!check(TokenType::LEFT_BRACE) && !isAtEnd()) {
+        skipWhitespaceAndComments();
+        
+        if (check(TokenType::IDENTIFIER)) {
+            auto attr = parseAttribute();
+            if (attr) {
+                attributes.push_back(attr);
+            }
+        } else {
+            break;
+        }
+        
+        skipWhitespaceAndComments();
+        
+        // 属性之间可能有逗号分隔
+        match(TokenType::COMMA);
+    }
+    
+    return attributes;
+}
+
+std::shared_ptr<ast::AttributeNode> CHTLParser::parseAttribute() {
+    auto attr = std::make_shared<ast::AttributeNode>();
+    attr->location = currentToken_.location;
+    
+    // 属性名
+    attr->name = consume(TokenType::IDENTIFIER, "Expected attribute name").value;
+    
+    skipWhitespaceAndComments();
+    
+    // 属性值（可选）
+    if (match(TokenType::COLON) || match(TokenType::EQUALS)) {
+        skipWhitespaceAndComments();
+        
+        if (check(TokenType::STRING_LITERAL)) {
+            attr->value = advance().value;
+        } else if (check(TokenType::UNQUOTED_LITERAL) || check(TokenType::IDENTIFIER)) {
+            attr->value = advance().value;
+        } else {
+            error("Expected attribute value");
+        }
+    }
+    
+    return attr;
 }
 
 } // namespace compiler

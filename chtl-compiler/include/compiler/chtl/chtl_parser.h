@@ -11,13 +11,16 @@
 namespace chtl {
 namespace compiler {
 
+class CHTLLexer;
+struct CHTLContext;
+
 class CHTLParser {
 public:
     CHTLParser();
-    ~CHTLParser();
+    virtual ~CHTLParser();  // 添加虚析构函数
     
-    // 解析CHTL代码，返回AST根节点
-    std::shared_ptr<ast::DocumentNode> parse(CHTLLexer& lexer);
+    // 解析CHTL代码，返回抽象语法树
+    std::shared_ptr<ast::DocumentNode> parse(CHTLLexer& lexer, CHTLContext& context);
     
     // 获取解析错误
     const std::vector<std::string>& getErrors() const { return errors_; }
@@ -25,15 +28,22 @@ public:
     // 获取解析警告
     const std::vector<std::string>& getWarnings() const { return warnings_; }
 
-private:
+    // 清空错误和警告
+    void clearDiagnostics() {
+        errors_.clear();
+        warnings_.clear();
+    }
+    
+protected:
     CHTLLexer* lexer_;
     std::vector<std::string> errors_;
     std::vector<std::string> warnings_;
     Token currentToken_;
+    Token previousToken_;  // 添加前一个token的跟踪
     
-    // 解析方法
-    std::shared_ptr<ast::ASTNode> parseTopLevel();
-    std::shared_ptr<ast::ElementNode> parseElement();
+    // 解析辅助方法
+    virtual std::shared_ptr<ast::ASTNode> parseTopLevel();
+    virtual std::shared_ptr<ast::ElementNode> parseElement();
     std::shared_ptr<ast::TextNode> parseText();
     std::shared_ptr<ast::StyleNode> parseStyle();
     std::shared_ptr<ast::ScriptNode> parseScript();
@@ -44,24 +54,27 @@ private:
     std::shared_ptr<ast::OriginNode> parseOrigin();
     std::shared_ptr<ast::ConfigurationNode> parseConfiguration();
     
-    // 解析属性
-    std::map<std::string, std::string> parseAttributes();
-    std::pair<std::string, std::string> parseAttribute();
+    // 属性解析
+    std::shared_ptr<ast::AttributeNode> parseAttribute();
+    std::vector<std::shared_ptr<ast::AttributeNode>> parseAttributes();
     
-    // 解析样式规则
-    std::vector<ast::StyleNode::StyleRule> parseStyleRules();
-    ast::StyleNode::StyleRule parseStyleRule();
+    // 表达式解析
+    std::string parseStringLiteral();
+    std::string parseUnquotedLiteral();
     
-    // 解析模板参数
-    std::map<std::string, std::string> parseTemplateParams();
+    // Token匹配和消费
+    bool match(TokenType type);
+    bool check(TokenType type) const;
+    Token consume(TokenType type, const std::string& message);
+    Token advance();
+    Token peek() const;
+    Token previous() const;
+    bool isAtEnd() const;
     
     // 辅助方法
-    bool match(TokenType type);
-    bool consume(TokenType type, const std::string& message);
-    void advance();
-    Token peek();
-    bool check(TokenType type);
-    bool checkKeyword(const std::string& keyword);
+    void skipWhitespaceAndComments();
+    bool matchKeyword(const std::string& keyword);
+    bool checkKeyword(const std::string& keyword) const;
     
     // 错误处理
     void error(const std::string& message);
@@ -69,9 +82,7 @@ private:
     void synchronize();
     
     // 工具方法
-    std::string parseStringLiteral();
     std::string parseIdentifier();
-    bool isAtEnd();
 };
 
 } // namespace compiler

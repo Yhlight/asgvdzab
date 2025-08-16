@@ -1,0 +1,102 @@
+// CHTL完整测试文件
+// 测试所有主要语法特性
+
+// 配置组
+[Configuration] @Main {
+    indexInitialCount: 100;
+    disableNameGroup: false;
+}
+
+// 样式组模板
+[Template] @Style ButtonStyle {
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+// 元素模板
+[Template] @Element Card {
+    div {
+        class: card;
+        style {
+            .card {
+                border: 1px solid #ddd;
+                padding: 20px;
+                margin: 10px;
+            }
+        }
+    }
+}
+
+// 变量组模板
+[Template] @Var Theme {
+    primaryColor: "#007bff";
+    secondaryColor: "#6c757d";
+    fontSize: "16px";
+}
+
+// 自定义组件
+[Custom] Button from button {
+    delete at(0);
+    insert after(text) {
+        span { class: icon; }
+    }
+}
+
+// 主文档
+html {
+    head {
+        text { "CHTL Test Page" }
+    }
+    
+    body {
+        // 使用元素模板
+        @Element Card;
+        
+        div {
+            class: container;
+            
+            h1 {
+                text { "CHTL语法测试" }
+            }
+            
+            // 局部样式
+            style {
+                & {
+                    max-width: 1200px;
+                    margin: 0 auto;
+                }
+                
+                .box {
+                    width: 200px;
+                    height: 200px;
+                    @Style ButtonStyle;
+                }
+                
+                #main {
+                    background-color: Theme(primaryColor);
+                }
+            }
+            
+            Button {
+                text { "点击我" }
+            }
+            
+            // 局部脚本
+            script {
+                {{container}}->addEventListener('click', function(e) {
+                    console.log('Container clicked');
+                });
+                
+                {{.box}}->style.backgroundColor = Theme(secondaryColor);
+            }
+        }
+        
+        // 原始嵌入
+        [Origin] @Html {
+            <footer>
+                <p>© 2024 CHTL Compiler</p>
+            </footer>
+        }
+    }
+}

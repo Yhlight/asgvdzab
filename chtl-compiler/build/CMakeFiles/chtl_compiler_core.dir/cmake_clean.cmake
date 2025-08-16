@@ -1,8 +1,12 @@
 file(REMOVE_RECURSE
   "CMakeFiles/chtl_compiler_core.dir/src/compiler/base_compiler.cpp.o"
   "CMakeFiles/chtl_compiler_core.dir/src/compiler/base_compiler.cpp.o.d"
+  "CMakeFiles/chtl_compiler_core.dir/src/compiler/chtl/chtl_ast.cpp.o"
+  "CMakeFiles/chtl_compiler_core.dir/src/compiler/chtl/chtl_ast.cpp.o.d"
   "CMakeFiles/chtl_compiler_core.dir/src/compiler/chtl/chtl_compiler.cpp.o"
   "CMakeFiles/chtl_compiler_core.dir/src/compiler/chtl/chtl_compiler.cpp.o.d"
+  "CMakeFiles/chtl_compiler_core.dir/src/compiler/chtl/chtl_global_map.cpp.o"
+  "CMakeFiles/chtl_compiler_core.dir/src/compiler/chtl/chtl_global_map.cpp.o.d"
   "CMakeFiles/chtl_compiler_core.dir/src/compiler/chtl/chtl_lexer.cpp.o"
   "CMakeFiles/chtl_compiler_core.dir/src/compiler/chtl/chtl_lexer.cpp.o.d"
   "CMakeFiles/chtl_compiler_core.dir/src/compiler/chtl/chtl_parser.cpp.o"

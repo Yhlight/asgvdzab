@@ -1,0 +1,79 @@
+Start testing: Aug 16 00:53 UTC
+----------------------------------------------------------
+1/2 Testing: scanner_test
+1/2 Test: scanner_test
+Command: "/workspace/chtl-compiler/build/tests/test_scanner"
+Directory: /workspace/chtl-compiler/build/tests
+"scanner_test" start time: Aug 16 00:53 UTC
+Output:
+----------------------------------------------------------
+Running scanner tests...
+Found 39 segments
+Segment type: 0, Content length: 5
+Segment type: 0, Content length: 6
+Segment type: 0, Content length: 5
+Segment type: 0, Content length: 10
+Segment type: 0, Content length: 6
+Segment type: 0, Content length: 14
+Segment type: 0, Content length: 5
+Segment type: 0, Content length: 18
+Segment type: 0, Content length: 6
+Segment type: 0, Content length: 2
+Segment type: 0, Content length: 1
+Segment type: 0, Content length: 14
+Segment type: 0, Content length: 10
+Segment type: 0, Content length: 6
+Segment type: 0, Content length: 11
+Segment type: 0, Content length: 5
+Segment type: 0, Content length: 10
+Segment type: 0, Content length: 4
+Segment type: 0, Content length: 14
+Segment type: 0, Content length: 6
+Segment type: 0, Content length: 18
+Segment type: 0, Content length: 5
+Segment type: 0, Content length: 22
+Segment type: 0, Content length: 5
+Segment type: 0, Content length: 2
+Segment type: 0, Content length: 1
+Segment type: 0, Content length: 1
+Segment type: 0, Content length: 1
+Segment type: 0, Content length: 2
+Segment type: 0, Content length: 18
+Segment type: 0, Content length: 14
+Segment type: 0, Content length: 27
+Segment type: 0, Content length: 5
+Segment type: 0, Content length: 18
+Segment type: 0, Content length: 26
+Segment type: 0, Content length: 10
+Segment type: 0, Content length: 6
+Segment type: 0, Content length: 2
+Segment type: 0, Content length: 2
+All tests passed!
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"scanner_test" end time: Aug 16 00:53 UTC
+"scanner_test" time elapsed: 00:00:00
+----------------------------------------------------------
+
+2/2 Testing: chtl_compiler_test
+2/2 Test: chtl_compiler_test
+Command: "/workspace/chtl-compiler/build/tests/test_chtl_compiler"
+Directory: /workspace/chtl-compiler/build/tests
+"chtl_compiler_test" start time: Aug 16 00:53 UTC
+Output:
+----------------------------------------------------------
+Running CHTL compiler tests...
+Compilation output:
+<{><:><:>}</:></:></{>
+All tests passed!
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"chtl_compiler_test" end time: Aug 16 00:53 UTC
+"chtl_compiler_test" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Aug 16 00:53 UTC
