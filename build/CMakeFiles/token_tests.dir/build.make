@@ -156,10 +156,24 @@ CMakeFiles/token_tests.dir/src/dispatcher/compiler_dispatcher.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/token_tests.dir/src/dispatcher/compiler_dispatcher.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/dispatcher/compiler_dispatcher.cpp -o CMakeFiles/token_tests.dir/src/dispatcher/compiler_dispatcher.cpp.s
 
+CMakeFiles/token_tests.dir/src/generators/chtl_generator.cpp.o: CMakeFiles/token_tests.dir/flags.make
+CMakeFiles/token_tests.dir/src/generators/chtl_generator.cpp.o: /workspace/src/generators/chtl_generator.cpp
+CMakeFiles/token_tests.dir/src/generators/chtl_generator.cpp.o: CMakeFiles/token_tests.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/token_tests.dir/src/generators/chtl_generator.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/token_tests.dir/src/generators/chtl_generator.cpp.o -MF CMakeFiles/token_tests.dir/src/generators/chtl_generator.cpp.o.d -o CMakeFiles/token_tests.dir/src/generators/chtl_generator.cpp.o -c /workspace/src/generators/chtl_generator.cpp
+
+CMakeFiles/token_tests.dir/src/generators/chtl_generator.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/token_tests.dir/src/generators/chtl_generator.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/generators/chtl_generator.cpp > CMakeFiles/token_tests.dir/src/generators/chtl_generator.cpp.i
+
+CMakeFiles/token_tests.dir/src/generators/chtl_generator.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/token_tests.dir/src/generators/chtl_generator.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/generators/chtl_generator.cpp -o CMakeFiles/token_tests.dir/src/generators/chtl_generator.cpp.s
+
 CMakeFiles/token_tests.dir/src/lexer/chtl_js_tokens.cpp.o: CMakeFiles/token_tests.dir/flags.make
 CMakeFiles/token_tests.dir/src/lexer/chtl_js_tokens.cpp.o: /workspace/src/lexer/chtl_js_tokens.cpp
 CMakeFiles/token_tests.dir/src/lexer/chtl_js_tokens.cpp.o: CMakeFiles/token_tests.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/token_tests.dir/src/lexer/chtl_js_tokens.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/token_tests.dir/src/lexer/chtl_js_tokens.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/token_tests.dir/src/lexer/chtl_js_tokens.cpp.o -MF CMakeFiles/token_tests.dir/src/lexer/chtl_js_tokens.cpp.o.d -o CMakeFiles/token_tests.dir/src/lexer/chtl_js_tokens.cpp.o -c /workspace/src/lexer/chtl_js_tokens.cpp
 
 CMakeFiles/token_tests.dir/src/lexer/chtl_js_tokens.cpp.i: cmake_force
@@ -173,7 +187,7 @@ CMakeFiles/token_tests.dir/src/lexer/chtl_js_tokens.cpp.s: cmake_force
 CMakeFiles/token_tests.dir/src/lexer/chtl_tokens.cpp.o: CMakeFiles/token_tests.dir/flags.make
 CMakeFiles/token_tests.dir/src/lexer/chtl_tokens.cpp.o: /workspace/src/lexer/chtl_tokens.cpp
 CMakeFiles/token_tests.dir/src/lexer/chtl_tokens.cpp.o: CMakeFiles/token_tests.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/token_tests.dir/src/lexer/chtl_tokens.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/token_tests.dir/src/lexer/chtl_tokens.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/token_tests.dir/src/lexer/chtl_tokens.cpp.o -MF CMakeFiles/token_tests.dir/src/lexer/chtl_tokens.cpp.o.d -o CMakeFiles/token_tests.dir/src/lexer/chtl_tokens.cpp.o -c /workspace/src/lexer/chtl_tokens.cpp
 
 CMakeFiles/token_tests.dir/src/lexer/chtl_tokens.cpp.i: cmake_force
@@ -187,7 +201,7 @@ CMakeFiles/token_tests.dir/src/lexer/chtl_tokens.cpp.s: cmake_force
 CMakeFiles/token_tests.dir/src/lexer/global_map.cpp.o: CMakeFiles/token_tests.dir/flags.make
 CMakeFiles/token_tests.dir/src/lexer/global_map.cpp.o: /workspace/src/lexer/global_map.cpp
 CMakeFiles/token_tests.dir/src/lexer/global_map.cpp.o: CMakeFiles/token_tests.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/token_tests.dir/src/lexer/global_map.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/token_tests.dir/src/lexer/global_map.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/token_tests.dir/src/lexer/global_map.cpp.o -MF CMakeFiles/token_tests.dir/src/lexer/global_map.cpp.o.d -o CMakeFiles/token_tests.dir/src/lexer/global_map.cpp.o -c /workspace/src/lexer/global_map.cpp
 
 CMakeFiles/token_tests.dir/src/lexer/global_map.cpp.i: cmake_force
@@ -201,7 +215,7 @@ CMakeFiles/token_tests.dir/src/lexer/global_map.cpp.s: cmake_force
 CMakeFiles/token_tests.dir/src/lexer/lexer_state.cpp.o: CMakeFiles/token_tests.dir/flags.make
 CMakeFiles/token_tests.dir/src/lexer/lexer_state.cpp.o: /workspace/src/lexer/lexer_state.cpp
 CMakeFiles/token_tests.dir/src/lexer/lexer_state.cpp.o: CMakeFiles/token_tests.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/token_tests.dir/src/lexer/lexer_state.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/token_tests.dir/src/lexer/lexer_state.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/token_tests.dir/src/lexer/lexer_state.cpp.o -MF CMakeFiles/token_tests.dir/src/lexer/lexer_state.cpp.o.d -o CMakeFiles/token_tests.dir/src/lexer/lexer_state.cpp.o -c /workspace/src/lexer/lexer_state.cpp
 
 CMakeFiles/token_tests.dir/src/lexer/lexer_state.cpp.i: cmake_force
@@ -212,10 +226,24 @@ CMakeFiles/token_tests.dir/src/lexer/lexer_state.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/token_tests.dir/src/lexer/lexer_state.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/lexer/lexer_state.cpp -o CMakeFiles/token_tests.dir/src/lexer/lexer_state.cpp.s
 
+CMakeFiles/token_tests.dir/src/parsers/chtl_parser.cpp.o: CMakeFiles/token_tests.dir/flags.make
+CMakeFiles/token_tests.dir/src/parsers/chtl_parser.cpp.o: /workspace/src/parsers/chtl_parser.cpp
+CMakeFiles/token_tests.dir/src/parsers/chtl_parser.cpp.o: CMakeFiles/token_tests.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/token_tests.dir/src/parsers/chtl_parser.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/token_tests.dir/src/parsers/chtl_parser.cpp.o -MF CMakeFiles/token_tests.dir/src/parsers/chtl_parser.cpp.o.d -o CMakeFiles/token_tests.dir/src/parsers/chtl_parser.cpp.o -c /workspace/src/parsers/chtl_parser.cpp
+
+CMakeFiles/token_tests.dir/src/parsers/chtl_parser.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/token_tests.dir/src/parsers/chtl_parser.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/parsers/chtl_parser.cpp > CMakeFiles/token_tests.dir/src/parsers/chtl_parser.cpp.i
+
+CMakeFiles/token_tests.dir/src/parsers/chtl_parser.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/token_tests.dir/src/parsers/chtl_parser.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/parsers/chtl_parser.cpp -o CMakeFiles/token_tests.dir/src/parsers/chtl_parser.cpp.s
+
 CMakeFiles/token_tests.dir/src/scanner/slice_scanner.cpp.o: CMakeFiles/token_tests.dir/flags.make
 CMakeFiles/token_tests.dir/src/scanner/slice_scanner.cpp.o: /workspace/src/scanner/slice_scanner.cpp
 CMakeFiles/token_tests.dir/src/scanner/slice_scanner.cpp.o: CMakeFiles/token_tests.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/token_tests.dir/src/scanner/slice_scanner.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/token_tests.dir/src/scanner/slice_scanner.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/token_tests.dir/src/scanner/slice_scanner.cpp.o -MF CMakeFiles/token_tests.dir/src/scanner/slice_scanner.cpp.o.d -o CMakeFiles/token_tests.dir/src/scanner/slice_scanner.cpp.o -c /workspace/src/scanner/slice_scanner.cpp
 
 CMakeFiles/token_tests.dir/src/scanner/slice_scanner.cpp.i: cmake_force
@@ -229,7 +257,7 @@ CMakeFiles/token_tests.dir/src/scanner/slice_scanner.cpp.s: cmake_force
 CMakeFiles/token_tests.dir/src/scanner/unified_scanner.cpp.o: CMakeFiles/token_tests.dir/flags.make
 CMakeFiles/token_tests.dir/src/scanner/unified_scanner.cpp.o: /workspace/src/scanner/unified_scanner.cpp
 CMakeFiles/token_tests.dir/src/scanner/unified_scanner.cpp.o: CMakeFiles/token_tests.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/token_tests.dir/src/scanner/unified_scanner.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/token_tests.dir/src/scanner/unified_scanner.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/token_tests.dir/src/scanner/unified_scanner.cpp.o -MF CMakeFiles/token_tests.dir/src/scanner/unified_scanner.cpp.o.d -o CMakeFiles/token_tests.dir/src/scanner/unified_scanner.cpp.o -c /workspace/src/scanner/unified_scanner.cpp
 
 CMakeFiles/token_tests.dir/src/scanner/unified_scanner.cpp.i: cmake_force
@@ -248,10 +276,12 @@ token_tests_OBJECTS = \
 "CMakeFiles/token_tests.dir/src/common/types.cpp.o" \
 "CMakeFiles/token_tests.dir/src/compilers/chtl_compiler.cpp.o" \
 "CMakeFiles/token_tests.dir/src/dispatcher/compiler_dispatcher.cpp.o" \
+"CMakeFiles/token_tests.dir/src/generators/chtl_generator.cpp.o" \
 "CMakeFiles/token_tests.dir/src/lexer/chtl_js_tokens.cpp.o" \
 "CMakeFiles/token_tests.dir/src/lexer/chtl_tokens.cpp.o" \
 "CMakeFiles/token_tests.dir/src/lexer/global_map.cpp.o" \
 "CMakeFiles/token_tests.dir/src/lexer/lexer_state.cpp.o" \
+"CMakeFiles/token_tests.dir/src/parsers/chtl_parser.cpp.o" \
 "CMakeFiles/token_tests.dir/src/scanner/slice_scanner.cpp.o" \
 "CMakeFiles/token_tests.dir/src/scanner/unified_scanner.cpp.o"
 
@@ -264,16 +294,18 @@ bin/token_tests: CMakeFiles/token_tests.dir/src/ast/chtl_js_ast.cpp.o
 bin/token_tests: CMakeFiles/token_tests.dir/src/common/types.cpp.o
 bin/token_tests: CMakeFiles/token_tests.dir/src/compilers/chtl_compiler.cpp.o
 bin/token_tests: CMakeFiles/token_tests.dir/src/dispatcher/compiler_dispatcher.cpp.o
+bin/token_tests: CMakeFiles/token_tests.dir/src/generators/chtl_generator.cpp.o
 bin/token_tests: CMakeFiles/token_tests.dir/src/lexer/chtl_js_tokens.cpp.o
 bin/token_tests: CMakeFiles/token_tests.dir/src/lexer/chtl_tokens.cpp.o
 bin/token_tests: CMakeFiles/token_tests.dir/src/lexer/global_map.cpp.o
 bin/token_tests: CMakeFiles/token_tests.dir/src/lexer/lexer_state.cpp.o
+bin/token_tests: CMakeFiles/token_tests.dir/src/parsers/chtl_parser.cpp.o
 bin/token_tests: CMakeFiles/token_tests.dir/src/scanner/slice_scanner.cpp.o
 bin/token_tests: CMakeFiles/token_tests.dir/src/scanner/unified_scanner.cpp.o
 bin/token_tests: CMakeFiles/token_tests.dir/build.make
 bin/token_tests: CMakeFiles/token_tests.dir/compiler_depend.ts
 bin/token_tests: CMakeFiles/token_tests.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Linking CXX executable bin/token_tests"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Linking CXX executable bin/token_tests"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/token_tests.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

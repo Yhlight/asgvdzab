@@ -99,6 +99,19 @@ add_executable(parser_generator_integration_tests
     ${TEST_LIB_SOURCES}
 )
 
+# 创建RAII状态管理集成测试
+add_executable(raii_state_management_integration_tests 
+    tests/raii_state_management_integration_test.cpp 
+    src/ast/chtl_ast.cpp 
+    src/ast/chtl_js_ast.cpp
+    ${TEST_LIB_SOURCES}
+)
+
+# 创建RAII状态管理演示程序（不依赖gtest）
+add_executable(raii_state_management_demo 
+    tests/raii_state_management_demo.cpp
+)
+
 # 安装规则
 install(TARGETS chtl_compiler
     RUNTIME DESTINATION bin

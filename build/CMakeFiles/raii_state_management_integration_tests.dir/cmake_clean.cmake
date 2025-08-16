@@ -1,0 +1,38 @@
+file(REMOVE_RECURSE
+  "CMakeFiles/raii_state_management_integration_tests.dir/link.d"
+  "CMakeFiles/raii_state_management_integration_tests.dir/src/ast/chtl_ast.cpp.o"
+  "CMakeFiles/raii_state_management_integration_tests.dir/src/ast/chtl_ast.cpp.o.d"
+  "CMakeFiles/raii_state_management_integration_tests.dir/src/ast/chtl_js_ast.cpp.o"
+  "CMakeFiles/raii_state_management_integration_tests.dir/src/ast/chtl_js_ast.cpp.o.d"
+  "CMakeFiles/raii_state_management_integration_tests.dir/src/common/types.cpp.o"
+  "CMakeFiles/raii_state_management_integration_tests.dir/src/common/types.cpp.o.d"
+  "CMakeFiles/raii_state_management_integration_tests.dir/src/compilers/chtl_compiler.cpp.o"
+  "CMakeFiles/raii_state_management_integration_tests.dir/src/compilers/chtl_compiler.cpp.o.d"
+  "CMakeFiles/raii_state_management_integration_tests.dir/src/dispatcher/compiler_dispatcher.cpp.o"
+  "CMakeFiles/raii_state_management_integration_tests.dir/src/dispatcher/compiler_dispatcher.cpp.o.d"
+  "CMakeFiles/raii_state_management_integration_tests.dir/src/generators/chtl_generator.cpp.o"
+  "CMakeFiles/raii_state_management_integration_tests.dir/src/generators/chtl_generator.cpp.o.d"
+  "CMakeFiles/raii_state_management_integration_tests.dir/src/lexer/chtl_js_tokens.cpp.o"
+  "CMakeFiles/raii_state_management_integration_tests.dir/src/lexer/chtl_js_tokens.cpp.o.d"
+  "CMakeFiles/raii_state_management_integration_tests.dir/src/lexer/chtl_tokens.cpp.o"
+  "CMakeFiles/raii_state_management_integration_tests.dir/src/lexer/chtl_tokens.cpp.o.d"
+  "CMakeFiles/raii_state_management_integration_tests.dir/src/lexer/global_map.cpp.o"
+  "CMakeFiles/raii_state_management_integration_tests.dir/src/lexer/global_map.cpp.o.d"
+  "CMakeFiles/raii_state_management_integration_tests.dir/src/lexer/lexer_state.cpp.o"
+  "CMakeFiles/raii_state_management_integration_tests.dir/src/lexer/lexer_state.cpp.o.d"
+  "CMakeFiles/raii_state_management_integration_tests.dir/src/parsers/chtl_parser.cpp.o"
+  "CMakeFiles/raii_state_management_integration_tests.dir/src/parsers/chtl_parser.cpp.o.d"
+  "CMakeFiles/raii_state_management_integration_tests.dir/src/scanner/slice_scanner.cpp.o"
+  "CMakeFiles/raii_state_management_integration_tests.dir/src/scanner/slice_scanner.cpp.o.d"
+  "CMakeFiles/raii_state_management_integration_tests.dir/src/scanner/unified_scanner.cpp.o"
+  "CMakeFiles/raii_state_management_integration_tests.dir/src/scanner/unified_scanner.cpp.o.d"
+  "CMakeFiles/raii_state_management_integration_tests.dir/tests/raii_state_management_integration_test.cpp.o"
+  "CMakeFiles/raii_state_management_integration_tests.dir/tests/raii_state_management_integration_test.cpp.o.d"
+  "bin/raii_state_management_integration_tests"
+  "bin/raii_state_management_integration_tests.pdb"
+)
+
+# Per-language clean rules from dependency scanning.
+foreach(lang CXX)
+  include(CMakeFiles/raii_state_management_integration_tests.dir/cmake_clean_${lang}.cmake OPTIONAL)
+endforeach()

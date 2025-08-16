@@ -265,6 +265,45 @@ chtl_ast_conformance_tests/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/build
 .PHONY : chtl_ast_conformance_tests/fast
 
+#=============================================================================
+# Target rules for targets named parser_generator_integration_tests
+
+# Build rule for target.
+parser_generator_integration_tests: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 parser_generator_integration_tests
+.PHONY : parser_generator_integration_tests
+
+# fast build rule for target.
+parser_generator_integration_tests/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/build
+.PHONY : parser_generator_integration_tests/fast
+
+#=============================================================================
+# Target rules for targets named raii_state_management_integration_tests
+
+# Build rule for target.
+raii_state_management_integration_tests: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 raii_state_management_integration_tests
+.PHONY : raii_state_management_integration_tests
+
+# fast build rule for target.
+raii_state_management_integration_tests/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/build
+.PHONY : raii_state_management_integration_tests/fast
+
+#=============================================================================
+# Target rules for targets named raii_state_management_demo
+
+# Build rule for target.
+raii_state_management_demo: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 raii_state_management_demo
+.PHONY : raii_state_management_demo
+
+# fast build rule for target.
+raii_state_management_demo/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_demo.dir/build.make CMakeFiles/raii_state_management_demo.dir/build
+.PHONY : raii_state_management_demo/fast
+
 src/ast/chtl_ast.o: src/ast/chtl_ast.cpp.o
 .PHONY : src/ast/chtl_ast.o
 
@@ -278,6 +317,8 @@ src/ast/chtl_ast.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/ast/chtl_ast.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/ast/chtl_ast.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/ast/chtl_ast.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/ast/chtl_ast.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/ast/chtl_ast.cpp.o
 .PHONY : src/ast/chtl_ast.cpp.o
 
 src/ast/chtl_ast.i: src/ast/chtl_ast.cpp.i
@@ -293,6 +334,8 @@ src/ast/chtl_ast.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/ast/chtl_ast.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/ast/chtl_ast.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/ast/chtl_ast.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/ast/chtl_ast.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/ast/chtl_ast.cpp.i
 .PHONY : src/ast/chtl_ast.cpp.i
 
 src/ast/chtl_ast.s: src/ast/chtl_ast.cpp.s
@@ -308,6 +351,8 @@ src/ast/chtl_ast.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/ast/chtl_ast.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/ast/chtl_ast.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/ast/chtl_ast.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/ast/chtl_ast.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/ast/chtl_ast.cpp.s
 .PHONY : src/ast/chtl_ast.cpp.s
 
 src/ast/chtl_js_ast.o: src/ast/chtl_js_ast.cpp.o
@@ -323,6 +368,8 @@ src/ast/chtl_js_ast.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/ast/chtl_js_ast.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/ast/chtl_js_ast.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/ast/chtl_js_ast.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/ast/chtl_js_ast.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/ast/chtl_js_ast.cpp.o
 .PHONY : src/ast/chtl_js_ast.cpp.o
 
 src/ast/chtl_js_ast.i: src/ast/chtl_js_ast.cpp.i
@@ -338,6 +385,8 @@ src/ast/chtl_js_ast.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/ast/chtl_js_ast.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/ast/chtl_js_ast.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/ast/chtl_js_ast.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/ast/chtl_js_ast.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/ast/chtl_js_ast.cpp.i
 .PHONY : src/ast/chtl_js_ast.cpp.i
 
 src/ast/chtl_js_ast.s: src/ast/chtl_js_ast.cpp.s
@@ -353,6 +402,8 @@ src/ast/chtl_js_ast.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/ast/chtl_js_ast.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/ast/chtl_js_ast.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/ast/chtl_js_ast.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/ast/chtl_js_ast.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/ast/chtl_js_ast.cpp.s
 .PHONY : src/ast/chtl_js_ast.cpp.s
 
 src/common/types.o: src/common/types.cpp.o
@@ -368,6 +419,8 @@ src/common/types.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/common/types.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/common/types.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/common/types.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/common/types.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/common/types.cpp.o
 .PHONY : src/common/types.cpp.o
 
 src/common/types.i: src/common/types.cpp.i
@@ -383,6 +436,8 @@ src/common/types.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/common/types.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/common/types.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/common/types.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/common/types.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/common/types.cpp.i
 .PHONY : src/common/types.cpp.i
 
 src/common/types.s: src/common/types.cpp.s
@@ -398,6 +453,8 @@ src/common/types.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/common/types.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/common/types.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/common/types.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/common/types.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/common/types.cpp.s
 .PHONY : src/common/types.cpp.s
 
 src/compilers/chtl_compiler.o: src/compilers/chtl_compiler.cpp.o
@@ -413,6 +470,8 @@ src/compilers/chtl_compiler.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/compilers/chtl_compiler.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/compilers/chtl_compiler.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/compilers/chtl_compiler.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/compilers/chtl_compiler.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/compilers/chtl_compiler.cpp.o
 .PHONY : src/compilers/chtl_compiler.cpp.o
 
 src/compilers/chtl_compiler.i: src/compilers/chtl_compiler.cpp.i
@@ -428,6 +487,8 @@ src/compilers/chtl_compiler.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/compilers/chtl_compiler.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/compilers/chtl_compiler.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/compilers/chtl_compiler.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/compilers/chtl_compiler.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/compilers/chtl_compiler.cpp.i
 .PHONY : src/compilers/chtl_compiler.cpp.i
 
 src/compilers/chtl_compiler.s: src/compilers/chtl_compiler.cpp.s
@@ -443,6 +504,8 @@ src/compilers/chtl_compiler.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/compilers/chtl_compiler.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/compilers/chtl_compiler.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/compilers/chtl_compiler.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/compilers/chtl_compiler.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/compilers/chtl_compiler.cpp.s
 .PHONY : src/compilers/chtl_compiler.cpp.s
 
 src/dispatcher/compiler_dispatcher.o: src/dispatcher/compiler_dispatcher.cpp.o
@@ -458,6 +521,8 @@ src/dispatcher/compiler_dispatcher.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/dispatcher/compiler_dispatcher.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/dispatcher/compiler_dispatcher.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/dispatcher/compiler_dispatcher.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/dispatcher/compiler_dispatcher.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/dispatcher/compiler_dispatcher.cpp.o
 .PHONY : src/dispatcher/compiler_dispatcher.cpp.o
 
 src/dispatcher/compiler_dispatcher.i: src/dispatcher/compiler_dispatcher.cpp.i
@@ -473,6 +538,8 @@ src/dispatcher/compiler_dispatcher.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/dispatcher/compiler_dispatcher.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/dispatcher/compiler_dispatcher.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/dispatcher/compiler_dispatcher.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/dispatcher/compiler_dispatcher.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/dispatcher/compiler_dispatcher.cpp.i
 .PHONY : src/dispatcher/compiler_dispatcher.cpp.i
 
 src/dispatcher/compiler_dispatcher.s: src/dispatcher/compiler_dispatcher.cpp.s
@@ -488,7 +555,60 @@ src/dispatcher/compiler_dispatcher.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/dispatcher/compiler_dispatcher.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/dispatcher/compiler_dispatcher.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/dispatcher/compiler_dispatcher.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/dispatcher/compiler_dispatcher.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/dispatcher/compiler_dispatcher.cpp.s
 .PHONY : src/dispatcher/compiler_dispatcher.cpp.s
+
+src/generators/chtl_generator.o: src/generators/chtl_generator.cpp.o
+.PHONY : src/generators/chtl_generator.o
+
+# target to build an object file
+src/generators/chtl_generator.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/generators/chtl_generator.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/generators/chtl_generator.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/generators/chtl_generator.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/generators/chtl_generator.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/generators/chtl_generator.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/generators/chtl_generator.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/generators/chtl_generator.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/generators/chtl_generator.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/generators/chtl_generator.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/generators/chtl_generator.cpp.o
+.PHONY : src/generators/chtl_generator.cpp.o
+
+src/generators/chtl_generator.i: src/generators/chtl_generator.cpp.i
+.PHONY : src/generators/chtl_generator.i
+
+# target to preprocess a source file
+src/generators/chtl_generator.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/generators/chtl_generator.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/generators/chtl_generator.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/generators/chtl_generator.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/generators/chtl_generator.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/generators/chtl_generator.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/generators/chtl_generator.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/generators/chtl_generator.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/generators/chtl_generator.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/generators/chtl_generator.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/generators/chtl_generator.cpp.i
+.PHONY : src/generators/chtl_generator.cpp.i
+
+src/generators/chtl_generator.s: src/generators/chtl_generator.cpp.s
+.PHONY : src/generators/chtl_generator.s
+
+# target to generate assembly for a file
+src/generators/chtl_generator.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/generators/chtl_generator.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/generators/chtl_generator.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/generators/chtl_generator.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/generators/chtl_generator.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/generators/chtl_generator.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/generators/chtl_generator.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/generators/chtl_generator.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/generators/chtl_generator.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/generators/chtl_generator.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/generators/chtl_generator.cpp.s
+.PHONY : src/generators/chtl_generator.cpp.s
 
 src/lexer/chtl_js_tokens.o: src/lexer/chtl_js_tokens.cpp.o
 .PHONY : src/lexer/chtl_js_tokens.o
@@ -503,6 +623,8 @@ src/lexer/chtl_js_tokens.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/lexer/chtl_js_tokens.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/lexer/chtl_js_tokens.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/lexer/chtl_js_tokens.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/lexer/chtl_js_tokens.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/lexer/chtl_js_tokens.cpp.o
 .PHONY : src/lexer/chtl_js_tokens.cpp.o
 
 src/lexer/chtl_js_tokens.i: src/lexer/chtl_js_tokens.cpp.i
@@ -518,6 +640,8 @@ src/lexer/chtl_js_tokens.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/lexer/chtl_js_tokens.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/lexer/chtl_js_tokens.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/lexer/chtl_js_tokens.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/lexer/chtl_js_tokens.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/lexer/chtl_js_tokens.cpp.i
 .PHONY : src/lexer/chtl_js_tokens.cpp.i
 
 src/lexer/chtl_js_tokens.s: src/lexer/chtl_js_tokens.cpp.s
@@ -533,6 +657,8 @@ src/lexer/chtl_js_tokens.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/lexer/chtl_js_tokens.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/lexer/chtl_js_tokens.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/lexer/chtl_js_tokens.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/lexer/chtl_js_tokens.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/lexer/chtl_js_tokens.cpp.s
 .PHONY : src/lexer/chtl_js_tokens.cpp.s
 
 src/lexer/chtl_tokens.o: src/lexer/chtl_tokens.cpp.o
@@ -548,6 +674,8 @@ src/lexer/chtl_tokens.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/lexer/chtl_tokens.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/lexer/chtl_tokens.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/lexer/chtl_tokens.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/lexer/chtl_tokens.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/lexer/chtl_tokens.cpp.o
 .PHONY : src/lexer/chtl_tokens.cpp.o
 
 src/lexer/chtl_tokens.i: src/lexer/chtl_tokens.cpp.i
@@ -563,6 +691,8 @@ src/lexer/chtl_tokens.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/lexer/chtl_tokens.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/lexer/chtl_tokens.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/lexer/chtl_tokens.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/lexer/chtl_tokens.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/lexer/chtl_tokens.cpp.i
 .PHONY : src/lexer/chtl_tokens.cpp.i
 
 src/lexer/chtl_tokens.s: src/lexer/chtl_tokens.cpp.s
@@ -578,6 +708,8 @@ src/lexer/chtl_tokens.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/lexer/chtl_tokens.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/lexer/chtl_tokens.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/lexer/chtl_tokens.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/lexer/chtl_tokens.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/lexer/chtl_tokens.cpp.s
 .PHONY : src/lexer/chtl_tokens.cpp.s
 
 src/lexer/global_map.o: src/lexer/global_map.cpp.o
@@ -593,6 +725,8 @@ src/lexer/global_map.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/lexer/global_map.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/lexer/global_map.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/lexer/global_map.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/lexer/global_map.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/lexer/global_map.cpp.o
 .PHONY : src/lexer/global_map.cpp.o
 
 src/lexer/global_map.i: src/lexer/global_map.cpp.i
@@ -608,6 +742,8 @@ src/lexer/global_map.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/lexer/global_map.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/lexer/global_map.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/lexer/global_map.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/lexer/global_map.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/lexer/global_map.cpp.i
 .PHONY : src/lexer/global_map.cpp.i
 
 src/lexer/global_map.s: src/lexer/global_map.cpp.s
@@ -623,6 +759,8 @@ src/lexer/global_map.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/lexer/global_map.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/lexer/global_map.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/lexer/global_map.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/lexer/global_map.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/lexer/global_map.cpp.s
 .PHONY : src/lexer/global_map.cpp.s
 
 src/lexer/lexer_state.o: src/lexer/lexer_state.cpp.o
@@ -638,6 +776,8 @@ src/lexer/lexer_state.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/lexer/lexer_state.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/lexer/lexer_state.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/lexer/lexer_state.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/lexer/lexer_state.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/lexer/lexer_state.cpp.o
 .PHONY : src/lexer/lexer_state.cpp.o
 
 src/lexer/lexer_state.i: src/lexer/lexer_state.cpp.i
@@ -653,6 +793,8 @@ src/lexer/lexer_state.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/lexer/lexer_state.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/lexer/lexer_state.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/lexer/lexer_state.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/lexer/lexer_state.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/lexer/lexer_state.cpp.i
 .PHONY : src/lexer/lexer_state.cpp.i
 
 src/lexer/lexer_state.s: src/lexer/lexer_state.cpp.s
@@ -668,6 +810,8 @@ src/lexer/lexer_state.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/lexer/lexer_state.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/lexer/lexer_state.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/lexer/lexer_state.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/lexer/lexer_state.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/lexer/lexer_state.cpp.s
 .PHONY : src/lexer/lexer_state.cpp.s
 
 src/main.o: src/main.cpp.o
@@ -694,6 +838,57 @@ src/main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/main.cpp.s
 .PHONY : src/main.cpp.s
 
+src/parsers/chtl_parser.o: src/parsers/chtl_parser.cpp.o
+.PHONY : src/parsers/chtl_parser.o
+
+# target to build an object file
+src/parsers/chtl_parser.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/parsers/chtl_parser.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/parsers/chtl_parser.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/parsers/chtl_parser.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/parsers/chtl_parser.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/parsers/chtl_parser.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_parser.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/parsers/chtl_parser.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/parsers/chtl_parser.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/parsers/chtl_parser.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/parsers/chtl_parser.cpp.o
+.PHONY : src/parsers/chtl_parser.cpp.o
+
+src/parsers/chtl_parser.i: src/parsers/chtl_parser.cpp.i
+.PHONY : src/parsers/chtl_parser.i
+
+# target to preprocess a source file
+src/parsers/chtl_parser.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/parsers/chtl_parser.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/parsers/chtl_parser.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/parsers/chtl_parser.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/parsers/chtl_parser.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/parsers/chtl_parser.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_parser.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/parsers/chtl_parser.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/parsers/chtl_parser.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/parsers/chtl_parser.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/parsers/chtl_parser.cpp.i
+.PHONY : src/parsers/chtl_parser.cpp.i
+
+src/parsers/chtl_parser.s: src/parsers/chtl_parser.cpp.s
+.PHONY : src/parsers/chtl_parser.s
+
+# target to generate assembly for a file
+src/parsers/chtl_parser.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/parsers/chtl_parser.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/parsers/chtl_parser.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/parsers/chtl_parser.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/parsers/chtl_parser.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/parsers/chtl_parser.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_parser.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/parsers/chtl_parser.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/parsers/chtl_parser.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/parsers/chtl_parser.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/parsers/chtl_parser.cpp.s
+.PHONY : src/parsers/chtl_parser.cpp.s
+
 src/scanner/slice_scanner.o: src/scanner/slice_scanner.cpp.o
 .PHONY : src/scanner/slice_scanner.o
 
@@ -707,6 +902,8 @@ src/scanner/slice_scanner.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/scanner/slice_scanner.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/scanner/slice_scanner.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/scanner/slice_scanner.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/scanner/slice_scanner.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/scanner/slice_scanner.cpp.o
 .PHONY : src/scanner/slice_scanner.cpp.o
 
 src/scanner/slice_scanner.i: src/scanner/slice_scanner.cpp.i
@@ -722,6 +919,8 @@ src/scanner/slice_scanner.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/scanner/slice_scanner.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/scanner/slice_scanner.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/scanner/slice_scanner.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/scanner/slice_scanner.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/scanner/slice_scanner.cpp.i
 .PHONY : src/scanner/slice_scanner.cpp.i
 
 src/scanner/slice_scanner.s: src/scanner/slice_scanner.cpp.s
@@ -737,6 +936,8 @@ src/scanner/slice_scanner.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/scanner/slice_scanner.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/scanner/slice_scanner.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/scanner/slice_scanner.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/scanner/slice_scanner.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/scanner/slice_scanner.cpp.s
 .PHONY : src/scanner/slice_scanner.cpp.s
 
 src/scanner/unified_scanner.o: src/scanner/unified_scanner.cpp.o
@@ -752,6 +953,8 @@ src/scanner/unified_scanner.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/scanner/unified_scanner.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/scanner/unified_scanner.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/scanner/unified_scanner.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/scanner/unified_scanner.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/scanner/unified_scanner.cpp.o
 .PHONY : src/scanner/unified_scanner.cpp.o
 
 src/scanner/unified_scanner.i: src/scanner/unified_scanner.cpp.i
@@ -767,6 +970,8 @@ src/scanner/unified_scanner.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/scanner/unified_scanner.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/scanner/unified_scanner.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/scanner/unified_scanner.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/scanner/unified_scanner.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/scanner/unified_scanner.cpp.i
 .PHONY : src/scanner/unified_scanner.cpp.i
 
 src/scanner/unified_scanner.s: src/scanner/unified_scanner.cpp.s
@@ -782,6 +987,8 @@ src/scanner/unified_scanner.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/scanner/unified_scanner.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/scanner/unified_scanner.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/scanner/unified_scanner.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/scanner/unified_scanner.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/scanner/unified_scanner.cpp.s
 .PHONY : src/scanner/unified_scanner.cpp.s
 
 tests/basic_test.o: tests/basic_test.cpp.o
@@ -940,6 +1147,87 @@ tests/independent_compiler_architecture_test.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/independent_compiler_architecture_test.cpp.s
 .PHONY : tests/independent_compiler_architecture_test.cpp.s
 
+tests/parser_generator_integration_test.o: tests/parser_generator_integration_test.cpp.o
+.PHONY : tests/parser_generator_integration_test.o
+
+# target to build an object file
+tests/parser_generator_integration_test.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/parser_generator_integration_test.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/tests/parser_generator_integration_test.cpp.o
+.PHONY : tests/parser_generator_integration_test.cpp.o
+
+tests/parser_generator_integration_test.i: tests/parser_generator_integration_test.cpp.i
+.PHONY : tests/parser_generator_integration_test.i
+
+# target to preprocess a source file
+tests/parser_generator_integration_test.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/parser_generator_integration_test.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/tests/parser_generator_integration_test.cpp.i
+.PHONY : tests/parser_generator_integration_test.cpp.i
+
+tests/parser_generator_integration_test.s: tests/parser_generator_integration_test.cpp.s
+.PHONY : tests/parser_generator_integration_test.s
+
+# target to generate assembly for a file
+tests/parser_generator_integration_test.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/parser_generator_integration_test.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/tests/parser_generator_integration_test.cpp.s
+.PHONY : tests/parser_generator_integration_test.cpp.s
+
+tests/raii_state_management_demo.o: tests/raii_state_management_demo.cpp.o
+.PHONY : tests/raii_state_management_demo.o
+
+# target to build an object file
+tests/raii_state_management_demo.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/raii_state_management_demo.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_demo.dir/build.make CMakeFiles/raii_state_management_demo.dir/tests/raii_state_management_demo.cpp.o
+.PHONY : tests/raii_state_management_demo.cpp.o
+
+tests/raii_state_management_demo.i: tests/raii_state_management_demo.cpp.i
+.PHONY : tests/raii_state_management_demo.i
+
+# target to preprocess a source file
+tests/raii_state_management_demo.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/raii_state_management_demo.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_demo.dir/build.make CMakeFiles/raii_state_management_demo.dir/tests/raii_state_management_demo.cpp.i
+.PHONY : tests/raii_state_management_demo.cpp.i
+
+tests/raii_state_management_demo.s: tests/raii_state_management_demo.cpp.s
+.PHONY : tests/raii_state_management_demo.s
+
+# target to generate assembly for a file
+tests/raii_state_management_demo.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/raii_state_management_demo.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_demo.dir/build.make CMakeFiles/raii_state_management_demo.dir/tests/raii_state_management_demo.cpp.s
+.PHONY : tests/raii_state_management_demo.cpp.s
+
+tests/raii_state_management_integration_test.o: tests/raii_state_management_integration_test.cpp.o
+.PHONY : tests/raii_state_management_integration_test.o
+
+# target to build an object file
+tests/raii_state_management_integration_test.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/raii_state_management_integration_test.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/tests/raii_state_management_integration_test.cpp.o
+.PHONY : tests/raii_state_management_integration_test.cpp.o
+
+tests/raii_state_management_integration_test.i: tests/raii_state_management_integration_test.cpp.i
+.PHONY : tests/raii_state_management_integration_test.i
+
+# target to preprocess a source file
+tests/raii_state_management_integration_test.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/raii_state_management_integration_test.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/tests/raii_state_management_integration_test.cpp.i
+.PHONY : tests/raii_state_management_integration_test.cpp.i
+
+tests/raii_state_management_integration_test.s: tests/raii_state_management_integration_test.cpp.s
+.PHONY : tests/raii_state_management_integration_test.s
+
+# target to generate assembly for a file
+tests/raii_state_management_integration_test.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/raii_state_management_integration_test.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/tests/raii_state_management_integration_test.cpp.s
+.PHONY : tests/raii_state_management_integration_test.cpp.s
+
 tests/slice_scanner_test.o: tests/slice_scanner_test.cpp.o
 .PHONY : tests/slice_scanner_test.o
 
@@ -1012,6 +1300,9 @@ help:
 	@echo "... chtl_syntax_validation_tests"
 	@echo "... chtl_tests"
 	@echo "... comprehensive_lexer_tests"
+	@echo "... parser_generator_integration_tests"
+	@echo "... raii_state_management_demo"
+	@echo "... raii_state_management_integration_tests"
 	@echo "... slice_scanner_tests"
 	@echo "... token_tests"
 	@echo "... src/ast/chtl_ast.o"
@@ -1029,6 +1320,9 @@ help:
 	@echo "... src/dispatcher/compiler_dispatcher.o"
 	@echo "... src/dispatcher/compiler_dispatcher.i"
 	@echo "... src/dispatcher/compiler_dispatcher.s"
+	@echo "... src/generators/chtl_generator.o"
+	@echo "... src/generators/chtl_generator.i"
+	@echo "... src/generators/chtl_generator.s"
 	@echo "... src/lexer/chtl_js_tokens.o"
 	@echo "... src/lexer/chtl_js_tokens.i"
 	@echo "... src/lexer/chtl_js_tokens.s"
@@ -1044,6 +1338,9 @@ help:
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
+	@echo "... src/parsers/chtl_parser.o"
+	@echo "... src/parsers/chtl_parser.i"
+	@echo "... src/parsers/chtl_parser.s"
 	@echo "... src/scanner/slice_scanner.o"
 	@echo "... src/scanner/slice_scanner.i"
 	@echo "... src/scanner/slice_scanner.s"
@@ -1068,6 +1365,15 @@ help:
 	@echo "... tests/independent_compiler_architecture_test.o"
 	@echo "... tests/independent_compiler_architecture_test.i"
 	@echo "... tests/independent_compiler_architecture_test.s"
+	@echo "... tests/parser_generator_integration_test.o"
+	@echo "... tests/parser_generator_integration_test.i"
+	@echo "... tests/parser_generator_integration_test.s"
+	@echo "... tests/raii_state_management_demo.o"
+	@echo "... tests/raii_state_management_demo.i"
+	@echo "... tests/raii_state_management_demo.s"
+	@echo "... tests/raii_state_management_integration_test.o"
+	@echo "... tests/raii_state_management_integration_test.i"
+	@echo "... tests/raii_state_management_integration_test.s"
 	@echo "... tests/slice_scanner_test.o"
 	@echo "... tests/slice_scanner_test.i"
 	@echo "... tests/slice_scanner_test.s"
