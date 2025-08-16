@@ -1,1 +1,0 @@
-/usr/bin/c++ -Xlinker --dependency-file=CMakeFiles/chtl-cmod.dir/link.d "CMakeFiles/chtl-cmod.dir/src/tools/chtl_cmod_tool.cpp.o" "CMakeFiles/chtl-cmod.dir/src/cmod/cmod_manager.cpp.o" "CMakeFiles/chtl-cmod.dir/src/compiler/cmod_compiler_extension.cpp.o" -o bin/chtl-cmod

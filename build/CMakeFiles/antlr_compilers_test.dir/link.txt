@@ -1,1 +1,0 @@
-/usr/bin/c++ -Xlinker --dependency-file=CMakeFiles/antlr_compilers_test.dir/link.d CMakeFiles/antlr_compilers_test.dir/tests/antlr_compilers_test.cpp.o -o bin/antlr_compilers_test  lib/libchtl_test_lib.a -lantlr4-runtime

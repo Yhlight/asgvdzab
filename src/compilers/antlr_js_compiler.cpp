@@ -3,185 +3,41 @@
 #include <sstream>
 #include <algorithm>
 #include <regex>
-#include <antlr4-runtime.h>
 
-using namespace antlr4;
 using namespace chtl;
+using namespace antlr4;
 
 // JSASTVisitor实现
-
-JSASTVisitor::JSASTVisitor(const JSCompileOptions& options) 
-    : options_(options) {
-    result_.success = true;
+JSASTVisitor::JSASTVisitor() {
 }
 
-antlrcpp::Any JSASTVisitor::visitProgram(JavaScriptParser::ProgramContext *ctx) {
-    if (!ctx) return nullptr;
-    
-    std::ostringstream js;
-    
-    if (ctx->sourceElements()) {
-        for (auto element : ctx->sourceElements()->sourceElement()) {
-            if (element->functionDeclaration()) {
-                if (options_.extractFunctions) {
-                    extractFunctionInfo(element->functionDeclaration());
-                }
-                std::string func = formatFunction(element->functionDeclaration());
-                if (!func.empty()) {
-                    js << func;
-                    if (!options_.minify) js << "\n\n";
-                }
-            } else if (element->statement()) {
-                std::string stmt = formatStatement(element);
-                if (!stmt.empty()) {
-                    js << stmt;
-                    if (!options_.minify) js << "\n";
-                }
-            }
-        }
-    }
-    
-    result_.javascript = js.str();
-    result_.originalSize = result_.javascript.length();
-    
-    if (options_.minify) {
-        result_.javascript = minifyJS(result_.javascript);
-    }
-    
-    result_.compiledSize = result_.javascript.length();
-    return result_.javascript;
+void JSASTVisitor::enterProgram(JavaScriptParser::ProgramContext *ctx) {
+    // 处理程序
 }
 
-antlrcpp::Any JSASTVisitor::visitFunctionDeclaration(JavaScriptParser::FunctionDeclarationContext *ctx) {
-    if (options_.extractFunctions) {
-        extractFunctionInfo(ctx);
-    }
-    return formatFunction(ctx);
-}
-
-antlrcpp::Any JSASTVisitor::visitVariableStatement(JavaScriptParser::VariableStatementContext *ctx) {
-    if (options_.extractVariables) {
-        extractVariableInfo(ctx);
-    }
-    return ctx->getText();
-}
-
-antlrcpp::Any JSASTVisitor::visitExpressionStatement(JavaScriptParser::ExpressionStatementContext *ctx) {
-    if (!ctx) return std::string("");
-    return ctx->getText();
-}
-
-antlrcpp::Any JSASTVisitor::visitBlock(JavaScriptParser::BlockContext *ctx) {
-    if (!ctx) return std::string("");
-    
-    std::ostringstream block;
-    block << "{";
-    if (!options_.minify) block << "\n";
-    
-    if (ctx->statementList()) {
-        for (auto stmt : ctx->statementList()->statement()) {
-            std::string statement = stmt->getText();
-            if (!statement.empty()) {
-                if (!options_.minify) block << "  ";
-                block << statement;
-                if (!options_.minify) block << "\n";
-            }
-        }
-    }
-    
-    block << "}";
-    return block.str();
-}
-
-void JSASTVisitor::extractFunctionInfo(JavaScriptParser::FunctionDeclarationContext *ctx) {
-    if (!ctx) return;
-    
-    std::string functionName;
-    if (ctx->Identifier()) {
-        functionName = ctx->Identifier()->getText();
-        result_.functions.push_back(functionName);
-    }
-}
-
-void JSASTVisitor::extractVariableInfo(JavaScriptParser::VariableStatementContext *ctx) {
-    if (!ctx) return;
-    
-    if (ctx->variableDeclarationList()) {
-        for (auto varDecl : ctx->variableDeclarationList()->variableDeclaration()) {
-            if (varDecl->Identifier()) {
-                std::string varName = varDecl->Identifier()->getText();
-                result_.variables.push_back(varName);
-            }
+void JSASTVisitor::enterFunctionDeclaration(JavaScriptParser::FunctionDeclarationContext *ctx) {
+    if (ctx && ctx->Identifier()) {
+        std::string functionName = ctx->Identifier()->getText();
+        if (!functionName.empty()) {
+            functions_.push_back(functionName);
         }
     }
 }
 
-std::string JSASTVisitor::minifyJS(const std::string& js) {
-    std::string minified = js;
-    
-    // 简单的压缩：移除多余空白和换行
-    minified = std::regex_replace(minified, std::regex(R"(\s+)"), " ");
-    minified = std::regex_replace(minified, std::regex(R"(\s*{\s*)"), "{");
-    minified = std::regex_replace(minified, std::regex(R"(\s*}\s*)"), "}");
-    minified = std::regex_replace(minified, std::regex(R"(\s*;\s*)"), ";");
-    minified = std::regex_replace(minified, std::regex(R"(\s*,\s*)"), ",");
-    minified = std::regex_replace(minified, std::regex(R"(\s*\(\s*)"), "(");
-    minified = std::regex_replace(minified, std::regex(R"(\s*\)\s*)"), ")");
-    
-    return minified;
+void JSASTVisitor::enterVariableStatement(JavaScriptParser::VariableStatementContext *ctx) {
+    // 处理变量语句
 }
 
-std::string JSASTVisitor::formatFunction(JavaScriptParser::FunctionDeclarationContext *ctx) {
-    if (!ctx) return "";
-    
-    std::ostringstream func;
-    func << "function ";
-    
-    if (ctx->Identifier()) {
-        func << ctx->Identifier()->getText();
-    }
-    
-    func << "(";
-    if (ctx->formalParameterList()) {
-        bool first = true;
-        for (auto param : ctx->formalParameterList()->Identifier()) {
-            if (!first) func << ", ";
-            func << param->getText();
-            first = false;
+void JSASTVisitor::enterVariableDeclaration(JavaScriptParser::VariableDeclarationContext *ctx) {
+    if (ctx && ctx->Identifier()) {
+        std::string variableName = ctx->Identifier()->getText();
+        if (!variableName.empty()) {
+            variables_.push_back(variableName);
         }
     }
-    func << ") ";
-    
-    if (ctx->functionBody()) {
-        func << "{";
-        if (!options_.minify) func << "\n";
-        
-        // 简化：直接输出函数体文本
-        std::string bodyText = ctx->functionBody()->getText();
-        if (!bodyText.empty()) {
-            if (!options_.minify) {
-                // 添加缩进
-                bodyText = std::regex_replace(bodyText, std::regex("\n"), "\n  ");
-                func << "  " << bodyText;
-                func << "\n";
-            } else {
-                func << bodyText;
-            }
-        }
-        
-        func << "}";
-    }
-    
-    return func.str();
-}
-
-std::string JSASTVisitor::formatStatement(JavaScriptParser::SourceElementContext *ctx) {
-    if (!ctx || !ctx->statement()) return "";
-    return ctx->statement()->getText();
 }
 
 // ANTLRJSCompiler实现
-
 ANTLRJSCompiler::ANTLRJSCompiler() {
 }
 
@@ -213,33 +69,25 @@ CompileResult ANTLRJSCompiler::compile(const CodeSegment& segment, const Compile
 
 JSCompileResult ANTLRJSCompiler::compileJS(const std::string& jsCode, const JSCompileOptions& options) {
     JSCompileResult result;
+    result.originalSize = jsCode.length();
     
     try {
-        // 创建输入流
-        ANTLRInputStream input(jsCode);
+        std::vector<std::string> parseErrors;
+        auto tree = parseJS(jsCode, parseErrors);
         
-        // 创建词法分析器
-        JavaScriptLexer lexer(&input);
-        CommonTokenStream tokens(&lexer);
-        
-        // 创建解析器
-        JavaScriptParser parser(&tokens);
-        
-        // 禁用默认错误输出
-        parser.removeErrorListeners();
-        
-        // 解析
-        JavaScriptParser::ProgramContext* tree = parser.program();
-        
-        if (tree) {
-            // 使用访问器遍历AST
-            JSASTVisitor visitor(options);
-            visitor.visitProgram(tree);
-            result = visitor.getResult();
-        } else {
+        if (!tree || !parseErrors.empty()) {
             result.success = false;
-            result.errors.push_back("Failed to parse JavaScript: Invalid syntax");
+            result.errors = parseErrors;
+            return result;
         }
+        
+        // 提取信息
+        extractInfo(tree.get(), result, options);
+        
+        // 生成JavaScript
+        result.javascript = generateJS(tree.get(), options);
+        result.compiledSize = result.javascript.length();
+        result.success = true;
         
     } catch (const std::exception& e) {
         result.success = false;
@@ -249,39 +97,70 @@ JSCompileResult ANTLRJSCompiler::compileJS(const std::string& jsCode, const JSCo
     return result;
 }
 
-bool ANTLRJSCompiler::validateSyntax(const std::string& jsCode, std::vector<std::string>& errors) {
+std::unique_ptr<tree::ParseTree> ANTLRJSCompiler::parseJS(const std::string& jsCode, 
+                                                           std::vector<std::string>& errors) {
     try {
         ANTLRInputStream input(jsCode);
         JavaScriptLexer lexer(&input);
         CommonTokenStream tokens(&lexer);
         JavaScriptParser parser(&tokens);
         
-        // 禁用默认错误输出
+        // 禁用错误输出到控制台
         parser.removeErrorListeners();
+        lexer.removeErrorListeners();
         
-        JavaScriptParser::ProgramContext* tree = parser.program();
-        return tree != nullptr;
+        // 解析JavaScript
+        return std::unique_ptr<tree::ParseTree>(parser.program());
         
     } catch (const std::exception& e) {
-        errors.push_back(std::string("Syntax validation error: ") + e.what());
-        return false;
+        errors.push_back(std::string("Parse error: ") + e.what());
+        return nullptr;
     }
+}
+
+std::string ANTLRJSCompiler::generateJS(tree::ParseTree* tree, const JSCompileOptions& options) {
+    if (!tree) return "";
+    
+    // 简单地返回原始文本（可以在这里实现更复杂的格式化）
+    std::string js = tree->getText();
+    
+    if (options.minify) {
+        // 简单的压缩：移除多余空白
+        js = JSUtils::removeWhitespace(js);
+    }
+    
+    return js;
+}
+
+void ANTLRJSCompiler::extractInfo(tree::ParseTree* tree, JSCompileResult& result, 
+                                  const JSCompileOptions& options) {
+    if (!tree) return;
+    
+    JSASTVisitor visitor;
+    tree::ParseTreeWalker walker;
+    walker.walk(&visitor, tree);
+    
+    // 获取提取的信息
+    result.functions = visitor.getFunctions();
+    result.variables = visitor.getVariables();
+    result.classes = visitor.getClasses();
+}
+
+bool ANTLRJSCompiler::validateSyntax(const std::string& jsCode, std::vector<std::string>& errors) {
+    auto tree = parseJS(jsCode, errors);
+    return tree != nullptr && errors.empty();
 }
 
 std::vector<std::string> ANTLRJSCompiler::extractFunctions(const std::string& jsCode) {
     JSCompileOptions options;
     options.extractFunctions = true;
-    options.extractVariables = false;
-    
     auto result = compileJS(jsCode, options);
     return result.functions;
 }
 
 std::vector<std::string> ANTLRJSCompiler::extractVariables(const std::string& jsCode) {
     JSCompileOptions options;
-    options.extractFunctions = false;
     options.extractVariables = true;
-    
     auto result = compileJS(jsCode, options);
     return result.variables;
 }
@@ -289,7 +168,6 @@ std::vector<std::string> ANTLRJSCompiler::extractVariables(const std::string& js
 std::vector<std::string> ANTLRJSCompiler::extractClasses(const std::string& jsCode) {
     JSCompileOptions options;
     options.extractClasses = true;
-    
     auto result = compileJS(jsCode, options);
     return result.classes;
 }
@@ -297,7 +175,6 @@ std::vector<std::string> ANTLRJSCompiler::extractClasses(const std::string& jsCo
 std::string ANTLRJSCompiler::minifyJS(const std::string& jsCode) {
     JSCompileOptions options;
     options.minify = true;
-    
     auto result = compileJS(jsCode, options);
     return result.success ? result.javascript : jsCode;
 }
@@ -305,13 +182,12 @@ std::string ANTLRJSCompiler::minifyJS(const std::string& jsCode) {
 std::string ANTLRJSCompiler::formatJS(const std::string& jsCode, const std::string& indent) {
     JSCompileOptions options;
     options.minify = false;
-    
     auto result = compileJS(jsCode, options);
     return result.success ? result.javascript : jsCode;
 }
 
 std::string ANTLRJSCompiler::convertToES5(const std::string& jsCode) {
-    // 简单的ES6到ES5转换（这里只是示例）
+    // 简单的ES6到ES5转换（可以在这里实现更复杂的转换逻辑）
     std::string es5Code = jsCode;
     
     // 转换箭头函数
@@ -325,25 +201,11 @@ std::string ANTLRJSCompiler::convertToES5(const std::string& jsCode) {
 }
 
 std::string ANTLRJSCompiler::convertToES6(const std::string& jsCode) {
-    // 简单的ES5到ES6转换（这里只是示例）
-    std::string es6Code = jsCode;
-    
-    // 可以添加ES6特性转换逻辑
-    
-    return es6Code;
-}
-
-std::unique_ptr<JavaScriptParser> ANTLRJSCompiler::createParser(const std::string& input, std::vector<std::string>& errors) {
-    // 这个方法可以在未来扩展以提供更复杂的解析器配置
-    return nullptr;
-}
-
-void ANTLRJSCompiler::handleParseErrors(antlr4::Parser* parser, std::vector<std::string>& errors) {
-    // 这个方法可以在未来扩展以提供更好的错误处理
+    // 简单的ES5到ES6转换
+    return jsCode;
 }
 
 // JSUtils实现
-
 bool JSUtils::isValidIdentifier(const std::string& identifier) {
     if (identifier.empty()) return false;
     
@@ -379,7 +241,6 @@ bool JSUtils::isKeyword(const std::string& word) {
 }
 
 std::string JSUtils::detectESVersion(const std::string& jsCode) {
-    // 简单的ES版本检测
     if (jsCode.find("=>") != std::string::npos ||
         jsCode.find("const ") != std::string::npos ||
         jsCode.find("let ") != std::string::npos ||
@@ -471,9 +332,8 @@ std::string JSUtils::addIndentation(const std::string& js, const std::string& in
 }
 
 int JSUtils::calculateComplexity(const std::string& jsCode) {
-    int complexity = 1; // 基础复杂度
+    int complexity = 1;
     
-    // 计算控制流语句
     std::vector<std::string> controlFlow = {"if", "else", "while", "for", "switch", "case", "catch"};
     
     for (const auto& keyword : controlFlow) {

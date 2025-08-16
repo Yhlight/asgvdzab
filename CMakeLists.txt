@@ -196,6 +196,35 @@ target_include_directories(simple_compilers_test PRIVATE
     ${CMAKE_SOURCE_DIR}/include
 )
 
+# 可选：如果检测到ANTLR4库，添加ANTLR编译器测试
+find_library(ANTLR4_LIB antlr4-runtime-static 
+    PATHS ${CMAKE_SOURCE_DIR}/third_party/antlr4/lib 
+    NO_DEFAULT_PATH)
+
+if(ANTLR4_LIB)
+    message(STATUS "Found ANTLR4 library: ${ANTLR4_LIB}")
+    message(STATUS "ANTLR4 support will be available in future versions")
+    
+    # 为将来的ANTLR集成做准备
+    target_include_directories(chtl_compiler PRIVATE
+        ${CMAKE_SOURCE_DIR}/generated/antlr/css
+        ${CMAKE_SOURCE_DIR}/generated/antlr/js
+        ${CMAKE_SOURCE_DIR}/third_party/antlr4/include
+    )
+    
+    # 可选：编译ANTLR编译器测试（如果需要）
+    # add_executable(antlr_compilers_test tests/antlr_compilers_test.cpp)
+    # target_link_libraries(antlr_compilers_test chtl_test_lib ${ANTLR4_LIB})
+    # target_include_directories(antlr_compilers_test PRIVATE
+    #     ${CMAKE_SOURCE_DIR}/include
+    #     ${CMAKE_SOURCE_DIR}/generated/antlr/css
+    #     ${CMAKE_SOURCE_DIR}/generated/antlr/js
+    #     ${CMAKE_SOURCE_DIR}/third_party/antlr4/include
+    # )
+else()
+    message(STATUS "ANTLR4 library not found, using simplified compilers")
+endif()
+
 
 add_subdirectory(runtime)
 if(WITH_DEMO)

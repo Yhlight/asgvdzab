@@ -6,10 +6,11 @@
 #include <vector>
 #include <memory>
 
-// ANTLR生成的头文件
-#include "generated/antlr/js/JavaScriptLexer.h"
-#include "generated/antlr/js/JavaScriptParser.h"
-#include "generated/antlr/js/JavaScriptBaseVisitor.h"
+// ANTLR includes
+#include "antlr4-runtime.h"
+#include "JavaScriptLexer.h"
+#include "JavaScriptParser.h"
+#include "JavaScriptBaseListener.h"
 
 namespace chtl {
 
@@ -45,41 +46,27 @@ struct JSCompileResult {
 };
 
 /**
- * JavaScript AST访问器 - 用于遍历解析树并提取信息
+ * JavaScript AST访问器，用于遍历ANTLR解析树
  */
-class JSASTVisitor : public JavaScriptBaseVisitor {
+class JSASTVisitor : public JavaScriptBaseListener {
 public:
-    JSASTVisitor(const JSCompileOptions& options);
-    virtual ~JSASTVisitor() = default;
-
-    // 访问程序
-    virtual antlrcpp::Any visitProgram(JavaScriptParser::ProgramContext *ctx) override;
+    JSASTVisitor();
     
-    // 访问函数声明
-    virtual antlrcpp::Any visitFunctionDeclaration(JavaScriptParser::FunctionDeclarationContext *ctx) override;
+    // 访问器方法
+    void enterProgram(JavaScriptParser::ProgramContext *ctx) override;
+    void enterFunctionDeclaration(JavaScriptParser::FunctionDeclarationContext *ctx) override;
+    void enterVariableStatement(JavaScriptParser::VariableStatementContext *ctx) override;
+    void enterVariableDeclaration(JavaScriptParser::VariableDeclarationContext *ctx) override;
     
-    // 访问变量声明
-    virtual antlrcpp::Any visitVariableStatement(JavaScriptParser::VariableStatementContext *ctx) override;
+    // 获取提取的信息
+    const std::vector<std::string>& getFunctions() const { return functions_; }
+    const std::vector<std::string>& getVariables() const { return variables_; }
+    const std::vector<std::string>& getClasses() const { return classes_; }
     
-    // 访问表达式语句
-    virtual antlrcpp::Any visitExpressionStatement(JavaScriptParser::ExpressionStatementContext *ctx) override;
-    
-    // 访问块语句
-    virtual antlrcpp::Any visitBlock(JavaScriptParser::BlockContext *ctx) override;
-
-    // 获取结果
-    const JSCompileResult& getResult() const { return result_; }
-
 private:
-    JSCompileOptions options_;
-    JSCompileResult result_;
-    
-    // 辅助方法
-    void extractFunctionInfo(JavaScriptParser::FunctionDeclarationContext *ctx);
-    void extractVariableInfo(JavaScriptParser::VariableStatementContext *ctx);
-    std::string minifyJS(const std::string& js);
-    std::string formatFunction(JavaScriptParser::FunctionDeclarationContext *ctx);
-    std::string formatStatement(JavaScriptParser::SourceElementContext *ctx);
+    std::vector<std::string> functions_;
+    std::vector<std::string> variables_;
+    std::vector<std::string> classes_;
 };
 
 /**
@@ -113,11 +100,16 @@ public:
     std::string convertToES6(const std::string& jsCode);
 
 private:
-    // 创建解析器
-    std::unique_ptr<JavaScriptParser> createParser(const std::string& input, std::vector<std::string>& errors);
+    // ANTLR解析
+    std::unique_ptr<antlr4::tree::ParseTree> parseJS(const std::string& jsCode, 
+                                                      std::vector<std::string>& errors);
     
-    // 错误处理
-    void handleParseErrors(antlr4::Parser* parser, std::vector<std::string>& errors);
+    // 代码生成
+    std::string generateJS(antlr4::tree::ParseTree* tree, const JSCompileOptions& options);
+    
+    // 信息提取
+    void extractInfo(antlr4::tree::ParseTree* tree, JSCompileResult& result, 
+                     const JSCompileOptions& options);
 };
 
 /**

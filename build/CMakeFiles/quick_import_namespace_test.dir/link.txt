@@ -1,1 +1,0 @@
-/usr/bin/c++ -Xlinker --dependency-file=CMakeFiles/quick_import_namespace_test.dir/link.d CMakeFiles/quick_import_namespace_test.dir/tests/quick_import_namespace_test.cpp.o CMakeFiles/quick_import_namespace_test.dir/src/import/enhanced_import_manager.cpp.o CMakeFiles/quick_import_namespace_test.dir/src/namespace/enhanced_namespace_manager.cpp.o -o bin/quick_import_namespace_test

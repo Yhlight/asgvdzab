@@ -2,6 +2,8 @@
 #include "compilers/chtl_compiler.hpp"
 #include "compilers/simple_css_compiler.hpp"
 #include "compilers/simple_js_compiler.hpp"
+// #include "compilers/antlr_css_compiler.hpp"  // 保留以备将来使用
+// #include "compilers/antlr_js_compiler.hpp"   // 保留以备将来使用
 #include <iostream>
 #include <algorithm>
 #include <chrono>
@@ -271,11 +273,19 @@ std::unique_ptr<ICompiler> CompilerFactory::createCHTLJSCompiler() {
 }
 
 std::unique_ptr<ICompiler> CompilerFactory::createCSSCompiler() {
+    // 使用简化的CSS编译器，提供基础功能
     return std::make_unique<SimpleCSSCompiler>();
+    
+    // 未来可以切换到ANTLR版本：
+    // return std::make_unique<ANTLRCSSCompiler>();
 }
 
 std::unique_ptr<ICompiler> CompilerFactory::createJavaScriptCompiler() {
+    // 使用简化的JavaScript编译器，提供基础功能
     return std::make_unique<SimpleJSCompiler>();
+    
+    // 未来可以切换到ANTLR版本：
+    // return std::make_unique<ANTLRJSCompiler>();
 }
 
 } // namespace chtl

@@ -6,10 +6,11 @@
 #include <vector>
 #include <memory>
 
-// ANTLR生成的头文件
-#include "generated/antlr/css/CSS3Lexer.h"
-#include "generated/antlr/css/CSS3Parser.h"
-#include "generated/antlr/css/CSS3BaseVisitor.h"
+// ANTLR includes
+#include "antlr4-runtime.h"
+#include "CSS3Lexer.h"
+#include "CSS3Parser.h"
+#include "CSS3BaseListener.h"
 
 namespace chtl {
 
@@ -42,41 +43,33 @@ struct CSSCompileResult {
 };
 
 /**
- * CSS AST访问器 - 用于遍历解析树并提取信息
+ * CSS AST访问器，用于遍历ANTLR解析树
  */
-class CSSASTVisitor : public CSS3BaseVisitor {
+class CSSASTVisitor : public CSS3BaseListener {
 public:
-    CSSASTVisitor(const CSSCompileOptions& options);
-    virtual ~CSSASTVisitor() = default;
-
-    // 访问样式表
-    virtual antlrcpp::Any visitStylesheet(CSS3Parser::StylesheetContext *ctx) override;
+    CSSASTVisitor();
     
-    // 访问规则集
-    virtual antlrcpp::Any visitRuleset(CSS3Parser::RulesetContext *ctx) override;
+    // 访问器方法
+    void enterStylesheet(CSS3Parser::StylesheetContext *ctx) override;
+    void enterRuleset(CSS3Parser::RulesetContext *ctx) override;
+    void enterSelector(CSS3Parser::SelectorContext *ctx) override;
+    void enterDeclaration(CSS3Parser::DeclarationContext *ctx) override;
     
-    // 访问选择器
-    virtual antlrcpp::Any visitSelector(CSS3Parser::SelectorContext *ctx) override;
+    // 获取提取的信息
+    const std::vector<std::string>& getSelectors() const { return selectors_; }
+    const std::vector<std::string>& getProperties() const { return properties_; }
+    const std::vector<std::string>& getColors() const { return colors_; }
+    const std::vector<std::string>& getFonts() const { return fonts_; }
     
-    // 访问声明
-    virtual antlrcpp::Any visitDeclaration(CSS3Parser::DeclarationContext *ctx) override;
-    
-    // 访问表达式
-    virtual antlrcpp::Any visitExpr(CSS3Parser::ExprContext *ctx) override;
-
-    // 获取结果
-    const CSSCompileResult& getResult() const { return result_; }
-
 private:
-    CSSCompileOptions options_;
-    CSSCompileResult result_;
+    std::vector<std::string> selectors_;
+    std::vector<std::string> properties_;
+    std::vector<std::string> colors_;
+    std::vector<std::string> fonts_;
     
     // 辅助方法
-    void extractColors(const std::string& value);
-    void extractFonts(const std::string& property, const std::string& value);
-    std::string minifyCSS(const std::string& css);
-    std::string formatSelector(CSS3Parser::SelectorContext *ctx);
-    std::string formatDeclaration(CSS3Parser::DeclarationContext *ctx);
+    bool isColor(const std::string& value);
+    bool isFont(const std::string& property);
 };
 
 /**
@@ -106,11 +99,16 @@ public:
     std::string formatCSS(const std::string& cssCode, const std::string& indent = "  ");
 
 private:
-    // 创建解析器
-    std::unique_ptr<CSS3Parser> createParser(const std::string& input, std::vector<std::string>& errors);
+    // ANTLR解析
+    std::unique_ptr<antlr4::tree::ParseTree> parseCSS(const std::string& cssCode, 
+                                                       std::vector<std::string>& errors);
     
-    // 错误处理
-    void handleParseErrors(antlr4::Parser* parser, std::vector<std::string>& errors);
+    // 代码生成
+    std::string generateCSS(antlr4::tree::ParseTree* tree, const CSSCompileOptions& options);
+    
+    // 信息提取
+    void extractInfo(antlr4::tree::ParseTree* tree, CSSCompileResult& result, 
+                     const CSSCompileOptions& options);
 };
 
 /**
