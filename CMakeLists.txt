@@ -30,17 +30,14 @@ set(CHTL_INCLUDE_DIRS
     ${ANTLR4_INCLUDE_DIRS}
 )
 
-# 收集源文件
+# 收集CHTL核心源文件
 file(GLOB_RECURSE CHTL_CORE_SOURCES
+    "src/ast/*.cpp"
     "src/common/*.cpp"
     "src/utils/*.cpp"
-    "src/ast/*.cpp"
     "src/lexer/*.cpp"
-    "src/parsers/*.cpp"
-    "src/scanner/*.cpp"
     "src/generators/*.cpp"
-    "src/dispatcher/*.cpp"
-    "src/state/*.cpp"
+    "src/scanner/*.cpp"
     "src/import/*.cpp"
     "src/namespace/*.cpp"
     "src/cmod/*.cpp"
