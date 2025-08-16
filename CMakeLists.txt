@@ -1,27 +1,143 @@
-cmake_minimum_required(VERSION 3.16)
-project(CHTL_Compiler VERSION 1.0.0 LANGUAGES CXX)
+# -*- mode:cmake -*-
+cmake_minimum_required (VERSION 2.8)
+# 2.8 needed because of ExternalProject
 
-# 设置C++17标准
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
+# Detect build type, fallback to release and throw a warning if use didn't specify any
+if(NOT CMAKE_BUILD_TYPE)
+  message(WARNING "Build type not set, falling back to Release mode.
+ To specify build type use:
+ -DCMAKE_BUILD_TYPE=<mode> where <mode> is Debug or Release.")
+  set(CMAKE_BUILD_TYPE "Release" CACHE STRING
+       "Choose the type of build, options are: Debug Release."
+       FORCE)
+endif(NOT CMAKE_BUILD_TYPE)
 
-# 设置编译选项
-if(MSVC)
-    add_compile_options(/W4 /utf-8)
-else()
-    add_compile_options(-Wall -Wextra -Wpedantic)
+if(NOT WITH_DEMO)
+  message(STATUS "Building without demo. To enable demo build use: -DWITH_DEMO=True")
+  set(WITH_DEMO False CACHE STRING
+    "Chose to build with or without demo executable"
+    FORCE)
+endif(NOT WITH_DEMO)
+
+option(WITH_LIBCXX "Building with clang++ and libc++(in Linux). To enable with: -DWITH_LIBCXX=On" Off)
+option(WITH_STATIC_CRT "(Visual C++) Enable to statically link CRT, which avoids requiring users to install the redistribution package.
+ To disable with: -DWITH_STATIC_CRT=Off" On)
+
+project(LIBANTLR4)
+
+if(CMAKE_VERSION VERSION_EQUAL "3.0.0" OR
+   CMAKE_VERSION VERSION_GREATER "3.0.0")
+  CMAKE_POLICY(SET CMP0026 NEW)
+  CMAKE_POLICY(SET CMP0054 OLD)
+  CMAKE_POLICY(SET CMP0045 OLD)
+  CMAKE_POLICY(SET CMP0042 OLD)
 endif()
 
-# 设置输出目录
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+if(CMAKE_VERSION VERSION_EQUAL "3.3.0" OR
+   CMAKE_VERSION VERSION_GREATER "3.3.0")
+  CMAKE_POLICY(SET CMP0059 OLD)
+  CMAKE_POLICY(SET CMP0054 OLD)
+endif()
 
-# 包含目录
-include_directories(${CMAKE_SOURCE_DIR}/include)
+if(CMAKE_SYSTEM_NAME MATCHES "Linux")
+  find_package(PkgConfig REQUIRED)
+  pkg_check_modules(UUID REQUIRED uuid)
+endif()
+if(APPLE)
+  find_library(COREFOUNDATION_LIBRARY CoreFoundation)
+endif()
 
-# 收集所有源文件
+file(STRINGS "VERSION" ANTLR_VERSION)
+
+if(WITH_DEMO)
+  # Java is not necessary if building without demos.
+  find_package(Java COMPONENTS Runtime REQUIRED)
+
+  if(NOT ANTLR_JAR_LOCATION)
+    message(FATAL_ERROR "Missing antlr4.jar location. You can specify it's path using: -DANTLR_JAR_LOCATION=<path>")
+  else()
+    get_filename_component(ANTLR_NAME ${ANTLR_JAR_LOCATION} NAME_WE)
+    if(NOT EXISTS "${ANTLR_JAR_LOCATION}")
+      message(FATAL_ERROR "Unable to find ${ANTLR_NAME} in ${ANTLR_JAR_LOCATION}")
+    else()
+      message(STATUS "Found ${ANTLR_NAME}: ${ANTLR_JAR_LOCATION}")
+    endif()
+  endif()
+endif(WITH_DEMO)
+
+if(MSVC_VERSION)
+  set(MY_CXX_WARNING_FLAGS "  /W4")
+else()
+  set(MY_CXX_WARNING_FLAGS "  -Wall -pedantic -W")
+endif()
+
+# Define USE_UTF8_INSTEAD_OF_CODECVT macro.
+# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DUSE_UTF8_INSTEAD_OF_CODECVT")
+
+# Initialize CXXFLAGS.
+if("${CMAKE_VERSION}" VERSION_GREATER 3.1.0)
+  if(NOT DEFINED CMAKE_CXX_STANDARD)
+    # only set CMAKE_CXX_STANDARD if not already set
+    # this allows the standard to be set by the caller, for example with -DCMAKE_CXX_STANDARD:STRING=17
+    set(CMAKE_CXX_STANDARD 11)
+  endif()
+  set(CMAKE_CXX_STANDARD_REQUIRED ON)
+  set(CMAKE_CXX_EXTENSIONS OFF)
+else()
+  set(CMAKE_CXX_FLAGS                "${CMAKE_CXX_FLAGS} -std=c++11")
+  set(CMAKE_CXX_FLAGS_DEBUG          "${CMAKE_CXX_FLAGS_DEBUG} -std=c++11")
+  set(CMAKE_CXX_FLAGS_MINSIZEREL     "${CMAKE_CXX_FLAGS_MINSIZEREL} -std=c++11")
+  set(CMAKE_CXX_FLAGS_RELEASE        "${CMAKE_CXX_FLAGS_RELEASE} -std=c++11")
+  set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} -std=c++11")
+endif()
+
+set(CMAKE_CXX_FLAGS                  "${CMAKE_CXX_FLAGS} ${MY_CXX_WARNING_FLAGS}")
+if(MSVC_VERSION)
+  set(CMAKE_CXX_FLAGS_DEBUG          "${CMAKE_CXX_FLAGS_DEBUG} /Od /Zi /MP ${MY_CXX_WARNING_FLAGS}")
+  set(CMAKE_CXX_FLAGS_MINSIZEREL     "${CMAKE_CXX_FLAGS_MINSIZEREL} /O1 /Oi /Ob2 /Gy /MP /DNDEBUG ${MY_CXX_WARNING_FLAGS}")
+  set(CMAKE_CXX_FLAGS_RELEASE        "${CMAKE_CXX_FLAGS_RELEASE} /O2 /Oi /Ob2 /Gy /MP /DNDEBUG ${MY_CXX_WARNING_FLGAS}")
+  set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} /O2 /Oi /Ob2 /Gy /MP /Zi ${MY_CXX_WARNING_FLAGS}")
+else()
+  set(CMAKE_CXX_FLAGS_DEBUG          "${CMAKE_CXX_FLAGS_DEBUG} -O0 -g ${MY_CXX_WARNING_FLAGS}")
+  set(CMAKE_CXX_FLAGS_MINSIZEREL     "${CMAKE_CXX_FLAGS_MINSIZEREL} -Os -DNDEBUG ${MY_CXX_WARNING_FLAGS}")
+  set(CMAKE_CXX_FLAGS_RELEASE        "${CMAKE_CXX_FLAGS_RELEASE} -O3 -DNDEBUG ${MY_CXX_WARNING_FLGAS}")
+  set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} -O2 -g ${MY_CXX_WARNING_FLAGS}")
+endif()
+
+# Compiler-specific C++11 activation.
+if("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU" OR "${CMAKE_CXX_COMPILER_ID}" MATCHES "Intel")
+    execute_process(
+        COMMAND ${CMAKE_CXX_COMPILER} -dumpversion OUTPUT_VARIABLE GCC_VERSION)
+    # Just g++-5.0 and greater contain <codecvt> header. (test in ubuntu)
+    if(NOT (GCC_VERSION VERSION_GREATER 5.0 OR GCC_VERSION VERSION_EQUAL 5.0))
+        message(FATAL_ERROR "${PROJECT_NAME} requires g++ 5.0 or greater.")
+    endif ()
+elseif ("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang" AND ANDROID) 
+	# Need -Os cflag and cxxflags here to work with exception handling on armeabi.
+	# see  https://github.com/android-ndk/ndk/issues/573
+	# and without -stdlib=libc++ cxxflags
+elseif ("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang" AND APPLE)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -stdlib=libc++")
+elseif ("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang" AND ( CMAKE_SYSTEM_NAME MATCHES "Linux" OR CMAKE_SYSTEM_NAME MATCHES "FreeBSD") )
+    execute_process(
+        COMMAND ${CMAKE_CXX_COMPILER} -dumpversion OUTPUT_VARIABLE CLANG_VERSION)
+    if(NOT (CLANG_VERSION VERSION_GREATER 4.2.1 OR CLANG_VERSION VERSION_EQUAL 4.2.1))
+        message(FATAL_ERROR "${PROJECT_NAME} requires clang 4.2.1 or greater.")
+    endif()
+    # You can use libc++ to compile this project when g++ is NOT greater than or equal to 5.0.
+    if(WITH_LIBCXX)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
+    endif()
+elseif(MSVC_VERSION GREATER 1800 OR MSVC_VERSION EQUAL 1800)
+  # Visual Studio 2012+ supports c++11 features 
+elseif(CMAKE_SYSTEM_NAME MATCHES "Emscripten")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -stdlib=libc++")
+else()
+    message(FATAL_ERROR "Your C++ compiler does not support C++11.")
+endif()
+
+
+# 收集所有源文件（移除ANTLR生成的文件）
 file(GLOB_RECURSE SOURCES 
     "src/ast/*.cpp"
     "src/lexer/*.cpp"
@@ -32,8 +148,6 @@ file(GLOB_RECURSE SOURCES
     "src/compilers/*.cpp"
     "src/scanner/*.cpp"
     "src/tools/*.cpp"
-    "generated/antlr/css/*.cpp"
-    "generated/antlr/js/*.cpp"
 )
 
 # 移除有main函数的文件，避免冲突
@@ -41,319 +155,15 @@ list(REMOVE_ITEM SOURCES "${CMAKE_SOURCE_DIR}/src/parsers/chtl_parser.cpp")
 list(REMOVE_ITEM SOURCES "${CMAKE_SOURCE_DIR}/src/tools/chtl_cmod_tool.cpp")
 list(REMOVE_ITEM SOURCES "${CMAKE_SOURCE_DIR}/src/tools/chtl_cjmod_tool.cpp")
 
-# 创建可执行文件
-add_executable(chtl_compiler ${SOURCES})
+# 创建CHTL编译器可执行文件
+add_executable(chtl_compiler ${SOURCES} src/main.cpp)
 
-# 创建测试可执行文件 (只包含一个主测试入口)
-set(TEST_SOURCES 
-    tests/basic_test.cpp
-)
-# 收集测试需要的源文件（除了main.cpp）
-file(GLOB_RECURSE TEST_LIB_SOURCES 
-    "src/ast/*.cpp"
-    "src/lexer/*.cpp"
-    "src/generators/*.cpp"
-    "src/common/*.cpp"
-    "src/dispatcher/*.cpp"
-    "src/compilers/*.cpp"
-    "src/scanner/*.cpp"
-    "generated/antlr/css/*.cpp"
-    "generated/antlr/js/*.cpp"
-)
-list(REMOVE_ITEM TEST_LIB_SOURCES "${CMAKE_SOURCE_DIR}/src/parsers/chtl_parser.cpp")
-list(REMOVE_ITEM TEST_LIB_SOURCES "${CMAKE_SOURCE_DIR}/src/tools/chtl_cmod_tool.cpp")
-list(REMOVE_ITEM TEST_LIB_SOURCES "${CMAKE_SOURCE_DIR}/src/tools/chtl_cjmod_tool.cpp")
-
-add_executable(chtl_tests ${TEST_SOURCES} ${TEST_LIB_SOURCES})
-
-# 创建切片扫描器测试
-add_executable(slice_scanner_tests tests/slice_scanner_test.cpp ${TEST_LIB_SOURCES})
-
-# 创建Token系统测试
-add_executable(token_tests tests/token_test.cpp ${TEST_LIB_SOURCES})
-
-# 创建综合词法分析器测试
-add_executable(comprehensive_lexer_tests tests/comprehensive_lexer_test.cpp ${TEST_LIB_SOURCES})
-
-# 创建CHTL语法验证测试
-add_executable(chtl_syntax_validation_tests tests/chtl_syntax_validation_test.cpp ${TEST_LIB_SOURCES})
-
-# 创建CHTL语法文档一致性测试
-add_executable(chtl_grammar_conformance_tests tests/chtl_grammar_conformance_test.cpp ${TEST_LIB_SOURCES})
-
-# 创建CHTL AST语法文档一致性测试
-add_executable(chtl_ast_conformance_tests tests/chtl_ast_conformance_test.cpp src/ast/chtl_ast.cpp src/ast/chtl_js_ast.cpp ${TEST_LIB_SOURCES})
-
-# 如果需要链接其他库（例如ANTLR），可以在这里添加
-# find_package(antlr4-cpp-runtime REQUIRED)
-# target_link_libraries(chtl_compiler antlr4-cpp-runtime)
-
-# 设置目标属性
-set_target_properties(chtl_compiler PROPERTIES
-    CXX_STANDARD 17
-    CXX_STANDARD_REQUIRED ON
-    CXX_EXTENSIONS OFF
-)
-
-# 添加预处理器定义
-target_compile_definitions(chtl_compiler PRIVATE
-    CHTL_VERSION_MAJOR=${PROJECT_VERSION_MAJOR}
-    CHTL_VERSION_MINOR=${PROJECT_VERSION_MINOR}
-    CHTL_VERSION_PATCH=${PROJECT_VERSION_PATCH}
-)
-
-# 为不同的构建类型设置不同的编译选项
-if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    target_compile_definitions(chtl_compiler PRIVATE DEBUG_MODE)
-    if(NOT MSVC)
-        target_compile_options(chtl_compiler PRIVATE -g -O0)
-    endif()
-elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
-    if(NOT MSVC)
-        target_compile_options(chtl_compiler PRIVATE -O3 -DNDEBUG)
-    endif()
-endif()
-
-# 创建解析器和生成器集成测试
-add_executable(parser_generator_integration_tests 
-    tests/parser_generator_integration_test.cpp 
-    src/parsers/chtl_parser.cpp
-    src/generators/chtl_generator.cpp
-    src/ast/chtl_ast.cpp 
-    src/ast/chtl_js_ast.cpp
-    ${TEST_LIB_SOURCES}
-)
-
-# 创建RAII状态管理集成测试
-add_executable(raii_state_management_integration_tests 
-    tests/raii_state_management_integration_test.cpp 
-    src/ast/chtl_ast.cpp 
-    src/ast/chtl_js_ast.cpp
-    ${TEST_LIB_SOURCES}
-)
-
-# 创建增强Import和命名空间测试程序（不依赖gtest）
-add_executable(enhanced_import_namespace_demo 
-    tests/enhanced_import_namespace_test.cpp
-    src/import/enhanced_import_manager.cpp
-    src/namespace/enhanced_namespace_manager.cpp
-)
-
-# 创建快速验证程序
-add_executable(quick_import_namespace_test 
-    tests/quick_import_namespace_test.cpp
-    src/import/enhanced_import_manager.cpp
-    src/namespace/enhanced_namespace_manager.cpp
-)
-
-# 创建调试程序
-add_executable(debug_namespace_test 
-    tests/debug_namespace_test.cpp
-    src/namespace/enhanced_namespace_manager.cpp
-)
-
-# 创建Import调试程序
-add_executable(debug_import_test 
-    tests/debug_import_test.cpp
-    src/import/enhanced_import_manager.cpp
-)
-
-# ===== Cmod体系 =====
-
-# 创建Cmod综合测试程序
-add_executable(cmod_system_test 
-    tests/cmod_system_test.cpp
-    src/cmod/cmod_manager.cpp
-    src/compiler/cmod_compiler_extension.cpp
-)
-
-# 创建独立的Cmod命令行工具
-add_executable(chtl-cmod
-    src/tools/chtl_cmod_tool.cpp
-    src/cmod/cmod_manager.cpp
-    src/compiler/cmod_compiler_extension.cpp
-)
-
-# CJmod system test
-add_executable(cjmod_system_test
-    tests/cjmod_system_test.cpp
-    src/cjmod/cjmod_manager.cpp
-    src/compiler/cjmod_compiler_extension.cpp
-    src/cmod/cmod_manager.cpp
-    src/import/enhanced_import_manager.cpp
-    src/namespace/enhanced_namespace_manager.cpp
-)
-
-# CJmod standalone tool
-add_executable(chtl-cjmod
-    src/tools/chtl_cjmod_tool.cpp
-    src/cjmod/cjmod_manager.cpp
-    src/compiler/cjmod_compiler_extension.cpp
-    src/cmod/cmod_manager.cpp
-    src/import/enhanced_import_manager.cpp
-    src/namespace/enhanced_namespace_manager.cpp
-)
-
-# CHTL Basic Parser test
-add_executable(chtl_basic_parser_test
-    tests/chtl_basic_parser_test.cpp
-    src/parsers/chtl_basic_parser.cpp
-    src/parsers/chtl_style_parser.cpp
-    src/lexer/chtl_lexer.cpp
-    src/ast/chtl_ast.cpp
-)
-
-# Debug parser
-add_executable(debug_parser
-    tests/debug_parser.cpp
-    src/parsers/chtl_basic_parser.cpp
-    src/parsers/chtl_style_parser.cpp
-    src/lexer/chtl_lexer.cpp
-    src/ast/chtl_ast.cpp
-)
-
-# CHTL Style Parser test
-add_executable(chtl_style_parser_test
-    tests/chtl_style_parser_test.cpp
-    src/parsers/chtl_basic_parser.cpp
-    src/parsers/chtl_style_parser.cpp
-    src/lexer/chtl_lexer.cpp
-    src/ast/chtl_ast.cpp
-)
-
-# CHTL Template Parser test
-add_executable(chtl_template_parser_test
-    tests/chtl_template_parser_test.cpp
-    src/parsers/chtl_template_parser.cpp
-    src/parsers/chtl_basic_parser.cpp
-    src/parsers/chtl_style_parser.cpp
-    src/lexer/chtl_lexer.cpp
-    src/ast/chtl_ast.cpp
-)
-
-# CHTL Custom Parser test
-add_executable(chtl_custom_parser_test
-    tests/chtl_custom_parser_test.cpp
-    src/parsers/chtl_custom_parser.cpp
-    src/parsers/chtl_template_parser.cpp
-    src/parsers/chtl_basic_parser.cpp
-    src/parsers/chtl_style_parser.cpp
-    src/lexer/chtl_lexer.cpp
-    src/ast/chtl_ast.cpp
-)
-
-# CHTL Origin Parser test
-add_executable(chtl_origin_parser_test
-    tests/chtl_origin_parser_test.cpp
-    src/parsers/chtl_origin_parser.cpp
-    src/parsers/chtl_basic_parser.cpp
-    src/parsers/chtl_style_parser.cpp
-    src/lexer/chtl_lexer.cpp
-    src/ast/chtl_ast.cpp
-)
-
-# CHTL Config Import Parser test
-add_executable(chtl_config_import_parser_test
-    tests/chtl_config_import_parser_test.cpp
-    src/parsers/chtl_config_import_parser.cpp
-    src/parsers/chtl_basic_parser.cpp
-    src/parsers/chtl_style_parser.cpp
-    src/lexer/chtl_lexer.cpp
-    src/ast/chtl_ast.cpp
-)
-
-# Debug config import parser
-add_executable(debug_config_import_parser
-    tests/debug_config_import_parser.cpp
-    src/parsers/chtl_config_import_parser.cpp
-    src/parsers/chtl_basic_parser.cpp
-    src/parsers/chtl_style_parser.cpp
-    src/lexer/chtl_lexer.cpp
-    src/ast/chtl_ast.cpp
-)
-
-# Debug style parser
-add_executable(debug_style_parser
-    tests/debug_style_parser.cpp
-    src/parsers/chtl_basic_parser.cpp
-    src/parsers/chtl_style_parser.cpp
-    src/lexer/chtl_lexer.cpp
-    src/ast/chtl_ast.cpp
-)
-
-# Debug template parser
-add_executable(debug_template_parser
-    tests/debug_template_parser.cpp
-    src/parsers/chtl_template_parser.cpp
-    src/parsers/chtl_basic_parser.cpp
-    src/parsers/chtl_style_parser.cpp
-    src/lexer/chtl_lexer.cpp
-    src/ast/chtl_ast.cpp
-)
-
-# CHTL Namespace Parser test
-add_executable(chtl_namespace_parser_test
-    tests/chtl_namespace_parser_test.cpp
-    src/parsers/chtl_namespace_parser.cpp
-    src/parsers/chtl_basic_parser.cpp
-    src/parsers/chtl_style_parser.cpp
-    src/lexer/chtl_lexer.cpp
-    src/ast/chtl_ast.cpp
-)
-
-# CHTL JS Parser test
-add_executable(chtl_js_parser_test
-    tests/chtl_js_parser_test.cpp
-    src/parsers/chtl_js_parser.cpp
-    src/parsers/chtl_basic_parser.cpp
-    src/parsers/chtl_style_parser.cpp
-    src/lexer/chtl_lexer.cpp
-    src/ast/chtl_ast.cpp
-)
-
-# Debug namespace parser
-add_executable(debug_namespace_parser
-    tests/debug_namespace_parser.cpp
-    src/parsers/chtl_namespace_parser.cpp
-    src/parsers/chtl_basic_parser.cpp
-    src/parsers/chtl_style_parser.cpp
-    src/lexer/chtl_lexer.cpp
-    src/ast/chtl_ast.cpp
-)
-
-# Debug JS parser
-add_executable(debug_js_parser
-    tests/debug_js_parser.cpp
-    src/parsers/chtl_js_parser.cpp
-    src/parsers/chtl_basic_parser.cpp
-    src/parsers/chtl_style_parser.cpp
-    src/lexer/chtl_lexer.cpp
-    src/ast/chtl_ast.cpp
-)
-
-# 创建RAII状态管理演示程序（不依赖gtest）
-add_executable(raii_state_management_demo 
-    tests/raii_state_management_demo.cpp
-)
-
-
-# 安装规则
-install(TARGETS chtl_compiler
-    RUNTIME DESTINATION bin
-)
-
-# 包含ANTLR4运行时库
+# 包含目录（移除ANTLR路径）
 target_include_directories(chtl_compiler PRIVATE
     ${CMAKE_SOURCE_DIR}/include
-    ${CMAKE_SOURCE_DIR}/generated/antlr/css
-    ${CMAKE_SOURCE_DIR}/generated/antlr/js
-    /usr/include/antlr4-runtime
 )
 
-# 链接ANTLR4运行时库
-target_link_libraries(chtl_compiler antlr4-runtime)
-
-# 为测试程序也添加ANTLR支持
+# 为测试程序收集源文件（移除ANTLR生成的文件）
 file(GLOB_RECURSE TEST_LIB_SOURCES 
     "src/ast/*.cpp"
     "src/lexer/*.cpp"
@@ -362,8 +172,6 @@ file(GLOB_RECURSE TEST_LIB_SOURCES
     "src/dispatcher/*.cpp"
     "src/compilers/*.cpp"
     "src/scanner/*.cpp"
-    "generated/antlr/css/*.cpp"
-    "generated/antlr/js/*.cpp"
 )
 
 # 移除有main函数的文件
@@ -376,22 +184,97 @@ add_library(chtl_test_lib ${TEST_LIB_SOURCES})
 
 target_include_directories(chtl_test_lib PRIVATE
     ${CMAKE_SOURCE_DIR}/include
-    ${CMAKE_SOURCE_DIR}/generated/antlr/css
-    ${CMAKE_SOURCE_DIR}/generated/antlr/js
-    /usr/include/antlr4-runtime
 )
-
-target_link_libraries(chtl_test_lib antlr4-runtime)
 
 # 测试程序链接测试库
 target_link_libraries(chtl_tests chtl_test_lib)
 
-# ANTLR编译器测试
-add_executable(antlr_compilers_test tests/antlr_compilers_test.cpp)
-target_link_libraries(antlr_compilers_test chtl_test_lib)
-target_include_directories(antlr_compilers_test PRIVATE
+# 简化编译器测试
+add_executable(simple_compilers_test tests/simple_compilers_test.cpp)
+target_link_libraries(simple_compilers_test chtl_test_lib)
+target_include_directories(simple_compilers_test PRIVATE
     ${CMAKE_SOURCE_DIR}/include
-    ${CMAKE_SOURCE_DIR}/generated/antlr/css
-    ${CMAKE_SOURCE_DIR}/generated/antlr/js
-    /usr/include/antlr4-runtime
 )
+
+
+add_subdirectory(runtime)
+if(WITH_DEMO)
+ add_subdirectory(demo)
+endif(WITH_DEMO)
+
+# Generate CMake Package Files only if install is active
+if (ANTLR4_INSTALL)
+
+  include(GNUInstallDirs)
+  include(CMakePackageConfigHelpers)
+
+  if(NOT ANTLR4_CMAKE_DIR)
+    set(ANTLR4_CMAKE_DIR ${CMAKE_INSTALL_LIBDIR}/cmake CACHE STRING
+      "Installation directory for cmake files." FORCE )
+  endif(NOT ANTLR4_CMAKE_DIR)
+
+  set(version_runtime_config ${PROJECT_BINARY_DIR}/antlr4-runtime-config-version.cmake)
+  set(version_generator_config ${PROJECT_BINARY_DIR}/antlr4-generator-config-version.cmake)
+  set(project_runtime_config ${PROJECT_BINARY_DIR}/antlr4-runtime-config.cmake)
+  set(project_generator_config ${PROJECT_BINARY_DIR}/antlr4-generator-config.cmake)
+  set(targets_export_name antlr4-targets)
+
+  set(ANTLR4_LIB_DIR ${CMAKE_INSTALL_LIBDIR} CACHE STRING
+      "Installation directory for libraries, relative to ${CMAKE_INSTALL_PREFIX}.")
+  
+  set(ANTLR4_INCLUDE_DIR ${CMAKE_INSTALL_INCLUDEDIR}/antlr4-runtime CACHE STRING
+      "Installation directory for include files, relative to ${CMAKE_INSTALL_PREFIX}.")
+
+  configure_package_config_file(
+    cmake/antlr4-runtime.cmake.in
+    ${project_runtime_config}
+    INSTALL_DESTINATION ${ANTLR4_CMAKE_DIR}/antlr4-runtime
+    PATH_VARS 
+    ANTLR4_INCLUDE_DIR
+    ANTLR4_LIB_DIR )
+  
+  configure_package_config_file(
+    cmake/antlr4-generator.cmake.in
+    ${project_generator_config}
+    INSTALL_DESTINATION ${ANTLR4_CMAKE_DIR}/antlr4-generator
+    PATH_VARS 
+    ANTLR4_INCLUDE_DIR
+    ANTLR4_LIB_DIR )
+  
+  write_basic_package_version_file(
+    ${version_runtime_config}
+    VERSION ${ANTLR_VERSION}
+    COMPATIBILITY SameMajorVersion )
+
+  write_basic_package_version_file(
+    ${version_generator_config}
+    VERSION ${ANTLR_VERSION}
+    COMPATIBILITY SameMajorVersion )
+
+  install(EXPORT ${targets_export_name}
+          DESTINATION ${ANTLR4_CMAKE_DIR}/antlr4-runtime )
+
+  install(FILES ${project_runtime_config}
+                ${version_runtime_config}
+          DESTINATION ${ANTLR4_CMAKE_DIR}/antlr4-runtime )
+
+  install(FILES ${project_generator_config}
+                ${version_generator_config}
+          DESTINATION ${ANTLR4_CMAKE_DIR}/antlr4-generator )
+
+endif(ANTLR4_INSTALL)
+
+if(EXISTS LICENSE.txt)
+install(FILES LICENSE.txt
+        DESTINATION "share/doc/libantlr4")
+elseif(EXISTS ../../LICENSE.txt) 
+install(FILES ../../LICENSE.txt
+    DESTINATION "share/doc/libantlr4")
+endif()
+
+install(FILES README.md VERSION 
+    DESTINATION "share/doc/libantlr4")
+
+set(CPACK_PACKAGE_CONTACT "antlr-discussion@googlegroups.com")
+set(CPACK_PACKAGE_VERSION ${ANTLR_VERSION})
+include(CPack)
