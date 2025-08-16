@@ -89,6 +89,7 @@ set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/chtl_test_lib.dir/DependInfo.cmake"
   "CMakeFiles/antlr_compilers_test.dir/DependInfo.cmake"
   "CMakeFiles/antlr_simple_test.dir/DependInfo.cmake"
+  "CMakeFiles/modern_antlr_test.dir/DependInfo.cmake"
   "runtime/CMakeFiles/utfcpp.dir/DependInfo.cmake"
   "runtime/CMakeFiles/utfcpp-build.dir/DependInfo.cmake"
   "runtime/CMakeFiles/antlr4_shared.dir/DependInfo.cmake"

@@ -22,6 +22,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/workspace/src/compilers/antlr_css_compiler.cpp" "CMakeFiles/chtl_compiler.dir/src/compilers/antlr_css_compiler.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/compilers/antlr_css_compiler.cpp.o.d"
   "/workspace/src/compilers/antlr_js_compiler.cpp" "CMakeFiles/chtl_compiler.dir/src/compilers/antlr_js_compiler.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/compilers/antlr_js_compiler.cpp.o.d"
   "/workspace/src/compilers/chtl_compiler.cpp" "CMakeFiles/chtl_compiler.dir/src/compilers/chtl_compiler.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/compilers/chtl_compiler.cpp.o.d"
+  "/workspace/src/compilers/modern_antlr_css_compiler.cpp" "CMakeFiles/chtl_compiler.dir/src/compilers/modern_antlr_css_compiler.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/compilers/modern_antlr_css_compiler.cpp.o.d"
   "/workspace/src/dispatcher/compiler_dispatcher.cpp" "CMakeFiles/chtl_compiler.dir/src/dispatcher/compiler_dispatcher.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/dispatcher/compiler_dispatcher.cpp.o.d"
   "/workspace/src/generators/chtl_generator.cpp" "CMakeFiles/chtl_compiler.dir/src/generators/chtl_generator.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/generators/chtl_generator.cpp.o.d"
   "/workspace/src/lexer/chtl_js_tokens.cpp" "CMakeFiles/chtl_compiler.dir/src/lexer/chtl_js_tokens.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/lexer/chtl_js_tokens.cpp.o.d"

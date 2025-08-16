@@ -27,6 +27,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/chtl_test_lib.dir/src/compilers/antlr_js_compiler.cpp.o.d"
   "CMakeFiles/chtl_test_lib.dir/src/compilers/chtl_compiler.cpp.o"
   "CMakeFiles/chtl_test_lib.dir/src/compilers/chtl_compiler.cpp.o.d"
+  "CMakeFiles/chtl_test_lib.dir/src/compilers/modern_antlr_css_compiler.cpp.o"
+  "CMakeFiles/chtl_test_lib.dir/src/compilers/modern_antlr_css_compiler.cpp.o.d"
   "CMakeFiles/chtl_test_lib.dir/src/dispatcher/compiler_dispatcher.cpp.o"
   "CMakeFiles/chtl_test_lib.dir/src/dispatcher/compiler_dispatcher.cpp.o.d"
   "CMakeFiles/chtl_test_lib.dir/src/generators/chtl_generator.cpp.o"

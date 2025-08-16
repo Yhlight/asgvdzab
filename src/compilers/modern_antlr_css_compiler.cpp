@@ -310,7 +310,7 @@ std::unique_ptr<ParseTree> ModernANTLRCSSCompiler::parseCSS(const std::string& c
             errors.insert(errors.end(), listenerErrors.begin(), listenerErrors.end());
         }
         
-        return std::make_unique<ParseTree>(*result);
+        return std::unique_ptr<ParseTree>(result);
         
     } catch (const std::exception& e) {
         std::cout << "[ANTLR] 解析异常: " << e.what() << std::endl;

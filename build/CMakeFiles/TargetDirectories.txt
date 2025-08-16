@@ -2,6 +2,7 @@
 /workspace/build/CMakeFiles/chtl_test_lib.dir
 /workspace/build/CMakeFiles/antlr_compilers_test.dir
 /workspace/build/CMakeFiles/antlr_simple_test.dir
+/workspace/build/CMakeFiles/modern_antlr_test.dir
 /workspace/build/CMakeFiles/package.dir
 /workspace/build/CMakeFiles/package_source.dir
 /workspace/build/CMakeFiles/edit_cache.dir

@@ -16,6 +16,7 @@ chtl_compiler: \
   CMakeFiles/chtl_compiler.dir/src/compilers/antlr_css_compiler.cpp.o \
   CMakeFiles/chtl_compiler.dir/src/compilers/antlr_js_compiler.cpp.o \
   CMakeFiles/chtl_compiler.dir/src/compilers/chtl_compiler.cpp.o \
+  CMakeFiles/chtl_compiler.dir/src/compilers/modern_antlr_css_compiler.cpp.o \
   CMakeFiles/chtl_compiler.dir/src/dispatcher/compiler_dispatcher.cpp.o \
   CMakeFiles/chtl_compiler.dir/src/generators/chtl_generator.cpp.o \
   CMakeFiles/chtl_compiler.dir/src/lexer/chtl_js_tokens.cpp.o \
@@ -98,6 +99,8 @@ CMakeFiles/chtl_compiler.dir/src/compilers/antlr_css_compiler.cpp.o:
 CMakeFiles/chtl_compiler.dir/src/compilers/antlr_js_compiler.cpp.o:
 
 CMakeFiles/chtl_compiler.dir/src/compilers/chtl_compiler.cpp.o:
+
+CMakeFiles/chtl_compiler.dir/src/compilers/modern_antlr_css_compiler.cpp.o:
 
 CMakeFiles/chtl_compiler.dir/src/dispatcher/compiler_dispatcher.cpp.o:
 

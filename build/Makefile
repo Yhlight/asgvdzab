@@ -234,6 +234,19 @@ antlr_simple_test/fast:
 .PHONY : antlr_simple_test/fast
 
 #=============================================================================
+# Target rules for targets named modern_antlr_test
+
+# Build rule for target.
+modern_antlr_test: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 modern_antlr_test
+.PHONY : modern_antlr_test
+
+# fast build rule for target.
+modern_antlr_test/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/modern_antlr_test.dir/build.make CMakeFiles/modern_antlr_test.dir/build
+.PHONY : modern_antlr_test/fast
+
+#=============================================================================
 # Target rules for targets named utfcpp
 
 # Build rule for target.
@@ -675,6 +688,33 @@ src/compilers/chtl_compiler.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/compilers/chtl_compiler.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_test_lib.dir/build.make CMakeFiles/chtl_test_lib.dir/src/compilers/chtl_compiler.cpp.s
 .PHONY : src/compilers/chtl_compiler.cpp.s
+
+src/compilers/modern_antlr_css_compiler.o: src/compilers/modern_antlr_css_compiler.cpp.o
+.PHONY : src/compilers/modern_antlr_css_compiler.o
+
+# target to build an object file
+src/compilers/modern_antlr_css_compiler.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/compilers/modern_antlr_css_compiler.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_test_lib.dir/build.make CMakeFiles/chtl_test_lib.dir/src/compilers/modern_antlr_css_compiler.cpp.o
+.PHONY : src/compilers/modern_antlr_css_compiler.cpp.o
+
+src/compilers/modern_antlr_css_compiler.i: src/compilers/modern_antlr_css_compiler.cpp.i
+.PHONY : src/compilers/modern_antlr_css_compiler.i
+
+# target to preprocess a source file
+src/compilers/modern_antlr_css_compiler.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/compilers/modern_antlr_css_compiler.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_test_lib.dir/build.make CMakeFiles/chtl_test_lib.dir/src/compilers/modern_antlr_css_compiler.cpp.i
+.PHONY : src/compilers/modern_antlr_css_compiler.cpp.i
+
+src/compilers/modern_antlr_css_compiler.s: src/compilers/modern_antlr_css_compiler.cpp.s
+.PHONY : src/compilers/modern_antlr_css_compiler.s
+
+# target to generate assembly for a file
+src/compilers/modern_antlr_css_compiler.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/compilers/modern_antlr_css_compiler.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_test_lib.dir/build.make CMakeFiles/chtl_test_lib.dir/src/compilers/modern_antlr_css_compiler.cpp.s
+.PHONY : src/compilers/modern_antlr_css_compiler.cpp.s
 
 src/dispatcher/compiler_dispatcher.o: src/dispatcher/compiler_dispatcher.cpp.o
 .PHONY : src/dispatcher/compiler_dispatcher.o
@@ -1210,6 +1250,30 @@ tests/antlr_simple_test.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/antlr_simple_test.dir/build.make CMakeFiles/antlr_simple_test.dir/tests/antlr_simple_test.cpp.s
 .PHONY : tests/antlr_simple_test.cpp.s
 
+tests/modern_antlr_test.o: tests/modern_antlr_test.cpp.o
+.PHONY : tests/modern_antlr_test.o
+
+# target to build an object file
+tests/modern_antlr_test.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/modern_antlr_test.dir/build.make CMakeFiles/modern_antlr_test.dir/tests/modern_antlr_test.cpp.o
+.PHONY : tests/modern_antlr_test.cpp.o
+
+tests/modern_antlr_test.i: tests/modern_antlr_test.cpp.i
+.PHONY : tests/modern_antlr_test.i
+
+# target to preprocess a source file
+tests/modern_antlr_test.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/modern_antlr_test.dir/build.make CMakeFiles/modern_antlr_test.dir/tests/modern_antlr_test.cpp.i
+.PHONY : tests/modern_antlr_test.cpp.i
+
+tests/modern_antlr_test.s: tests/modern_antlr_test.cpp.s
+.PHONY : tests/modern_antlr_test.s
+
+# target to generate assembly for a file
+tests/modern_antlr_test.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/modern_antlr_test.dir/build.make CMakeFiles/modern_antlr_test.dir/tests/modern_antlr_test.cpp.s
+.PHONY : tests/modern_antlr_test.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -1233,6 +1297,7 @@ help:
 	@echo "... antlr_simple_test"
 	@echo "... chtl_compiler"
 	@echo "... chtl_test_lib"
+	@echo "... modern_antlr_test"
 	@echo "... generated/antlr/css/CSS3BaseListener.o"
 	@echo "... generated/antlr/css/CSS3BaseListener.i"
 	@echo "... generated/antlr/css/CSS3BaseListener.s"
@@ -1275,6 +1340,9 @@ help:
 	@echo "... src/compilers/chtl_compiler.o"
 	@echo "... src/compilers/chtl_compiler.i"
 	@echo "... src/compilers/chtl_compiler.s"
+	@echo "... src/compilers/modern_antlr_css_compiler.o"
+	@echo "... src/compilers/modern_antlr_css_compiler.i"
+	@echo "... src/compilers/modern_antlr_css_compiler.s"
 	@echo "... src/dispatcher/compiler_dispatcher.o"
 	@echo "... src/dispatcher/compiler_dispatcher.i"
 	@echo "... src/dispatcher/compiler_dispatcher.s"
@@ -1338,6 +1406,9 @@ help:
 	@echo "... tests/antlr_simple_test.o"
 	@echo "... tests/antlr_simple_test.i"
 	@echo "... tests/antlr_simple_test.s"
+	@echo "... tests/modern_antlr_test.o"
+	@echo "... tests/modern_antlr_test.i"
+	@echo "... tests/modern_antlr_test.s"
 .PHONY : help
 
 
