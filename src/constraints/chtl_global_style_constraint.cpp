@@ -346,8 +346,9 @@ bool CHtlGlobalStyleConstraint::isGeneratorComment(const std::string& statement)
 }
 
 bool CHtlGlobalStyleConstraint::isRawEmbedding(const std::string& statement) {
-    // 原始嵌入模式: [Origin]
-    return statement.find("[Origin]") != std::string::npos;
+    // 原始嵌入模式: [Origin] @Html/@Style/@JavaScript (根据CHTL语法文档的3种官方类型)
+    std::regex rawEmbeddingPattern(R"(\[Origin\]\s+@(Html|Style|JavaScript))");
+    return std::regex_search(statement, rawEmbeddingPattern);
 }
 
 void CHtlGlobalStyleConstraint::addViolation(GlobalStyleConstraintResult& result, 

@@ -153,8 +153,8 @@ std::vector<CHtlScriptForbiddenElement> CHtlScriptConstraint::checkForbiddenCHtl
     std::vector<CHtlScriptForbiddenElement> foundForbidden;
     
     // 原始嵌入是特别的存在，可以在任何地方使用，内容原样输出，不做约束检查
-    // 移除所有原始嵌入块，只检查其他内容
-    std::regex originPattern(R"(\[Origin\]\s+@\w+\s*\{[^}]*\})");
+    // 移除所有原始嵌入块，只检查其他内容 (官方支持3种类型: Html, Style, JavaScript)
+    std::regex originPattern(R"(\[Origin\]\s+@(Html|Style|JavaScript)\s*\{[^}]*\})");
     std::string contentWithoutOrigin = std::regex_replace(scriptContent, originPattern, "");
     
     // 检查模板变量和自定义变量
@@ -206,8 +206,9 @@ bool CHtlScriptConstraint::validateGeneratorComment(const std::string& comment) 
 }
 
 bool CHtlScriptConstraint::validateRawEmbedding(const std::string& embedding) {
-    // 原始嵌入格式: [Origin] @AnyType { 内容 } - 类型标识无用，任何类型都允许
-    std::regex rawEmbeddingPattern(R"(\[Origin\]\s+@\w+\s*\{)");
+    // 原始嵌入格式: [Origin] @Html/@Style/@JavaScript { 内容 }
+    // 根据CHTL语法文档，只有这3种官方类型
+    std::regex rawEmbeddingPattern(R"(\[Origin\]\s+@(Html|Style|JavaScript)\s*\{)");
     return std::regex_search(embedding, rawEmbeddingPattern);
 }
 
@@ -239,8 +240,9 @@ bool CHtlScriptConstraint::isGeneratorComment(const std::string& statement) {
 }
 
 bool CHtlScriptConstraint::isRawEmbedding(const std::string& statement) {
-    // 原始嵌入模式: [Origin]
-    return statement.find("[Origin]") != std::string::npos;
+    // 原始嵌入模式: [Origin] @Html/@Style/@JavaScript (根据CHTL语法文档的3种官方类型)
+    std::regex rawEmbeddingPattern(R"(\[Origin\]\s+@(Html|Style|JavaScript))");
+    return std::regex_search(statement, rawEmbeddingPattern);
 }
 
 bool CHtlScriptConstraint::isTemplateVariableReference(const std::string& statement) {

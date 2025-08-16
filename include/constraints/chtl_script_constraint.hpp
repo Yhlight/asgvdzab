@@ -32,7 +32,7 @@ enum class CHtlScriptForbiddenElement {
  */
 enum class CHtlScriptAllowedElement {
     GENERATOR_COMMENT,              // 生成器注释: --注释内容
-    RAW_EMBEDDING,                  // 原始嵌入: [Origin] @AnyType { 任何内容 } (类型无用，内容原样输出)
+    RAW_EMBEDDING,                  // 原始嵌入: [Origin] @Html/@Style/@JavaScript { 内容 }
     PURE_JAVASCRIPT                 // 纯JavaScript代码
 };
 
@@ -82,7 +82,7 @@ struct CHtlScriptConstraintResult {
  * 
  * ✅ 允许使用的语法：
  * - 生成器注释: --注释内容
- * - 原始嵌入: [Origin] @AnyType { 任何内容 } (类型标识无用，内容原样输出)
+ * - 原始嵌入: [Origin] @Html/@Style/@JavaScript { 内容 } (官方支持3种类型)
  * - 纯JavaScript代码: 标准JavaScript语法
  */
 class CHtlScriptConstraint {
