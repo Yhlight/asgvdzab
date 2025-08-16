@@ -664,6 +664,8 @@ body
 ```
 
 ### 增强原始嵌入
+#### 带名原始嵌入
+你可以为原始嵌入块赋予一个名称  
 ```chtl
 [Origin] @Html box
 {
@@ -676,6 +678,24 @@ body
 }
 ```
 
+#### 自定义类型系统
+@Html，@Style，@Javascript是CHTL中基本的类型，CHTL只为原始嵌入提供了这三种类型  
+如果你需要更多的类型，你可以直接创建你想要的类型的原始嵌入，注意！必须以@为前缀    
+
+```chtl
+[Origin] @Vue box
+{
+
+}
+
+body
+{
+    [Origin] @Vue box;
+}
+```
+
+自定义类型系统会隐式创建一个配置块，你可以在配置组之中了解到这一个配置块  
+
 ## 配置组
 配置组允许开发者自定义很多行为
 
@@ -686,6 +706,8 @@ body
     INDEX_INITIAL_COUNT = 0;
     // 是否禁用Name配置组(即是否允许自定义关键字名称)
     DISABLE_NAME_GROUP = true;
+    // 是否禁用自定义原始嵌入类型
+    DISABLE_CUSTOM_ORIGIN_TYPE = false;
 
     // DEBUG模式
     DEBUG_MODE = false;
@@ -731,6 +753,16 @@ body
 
         // 组选项的数量限制，避免在大型项目中对性能的过高消耗
         OPTION_COUNT = 3;
+    }
+
+    [OriginType]  // 定义Origin具有什么自定义类型
+    {
+        ORIGINTYPE_VUE = @Vue;  // 如果我创建了一个@Vue类型的原始嵌入，那么CHTL会隐式创建
+
+        // 你也可以显式创建，更明确说明，但是要注意  
+        // ORIGINTYPE_VUE = @Vue;
+        // ORIGINTYPE_MARKDOWN = @Markdown;
+        // CHTL强制要求使用ORIGINTYPE_全写的类型名称 = @全大写后 = 全写的类型名称的内容
     }
 }
 ```
@@ -1056,7 +1088,8 @@ CHTL JS简化了动画的使用，封装了requestAnimationFrame
 ```chtl
 script
 {
-    animate({
+    const anim = animate({
+        target: {{选择器}} || [{{选择器1}}, {{选择器2}}] || DOM对象
         duration: 100,  // 动画持续时间，ms
         easing: ease-in-out,  // 缓慢函数
 
@@ -1223,3 +1256,21 @@ CJmod文件夹
 
 如何使用？例如这个模块叫Box，那么如果我想要调用Box的CMOD模块时，我们直接使用[Import] @Chtl即可  
 如果需要使用CJMOD，需要使用[Import] @CJmod，CHTL不会对此进行统一处理，我们不推荐使用@Chtl同时管理CMOD和CJMOD  
+
+### Chtholly 珂朵莉模块
+珂朵莉对于我来说，是一个很特别的角色，是我一直喜欢着的人物，我希望我能让珂朵莉成为CHTL中重要的模块  
+珂朵莉模块采用CMOD + CJMOD的混合模块  
+
+#### CJMOD
+##### printMylove
+printMylove可以将一张图片变成字符像素块的形式，你可以使用printMylove来把图片转换成字符像素块或ASCII的形式  
+然后输出到控制台  
+```chtl
+const str = printMylove({
+    url: ,
+    mode: ,  // 模式可以选择ASCII或Pixel
+    width: ,  // 宽度，支持的单位有CSS单位以及百分比，小数，纯数字(像素)
+    height: ,  // 高度
+    scale:  ,  // 缩放倍数，限定为等比缩放策略
+});
+```
