@@ -1,4 +1,5 @@
 #include "core/compiler_dispatcher.hpp"
+#include "import/enhanced_import_manager.hpp"
 #include <regex>
 #include <sstream>
 #include <iostream>
@@ -37,6 +38,10 @@ private:
     std::unordered_map<std::string, Template> templates_;
     std::unordered_map<std::string, Template> customs_;
     
+    // 导入管理器
+    std::unique_ptr<EnhancedImportManager> importManager_;
+    std::string currentNamespace_; // 当前正在编译的命名空间
+    
 public:
     BasicCHTLCompiler() = default;
     
@@ -56,6 +61,10 @@ public:
         templates_.clear();
         customs_.clear();
         context_ = CompilationContext();
+        if (importManager_) {
+            importManager_->clearImports();
+        }
+        currentNamespace_ = "";
     }
     
     CompilationResult compile(const CodeFragment& fragment) override {
@@ -257,6 +266,7 @@ private:
         }
     }
     
+public:
     void registerTemplate(const std::string& code) {
         // 解析模板定义：[Template] @Type Name { content }
         std::regex templateRegex(R"(\[Template\]\s*@(Style|Element|Var)\s+(\w+)\s*\{([^}]*)\})");
@@ -272,6 +282,8 @@ private:
             templates_[key] = tmpl;
         }
     }
+
+private:
     
     void registerCustom(const std::string& code) {
         // 解析自定义定义：[Custom] @Type Name { content }
@@ -322,11 +334,23 @@ private:
     
     void processImport(const std::string& code) {
         // 处理导入：[Import] @Type "path"
-        // 简化实现：暂时不处理实际文件导入
+        // 使用新的ImportManager
+        if (!importManager_) {
+            importManager_ = std::make_unique<EnhancedImportManager>();
+        }
+        
+        std::string processedCode = importManager_->processImports(code);
+        if (!importManager_->resolveAllImports()) {
+            // 处理导入错误
+            for (const auto& error : importManager_->getErrors()) {
+                std::cerr << "Import错误: " << error << std::endl;
+            }
+        }
     }
     
     std::string compileNamespaceBlock(const std::string& code) {
         // 处理命名空间：[Namespace] Name { content }
+        // 支持嵌套命名空间
         std::regex nsRegex(R"(\[Namespace\]\s+(\w+)\s*\{([^}]*)\})");
         std::smatch match;
         
@@ -334,15 +358,50 @@ private:
             std::string nsName = match[1].str();
             std::string content = match[2].str();
             
+            // 保存当前命名空间上下文
+            std::string oldNamespace = currentNamespace_;
+            if (oldNamespace.empty()) {
+                currentNamespace_ = nsName;
+            } else {
+                currentNamespace_ = oldNamespace + "." + nsName;
+            }
+            
             // 递归编译命名空间内容
-            return "<!-- Namespace: " + nsName + " -->\n" + compileChtlToHtml(content);
+            std::string result = "<!-- Namespace: " + currentNamespace_ + " -->\n" + 
+                               compileChtlToHtml(content);
+            
+            // 恢复命名空间上下文
+            currentNamespace_ = oldNamespace;
+            
+            return result;
+        }
+        
+        // 处理简化的命名空间语法（不带大括号）
+        std::regex simpleNsRegex(R"(\[Namespace\]\s+(\w+))");
+        if (std::regex_search(code, match, simpleNsRegex)) {
+            std::string nsName = match[1].str();
+            currentNamespace_ = nsName;
+            return "<!-- Namespace: " + nsName + " -->";
         }
         
         return "";
     }
     
     std::string expandTemplate(const std::string& code) {
-        // 展开模板使用：@Style TemplateName; 或 @Element TemplateName;
+        // 支持 from 语法的模板展开：@Style TemplateName from namespace; 
+        std::regex usageWithFromRegex(R"(@(Style|Element|Var)\s+(\w+)\s+from\s+([\w\.]+))");
+        std::smatch fromMatch;
+        
+        if (std::regex_search(code, fromMatch, usageWithFromRegex)) {
+            std::string type = fromMatch[1].str();
+            std::string name = fromMatch[2].str();
+            std::string namespacePath = fromMatch[3].str();
+            
+            // 查找命名空间中的模板
+            return expandTemplateFromNamespace(type, name, namespacePath);
+        }
+        
+        // 普通模板展开：@Style TemplateName; 或 @Element TemplateName;
         std::regex usageRegex(R"(@(Style|Element|Var)\s+(\w+))");
         std::smatch match;
         
@@ -360,9 +419,50 @@ private:
             if (templates_.find(key) != templates_.end()) {
                 return compileTemplateContent(templates_[key]);
             }
+            
+            // 查找导入的模板
+            if (importManager_ && importManager_->hasImport(name)) {
+                std::string importedContent = importManager_->getImportedContent(name);
+                if (!importedContent.empty()) {
+                    return compileChtlToHtml(importedContent);
+                }
+            }
         }
         
         return "<!-- Template not found: " + code + " -->";
+    }
+    
+    std::string expandTemplateFromNamespace(const std::string& type, const std::string& name, const std::string& namespacePath) {
+        // 解析命名空间路径：space.room2 -> space/room2
+        std::string nsPath = namespacePath;
+        std::replace(nsPath.begin(), nsPath.end(), '.', '/');
+        
+        // 查找命名空间中的模板
+        for (const auto& [key, tmpl] : templates_) {
+            if (tmpl.type == type && tmpl.name == name) {
+                // 检查模板是否属于指定命名空间
+                if (isTemplateInNamespace(key, nsPath)) {
+                    return compileTemplateContent(tmpl);
+                }
+            }
+        }
+        
+        // 在自定义中查找
+        for (const auto& [key, custom] : customs_) {
+            if (custom.type == type && custom.name == name) {
+                if (isTemplateInNamespace(key, nsPath)) {
+                    return compileTemplateContent(custom);
+                }
+            }
+        }
+        
+        return "<!-- Template not found in namespace " + namespacePath + ": " + type + " " + name + " -->";
+    }
+    
+    bool isTemplateInNamespace(const std::string& templateKey, const std::string& namespacePath) {
+        // 简化实现：检查模板键是否包含命名空间路径
+        // 实际应该维护更精确的命名空间映射
+        return templateKey.find(namespacePath) != std::string::npos;
     }
     
     std::string compileTemplateContent(const Template& tmpl) {
@@ -429,6 +529,22 @@ private:
             // 查找变量值
             if (context_.variables.find(varName) != context_.variables.end()) {
                 return context_.variables[varName];
+            }
+            
+            // 查找导入的变量组
+            if (importManager_ && importManager_->hasImport(groupName)) {
+                std::string importedContent = importManager_->getImportedContent(groupName);
+                // 解析导入的变量组内容
+                std::regex varDefRegex(varName + R"(\s*:\s*([^;]+);)");
+                std::smatch varMatch;
+                if (std::regex_search(importedContent, varMatch, varDefRegex)) {
+                    std::string value = varMatch[1].str();
+                    // 去除引号
+                    if (value.front() == '"' && value.back() == '"') {
+                        value = value.substr(1, value.length() - 2);
+                    }
+                    return value;
+                }
             }
         }
         
