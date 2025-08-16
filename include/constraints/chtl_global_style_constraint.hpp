@@ -12,20 +12,20 @@ namespace chtl {
  * CHTL全局样式块允许的语法元素类型
  */
 enum class GlobalStyleAllowedElement {
-    TEMPLATE_VARIABLE,              // 模板变量: @Var变量组名(变量名)
-    CUSTOM_VARIABLE,                // 自定义变量: @Var变量组名(变量名)
-    CUSTOM_VARIABLE_SPECIALIZATION, // 自定义变量特例化
-    TEMPLATE_STYLE_GROUP,           // 模板样式组: @Style样式组名
-    CUSTOM_STYLE_GROUP,             // 自定义样式组: @Style样式组名
-    VALUELESS_STYLE_GROUP,          // 无值样式组
-    CUSTOM_STYLE_SPECIALIZATION,    // 自定义样式组特例化
-    DELETE_PROPERTY,                // delete属性: delete 属性名
-    DELETE_INHERITANCE,             // delete继承: delete @Style样式组名
-    INHERITANCE,                    // 继承: inherit @Style样式组名
+    TEMPLATE_VARIABLE,              // 模板变量: VariableGroupName(variableName)
+    CUSTOM_VARIABLE,                // 自定义变量: VariableGroupName(variableName)
+    CUSTOM_VARIABLE_SPECIALIZATION, // 自定义变量特例化: VariableGroupName(variableName = value)
+    TEMPLATE_STYLE_GROUP,           // 模板样式组: @Style StyleGroupName
+    CUSTOM_STYLE_GROUP,             // 自定义样式组: @Style StyleGroupName
+    VALUELESS_STYLE_GROUP,          // 无值样式组: @Style StyleGroupName { properties }
+    CUSTOM_STYLE_SPECIALIZATION,    // 自定义样式组特例化: @Style StyleGroupName { delete properties }
+    DELETE_PROPERTY,                // delete属性: delete property1, property2
+    DELETE_INHERITANCE,             // delete继承: delete @Style StyleGroupName
+    INHERITANCE,                    // 继承: inherit @Style StyleGroupName 或 @Style BaseStyle
     GENERATOR_COMMENT,              // 生成器注释: --注释内容
-    FULL_QUALIFIED_NAME,            // 全缀名: 命名空间.元素名
-    RAW_EMBEDDING,                  // 原始嵌入: [Origin] @Style
-    FROM_NAMESPACE,                 // 从命名空间获取: 元素名 from 命名空间
+    FULL_QUALIFIED_NAME,            // 全缀名: [Custom] @Style StyleName 或 [Template] @Style StyleName
+    RAW_EMBEDDING,                  // 原始嵌入: [Origin] @Style { CSS代码 }
+    FROM_NAMESPACE,                 // 从命名空间获取: ElementName from namespace.path
     CSS_SELECTOR,                   // CSS选择器 (基本CSS语法)
     CSS_PROPERTY                    // CSS属性 (基本CSS语法)
 };

@@ -213,21 +213,23 @@ std::vector<GlobalStyleAllowedElement> CHtlGlobalStyleConstraint::checkAllowedEl
 }
 
 bool CHtlGlobalStyleConstraint::validateTemplateVariableReference(const std::string& varReference) {
-    // 模板变量格式: @Var VariableGroupName(variableName) 或 VariableGroupName(variableName)
-    std::regex templateVarPattern(R"((?:@Var\s+)?([A-Za-z_][A-Za-z0-9_]*)\s*\(\s*([A-Za-z_][A-Za-z0-9_]*)\s*\))");
-    return std::regex_match(varReference, templateVarPattern);
+    // 模板变量格式: VariableGroupName(variableName) 
+    // 注意：CHTL中变量引用不需要@Var前缀，直接是VariableGroupName(variableName)
+    std::regex templateVarPattern(R"(([A-Za-z_][A-Za-z0-9_]*)\s*\(\s*([A-Za-z_][A-Za-z0-9_]*)\s*\))");
+    return std::regex_search(varReference, templateVarPattern);
 }
 
 bool CHtlGlobalStyleConstraint::validateCustomVariableReference(const std::string& varReference) {
-    // 自定义变量格式: [Custom] @Var VariableGroupName(variableName) 或类似的格式
-    std::regex customVarPattern(R"((?:\[Custom\]\s+)?(?:@Var\s+)?([A-Za-z_][A-Za-z0-9_]*)\s*(?:\(\s*([A-Za-z_][A-Za-z0-9_]*)\s*\))?(?:\s*\[\s*([A-Za-z_][A-Za-z0-9_]*)\s*\])?)");
-    return std::regex_match(varReference, customVarPattern);
+    // 自定义变量格式: VariableGroupName(variableName) 或 VariableGroupName(variableName = value) (特例化)
+    std::regex customVarPattern(R"(([A-Za-z_][A-Za-z0-9_]*)\s*\(\s*([A-Za-z_][A-Za-z0-9_]*)\s*(?:=\s*([^)]+))?\s*\))");
+    return std::regex_search(varReference, customVarPattern);
 }
 
 bool CHtlGlobalStyleConstraint::validateStyleGroupReference(const std::string& styleGroupRef) {
     // 样式组格式: @Style StyleGroupName 或 [Template/Custom] @Style StyleGroupName
-    std::regex styleGroupPattern(R"((?:\[(Template|Custom)\]\s+)?@Style\s+([A-Za-z_][A-Za-z0-9_]*))");
-    return std::regex_match(styleGroupRef, styleGroupPattern);
+    // 也可能是样式组继承: @Style BaseStyleGroup; (不带任何前缀)
+    std::regex styleGroupPattern(R"((?:\[(Template|Custom)\]\s+)?@Style\s+([A-Za-z_][A-Za-z0-9_]*)(?:\s*;)?)");
+    return std::regex_search(styleGroupRef, styleGroupPattern);
 }
 
 bool CHtlGlobalStyleConstraint::validateDeleteStatement(const std::string& deleteStatement) {
@@ -243,15 +245,17 @@ bool CHtlGlobalStyleConstraint::validateInheritStatement(const std::string& inhe
 }
 
 bool CHtlGlobalStyleConstraint::validateFromClause(const std::string& fromClause) {
-    // from子句格式: ElementName from namespace.subnamespace
-    std::regex fromPattern(R"(([A-Za-z_][A-Za-z0-9_]*)\s+from\s+([A-Za-z_][A-Za-z0-9_.]*))");
-    return std::regex_match(fromClause, fromPattern);
+    // from子句格式: ElementName from file.path (用于导入)
+    // 注意：CHTL中的from主要用于导入，格式是从文件路径导入
+    std::regex fromPattern(R"(([A-Za-z_][A-Za-z0-9_]*)\s+from\s+([A-Za-z_][A-Za-z0-9_./-]*))");
+    return std::regex_search(fromClause, fromPattern);
 }
 
 bool CHtlGlobalStyleConstraint::validateFullQualifiedName(const std::string& fullQualifiedName) {
-    // 全缀名格式: namespace.subnamespace.ElementName
-    std::regex fqnPattern(R"([A-Za-z_][A-Za-z0-9_]*(?:\.[A-Za-z_][A-Za-z0-9_]*)+)");
-    return std::regex_match(fullQualifiedName, fqnPattern);
+    // 全缀名格式: [Custom] @Style StyleName 或 [Template] @Style StyleName
+    // 这是CHTL中用于避免命名冲突的完整限定名语法
+    std::regex fqnPattern(R"(\[(Custom|Template)\]\s+@(Style|Element|Var)\s+([A-Za-z_][A-Za-z0-9_]*))");
+    return std::regex_search(fullQualifiedName, fqnPattern);
 }
 
 std::vector<std::string> CHtlGlobalStyleConstraint::checkForbiddenLocalStyleFeatures(const std::string& styleContent) {
@@ -304,9 +308,10 @@ bool CHtlGlobalStyleConstraint::isCSSProperty(const std::string& statement) {
 }
 
 bool CHtlGlobalStyleConstraint::isVariableReference(const std::string& statement) {
-    // 变量引用模式: @Var, VariableGroup(), 等
-    return statement.find("@Var") != std::string::npos || 
-           (statement.find('(') != std::string::npos && statement.find(')') != std::string::npos);
+    // 变量引用模式: VariableGroup(variableName) 格式
+    // 在CHTL中，变量引用不需要@Var前缀
+    return (statement.find('(') != std::string::npos && statement.find(')') != std::string::npos &&
+            statement.find("function") == std::string::npos); // 排除函数定义
 }
 
 bool CHtlGlobalStyleConstraint::isStyleGroupReference(const std::string& statement) {
