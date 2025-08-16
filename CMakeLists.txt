@@ -266,6 +266,26 @@ add_executable(debug_template_parser
     src/ast/chtl_ast.cpp
 )
 
+# CHTL Namespace Parser test
+add_executable(chtl_namespace_parser_test
+    tests/chtl_namespace_parser_test.cpp
+    src/parsers/chtl_namespace_parser.cpp
+    src/parsers/chtl_basic_parser.cpp
+    src/parsers/chtl_style_parser.cpp
+    src/lexer/chtl_lexer.cpp
+    src/ast/chtl_ast.cpp
+)
+
+# Debug namespace parser
+add_executable(debug_namespace_parser
+    tests/debug_namespace_parser.cpp
+    src/parsers/chtl_namespace_parser.cpp
+    src/parsers/chtl_basic_parser.cpp
+    src/parsers/chtl_style_parser.cpp
+    src/lexer/chtl_lexer.cpp
+    src/ast/chtl_ast.cpp
+)
+
 # 创建RAII状态管理演示程序（不依赖gtest）
 add_executable(raii_state_management_demo 
     tests/raii_state_management_demo.cpp

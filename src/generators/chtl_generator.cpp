@@ -214,7 +214,7 @@ void CHTLGenerator::generateImportDeclaration(CHTLASTNodePtr node) {
         auto importNode = std::dynamic_pointer_cast<ImportDeclarationNode>(node);
         if (importNode) {
             writeIndent();
-            htmlStream_ << "<!-- Import: " << importNode->importType << " from " << importNode->filePath;
+            htmlStream_ << "<!-- Import: " << importNode->importType << " from " << importNode->path;
             if (!importNode->alias.empty()) {
                 htmlStream_ << " as " << importNode->alias;
             }
@@ -354,13 +354,13 @@ void CHTLGenerator::processLocalStyles(CHTLASTNodePtr elementNode) {
                 auto classSelector = std::dynamic_pointer_cast<ClassSelectorNode>(child);
                 if (classSelector) {
                     // 生成独立的CSS规则
-                    addGlobalStyle(classSelector->selector, classSelector->properties, child->position);
+                    addGlobalStyle(classSelector->className, classSelector->properties, child->position);
                 }
             } else if (child->type == CHTLASTNodeType::ID_SELECTOR) {
                 auto idSelector = std::dynamic_pointer_cast<IDSelectorNode>(child);
                 if (idSelector) {
                     // 生成独立的CSS规则
-                    addGlobalStyle(idSelector->selector, idSelector->properties, child->position);
+                    addGlobalStyle(idSelector->idName, idSelector->properties, child->position);
                 }
             }
         }
@@ -389,13 +389,13 @@ void CHTLGenerator::generateComment(CHTLASTNodePtr node) {
     writeIndent();
     
     switch (commentNode->commentType) {
-        case CommentType::LINE:
+        case CHTLASTNodeType::COMMENT_LINE:
             htmlStream_ << "<!-- " << commentNode->content << " -->";
             break;
-        case CommentType::MULTILINE:
+        case CHTLASTNodeType::COMMENT_MULTILINE:
             htmlStream_ << "<!-- " << commentNode->content << " -->";
             break;
-        case CommentType::GENERATOR:
+        case CHTLASTNodeType::COMMENT_GENERATOR:
             htmlStream_ << "<!-- " << commentNode->content << " -->";
             break;
     }

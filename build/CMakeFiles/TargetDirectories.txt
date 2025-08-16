@@ -26,6 +26,8 @@
 /workspace/build/CMakeFiles/debug_config_import_parser.dir
 /workspace/build/CMakeFiles/debug_style_parser.dir
 /workspace/build/CMakeFiles/debug_template_parser.dir
+/workspace/build/CMakeFiles/chtl_namespace_parser_test.dir
+/workspace/build/CMakeFiles/debug_namespace_parser.dir
 /workspace/build/CMakeFiles/raii_state_management_demo.dir
 /workspace/build/CMakeFiles/edit_cache.dir
 /workspace/build/CMakeFiles/rebuild_cache.dir

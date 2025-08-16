@@ -42,6 +42,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_config_import_parser.cpp.o.d"
   "CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_custom_parser.cpp.o"
   "CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_custom_parser.cpp.o.d"
+  "CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_namespace_parser.cpp.o"
+  "CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_namespace_parser.cpp.o.d"
   "CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_origin_parser.cpp.o"
   "CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_origin_parser.cpp.o.d"
   "CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_parser.cpp.o"
