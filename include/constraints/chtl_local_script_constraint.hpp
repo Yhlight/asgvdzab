@@ -17,7 +17,7 @@ enum class LocalScriptAllowedElement {
     VARIABLE_SPECIALIZATION,        // 变量组特例化: VariableGroupName(variableName = value)
     NAMESPACE_FROM,                 // 命名空间from: ElementName from namespace.path
     GENERATOR_COMMENT,              // 生成器注释: --注释内容
-    RAW_EMBEDDING,                  // 原始嵌入: [Origin] @Html/@Style/@JavaScript { 内容 }
+    RAW_EMBEDDING,                  // 原始嵌入: [Origin] @Type [name] { 内容 } (支持基本类型和自定义类型)
     PURE_JAVASCRIPT,                // 纯JavaScript代码（包括{{&}}等模板语法）
     JAVASCRIPT_TEMPLATE_SYNTAX      // JavaScript模板语法: {{variable}}, {{{html}}}, {{&unescaped}} 等
 };
@@ -87,7 +87,7 @@ struct LocalScriptConstraintResult {
  * - 变量组特例化: VariableGroupName(variableName = value)
  * - 命名空间from: ElementName from namespace.path
  * - 生成器注释: --注释内容
- * - 原始嵌入: [Origin] @Html/@Style/@JavaScript { 内容 }
+ * - 原始嵌入: [Origin] @Type [name] { 内容 } (支持基本类型和自定义类型)
  * - 纯JavaScript代码: 标准JavaScript语法
  * - JavaScript模板语法: {{variable}}, {{{html}}}, {{&unescaped}} 等
  * 

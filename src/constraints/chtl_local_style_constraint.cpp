@@ -279,10 +279,14 @@ bool CHtlLocalStyleConstraint::validateGeneratorComment(const std::string& comme
 }
 
 bool CHtlLocalStyleConstraint::validateRawEmbedding(const std::string& embedding) {
-    // 原始嵌入格式: [Origin] @Html/@Style/@JavaScript { 内容 }
-    // 根据CHTL语法文档，只有这3种官方类型
-    std::regex rawEmbeddingPattern(R"(\[Origin\]\s+@(Html|Style|JavaScript)\s*\{)");
-    return std::regex_search(embedding, rawEmbeddingPattern);
+    // 原始嵌入格式: 
+    // 1. 定义: [Origin] @Type [name] { 内容 }
+    // 2. 引用: [Origin] @Type [name];
+    // 支持基本类型和自定义类型，支持带名原始嵌入
+    std::regex rawEmbeddingDefPattern(R"(\[Origin\]\s+@[A-Za-z][A-Za-z0-9]*(?:\s+[A-Za-z_][A-Za-z0-9_]*)?\s*\{)");
+    std::regex rawEmbeddingRefPattern(R"(\[Origin\]\s+@[A-Za-z][A-Za-z0-9]*(?:\s+[A-Za-z_][A-Za-z0-9_]*)?\s*;)");
+    return std::regex_search(embedding, rawEmbeddingDefPattern) || 
+           std::regex_search(embedding, rawEmbeddingRefPattern);
 }
 
 std::vector<std::string> CHtlLocalStyleConstraint::parseLocalStyleStatements(const std::string& content) {
@@ -352,8 +356,9 @@ bool CHtlLocalStyleConstraint::isGeneratorComment(const std::string& statement) 
 }
 
 bool CHtlLocalStyleConstraint::isRawEmbedding(const std::string& statement) {
-    // 原始嵌入模式: [Origin] @Html/@Style/@JavaScript (根据CHTL语法文档的3种官方类型)
-    std::regex rawEmbeddingPattern(R"(\[Origin\]\s+@(Html|Style|JavaScript))");
+    // 原始嵌入模式: [Origin] @Type [name]
+    // 支持基本类型和自定义类型，支持带名原始嵌入
+    std::regex rawEmbeddingPattern(R"(\[Origin\]\s+@[A-Za-z][A-Za-z0-9]*(?:\s+[A-Za-z_][A-Za-z0-9_]*)?)");
     return std::regex_search(statement, rawEmbeddingPattern);
 }
 

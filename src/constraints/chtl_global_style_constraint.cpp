@@ -347,8 +347,10 @@ bool CHtlGlobalStyleConstraint::isGeneratorComment(const std::string& statement)
 }
 
 bool CHtlGlobalStyleConstraint::isRawEmbedding(const std::string& statement) {
-    // 原始嵌入模式: [Origin] @Html/@Style/@JavaScript (根据CHTL语法文档的3种官方类型)
-    std::regex rawEmbeddingPattern(R"(\[Origin\]\s+@(Html|Style|JavaScript))");
+    // 原始嵌入模式: [Origin] @Type [name] 
+    // 支持基本类型 (@Html, @Style, @JavaScript) 和自定义类型 (任何@开头的类型)
+    // 支持带名原始嵌入: [Origin] @Type name
+    std::regex rawEmbeddingPattern(R"(\[Origin\]\s+@[A-Za-z][A-Za-z0-9]*(?:\s+[A-Za-z_][A-Za-z0-9_]*)?)");
     return std::regex_search(statement, rawEmbeddingPattern);
 }
 

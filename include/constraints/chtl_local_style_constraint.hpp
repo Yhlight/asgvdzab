@@ -25,7 +25,7 @@ enum class LocalStyleAllowedElement {
     INHERITANCE,                    // 继承: inherit @Style StyleGroupName 或 @Style BaseStyle
     GENERATOR_COMMENT,              // 生成器注释: --注释内容
     FULL_QUALIFIED_NAME,            // 全缀名: [Custom] @Var/@Style/@Element Name 或 [Template] @Var/@Style/@Element Name
-    RAW_EMBEDDING,                  // 原始嵌入: [Origin] @Html/@Style/@JavaScript { 内容 }
+    RAW_EMBEDDING,                  // 原始嵌入: [Origin] @Type [name] { 内容 } (支持基本类型和自定义类型)
     FROM_NAMESPACE,                 // 从命名空间获取: ElementName from namespace.path
     CSS_SELECTOR,                   // CSS选择器 (基本CSS语法)
     CSS_PROPERTY                    // CSS属性 (基本CSS语法)
