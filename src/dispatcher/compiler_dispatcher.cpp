@@ -1,6 +1,9 @@
 #include "dispatcher/compiler_dispatcher.hpp"
 #include "compilers/chtl_compiler.hpp"
+#include "compilers/css_compiler.hpp"
+#include "compilers/javascript_compiler.hpp"
 #include <iostream>
+#include <sstream>
 #include <algorithm>
 #include <chrono>
 #include <iomanip>
@@ -129,10 +132,17 @@ void CompilerDispatcher::resetStatistics() {
 }
 
 void CompilerDispatcher::initializeDefaultCompilers() {
+    // 注册CHTL编译器
     registerCompiler(CompilerFactory::createCHTLCompiler());
+    
+    // 注册CSS编译器
+    registerCompiler(CompilerFactory::createCSSCompiler());
+    
+    // 注册JavaScript编译器
+    registerCompiler(CompilerFactory::createJavaScriptCompiler());
+    
+    // 注册CHTL JS编译器（将在实现时启用）
     // registerCompiler(CompilerFactory::createCHTLJSCompiler());
-    // registerCompiler(CompilerFactory::createCSSCompiler());
-    // registerCompiler(CompilerFactory::createJavaScriptCompiler());
 }
 
 std::vector<CodeSegment> CompilerDispatcher::preprocessSegments(const std::vector<CodeSegment>& segments) {
@@ -269,11 +279,11 @@ std::unique_ptr<ICompiler> CompilerFactory::createCHTLJSCompiler() {
 }
 
 std::unique_ptr<ICompiler> CompilerFactory::createCSSCompiler() {
-    return nullptr; // 将在实现CSS编译器时完成
+    return std::make_unique<CSSCompiler>();
 }
 
 std::unique_ptr<ICompiler> CompilerFactory::createJavaScriptCompiler() {
-    return nullptr; // 将在实现JavaScript编译器时完成
+    return std::make_unique<JavaScriptCompiler>();
 }
 
 } // namespace chtl

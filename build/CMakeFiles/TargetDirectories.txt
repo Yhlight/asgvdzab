@@ -6,6 +6,7 @@
 /workspace/build/CMakeFiles/chtl_syntax_validation_tests.dir
 /workspace/build/CMakeFiles/chtl_grammar_conformance_tests.dir
 /workspace/build/CMakeFiles/chtl_ast_conformance_tests.dir
+/workspace/build/CMakeFiles/parser_generator_integration_tests.dir
 /workspace/build/CMakeFiles/edit_cache.dir
 /workspace/build/CMakeFiles/rebuild_cache.dir
 /workspace/build/CMakeFiles/list_install_components.dir

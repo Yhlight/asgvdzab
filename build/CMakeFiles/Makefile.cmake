@@ -57,4 +57,5 @@ set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/chtl_syntax_validation_tests.dir/DependInfo.cmake"
   "CMakeFiles/chtl_grammar_conformance_tests.dir/DependInfo.cmake"
   "CMakeFiles/chtl_ast_conformance_tests.dir/DependInfo.cmake"
+  "CMakeFiles/parser_generator_integration_tests.dir/DependInfo.cmake"
   )
