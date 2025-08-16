@@ -31,6 +31,7 @@
 /workspace/build/CMakeFiles/debug_namespace_parser.dir
 /workspace/build/CMakeFiles/debug_js_parser.dir
 /workspace/build/CMakeFiles/raii_state_management_demo.dir
+/workspace/build/CMakeFiles/css_js_compiler_integration_test.dir
 /workspace/build/CMakeFiles/edit_cache.dir
 /workspace/build/CMakeFiles/rebuild_cache.dir
 /workspace/build/CMakeFiles/list_install_components.dir

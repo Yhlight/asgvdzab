@@ -18,6 +18,9 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/usr/share/cmake-3.31/Modules/Compiler/Clang-CXX.cmake"
   "/usr/share/cmake-3.31/Modules/Compiler/Clang.cmake"
   "/usr/share/cmake-3.31/Modules/Compiler/GNU.cmake"
+  "/usr/share/cmake-3.31/Modules/FindPackageHandleStandardArgs.cmake"
+  "/usr/share/cmake-3.31/Modules/FindPackageMessage.cmake"
+  "/usr/share/cmake-3.31/Modules/FindPkgConfig.cmake"
   "/usr/share/cmake-3.31/Modules/Internal/CMakeCXXLinkerInformation.cmake"
   "/usr/share/cmake-3.31/Modules/Internal/CMakeCommonLinkerInformation.cmake"
   "/usr/share/cmake-3.31/Modules/Linker/GNU-CXX.cmake"
@@ -82,4 +85,5 @@ set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/debug_namespace_parser.dir/DependInfo.cmake"
   "CMakeFiles/debug_js_parser.dir/DependInfo.cmake"
   "CMakeFiles/raii_state_management_demo.dir/DependInfo.cmake"
+  "CMakeFiles/css_js_compiler_integration_test.dir/DependInfo.cmake"
   )

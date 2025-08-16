@@ -590,6 +590,19 @@ raii_state_management_demo/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_demo.dir/build.make CMakeFiles/raii_state_management_demo.dir/build
 .PHONY : raii_state_management_demo/fast
 
+#=============================================================================
+# Target rules for targets named css_js_compiler_integration_test
+
+# Build rule for target.
+css_js_compiler_integration_test: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 css_js_compiler_integration_test
+.PHONY : css_js_compiler_integration_test
+
+# fast build rule for target.
+css_js_compiler_integration_test/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/css_js_compiler_integration_test.dir/build.make CMakeFiles/css_js_compiler_integration_test.dir/build
+.PHONY : css_js_compiler_integration_test/fast
+
 src/ast/chtl_ast.o: src/ast/chtl_ast.cpp.o
 .PHONY : src/ast/chtl_ast.o
 
@@ -619,6 +632,7 @@ src/ast/chtl_ast.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_js_parser_test.dir/build.make CMakeFiles/chtl_js_parser_test.dir/src/ast/chtl_ast.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_namespace_parser.dir/build.make CMakeFiles/debug_namespace_parser.dir/src/ast/chtl_ast.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_js_parser.dir/build.make CMakeFiles/debug_js_parser.dir/src/ast/chtl_ast.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/css_js_compiler_integration_test.dir/build.make CMakeFiles/css_js_compiler_integration_test.dir/src/ast/chtl_ast.cpp.o
 .PHONY : src/ast/chtl_ast.cpp.o
 
 src/ast/chtl_ast.i: src/ast/chtl_ast.cpp.i
@@ -650,6 +664,7 @@ src/ast/chtl_ast.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_js_parser_test.dir/build.make CMakeFiles/chtl_js_parser_test.dir/src/ast/chtl_ast.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_namespace_parser.dir/build.make CMakeFiles/debug_namespace_parser.dir/src/ast/chtl_ast.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_js_parser.dir/build.make CMakeFiles/debug_js_parser.dir/src/ast/chtl_ast.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/css_js_compiler_integration_test.dir/build.make CMakeFiles/css_js_compiler_integration_test.dir/src/ast/chtl_ast.cpp.i
 .PHONY : src/ast/chtl_ast.cpp.i
 
 src/ast/chtl_ast.s: src/ast/chtl_ast.cpp.s
@@ -681,6 +696,7 @@ src/ast/chtl_ast.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_js_parser_test.dir/build.make CMakeFiles/chtl_js_parser_test.dir/src/ast/chtl_ast.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_namespace_parser.dir/build.make CMakeFiles/debug_namespace_parser.dir/src/ast/chtl_ast.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_js_parser.dir/build.make CMakeFiles/debug_js_parser.dir/src/ast/chtl_ast.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/css_js_compiler_integration_test.dir/build.make CMakeFiles/css_js_compiler_integration_test.dir/src/ast/chtl_ast.cpp.s
 .PHONY : src/ast/chtl_ast.cpp.s
 
 src/ast/chtl_js_ast.o: src/ast/chtl_js_ast.cpp.o
@@ -869,6 +885,7 @@ src/common/types.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/common/types.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/common/types.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/common/types.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/css_js_compiler_integration_test.dir/build.make CMakeFiles/css_js_compiler_integration_test.dir/src/common/types.cpp.o
 .PHONY : src/common/types.cpp.o
 
 src/common/types.i: src/common/types.cpp.i
@@ -886,6 +903,7 @@ src/common/types.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/common/types.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/common/types.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/common/types.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/css_js_compiler_integration_test.dir/build.make CMakeFiles/css_js_compiler_integration_test.dir/src/common/types.cpp.i
 .PHONY : src/common/types.cpp.i
 
 src/common/types.s: src/common/types.cpp.s
@@ -903,6 +921,7 @@ src/common/types.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/common/types.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/common/types.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/common/types.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/css_js_compiler_integration_test.dir/build.make CMakeFiles/css_js_compiler_integration_test.dir/src/common/types.cpp.s
 .PHONY : src/common/types.cpp.s
 
 src/compiler/cjmod_compiler_extension.o: src/compiler/cjmod_compiler_extension.cpp.o
@@ -1069,6 +1088,114 @@ src/compilers/chtl_compiler.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/compilers/chtl_compiler.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/compilers/chtl_compiler.cpp.s
 .PHONY : src/compilers/chtl_compiler.cpp.s
+
+src/compilers/css_compiler.o: src/compilers/css_compiler.cpp.o
+.PHONY : src/compilers/css_compiler.o
+
+# target to build an object file
+src/compilers/css_compiler.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/compilers/css_compiler.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/compilers/css_compiler.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/compilers/css_compiler.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/compilers/css_compiler.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/compilers/css_compiler.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/compilers/css_compiler.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/compilers/css_compiler.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/compilers/css_compiler.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/compilers/css_compiler.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/compilers/css_compiler.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/css_js_compiler_integration_test.dir/build.make CMakeFiles/css_js_compiler_integration_test.dir/src/compilers/css_compiler.cpp.o
+.PHONY : src/compilers/css_compiler.cpp.o
+
+src/compilers/css_compiler.i: src/compilers/css_compiler.cpp.i
+.PHONY : src/compilers/css_compiler.i
+
+# target to preprocess a source file
+src/compilers/css_compiler.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/compilers/css_compiler.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/compilers/css_compiler.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/compilers/css_compiler.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/compilers/css_compiler.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/compilers/css_compiler.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/compilers/css_compiler.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/compilers/css_compiler.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/compilers/css_compiler.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/compilers/css_compiler.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/compilers/css_compiler.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/css_js_compiler_integration_test.dir/build.make CMakeFiles/css_js_compiler_integration_test.dir/src/compilers/css_compiler.cpp.i
+.PHONY : src/compilers/css_compiler.cpp.i
+
+src/compilers/css_compiler.s: src/compilers/css_compiler.cpp.s
+.PHONY : src/compilers/css_compiler.s
+
+# target to generate assembly for a file
+src/compilers/css_compiler.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/compilers/css_compiler.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/compilers/css_compiler.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/compilers/css_compiler.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/compilers/css_compiler.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/compilers/css_compiler.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/compilers/css_compiler.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/compilers/css_compiler.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/compilers/css_compiler.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/compilers/css_compiler.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/compilers/css_compiler.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/css_js_compiler_integration_test.dir/build.make CMakeFiles/css_js_compiler_integration_test.dir/src/compilers/css_compiler.cpp.s
+.PHONY : src/compilers/css_compiler.cpp.s
+
+src/compilers/js_compiler.o: src/compilers/js_compiler.cpp.o
+.PHONY : src/compilers/js_compiler.o
+
+# target to build an object file
+src/compilers/js_compiler.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/compilers/js_compiler.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/compilers/js_compiler.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/compilers/js_compiler.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/compilers/js_compiler.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/compilers/js_compiler.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/compilers/js_compiler.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/compilers/js_compiler.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/compilers/js_compiler.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/compilers/js_compiler.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/compilers/js_compiler.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/css_js_compiler_integration_test.dir/build.make CMakeFiles/css_js_compiler_integration_test.dir/src/compilers/js_compiler.cpp.o
+.PHONY : src/compilers/js_compiler.cpp.o
+
+src/compilers/js_compiler.i: src/compilers/js_compiler.cpp.i
+.PHONY : src/compilers/js_compiler.i
+
+# target to preprocess a source file
+src/compilers/js_compiler.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/compilers/js_compiler.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/compilers/js_compiler.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/compilers/js_compiler.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/compilers/js_compiler.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/compilers/js_compiler.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/compilers/js_compiler.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/compilers/js_compiler.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/compilers/js_compiler.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/compilers/js_compiler.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/compilers/js_compiler.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/css_js_compiler_integration_test.dir/build.make CMakeFiles/css_js_compiler_integration_test.dir/src/compilers/js_compiler.cpp.i
+.PHONY : src/compilers/js_compiler.cpp.i
+
+src/compilers/js_compiler.s: src/compilers/js_compiler.cpp.s
+.PHONY : src/compilers/js_compiler.s
+
+# target to generate assembly for a file
+src/compilers/js_compiler.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/compilers/js_compiler.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/compilers/js_compiler.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/compilers/js_compiler.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/compilers/js_compiler.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/compilers/js_compiler.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/compilers/js_compiler.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/compilers/js_compiler.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/compilers/js_compiler.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/compilers/js_compiler.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/compilers/js_compiler.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/css_js_compiler_integration_test.dir/build.make CMakeFiles/css_js_compiler_integration_test.dir/src/compilers/js_compiler.cpp.s
+.PHONY : src/compilers/js_compiler.cpp.s
 
 src/dispatcher/compiler_dispatcher.o: src/dispatcher/compiler_dispatcher.cpp.o
 .PHONY : src/dispatcher/compiler_dispatcher.o
@@ -1318,6 +1445,7 @@ src/lexer/chtl_lexer.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_js_parser_test.dir/build.make CMakeFiles/chtl_js_parser_test.dir/src/lexer/chtl_lexer.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_namespace_parser.dir/build.make CMakeFiles/debug_namespace_parser.dir/src/lexer/chtl_lexer.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_js_parser.dir/build.make CMakeFiles/debug_js_parser.dir/src/lexer/chtl_lexer.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/css_js_compiler_integration_test.dir/build.make CMakeFiles/css_js_compiler_integration_test.dir/src/lexer/chtl_lexer.cpp.o
 .PHONY : src/lexer/chtl_lexer.cpp.o
 
 src/lexer/chtl_lexer.i: src/lexer/chtl_lexer.cpp.i
@@ -1349,6 +1477,7 @@ src/lexer/chtl_lexer.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_js_parser_test.dir/build.make CMakeFiles/chtl_js_parser_test.dir/src/lexer/chtl_lexer.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_namespace_parser.dir/build.make CMakeFiles/debug_namespace_parser.dir/src/lexer/chtl_lexer.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_js_parser.dir/build.make CMakeFiles/debug_js_parser.dir/src/lexer/chtl_lexer.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/css_js_compiler_integration_test.dir/build.make CMakeFiles/css_js_compiler_integration_test.dir/src/lexer/chtl_lexer.cpp.i
 .PHONY : src/lexer/chtl_lexer.cpp.i
 
 src/lexer/chtl_lexer.s: src/lexer/chtl_lexer.cpp.s
@@ -1380,6 +1509,7 @@ src/lexer/chtl_lexer.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_js_parser_test.dir/build.make CMakeFiles/chtl_js_parser_test.dir/src/lexer/chtl_lexer.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_namespace_parser.dir/build.make CMakeFiles/debug_namespace_parser.dir/src/lexer/chtl_lexer.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_js_parser.dir/build.make CMakeFiles/debug_js_parser.dir/src/lexer/chtl_lexer.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/css_js_compiler_integration_test.dir/build.make CMakeFiles/css_js_compiler_integration_test.dir/src/lexer/chtl_lexer.cpp.s
 .PHONY : src/lexer/chtl_lexer.cpp.s
 
 src/lexer/chtl_tokens.o: src/lexer/chtl_tokens.cpp.o
@@ -1675,6 +1805,60 @@ src/namespace/enhanced_namespace_manager.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/cjmod_system_test.dir/build.make CMakeFiles/cjmod_system_test.dir/src/namespace/enhanced_namespace_manager.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl-cjmod.dir/build.make CMakeFiles/chtl-cjmod.dir/src/namespace/enhanced_namespace_manager.cpp.s
 .PHONY : src/namespace/enhanced_namespace_manager.cpp.s
+
+src/network/dependency_manager.o: src/network/dependency_manager.cpp.o
+.PHONY : src/network/dependency_manager.o
+
+# target to build an object file
+src/network/dependency_manager.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/network/dependency_manager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/network/dependency_manager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/network/dependency_manager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/network/dependency_manager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/network/dependency_manager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/network/dependency_manager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/network/dependency_manager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/network/dependency_manager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/network/dependency_manager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/network/dependency_manager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/css_js_compiler_integration_test.dir/build.make CMakeFiles/css_js_compiler_integration_test.dir/src/network/dependency_manager.cpp.o
+.PHONY : src/network/dependency_manager.cpp.o
+
+src/network/dependency_manager.i: src/network/dependency_manager.cpp.i
+.PHONY : src/network/dependency_manager.i
+
+# target to preprocess a source file
+src/network/dependency_manager.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/network/dependency_manager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/network/dependency_manager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/network/dependency_manager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/network/dependency_manager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/network/dependency_manager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/network/dependency_manager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/network/dependency_manager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/network/dependency_manager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/network/dependency_manager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/network/dependency_manager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/css_js_compiler_integration_test.dir/build.make CMakeFiles/css_js_compiler_integration_test.dir/src/network/dependency_manager.cpp.i
+.PHONY : src/network/dependency_manager.cpp.i
+
+src/network/dependency_manager.s: src/network/dependency_manager.cpp.s
+.PHONY : src/network/dependency_manager.s
+
+# target to generate assembly for a file
+src/network/dependency_manager.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/network/dependency_manager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/network/dependency_manager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/network/dependency_manager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/network/dependency_manager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/network/dependency_manager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/network/dependency_manager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/network/dependency_manager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/network/dependency_manager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/network/dependency_manager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/network/dependency_manager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/css_js_compiler_integration_test.dir/build.make CMakeFiles/css_js_compiler_integration_test.dir/src/network/dependency_manager.cpp.s
+.PHONY : src/network/dependency_manager.cpp.s
 
 src/parsers/chtl_basic_parser.o: src/parsers/chtl_basic_parser.cpp.o
 .PHONY : src/parsers/chtl_basic_parser.o
@@ -2735,6 +2919,30 @@ tests/comprehensive_lexer_test.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/tests/comprehensive_lexer_test.cpp.s
 .PHONY : tests/comprehensive_lexer_test.cpp.s
 
+tests/css_js_compiler_integration_test.o: tests/css_js_compiler_integration_test.cpp.o
+.PHONY : tests/css_js_compiler_integration_test.o
+
+# target to build an object file
+tests/css_js_compiler_integration_test.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/css_js_compiler_integration_test.dir/build.make CMakeFiles/css_js_compiler_integration_test.dir/tests/css_js_compiler_integration_test.cpp.o
+.PHONY : tests/css_js_compiler_integration_test.cpp.o
+
+tests/css_js_compiler_integration_test.i: tests/css_js_compiler_integration_test.cpp.i
+.PHONY : tests/css_js_compiler_integration_test.i
+
+# target to preprocess a source file
+tests/css_js_compiler_integration_test.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/css_js_compiler_integration_test.dir/build.make CMakeFiles/css_js_compiler_integration_test.dir/tests/css_js_compiler_integration_test.cpp.i
+.PHONY : tests/css_js_compiler_integration_test.cpp.i
+
+tests/css_js_compiler_integration_test.s: tests/css_js_compiler_integration_test.cpp.s
+.PHONY : tests/css_js_compiler_integration_test.s
+
+# target to generate assembly for a file
+tests/css_js_compiler_integration_test.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/css_js_compiler_integration_test.dir/build.make CMakeFiles/css_js_compiler_integration_test.dir/tests/css_js_compiler_integration_test.cpp.s
+.PHONY : tests/css_js_compiler_integration_test.cpp.s
+
 tests/debug_config_import_parser.o: tests/debug_config_import_parser.cpp.o
 .PHONY : tests/debug_config_import_parser.o
 
@@ -3125,6 +3333,7 @@ help:
 	@echo "... cjmod_system_test"
 	@echo "... cmod_system_test"
 	@echo "... comprehensive_lexer_tests"
+	@echo "... css_js_compiler_integration_test"
 	@echo "... debug_config_import_parser"
 	@echo "... debug_import_test"
 	@echo "... debug_js_parser"
@@ -3164,6 +3373,12 @@ help:
 	@echo "... src/compilers/chtl_compiler.o"
 	@echo "... src/compilers/chtl_compiler.i"
 	@echo "... src/compilers/chtl_compiler.s"
+	@echo "... src/compilers/css_compiler.o"
+	@echo "... src/compilers/css_compiler.i"
+	@echo "... src/compilers/css_compiler.s"
+	@echo "... src/compilers/js_compiler.o"
+	@echo "... src/compilers/js_compiler.i"
+	@echo "... src/compilers/js_compiler.s"
 	@echo "... src/dispatcher/compiler_dispatcher.o"
 	@echo "... src/dispatcher/compiler_dispatcher.i"
 	@echo "... src/dispatcher/compiler_dispatcher.s"
@@ -3197,6 +3412,9 @@ help:
 	@echo "... src/namespace/enhanced_namespace_manager.o"
 	@echo "... src/namespace/enhanced_namespace_manager.i"
 	@echo "... src/namespace/enhanced_namespace_manager.s"
+	@echo "... src/network/dependency_manager.o"
+	@echo "... src/network/dependency_manager.i"
+	@echo "... src/network/dependency_manager.s"
 	@echo "... src/parsers/chtl_basic_parser.o"
 	@echo "... src/parsers/chtl_basic_parser.i"
 	@echo "... src/parsers/chtl_basic_parser.s"
@@ -3281,6 +3499,9 @@ help:
 	@echo "... tests/comprehensive_lexer_test.o"
 	@echo "... tests/comprehensive_lexer_test.i"
 	@echo "... tests/comprehensive_lexer_test.s"
+	@echo "... tests/css_js_compiler_integration_test.o"
+	@echo "... tests/css_js_compiler_integration_test.i"
+	@echo "... tests/css_js_compiler_integration_test.s"
 	@echo "... tests/debug_config_import_parser.o"
 	@echo "... tests/debug_config_import_parser.i"
 	@echo "... tests/debug_config_import_parser.s"
