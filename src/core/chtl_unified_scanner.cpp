@@ -282,73 +282,202 @@ bool CHTLUnifiedScanner::expandSlice(const std::string& sourceCode, SliceInfo& s
 }
 
 CodeFragmentType CHTLUnifiedScanner::identifyFragmentType(const std::string& content, const std::string& context) {
-    // 检查是否包含CHTL特有语法
-    bool hasChtlSyntax = false;
-    bool hasJsSyntax = false;
+    // 优先检查上下文信息
+    if (context == "local_style" || context.find("style {") != std::string::npos) {
+        // 局部样式块：这里是CHTL语法，不是CSS
+        return CodeFragmentType::CHTL_FRAGMENT;
+    }
     
-    // CHTL语法检查
+    if (context == "local_script" || context.find("script {") != std::string::npos) {
+        // 局部脚本块：检查是否包含CHTL JS语法
+        if (hasChtlJsSyntax(content)) {
+            return CodeFragmentType::CHTL_JS_FRAGMENT;
+        } else {
+            return CodeFragmentType::JS_FRAGMENT;
+        }
+    }
+    
+    if (context == "global_style") {
+        return CodeFragmentType::CSS_FRAGMENT;
+    }
+    
+    // 检查原始嵌入
+    if (content.find("[Origin]") != std::string::npos) {
+        if (content.find("@Html") != std::string::npos) {
+            return CodeFragmentType::CHTL_FRAGMENT; // HTML内容作为CHTL处理
+        } else if (content.find("@Style") != std::string::npos) {
+            return CodeFragmentType::CSS_FRAGMENT;
+        } else if (content.find("@JavaScript") != std::string::npos) {
+            return CodeFragmentType::JS_FRAGMENT;
+        }
+    }
+    
+    // 检查CHTL特有语法
+    if (hasChtlSyntax(content)) {
+        // 检查是否同时包含CHTL JS语法
+        if (hasChtlJsSyntax(content)) {
+            return CodeFragmentType::CHTL_JS_FRAGMENT;
+        } else {
+            return CodeFragmentType::CHTL_FRAGMENT;
+        }
+    }
+    
+    // 检查纯CSS语法（全局样式）
+    if (isPureCssSyntax(content)) {
+        return CodeFragmentType::CSS_FRAGMENT;
+    }
+    
+    // 检查纯JavaScript语法
+    if (isPureJavaScriptSyntax(content)) {
+        return CodeFragmentType::JS_FRAGMENT;
+    }
+    
+    // 默认为CHTL片段（因为CHTL是基础语言）
+    return CodeFragmentType::CHTL_FRAGMENT;
+}
+
+bool CHTLUnifiedScanner::hasChtlSyntax(const std::string& content) {
+    // 基于CHTL语法文档的完整语法检查
     std::vector<std::regex> chtlPatterns = {
-        std::regex(R"(@(?:Var|Style|Element)\s+\w+)"),
-        std::regex(R"(\[(?:Custom|Template|Origin|Import|Namespace)\])"),
+        // 模板和自定义语法
+        std::regex(R"(\[(?:Template|Custom)\]\s*@(?:Style|Element|Var)\s+\w+)"),
+        
+        // 原始嵌入
+        std::regex(R"(\[Origin\]\s*@(?:Html|Style|JavaScript))"),
+        
+        // 导入和命名空间
+        std::regex(R"(\[(?:Import|Namespace|Configuration)\])"),
+        
+        // 样式组和元素模板使用
+        std::regex(R"(@(?:Style|Element|Var)\s+\w+)"),
+        
+        // 变量组使用（如 ThemeColor(tableColor)）
+        std::regex(R"(\w+\([^)]*\))"),
+        
+        // 继承和删除
+        std::regex(R"(\b(?:inherit|delete)\s+@?\w+)"),
+        
+        // 插入操作
+        std::regex(R"(\binsert\s+(?:after|before|replace|at\s+(?:top|bottom)))"),
+        
+        // from子句
         std::regex(R"(\w+\s+from\s+[\w./]+)"),
-        std::regex(R"(inherit\s+@?\w+)"),
-        std::regex(R"(delete\s+@?\w+)"),
-        std::regex(R"(\w+\(\w+\s*(?:=\s*[^)]+)?\))"),  // 变量组语法
-        std::regex(R"(--.*)"),  // 生成器注释
+        
+        // 生成器注释
+        std::regex(R"(--.*)"),
+        
+        // HTML元素语法（div { }, span { }等）
+        std::regex(R"(\b(?:html|head|body|div|span|p|a|img|ul|li|table|tr|td|th|form|input|button|h[1-6]|section|article|nav|header|footer|aside|main)\s*\{)"),
+        
+        // text节点
+        std::regex(R"(\btext\s*\{)"),
+        
+        // 属性语法（id: value; class: value;）
+        std::regex(R"(\b\w+\s*[:=]\s*[^;]+;)"),
+        
+        // 局部样式块
+        std::regex(R"(\bstyle\s*\{)"),
+        
+        // 局部脚本块
+        std::regex(R"(\bscript\s*\{)"),
     };
     
     for (const auto& pattern : chtlPatterns) {
         if (std::regex_search(content, pattern)) {
-            hasChtlSyntax = true;
-            break;
+            return true;
         }
     }
     
-    // JavaScript语法检查
-    std::vector<std::regex> jsPatterns = {
-        std::regex(R"(\b(?:function|var|let|const|if|else|for|while|return|class)\b)"),
-        std::regex(R"(\w+\s*=\s*\([^)]*\)\s*=>)"),  // 箭头函数
-        std::regex(R"(\w+\.\w+\s*\()"),  // 方法调用
-        std::regex(R"(new\s+\w+\s*\()"),  // 构造函数
+    return false;
+}
+
+bool CHTLUnifiedScanner::hasChtlJsSyntax(const std::string& content) {
+    // 基于CHTL语法文档的CHTL JS语法检查
+    std::vector<std::regex> chtlJsPatterns = {
+        // 增强选择器 {{box}}, {{.box}}, {{#box}}, {{button[0]}}
+        std::regex(R"(\{\{[^}]+\}\})"),
+        
+        // 明确使用CHTL语法的箭头操作符 ->
+        std::regex(R"(\{\{[^}]+\}\}\s*->\s*\w+)"),
+        
+        // listen监听器
+        std::regex(R"(->listen\s*\()"),
+        
+        // delegate事件委托
+        std::regex(R"(->delegate\s*\()"),
+        
+        // animate动画
+        std::regex(R"(\banimate\s*\()"),
     };
+    
+    for (const auto& pattern : chtlJsPatterns) {
+        if (std::regex_search(content, pattern)) {
+            return true;
+        }
+    }
+    
+    return false;
+}
+
+bool CHTLUnifiedScanner::isPureCssSyntax(const std::string& content) {
+    // 检查是否为纯CSS语法（全局样式）
+    std::vector<std::regex> cssPatterns = {
+        // CSS选择器和规则（但不包含CHTL的局部样式语法）
+        std::regex(R"(^[^{]*\{[^}]*(?:[\w-]+\s*:\s*[^;]+;[^}]*)*\})"),
+        
+        // CSS @规则
+        std::regex(R"(@(?:media|import|keyframes|charset|supports|page))"),
+        
+        // CSS伪类和伪元素（非CHTL的&语法）
+        std::regex(R"(:[a-zA-Z-]+(?:\([^)]*\))?(?:\s*\{|[,\s]))"),
+        std::regex(R"(::[a-zA-Z-]+(?:\s*\{|[,\s]))"),
+    };
+    
+    // 排除CHTL语法
+    if (hasChtlSyntax(content)) {
+        return false;
+    }
+    
+    for (const auto& pattern : cssPatterns) {
+        if (std::regex_search(content, pattern)) {
+            return true;
+        }
+    }
+    
+    return false;
+}
+
+bool CHTLUnifiedScanner::isPureJavaScriptSyntax(const std::string& content) {
+    // 检查是否为纯JavaScript语法（不包含CHTL JS语法）
+    std::vector<std::regex> jsPatterns = {
+        // JavaScript关键字
+        std::regex(R"(\b(?:function|var|let|const|if|else|for|while|return|class|new|this|typeof|instanceof)\b)"),
+        
+        // 箭头函数
+        std::regex(R"(\w+\s*=\s*\([^)]*\)\s*=>)"),
+        
+        // 方法调用
+        std::regex(R"(\w+\.\w+\s*\()"),
+        
+        // 对象字面量
+        std::regex(R"(\{\s*\w+\s*:\s*[^}]+\})"),
+        
+        // 数组字面量
+        std::regex(R"(\[[^\]]*\])"),
+    };
+    
+    // 排除CHTL和CHTL JS语法
+    if (hasChtlSyntax(content) || hasChtlJsSyntax(content)) {
+        return false;
+    }
     
     for (const auto& pattern : jsPatterns) {
         if (std::regex_search(content, pattern)) {
-            hasJsSyntax = true;
-            break;
+            return true;
         }
     }
     
-    // CSS语法检查
-    std::vector<std::regex> cssPatterns = {
-        std::regex(R"([.#]?[\w-]+\s*\{[^}]*\})"),  // CSS选择器和规则
-        std::regex(R"([\w-]+\s*:\s*[^;]+;)"),  // CSS属性
-        std::regex(R"(@(?:media|import|keyframes|charset))"),  // CSS @规则
-    };
-    
-    bool hasCssSyntax = false;
-    for (const auto& pattern : cssPatterns) {
-        if (std::regex_search(content, pattern)) {
-            hasCssSyntax = true;
-            break;
-        }
-    }
-    
-    // 根据检测结果确定类型
-    if (hasChtlSyntax && hasJsSyntax) {
-        return CodeFragmentType::CHTL_JS_FRAGMENT;
-    } else if (hasChtlSyntax) {
-        return CodeFragmentType::CHTL_FRAGMENT;
-    } else if (hasCssSyntax) {
-        return CodeFragmentType::CSS_FRAGMENT;
-    } else if (hasJsSyntax) {
-        return CodeFragmentType::JS_FRAGMENT;
-    } else {
-        // 默认根据上下文判断
-        if (context == "style") return CodeFragmentType::CSS_FRAGMENT;
-        if (context == "script") return CodeFragmentType::JS_FRAGMENT;
-        return CodeFragmentType::CHTL_FRAGMENT;
-    }
+    return false;
 }
 
 std::vector<CodeFragment> CHTLUnifiedScanner::performMinimalUnitCutting(const std::string& content, CodeFragmentType type, size_t basePos) {

@@ -519,13 +519,14 @@ std::string CompilerDispatcher::optimizeHtmlOutput(const std::string& html) {
 
 bool CompilerFactory::debugMode_ = false;
 
+// 声明外部工厂函数
+extern std::shared_ptr<ICHTLCompiler> createBasicCHTLCompiler();
+
 std::shared_ptr<ICHTLCompiler> CompilerFactory::createCHTLCompiler() {
-    // 这里应该返回实际的CHTL编译器实现
-    // 目前返回nullptr，在独立编译器文件中实现
     if (debugMode_) {
-        std::cout << "[CompilerFactory] 创建CHTL编译器（待实现）" << std::endl;
+        std::cout << "[CompilerFactory] 创建基础CHTL编译器" << std::endl;
     }
-    return nullptr;
+    return createBasicCHTLCompiler();
 }
 
 std::shared_ptr<ICHTLJSCompiler> CompilerFactory::createCHTLJSCompiler() {

@@ -187,6 +187,14 @@ private:
      * 输出切片状态
      */
     void debugSliceInfo(const SliceInfo& slice, const std::string& content);
+    
+    /**
+     * 语言识别辅助方法
+     */
+    bool hasChtlSyntax(const std::string& content);
+    bool hasChtlJsSyntax(const std::string& content);
+    bool isPureCssSyntax(const std::string& content);
+    bool isPureJavaScriptSyntax(const std::string& content);
 };
 
 /**

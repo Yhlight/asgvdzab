@@ -729,6 +729,36 @@ src/compiler/cmod_compiler_extension.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_test_lib.dir/build.make CMakeFiles/chtl_test_lib.dir/src/compiler/cmod_compiler_extension.cpp.s
 .PHONY : src/compiler/cmod_compiler_extension.cpp.s
 
+src/compilers/basic_chtl_compiler.o: src/compilers/basic_chtl_compiler.cpp.o
+.PHONY : src/compilers/basic_chtl_compiler.o
+
+# target to build an object file
+src/compilers/basic_chtl_compiler.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_core.dir/build.make CMakeFiles/chtl_core.dir/src/compilers/basic_chtl_compiler.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compilers.dir/build.make CMakeFiles/chtl_compilers.dir/src/compilers/basic_chtl_compiler.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_test_lib.dir/build.make CMakeFiles/chtl_test_lib.dir/src/compilers/basic_chtl_compiler.cpp.o
+.PHONY : src/compilers/basic_chtl_compiler.cpp.o
+
+src/compilers/basic_chtl_compiler.i: src/compilers/basic_chtl_compiler.cpp.i
+.PHONY : src/compilers/basic_chtl_compiler.i
+
+# target to preprocess a source file
+src/compilers/basic_chtl_compiler.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_core.dir/build.make CMakeFiles/chtl_core.dir/src/compilers/basic_chtl_compiler.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compilers.dir/build.make CMakeFiles/chtl_compilers.dir/src/compilers/basic_chtl_compiler.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_test_lib.dir/build.make CMakeFiles/chtl_test_lib.dir/src/compilers/basic_chtl_compiler.cpp.i
+.PHONY : src/compilers/basic_chtl_compiler.cpp.i
+
+src/compilers/basic_chtl_compiler.s: src/compilers/basic_chtl_compiler.cpp.s
+.PHONY : src/compilers/basic_chtl_compiler.s
+
+# target to generate assembly for a file
+src/compilers/basic_chtl_compiler.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_core.dir/build.make CMakeFiles/chtl_core.dir/src/compilers/basic_chtl_compiler.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compilers.dir/build.make CMakeFiles/chtl_compilers.dir/src/compilers/basic_chtl_compiler.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_test_lib.dir/build.make CMakeFiles/chtl_test_lib.dir/src/compilers/basic_chtl_compiler.cpp.s
+.PHONY : src/compilers/basic_chtl_compiler.cpp.s
+
 src/constraints/chtl_global_style_constraint.o: src/constraints/chtl_global_style_constraint.cpp.o
 .PHONY : src/constraints/chtl_global_style_constraint.o
 
@@ -1444,6 +1474,9 @@ help:
 	@echo "... src/compiler/cmod_compiler_extension.o"
 	@echo "... src/compiler/cmod_compiler_extension.i"
 	@echo "... src/compiler/cmod_compiler_extension.s"
+	@echo "... src/compilers/basic_chtl_compiler.o"
+	@echo "... src/compilers/basic_chtl_compiler.i"
+	@echo "... src/compilers/basic_chtl_compiler.s"
 	@echo "... src/constraints/chtl_global_style_constraint.o"
 	@echo "... src/constraints/chtl_global_style_constraint.i"
 	@echo "... src/constraints/chtl_global_style_constraint.s"

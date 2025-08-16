@@ -991,6 +991,9 @@ bool IntegratedCompilerSystem::executeOutputGeneration(CompilationPipeline& pipe
 }
 
 void IntegratedCompilerSystem::initializeComponents() {
+    // 启用调试模式以便查看编译器创建过程
+    CompilerFactory::setDebugMode(true);
+    
     // 创建核心组件
     scanner_ = std::make_shared<CHTLUnifiedScanner>();
     dispatcher_ = std::make_shared<CompilerDispatcher>();
@@ -1015,6 +1018,11 @@ void IntegratedCompilerSystem::initializeComponents() {
 }
 
 void IntegratedCompilerSystem::setupComponentConnections() {
+    // 初始化所有组件
+    if (dispatcher_ && !dispatcher_->initialize()) {
+        throw std::runtime_error("编译器调度器初始化失败");
+    }
+    
     // 设置调试模式
     if (scanner_) scanner_->setDebugMode(debugMode_);
     if (dispatcher_) dispatcher_->setDebugMode(debugMode_);

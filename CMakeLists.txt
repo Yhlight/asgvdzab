@@ -46,6 +46,7 @@ file(GLOB_RECURSE CHTL_CORE_SOURCES
     "src/compiler/*.cpp"
     "src/core/*.cpp"
     "src/constraints/*.cpp"
+    "src/compilers/*.cpp"
 )
 
 file(GLOB_RECURSE CHTL_COMPILER_SOURCES
