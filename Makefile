@@ -8,6 +8,11 @@ SOURCES = src/main.cpp \
           src/scanner/CHTLUnifiedScanner.cpp \
           src/dispatcher/CompilerDispatcher.cpp \
           src/chtl/CHTLCompiler.cpp \
+          src/chtl/CHTLToken.cpp \
+          src/chtl/CHTLGlobalMap.cpp \
+          src/chtl/CHTLState.cpp \
+          src/chtl/CHTLContext.cpp \
+          src/chtl/CHTLLexer.cpp \
           src/chtljs/CHTLJSCompiler.cpp \
           src/css/CSSCompiler.cpp \
           src/javascript/JavaScriptCompiler.cpp
