@@ -5,6 +5,7 @@
 #include <vector>
 #include <memory>
 #include <stack>
+#include <deque>
 #include "common/types.h"
 
 namespace chtl {
@@ -36,6 +37,42 @@ struct ScannerContext {
                       lineNumber(1), columnNumber(1) {}
 };
 
+// 切片信息
+struct SliceInfo {
+    size_t start;
+    size_t end;
+    CodeSegmentType type;
+    bool needsExpansion;  // 是否需要扩展
+    
+    SliceInfo(size_t s, size_t e, CodeSegmentType t) 
+        : start(s), end(e), type(t), needsExpansion(false) {}
+};
+
+// CHTL/CHTL JS最小单元类型
+enum class TokenUnit {
+    IDENTIFIER,          // 标识符
+    ENHANCED_SELECTOR,   // {{selector}}
+    ARROW_OPERATOR,      // ->
+    DOT_OPERATOR,        // .
+    KEYWORD,            // 关键字
+    BRACE_OPEN,         // {
+    BRACE_CLOSE,        // }
+    PAREN_OPEN,         // (
+    PAREN_CLOSE,        // )
+    STRING_LITERAL,     // 字符串
+    COMMENT,            // 注释
+    WHITESPACE,         // 空白
+    OTHER               // 其他
+};
+
+// 最小单元信息
+struct MinimalUnit {
+    TokenUnit type;
+    std::string content;
+    size_t position;
+    size_t length;
+};
+
 class UnifiedScanner {
 public:
     UnifiedScanner();
@@ -44,6 +81,9 @@ public:
     // 扫描CHTL源代码，返回分割后的代码片段
     std::vector<CodeSegment> scan(const std::string& source, 
                                   const std::string& filename = "<input>");
+    
+    // 设置切片大小（默认1024字节）
+    void setSliceSize(size_t size) { defaultSliceSize_ = size; }
     
     // 获取扫描过程中的错误
     const std::vector<std::string>& getErrors() const { return errors_; }
@@ -62,31 +102,47 @@ private:
     ScannerContext context_;
     std::vector<std::string> errors_;
     std::vector<std::string> warnings_;
+    size_t defaultSliceSize_;
     
-    // 当前正在构建的代码片段
-    CodeSegment currentSegment_;
-    std::string segmentBuffer_;
+    // 第一阶段：初步切片
+    std::vector<SliceInfo> performInitialSlicing(const std::string& source);
     
-    // 扫描辅助方法
-    void processCharacter(char ch, size_t position, std::vector<CodeSegment>& segments);
-    void updateLocation(char ch);
-    bool isKeyword(const std::string& word) const;
-    bool isElementName(const std::string& word) const;
-    void handleBraceOpen(std::vector<CodeSegment>& segments);
-    void handleBraceClose(std::vector<CodeSegment>& segments);
-    void handleStyleBlock(size_t position, std::vector<CodeSegment>& segments);
-    void handleScriptBlock(size_t position, std::vector<CodeSegment>& segments);
-    void handleOriginBlock(const std::string& originType, std::vector<CodeSegment>& segments);
-    void flushCurrentSegment(std::vector<CodeSegment>& segments);
+    // 检查切片边界是否合理
+    bool isSliceBoundaryValid(const std::string& source, size_t position);
     
-    // 判断代码片段类型
-    CodeSegmentType detectSegmentType(const std::string& content) const;
-    bool isInLocalContext() const;
+    // 扩展切片以包含完整的代码单元
+    void expandSlice(const std::string& source, SliceInfo& slice);
     
-    // 解析辅助方法
-    std::string extractWord(const std::string& source, size_t& position) const;
-    void skipWhitespace(const std::string& source, size_t& position);
-    bool matchKeyword(const std::string& source, size_t position, const std::string& keyword) const;
+    // 第二阶段：基于最小单元的精确切割
+    std::vector<CodeSegment> performPreciseSlicing(const std::string& source, 
+                                                   const std::vector<SliceInfo>& slices);
+    
+    // 识别最小单元
+    std::vector<MinimalUnit> identifyMinimalUnits(const std::string& content, 
+                                                  CodeSegmentType type);
+    
+    // 合并连续的最小单元
+    std::vector<CodeSegment> mergeMinimalUnits(const std::vector<MinimalUnit>& units,
+                                              const SliceInfo& slice,
+                                              const std::string& source);
+    
+    // 判断是否是CHTL增强语法
+    bool isEnhancedSyntax(const std::string& content, size_t position);
+    
+    // 提取增强选择器 {{...}}
+    MinimalUnit extractEnhancedSelector(const std::string& content, size_t& position);
+    
+    // 提取箭头操作符 ->
+    MinimalUnit extractArrowOperator(const std::string& content, size_t& position);
+    
+    // 判断两个单元是否应该合并
+    bool shouldMergeUnits(const MinimalUnit& prev, const MinimalUnit& curr);
+    
+    // 检测代码片段类型
+    CodeSegmentType detectSegmentType(const std::string& content, size_t position);
+    
+    // 更新位置信息
+    void updateLocation(const std::string& content, size_t start, size_t end);
     
     // 错误处理
     void addError(const std::string& message);

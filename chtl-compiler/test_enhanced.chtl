@@ -1,0 +1,40 @@
+// 测试CHTL JS增强语法的精准切割
+div
+{
+    class: container;
+    
+    style
+    {
+        .box {
+            width: 100px;
+            height: 100px;
+        }
+    }
+    
+    button
+    {
+        text { "Click Me" }
+    }
+    
+    script
+    {
+        // 测试增强选择器和箭头操作符的切割
+        {{box}}->addEventListener('click', function() {
+            console.log('Box clicked');
+        });
+        
+        {{button}}->listen({
+            click: () => {
+                {{box}}->style.backgroundColor = 'red';
+            },
+            mouseenter: function() {
+                this.style.opacity = '0.8';
+            }
+        });
+        
+        // 测试复杂的选择器链
+        {{.container button}}->forEach(btn => {
+            btn->addEventListener('mouseover', handleHover);
+        });
+    }
+}
