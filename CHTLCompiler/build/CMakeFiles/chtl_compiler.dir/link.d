@@ -7,6 +7,8 @@ chtl_compiler: \
   CMakeFiles/chtl_compiler.dir/src/compiler/CSSCompiler.cpp.o \
   CMakeFiles/chtl_compiler.dir/src/compiler/JavaScriptCompiler.cpp.o \
   CMakeFiles/chtl_compiler.dir/src/dispatcher/CompilerDispatcher.cpp.o \
+  CMakeFiles/chtl_compiler.dir/src/lexer/CHTLToken.cpp.o \
+  CMakeFiles/chtl_compiler.dir/src/lexer/GlobalMap.cpp.o \
   CMakeFiles/chtl_compiler.dir/src/main.cpp.o \
   CMakeFiles/chtl_compiler.dir/src/scanner/CHTLUnifiedScanner.cpp.o \
   /usr/lib/gcc/x86_64-linux-gnu/14/libstdc++.so \
@@ -52,6 +54,10 @@ CMakeFiles/chtl_compiler.dir/src/compiler/CSSCompiler.cpp.o:
 CMakeFiles/chtl_compiler.dir/src/compiler/JavaScriptCompiler.cpp.o:
 
 CMakeFiles/chtl_compiler.dir/src/dispatcher/CompilerDispatcher.cpp.o:
+
+CMakeFiles/chtl_compiler.dir/src/lexer/CHTLToken.cpp.o:
+
+CMakeFiles/chtl_compiler.dir/src/lexer/GlobalMap.cpp.o:
 
 CMakeFiles/chtl_compiler.dir/src/main.cpp.o:
 

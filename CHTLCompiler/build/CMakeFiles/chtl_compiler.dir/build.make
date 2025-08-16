@@ -142,10 +142,38 @@ CMakeFiles/chtl_compiler.dir/src/dispatcher/CompilerDispatcher.cpp.s: cmake_forc
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/chtl_compiler.dir/src/dispatcher/CompilerDispatcher.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/CHTLCompiler/src/dispatcher/CompilerDispatcher.cpp -o CMakeFiles/chtl_compiler.dir/src/dispatcher/CompilerDispatcher.cpp.s
 
+CMakeFiles/chtl_compiler.dir/src/lexer/CHTLToken.cpp.o: CMakeFiles/chtl_compiler.dir/flags.make
+CMakeFiles/chtl_compiler.dir/src/lexer/CHTLToken.cpp.o: /workspace/CHTLCompiler/src/lexer/CHTLToken.cpp
+CMakeFiles/chtl_compiler.dir/src/lexer/CHTLToken.cpp.o: CMakeFiles/chtl_compiler.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/CHTLCompiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/chtl_compiler.dir/src/lexer/CHTLToken.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_compiler.dir/src/lexer/CHTLToken.cpp.o -MF CMakeFiles/chtl_compiler.dir/src/lexer/CHTLToken.cpp.o.d -o CMakeFiles/chtl_compiler.dir/src/lexer/CHTLToken.cpp.o -c /workspace/CHTLCompiler/src/lexer/CHTLToken.cpp
+
+CMakeFiles/chtl_compiler.dir/src/lexer/CHTLToken.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/chtl_compiler.dir/src/lexer/CHTLToken.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/CHTLCompiler/src/lexer/CHTLToken.cpp > CMakeFiles/chtl_compiler.dir/src/lexer/CHTLToken.cpp.i
+
+CMakeFiles/chtl_compiler.dir/src/lexer/CHTLToken.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/chtl_compiler.dir/src/lexer/CHTLToken.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/CHTLCompiler/src/lexer/CHTLToken.cpp -o CMakeFiles/chtl_compiler.dir/src/lexer/CHTLToken.cpp.s
+
+CMakeFiles/chtl_compiler.dir/src/lexer/GlobalMap.cpp.o: CMakeFiles/chtl_compiler.dir/flags.make
+CMakeFiles/chtl_compiler.dir/src/lexer/GlobalMap.cpp.o: /workspace/CHTLCompiler/src/lexer/GlobalMap.cpp
+CMakeFiles/chtl_compiler.dir/src/lexer/GlobalMap.cpp.o: CMakeFiles/chtl_compiler.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/CHTLCompiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/chtl_compiler.dir/src/lexer/GlobalMap.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_compiler.dir/src/lexer/GlobalMap.cpp.o -MF CMakeFiles/chtl_compiler.dir/src/lexer/GlobalMap.cpp.o.d -o CMakeFiles/chtl_compiler.dir/src/lexer/GlobalMap.cpp.o -c /workspace/CHTLCompiler/src/lexer/GlobalMap.cpp
+
+CMakeFiles/chtl_compiler.dir/src/lexer/GlobalMap.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/chtl_compiler.dir/src/lexer/GlobalMap.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/CHTLCompiler/src/lexer/GlobalMap.cpp > CMakeFiles/chtl_compiler.dir/src/lexer/GlobalMap.cpp.i
+
+CMakeFiles/chtl_compiler.dir/src/lexer/GlobalMap.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/chtl_compiler.dir/src/lexer/GlobalMap.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/CHTLCompiler/src/lexer/GlobalMap.cpp -o CMakeFiles/chtl_compiler.dir/src/lexer/GlobalMap.cpp.s
+
 CMakeFiles/chtl_compiler.dir/src/main.cpp.o: CMakeFiles/chtl_compiler.dir/flags.make
 CMakeFiles/chtl_compiler.dir/src/main.cpp.o: /workspace/CHTLCompiler/src/main.cpp
 CMakeFiles/chtl_compiler.dir/src/main.cpp.o: CMakeFiles/chtl_compiler.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/CHTLCompiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/chtl_compiler.dir/src/main.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/CHTLCompiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/chtl_compiler.dir/src/main.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_compiler.dir/src/main.cpp.o -MF CMakeFiles/chtl_compiler.dir/src/main.cpp.o.d -o CMakeFiles/chtl_compiler.dir/src/main.cpp.o -c /workspace/CHTLCompiler/src/main.cpp
 
 CMakeFiles/chtl_compiler.dir/src/main.cpp.i: cmake_force
@@ -159,7 +187,7 @@ CMakeFiles/chtl_compiler.dir/src/main.cpp.s: cmake_force
 CMakeFiles/chtl_compiler.dir/src/scanner/CHTLUnifiedScanner.cpp.o: CMakeFiles/chtl_compiler.dir/flags.make
 CMakeFiles/chtl_compiler.dir/src/scanner/CHTLUnifiedScanner.cpp.o: /workspace/CHTLCompiler/src/scanner/CHTLUnifiedScanner.cpp
 CMakeFiles/chtl_compiler.dir/src/scanner/CHTLUnifiedScanner.cpp.o: CMakeFiles/chtl_compiler.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/CHTLCompiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/chtl_compiler.dir/src/scanner/CHTLUnifiedScanner.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/CHTLCompiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/chtl_compiler.dir/src/scanner/CHTLUnifiedScanner.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_compiler.dir/src/scanner/CHTLUnifiedScanner.cpp.o -MF CMakeFiles/chtl_compiler.dir/src/scanner/CHTLUnifiedScanner.cpp.o.d -o CMakeFiles/chtl_compiler.dir/src/scanner/CHTLUnifiedScanner.cpp.o -c /workspace/CHTLCompiler/src/scanner/CHTLUnifiedScanner.cpp
 
 CMakeFiles/chtl_compiler.dir/src/scanner/CHTLUnifiedScanner.cpp.i: cmake_force
@@ -177,6 +205,8 @@ chtl_compiler_OBJECTS = \
 "CMakeFiles/chtl_compiler.dir/src/compiler/CSSCompiler.cpp.o" \
 "CMakeFiles/chtl_compiler.dir/src/compiler/JavaScriptCompiler.cpp.o" \
 "CMakeFiles/chtl_compiler.dir/src/dispatcher/CompilerDispatcher.cpp.o" \
+"CMakeFiles/chtl_compiler.dir/src/lexer/CHTLToken.cpp.o" \
+"CMakeFiles/chtl_compiler.dir/src/lexer/GlobalMap.cpp.o" \
 "CMakeFiles/chtl_compiler.dir/src/main.cpp.o" \
 "CMakeFiles/chtl_compiler.dir/src/scanner/CHTLUnifiedScanner.cpp.o"
 
@@ -188,12 +218,14 @@ chtl_compiler: CMakeFiles/chtl_compiler.dir/src/compiler/CHTLJSCompiler.cpp.o
 chtl_compiler: CMakeFiles/chtl_compiler.dir/src/compiler/CSSCompiler.cpp.o
 chtl_compiler: CMakeFiles/chtl_compiler.dir/src/compiler/JavaScriptCompiler.cpp.o
 chtl_compiler: CMakeFiles/chtl_compiler.dir/src/dispatcher/CompilerDispatcher.cpp.o
+chtl_compiler: CMakeFiles/chtl_compiler.dir/src/lexer/CHTLToken.cpp.o
+chtl_compiler: CMakeFiles/chtl_compiler.dir/src/lexer/GlobalMap.cpp.o
 chtl_compiler: CMakeFiles/chtl_compiler.dir/src/main.cpp.o
 chtl_compiler: CMakeFiles/chtl_compiler.dir/src/scanner/CHTLUnifiedScanner.cpp.o
 chtl_compiler: CMakeFiles/chtl_compiler.dir/build.make
 chtl_compiler: CMakeFiles/chtl_compiler.dir/compiler_depend.ts
 chtl_compiler: CMakeFiles/chtl_compiler.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/workspace/CHTLCompiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Linking CXX executable chtl_compiler"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/workspace/CHTLCompiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Linking CXX executable chtl_compiler"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/chtl_compiler.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

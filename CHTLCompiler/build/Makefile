@@ -294,6 +294,54 @@ src/dispatcher/CompilerDispatcher.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/dispatcher/CompilerDispatcher.cpp.s
 .PHONY : src/dispatcher/CompilerDispatcher.cpp.s
 
+src/lexer/CHTLToken.o: src/lexer/CHTLToken.cpp.o
+.PHONY : src/lexer/CHTLToken.o
+
+# target to build an object file
+src/lexer/CHTLToken.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/lexer/CHTLToken.cpp.o
+.PHONY : src/lexer/CHTLToken.cpp.o
+
+src/lexer/CHTLToken.i: src/lexer/CHTLToken.cpp.i
+.PHONY : src/lexer/CHTLToken.i
+
+# target to preprocess a source file
+src/lexer/CHTLToken.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/lexer/CHTLToken.cpp.i
+.PHONY : src/lexer/CHTLToken.cpp.i
+
+src/lexer/CHTLToken.s: src/lexer/CHTLToken.cpp.s
+.PHONY : src/lexer/CHTLToken.s
+
+# target to generate assembly for a file
+src/lexer/CHTLToken.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/lexer/CHTLToken.cpp.s
+.PHONY : src/lexer/CHTLToken.cpp.s
+
+src/lexer/GlobalMap.o: src/lexer/GlobalMap.cpp.o
+.PHONY : src/lexer/GlobalMap.o
+
+# target to build an object file
+src/lexer/GlobalMap.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/lexer/GlobalMap.cpp.o
+.PHONY : src/lexer/GlobalMap.cpp.o
+
+src/lexer/GlobalMap.i: src/lexer/GlobalMap.cpp.i
+.PHONY : src/lexer/GlobalMap.i
+
+# target to preprocess a source file
+src/lexer/GlobalMap.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/lexer/GlobalMap.cpp.i
+.PHONY : src/lexer/GlobalMap.cpp.i
+
+src/lexer/GlobalMap.s: src/lexer/GlobalMap.cpp.s
+.PHONY : src/lexer/GlobalMap.s
+
+# target to generate assembly for a file
+src/lexer/GlobalMap.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/lexer/GlobalMap.cpp.s
+.PHONY : src/lexer/GlobalMap.cpp.s
+
 src/main.o: src/main.cpp.o
 .PHONY : src/main.o
 
@@ -370,6 +418,12 @@ help:
 	@echo "... src/dispatcher/CompilerDispatcher.o"
 	@echo "... src/dispatcher/CompilerDispatcher.i"
 	@echo "... src/dispatcher/CompilerDispatcher.s"
+	@echo "... src/lexer/CHTLToken.o"
+	@echo "... src/lexer/CHTLToken.i"
+	@echo "... src/lexer/CHTLToken.s"
+	@echo "... src/lexer/GlobalMap.o"
+	@echo "... src/lexer/GlobalMap.i"
+	@echo "... src/lexer/GlobalMap.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"

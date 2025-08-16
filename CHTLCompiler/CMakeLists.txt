@@ -15,6 +15,15 @@ include_directories(${CMAKE_SOURCE_DIR}/third_party)
 # 源文件
 file(GLOB_RECURSE SOURCES "src/*.cpp")
 
+# 确保词法分析器源文件被包含
+set(LEXER_SOURCES
+    src/lexer/CHTLToken.cpp
+    src/lexer/GlobalMap.cpp
+    src/lexer/LexerState.cpp
+    src/lexer/LexerContext.cpp
+    src/lexer/CHTLLexer.cpp
+)
+
 # 创建可执行文件
 add_executable(chtl_compiler ${SOURCES})
 

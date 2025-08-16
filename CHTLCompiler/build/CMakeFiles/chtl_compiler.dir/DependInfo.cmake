@@ -13,6 +13,8 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/workspace/CHTLCompiler/src/compiler/CSSCompiler.cpp" "CMakeFiles/chtl_compiler.dir/src/compiler/CSSCompiler.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/compiler/CSSCompiler.cpp.o.d"
   "/workspace/CHTLCompiler/src/compiler/JavaScriptCompiler.cpp" "CMakeFiles/chtl_compiler.dir/src/compiler/JavaScriptCompiler.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/compiler/JavaScriptCompiler.cpp.o.d"
   "/workspace/CHTLCompiler/src/dispatcher/CompilerDispatcher.cpp" "CMakeFiles/chtl_compiler.dir/src/dispatcher/CompilerDispatcher.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/dispatcher/CompilerDispatcher.cpp.o.d"
+  "/workspace/CHTLCompiler/src/lexer/CHTLToken.cpp" "CMakeFiles/chtl_compiler.dir/src/lexer/CHTLToken.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/lexer/CHTLToken.cpp.o.d"
+  "/workspace/CHTLCompiler/src/lexer/GlobalMap.cpp" "CMakeFiles/chtl_compiler.dir/src/lexer/GlobalMap.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/lexer/GlobalMap.cpp.o.d"
   "/workspace/CHTLCompiler/src/main.cpp" "CMakeFiles/chtl_compiler.dir/src/main.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/main.cpp.o.d"
   "/workspace/CHTLCompiler/src/scanner/CHTLUnifiedScanner.cpp" "CMakeFiles/chtl_compiler.dir/src/scanner/CHTLUnifiedScanner.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/scanner/CHTLUnifiedScanner.cpp.o.d"
   "" "chtl_compiler" "gcc" "CMakeFiles/chtl_compiler.dir/link.d"
