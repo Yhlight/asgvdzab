@@ -63,5 +63,7 @@ set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/quick_import_namespace_test.dir/DependInfo.cmake"
   "CMakeFiles/debug_namespace_test.dir/DependInfo.cmake"
   "CMakeFiles/debug_import_test.dir/DependInfo.cmake"
+  "CMakeFiles/cmod_system_test.dir/DependInfo.cmake"
+  "CMakeFiles/chtl-cmod.dir/DependInfo.cmake"
   "CMakeFiles/raii_state_management_demo.dir/DependInfo.cmake"
   )

@@ -133,6 +133,22 @@ add_executable(debug_import_test
     src/import/enhanced_import_manager.cpp
 )
 
+# ===== Cmod体系 =====
+
+# 创建Cmod综合测试程序
+add_executable(cmod_system_test 
+    tests/cmod_system_test.cpp
+    src/cmod/cmod_manager.cpp
+    src/compiler/cmod_compiler_extension.cpp
+)
+
+# 创建独立的Cmod命令行工具
+add_executable(chtl-cmod 
+    src/tools/chtl_cmod_tool.cpp
+    src/cmod/cmod_manager.cpp
+    src/compiler/cmod_compiler_extension.cpp
+)
+
 # 创建RAII状态管理演示程序（不依赖gtest）
 add_executable(raii_state_management_demo 
     tests/raii_state_management_demo.cpp

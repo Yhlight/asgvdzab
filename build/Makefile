@@ -344,6 +344,32 @@ debug_import_test/fast:
 .PHONY : debug_import_test/fast
 
 #=============================================================================
+# Target rules for targets named cmod_system_test
+
+# Build rule for target.
+cmod_system_test: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 cmod_system_test
+.PHONY : cmod_system_test
+
+# fast build rule for target.
+cmod_system_test/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cmod_system_test.dir/build.make CMakeFiles/cmod_system_test.dir/build
+.PHONY : cmod_system_test/fast
+
+#=============================================================================
+# Target rules for targets named chtl-cmod
+
+# Build rule for target.
+chtl-cmod: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 chtl-cmod
+.PHONY : chtl-cmod
+
+# fast build rule for target.
+chtl-cmod/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl-cmod.dir/build.make CMakeFiles/chtl-cmod.dir/build
+.PHONY : chtl-cmod/fast
+
+#=============================================================================
 # Target rules for targets named raii_state_management_demo
 
 # Build rule for target.
@@ -458,6 +484,63 @@ src/ast/chtl_js_ast.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/ast/chtl_js_ast.cpp.s
 .PHONY : src/ast/chtl_js_ast.cpp.s
 
+src/cmod/cmod_manager.o: src/cmod/cmod_manager.cpp.o
+.PHONY : src/cmod/cmod_manager.o
+
+# target to build an object file
+src/cmod/cmod_manager.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/cmod/cmod_manager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/cmod/cmod_manager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/cmod/cmod_manager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/cmod/cmod_manager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/cmod/cmod_manager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/cmod/cmod_manager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/cmod/cmod_manager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/cmod/cmod_manager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/cmod/cmod_manager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/cmod/cmod_manager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cmod_system_test.dir/build.make CMakeFiles/cmod_system_test.dir/src/cmod/cmod_manager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl-cmod.dir/build.make CMakeFiles/chtl-cmod.dir/src/cmod/cmod_manager.cpp.o
+.PHONY : src/cmod/cmod_manager.cpp.o
+
+src/cmod/cmod_manager.i: src/cmod/cmod_manager.cpp.i
+.PHONY : src/cmod/cmod_manager.i
+
+# target to preprocess a source file
+src/cmod/cmod_manager.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/cmod/cmod_manager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/cmod/cmod_manager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/cmod/cmod_manager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/cmod/cmod_manager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/cmod/cmod_manager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/cmod/cmod_manager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/cmod/cmod_manager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/cmod/cmod_manager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/cmod/cmod_manager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/cmod/cmod_manager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cmod_system_test.dir/build.make CMakeFiles/cmod_system_test.dir/src/cmod/cmod_manager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl-cmod.dir/build.make CMakeFiles/chtl-cmod.dir/src/cmod/cmod_manager.cpp.i
+.PHONY : src/cmod/cmod_manager.cpp.i
+
+src/cmod/cmod_manager.s: src/cmod/cmod_manager.cpp.s
+.PHONY : src/cmod/cmod_manager.s
+
+# target to generate assembly for a file
+src/cmod/cmod_manager.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/cmod/cmod_manager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/cmod/cmod_manager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/cmod/cmod_manager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/cmod/cmod_manager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/cmod/cmod_manager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/cmod/cmod_manager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/cmod/cmod_manager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/cmod/cmod_manager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/cmod/cmod_manager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/cmod/cmod_manager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cmod_system_test.dir/build.make CMakeFiles/cmod_system_test.dir/src/cmod/cmod_manager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl-cmod.dir/build.make CMakeFiles/chtl-cmod.dir/src/cmod/cmod_manager.cpp.s
+.PHONY : src/cmod/cmod_manager.cpp.s
+
 src/common/types.o: src/common/types.cpp.o
 .PHONY : src/common/types.o
 
@@ -508,6 +591,63 @@ src/common/types.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/common/types.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/common/types.cpp.s
 .PHONY : src/common/types.cpp.s
+
+src/compiler/cmod_compiler_extension.o: src/compiler/cmod_compiler_extension.cpp.o
+.PHONY : src/compiler/cmod_compiler_extension.o
+
+# target to build an object file
+src/compiler/cmod_compiler_extension.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/compiler/cmod_compiler_extension.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/compiler/cmod_compiler_extension.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/compiler/cmod_compiler_extension.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/compiler/cmod_compiler_extension.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/compiler/cmod_compiler_extension.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/compiler/cmod_compiler_extension.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/compiler/cmod_compiler_extension.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/compiler/cmod_compiler_extension.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/compiler/cmod_compiler_extension.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/compiler/cmod_compiler_extension.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cmod_system_test.dir/build.make CMakeFiles/cmod_system_test.dir/src/compiler/cmod_compiler_extension.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl-cmod.dir/build.make CMakeFiles/chtl-cmod.dir/src/compiler/cmod_compiler_extension.cpp.o
+.PHONY : src/compiler/cmod_compiler_extension.cpp.o
+
+src/compiler/cmod_compiler_extension.i: src/compiler/cmod_compiler_extension.cpp.i
+.PHONY : src/compiler/cmod_compiler_extension.i
+
+# target to preprocess a source file
+src/compiler/cmod_compiler_extension.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/compiler/cmod_compiler_extension.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/compiler/cmod_compiler_extension.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/compiler/cmod_compiler_extension.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/compiler/cmod_compiler_extension.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/compiler/cmod_compiler_extension.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/compiler/cmod_compiler_extension.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/compiler/cmod_compiler_extension.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/compiler/cmod_compiler_extension.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/compiler/cmod_compiler_extension.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/compiler/cmod_compiler_extension.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cmod_system_test.dir/build.make CMakeFiles/cmod_system_test.dir/src/compiler/cmod_compiler_extension.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl-cmod.dir/build.make CMakeFiles/chtl-cmod.dir/src/compiler/cmod_compiler_extension.cpp.i
+.PHONY : src/compiler/cmod_compiler_extension.cpp.i
+
+src/compiler/cmod_compiler_extension.s: src/compiler/cmod_compiler_extension.cpp.s
+.PHONY : src/compiler/cmod_compiler_extension.s
+
+# target to generate assembly for a file
+src/compiler/cmod_compiler_extension.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/compiler/cmod_compiler_extension.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/compiler/cmod_compiler_extension.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/compiler/cmod_compiler_extension.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/compiler/cmod_compiler_extension.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/compiler/cmod_compiler_extension.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/compiler/cmod_compiler_extension.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/compiler/cmod_compiler_extension.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/compiler/cmod_compiler_extension.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/compiler/cmod_compiler_extension.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/compiler/cmod_compiler_extension.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cmod_system_test.dir/build.make CMakeFiles/cmod_system_test.dir/src/compiler/cmod_compiler_extension.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl-cmod.dir/build.make CMakeFiles/chtl-cmod.dir/src/compiler/cmod_compiler_extension.cpp.s
+.PHONY : src/compiler/cmod_compiler_extension.cpp.s
 
 src/compilers/chtl_compiler.o: src/compilers/chtl_compiler.cpp.o
 .PHONY : src/compilers/chtl_compiler.o
@@ -1163,6 +1303,60 @@ src/scanner/unified_scanner.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/scanner/unified_scanner.cpp.s
 .PHONY : src/scanner/unified_scanner.cpp.s
 
+src/tools/chtl_cmod_tool.o: src/tools/chtl_cmod_tool.cpp.o
+.PHONY : src/tools/chtl_cmod_tool.o
+
+# target to build an object file
+src/tools/chtl_cmod_tool.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/tools/chtl_cmod_tool.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/tools/chtl_cmod_tool.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/tools/chtl_cmod_tool.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/tools/chtl_cmod_tool.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/tools/chtl_cmod_tool.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/tools/chtl_cmod_tool.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/tools/chtl_cmod_tool.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/tools/chtl_cmod_tool.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/tools/chtl_cmod_tool.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/tools/chtl_cmod_tool.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl-cmod.dir/build.make CMakeFiles/chtl-cmod.dir/src/tools/chtl_cmod_tool.cpp.o
+.PHONY : src/tools/chtl_cmod_tool.cpp.o
+
+src/tools/chtl_cmod_tool.i: src/tools/chtl_cmod_tool.cpp.i
+.PHONY : src/tools/chtl_cmod_tool.i
+
+# target to preprocess a source file
+src/tools/chtl_cmod_tool.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/tools/chtl_cmod_tool.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/tools/chtl_cmod_tool.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/tools/chtl_cmod_tool.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/tools/chtl_cmod_tool.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/tools/chtl_cmod_tool.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/tools/chtl_cmod_tool.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/tools/chtl_cmod_tool.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/tools/chtl_cmod_tool.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/tools/chtl_cmod_tool.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/tools/chtl_cmod_tool.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl-cmod.dir/build.make CMakeFiles/chtl-cmod.dir/src/tools/chtl_cmod_tool.cpp.i
+.PHONY : src/tools/chtl_cmod_tool.cpp.i
+
+src/tools/chtl_cmod_tool.s: src/tools/chtl_cmod_tool.cpp.s
+.PHONY : src/tools/chtl_cmod_tool.s
+
+# target to generate assembly for a file
+src/tools/chtl_cmod_tool.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/tools/chtl_cmod_tool.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/tools/chtl_cmod_tool.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/tools/chtl_cmod_tool.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/tools/chtl_cmod_tool.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/tools/chtl_cmod_tool.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/tools/chtl_cmod_tool.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/tools/chtl_cmod_tool.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/tools/chtl_cmod_tool.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/tools/chtl_cmod_tool.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/tools/chtl_cmod_tool.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl-cmod.dir/build.make CMakeFiles/chtl-cmod.dir/src/tools/chtl_cmod_tool.cpp.s
+.PHONY : src/tools/chtl_cmod_tool.cpp.s
+
 tests/basic_test.o: tests/basic_test.cpp.o
 .PHONY : tests/basic_test.o
 
@@ -1267,6 +1461,33 @@ tests/chtl_syntax_validation_test.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/chtl_syntax_validation_test.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/tests/chtl_syntax_validation_test.cpp.s
 .PHONY : tests/chtl_syntax_validation_test.cpp.s
+
+tests/cmod_system_test.o: tests/cmod_system_test.cpp.o
+.PHONY : tests/cmod_system_test.o
+
+# target to build an object file
+tests/cmod_system_test.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/cmod_system_test.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cmod_system_test.dir/build.make CMakeFiles/cmod_system_test.dir/tests/cmod_system_test.cpp.o
+.PHONY : tests/cmod_system_test.cpp.o
+
+tests/cmod_system_test.i: tests/cmod_system_test.cpp.i
+.PHONY : tests/cmod_system_test.i
+
+# target to preprocess a source file
+tests/cmod_system_test.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/cmod_system_test.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cmod_system_test.dir/build.make CMakeFiles/cmod_system_test.dir/tests/cmod_system_test.cpp.i
+.PHONY : tests/cmod_system_test.cpp.i
+
+tests/cmod_system_test.s: tests/cmod_system_test.cpp.s
+.PHONY : tests/cmod_system_test.s
+
+# target to generate assembly for a file
+tests/cmod_system_test.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/cmod_system_test.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cmod_system_test.dir/build.make CMakeFiles/cmod_system_test.dir/tests/cmod_system_test.cpp.s
+.PHONY : tests/cmod_system_test.cpp.s
 
 tests/comprehensive_lexer_test.o: tests/comprehensive_lexer_test.cpp.o
 .PHONY : tests/comprehensive_lexer_test.o
@@ -1574,11 +1795,13 @@ help:
 	@echo "... install/strip"
 	@echo "... list_install_components"
 	@echo "... rebuild_cache"
+	@echo "... chtl-cmod"
 	@echo "... chtl_ast_conformance_tests"
 	@echo "... chtl_compiler"
 	@echo "... chtl_grammar_conformance_tests"
 	@echo "... chtl_syntax_validation_tests"
 	@echo "... chtl_tests"
+	@echo "... cmod_system_test"
 	@echo "... comprehensive_lexer_tests"
 	@echo "... debug_import_test"
 	@echo "... debug_namespace_test"
@@ -1595,9 +1818,15 @@ help:
 	@echo "... src/ast/chtl_js_ast.o"
 	@echo "... src/ast/chtl_js_ast.i"
 	@echo "... src/ast/chtl_js_ast.s"
+	@echo "... src/cmod/cmod_manager.o"
+	@echo "... src/cmod/cmod_manager.i"
+	@echo "... src/cmod/cmod_manager.s"
 	@echo "... src/common/types.o"
 	@echo "... src/common/types.i"
 	@echo "... src/common/types.s"
+	@echo "... src/compiler/cmod_compiler_extension.o"
+	@echo "... src/compiler/cmod_compiler_extension.i"
+	@echo "... src/compiler/cmod_compiler_extension.s"
 	@echo "... src/compilers/chtl_compiler.o"
 	@echo "... src/compilers/chtl_compiler.i"
 	@echo "... src/compilers/chtl_compiler.s"
@@ -1637,6 +1866,9 @@ help:
 	@echo "... src/scanner/unified_scanner.o"
 	@echo "... src/scanner/unified_scanner.i"
 	@echo "... src/scanner/unified_scanner.s"
+	@echo "... src/tools/chtl_cmod_tool.o"
+	@echo "... src/tools/chtl_cmod_tool.i"
+	@echo "... src/tools/chtl_cmod_tool.s"
 	@echo "... tests/basic_test.o"
 	@echo "... tests/basic_test.i"
 	@echo "... tests/basic_test.s"
@@ -1649,6 +1881,9 @@ help:
 	@echo "... tests/chtl_syntax_validation_test.o"
 	@echo "... tests/chtl_syntax_validation_test.i"
 	@echo "... tests/chtl_syntax_validation_test.s"
+	@echo "... tests/cmod_system_test.o"
+	@echo "... tests/cmod_system_test.i"
+	@echo "... tests/cmod_system_test.s"
 	@echo "... tests/comprehensive_lexer_test.o"
 	@echo "... tests/comprehensive_lexer_test.i"
 	@echo "... tests/comprehensive_lexer_test.s"
