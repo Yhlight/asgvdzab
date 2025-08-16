@@ -22,6 +22,7 @@ chtl_compiler: \
   CMakeFiles/chtl_compiler.dir/src/parser/AttributeSystem.cpp.o \
   CMakeFiles/chtl_compiler.dir/src/parser/StyleBlockParser.cpp.o \
   CMakeFiles/chtl_compiler.dir/src/parser/TemplateSystem.cpp.o \
+  CMakeFiles/chtl_compiler.dir/src/parser/CustomSystem.cpp.o \
   /usr/lib/gcc/x86_64-linux-gnu/14/libstdc++.so \
   /lib/x86_64-linux-gnu/libm.so \
   /lib/x86_64-linux-gnu/libm.so \
@@ -95,6 +96,8 @@ CMakeFiles/chtl_compiler.dir/src/parser/AttributeSystem.cpp.o:
 CMakeFiles/chtl_compiler.dir/src/parser/StyleBlockParser.cpp.o:
 
 CMakeFiles/chtl_compiler.dir/src/parser/TemplateSystem.cpp.o:
+
+CMakeFiles/chtl_compiler.dir/src/parser/CustomSystem.cpp.o:
 
 /usr/lib/gcc/x86_64-linux-gnu/14/libstdc++.so:
 

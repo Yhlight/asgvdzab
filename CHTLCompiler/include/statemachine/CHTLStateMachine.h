@@ -233,14 +233,14 @@ enum class CHTLStateEvent {
 };
 
 // 状态转换规则
-struct StateTransition {
+struct CHTLStateTransition {
     CHTLState from_state;
     CHTLStateEvent event;
     CHTLState to_state;
     std::string description;
     bool is_valid;
     
-    StateTransition(CHTLState from, CHTLStateEvent evt, CHTLState to, 
+    CHTLStateTransition(CHTLState from, CHTLStateEvent evt, CHTLState to, 
                    const std::string& desc = "", bool valid = true)
         : from_state(from), event(evt), to_state(to), description(desc), is_valid(valid) {}
 };
@@ -256,7 +256,7 @@ struct StateMachineConfig {
     
     StateMachineConfig() : 
         enable_auto_recovery(true), enable_state_history(true), enable_performance_tracking(true),
-        max_state_stack_depth(100), max_history_size(1000), state_timeout(5000ms) {}
+        max_state_stack_depth(100), max_history_size(1000), state_timeout(5000) {}
 };
 
 // RAII状态机类

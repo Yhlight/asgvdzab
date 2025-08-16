@@ -481,7 +481,11 @@ bool TemplateSystem::validateTemplateName(const std::string& name) {
         return false;
     }
     
-    // 检查是否只包含字母、数字、下划线
+    // 检查是否只包含字母、数字、下划线，且不能以数字开头
+    if (std::isdigit(name[0])) {
+        return false;
+    }
+    
     for (char c : name) {
         if (!std::isalnum(c) && c != '_') {
             return false;
@@ -797,6 +801,11 @@ std::string TemplateSystem::Impl::extractTemplateContent(const std::vector<Token
         }
         
         position++;
+    }
+    
+    // 移除最后一个右大括号（如果存在）
+    if (!content.empty() && content.back() == '}') {
+        content.pop_back();
     }
     
     return content;
