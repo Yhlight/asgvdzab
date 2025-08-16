@@ -24,6 +24,11 @@ set(LEXER_SOURCES
     src/lexer/CHTLLexer.cpp
 )
 
+# 确保AST源文件被包含
+set(AST_SOURCES
+    src/ast/ASTNode.cpp
+)
+
 # 创建可执行文件
 add_executable(chtl_compiler ${SOURCES})
 

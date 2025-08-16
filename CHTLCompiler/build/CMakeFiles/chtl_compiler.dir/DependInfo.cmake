@@ -8,6 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
+  "/workspace/CHTLCompiler/src/ast/ASTNode.cpp" "CMakeFiles/chtl_compiler.dir/src/ast/ASTNode.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/ast/ASTNode.cpp.o.d"
   "/workspace/CHTLCompiler/src/compiler/CHTLCompiler.cpp" "CMakeFiles/chtl_compiler.dir/src/compiler/CHTLCompiler.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/compiler/CHTLCompiler.cpp.o.d"
   "/workspace/CHTLCompiler/src/compiler/CHTLJSCompiler.cpp" "CMakeFiles/chtl_compiler.dir/src/compiler/CHTLJSCompiler.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/compiler/CHTLJSCompiler.cpp.o.d"
   "/workspace/CHTLCompiler/src/compiler/CSSCompiler.cpp" "CMakeFiles/chtl_compiler.dir/src/compiler/CSSCompiler.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/compiler/CSSCompiler.cpp.o.d"

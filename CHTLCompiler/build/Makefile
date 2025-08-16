@@ -174,6 +174,30 @@ chtl_compiler/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/build
 .PHONY : chtl_compiler/fast
 
+src/ast/ASTNode.o: src/ast/ASTNode.cpp.o
+.PHONY : src/ast/ASTNode.o
+
+# target to build an object file
+src/ast/ASTNode.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/ast/ASTNode.cpp.o
+.PHONY : src/ast/ASTNode.cpp.o
+
+src/ast/ASTNode.i: src/ast/ASTNode.cpp.i
+.PHONY : src/ast/ASTNode.i
+
+# target to preprocess a source file
+src/ast/ASTNode.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/ast/ASTNode.cpp.i
+.PHONY : src/ast/ASTNode.cpp.i
+
+src/ast/ASTNode.s: src/ast/ASTNode.cpp.s
+.PHONY : src/ast/ASTNode.s
+
+# target to generate assembly for a file
+src/ast/ASTNode.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/ast/ASTNode.cpp.s
+.PHONY : src/ast/ASTNode.cpp.s
+
 src/compiler/CHTLCompiler.o: src/compiler/CHTLCompiler.cpp.o
 .PHONY : src/compiler/CHTLCompiler.o
 
@@ -403,6 +427,9 @@ help:
 	@echo "... list_install_components"
 	@echo "... rebuild_cache"
 	@echo "... chtl_compiler"
+	@echo "... src/ast/ASTNode.o"
+	@echo "... src/ast/ASTNode.i"
+	@echo "... src/ast/ASTNode.s"
 	@echo "... src/compiler/CHTLCompiler.o"
 	@echo "... src/compiler/CHTLCompiler.i"
 	@echo "... src/compiler/CHTLCompiler.s"

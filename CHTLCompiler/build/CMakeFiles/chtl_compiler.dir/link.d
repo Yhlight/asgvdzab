@@ -2,6 +2,7 @@ chtl_compiler: \
   /lib/x86_64-linux-gnu/Scrt1.o \
   /lib/x86_64-linux-gnu/crti.o \
   /usr/lib/gcc/x86_64-linux-gnu/14/crtbeginS.o \
+  CMakeFiles/chtl_compiler.dir/src/ast/ASTNode.cpp.o \
   CMakeFiles/chtl_compiler.dir/src/compiler/CHTLCompiler.cpp.o \
   CMakeFiles/chtl_compiler.dir/src/compiler/CHTLJSCompiler.cpp.o \
   CMakeFiles/chtl_compiler.dir/src/compiler/CSSCompiler.cpp.o \
@@ -44,6 +45,8 @@ chtl_compiler: \
 /lib/x86_64-linux-gnu/crti.o:
 
 /usr/lib/gcc/x86_64-linux-gnu/14/crtbeginS.o:
+
+CMakeFiles/chtl_compiler.dir/src/ast/ASTNode.cpp.o:
 
 CMakeFiles/chtl_compiler.dir/src/compiler/CHTLCompiler.cpp.o:
 

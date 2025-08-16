@@ -1,5 +1,7 @@
 file(REMOVE_RECURSE
   "CMakeFiles/chtl_compiler.dir/link.d"
+  "CMakeFiles/chtl_compiler.dir/src/ast/ASTNode.cpp.o"
+  "CMakeFiles/chtl_compiler.dir/src/ast/ASTNode.cpp.o.d"
   "CMakeFiles/chtl_compiler.dir/src/compiler/CHTLCompiler.cpp.o"
   "CMakeFiles/chtl_compiler.dir/src/compiler/CHTLCompiler.cpp.o.d"
   "CMakeFiles/chtl_compiler.dir/src/compiler/CHTLJSCompiler.cpp.o"
