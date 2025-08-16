@@ -1,0 +1,11 @@
+// 最小CHTL示例
+body
+{
+    div
+    {
+        text
+        {
+            "Hello World"
+        }
+    }
+}

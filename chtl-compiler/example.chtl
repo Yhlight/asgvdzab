@@ -1,0 +1,89 @@
+// CHTL示例文件
+// 展示CHTL的基本语法特性
+
+html
+{
+    head
+    {
+        style
+        {
+            body {
+                margin: 0;
+                padding: 0;
+                font-family: Arial, sans-serif;
+            }
+        }
+    }
+    
+    body
+    {
+        div
+        {
+            id: container;
+            class: main-container;
+            
+            // 局部样式块
+            style
+            {
+                .box  // 自动添加类名
+                {
+                    width: 300px;
+                    height: 200px;
+                    background-color: #f0f0f0;
+                    padding: 20px;
+                    margin: 20px auto;
+                    border-radius: 8px;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                }
+                
+                &:hover  // 使用&表示当前元素
+                {
+                    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+                }
+            }
+            
+            h1
+            {
+                text
+                {
+                    "Welcome to CHTL"
+                }
+                
+                style
+                {
+                    color: #333;
+                    text-align: center;
+                }
+            }
+            
+            p
+            {
+                text
+                {
+                    "CHTL is a hypertext language based on C++ that provides a more developer-friendly way to write HTML."
+                }
+                
+                style
+                {
+                    color: #666;
+                    line-height: 1.6;
+                }
+            }
+            
+            // 局部脚本块
+            script
+            {
+                {{box}}.addEventListener('click', function() {
+                    console.log('Box clicked!');
+                    this.style.backgroundColor = '#e0e0e0';
+                });
+            }
+        }
+        
+        // 全局脚本
+        script
+        {
+            console.log('CHTL page loaded');
+        }
+    }
+}

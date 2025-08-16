@@ -1,0 +1,1 @@
+/usr/bin/c++ -O3 -DNDEBUG -Xlinker --dependency-file=CMakeFiles/chtlc.dir/link.d CMakeFiles/chtlc.dir/src/main.cpp.o -o chtlc  libchtl_scanner.a libchtl_dispatcher.a libchtl_compiler_core.a libchtl_js_compiler_core.a libcss_compiler_core.a libjs_compiler_core.a libchtl_merger.a

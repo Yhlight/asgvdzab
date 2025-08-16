@@ -1,0 +1,2 @@
+/usr/bin/ar qc libchtl_js_compiler_core.a CMakeFiles/chtl_js_compiler_core.dir/src/compiler/chtl_js/chtl_js_compiler.cpp.o
+/usr/bin/ranlib libchtl_js_compiler_core.a
