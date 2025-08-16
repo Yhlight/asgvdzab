@@ -196,9 +196,29 @@ add_executable(chtl_style_parser_test
     src/ast/chtl_ast.cpp
 )
 
+# CHTL Template Parser test
+add_executable(chtl_template_parser_test
+    tests/chtl_template_parser_test.cpp
+    src/parsers/chtl_template_parser.cpp
+    src/parsers/chtl_basic_parser.cpp
+    src/parsers/chtl_style_parser.cpp
+    src/lexer/chtl_lexer.cpp
+    src/ast/chtl_ast.cpp
+)
+
 # Debug style parser
 add_executable(debug_style_parser
     tests/debug_style_parser.cpp
+    src/parsers/chtl_basic_parser.cpp
+    src/parsers/chtl_style_parser.cpp
+    src/lexer/chtl_lexer.cpp
+    src/ast/chtl_ast.cpp
+)
+
+# Debug template parser
+add_executable(debug_template_parser
+    tests/debug_template_parser.cpp
+    src/parsers/chtl_template_parser.cpp
     src/parsers/chtl_basic_parser.cpp
     src/parsers/chtl_style_parser.cpp
     src/lexer/chtl_lexer.cpp
