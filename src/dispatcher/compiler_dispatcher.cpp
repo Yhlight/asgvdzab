@@ -1,8 +1,5 @@
 #include "dispatcher/compiler_dispatcher.hpp"
 #include "compilers/chtl_compiler.hpp"
-#include "compilers/css_compiler.hpp"
-#include "compilers/js_compiler.hpp"
-#include "network/dependency_manager.hpp"
 #include <iostream>
 #include <algorithm>
 #include <chrono>
@@ -134,8 +131,8 @@ void CompilerDispatcher::resetStatistics() {
 void CompilerDispatcher::initializeDefaultCompilers() {
     registerCompiler(CompilerFactory::createCHTLCompiler());
     // registerCompiler(CompilerFactory::createCHTLJSCompiler());
-    registerCompiler(CompilerFactory::createCSSCompiler());
-    registerCompiler(CompilerFactory::createJavaScriptCompiler());
+    // registerCompiler(CompilerFactory::createCSSCompiler());
+    // registerCompiler(CompilerFactory::createJavaScriptCompiler());
 }
 
 std::vector<CodeSegment> CompilerDispatcher::preprocessSegments(const std::vector<CodeSegment>& segments) {
@@ -272,19 +269,11 @@ std::unique_ptr<ICompiler> CompilerFactory::createCHTLJSCompiler() {
 }
 
 std::unique_ptr<ICompiler> CompilerFactory::createCSSCompiler() {
-    // 创建依赖管理器实例
-    auto dependencyManager = std::make_shared<DependencyManager>("./cache/css");
-    dependencyManager->loadDefaultCompilerDependencies();
-    
-    return std::make_unique<CSSCompiler>(dependencyManager);
+    return nullptr; // 将在实现CSS编译器时完成
 }
 
 std::unique_ptr<ICompiler> CompilerFactory::createJavaScriptCompiler() {
-    // 创建依赖管理器实例
-    auto dependencyManager = std::make_shared<DependencyManager>("./cache/js");
-    dependencyManager->loadDefaultCompilerDependencies();
-    
-    return std::make_unique<JSCompiler>(dependencyManager);
+    return nullptr; // 将在实现JavaScript编译器时完成
 }
 
 } // namespace chtl

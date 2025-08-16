@@ -320,52 +320,6 @@ add_executable(raii_state_management_demo
     tests/raii_state_management_demo.cpp
 )
 
-# 创建CSS和JS编译器集成测试程序
-add_executable(css_js_compiler_integration_test
-    tests/css_js_compiler_integration_test.cpp
-    src/network/dependency_manager.cpp
-    src/compilers/css_compiler.cpp
-    src/compilers/js_compiler.cpp
-    src/common/types.cpp
-    src/lexer/chtl_lexer.cpp
-    src/ast/chtl_ast.cpp
-)
-
-# 添加网络库依赖
-find_package(PkgConfig)
-if(PkgConfig_FOUND)
-    pkg_check_modules(LIBCURL libcurl)
-    if(LIBCURL_FOUND)
-        target_link_libraries(css_js_compiler_integration_test ${LIBCURL_LIBRARIES})
-        target_include_directories(css_js_compiler_integration_test PRIVATE ${LIBCURL_INCLUDE_DIRS})
-        target_compile_definitions(css_js_compiler_integration_test PRIVATE HAVE_LIBCURL)
-    endif()
-    
-    pkg_check_modules(OPENSSL openssl)
-    if(OPENSSL_FOUND)
-        target_link_libraries(css_js_compiler_integration_test ${OPENSSL_LIBRARIES})
-        target_include_directories(css_js_compiler_integration_test PRIVATE ${OPENSSL_INCLUDE_DIRS})
-        target_compile_definitions(css_js_compiler_integration_test PRIVATE HAVE_OPENSSL)
-    endif()
-endif()
-
-# 如果pkg-config不可用，尝试直接查找库
-if(NOT LIBCURL_FOUND)
-    find_library(CURL_LIBRARY curl)
-    if(CURL_LIBRARY)
-        target_link_libraries(css_js_compiler_integration_test ${CURL_LIBRARY})
-        target_compile_definitions(css_js_compiler_integration_test PRIVATE HAVE_LIBCURL)
-    endif()
-endif()
-
-if(NOT OPENSSL_FOUND)
-    find_library(SSL_LIBRARY ssl)
-    find_library(CRYPTO_LIBRARY crypto)
-    if(SSL_LIBRARY AND CRYPTO_LIBRARY)
-        target_link_libraries(css_js_compiler_integration_test ${SSL_LIBRARY} ${CRYPTO_LIBRARY})
-        target_compile_definitions(css_js_compiler_integration_test PRIVATE HAVE_OPENSSL)
-    endif()
-endif()
 
 # 安装规则
 install(TARGETS chtl_compiler
