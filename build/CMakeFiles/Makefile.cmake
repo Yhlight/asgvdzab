@@ -58,4 +58,5 @@ set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/unified_compiler_test.dir/DependInfo.cmake"
   "CMakeFiles/integrated_system_test.dir/DependInfo.cmake"
   "CMakeFiles/scanner_minimal_unit_test.dir/DependInfo.cmake"
+  "CMakeFiles/chtl_syntax_test.dir/DependInfo.cmake"
   )

@@ -145,6 +145,11 @@ if(EXISTS "${CMAKE_SOURCE_DIR}/tests")
         add_executable(scanner_minimal_unit_test tests/scanner_minimal_unit_test.cpp)
         target_link_libraries(scanner_minimal_unit_test chtl_test_lib)
         target_include_directories(scanner_minimal_unit_test PRIVATE ${CHTL_INCLUDE_DIRS})
+        
+        # 添加CHTL语法完整性测试
+        add_executable(chtl_syntax_test tests/chtl_syntax_test.cpp)
+        target_link_libraries(chtl_syntax_test chtl_test_lib)
+        target_include_directories(chtl_syntax_test PRIVATE ${CHTL_INCLUDE_DIRS})
     endif()
 endif()
 

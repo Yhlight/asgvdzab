@@ -265,6 +265,19 @@ scanner_minimal_unit_test/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/scanner_minimal_unit_test.dir/build.make CMakeFiles/scanner_minimal_unit_test.dir/build
 .PHONY : scanner_minimal_unit_test/fast
 
+#=============================================================================
+# Target rules for targets named chtl_syntax_test
+
+# Build rule for target.
+chtl_syntax_test: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 chtl_syntax_test
+.PHONY : chtl_syntax_test
+
+# fast build rule for target.
+chtl_syntax_test/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_test.dir/build.make CMakeFiles/chtl_syntax_test.dir/build
+.PHONY : chtl_syntax_test/fast
+
 generated/antlr/css/CSS3BaseListener.o: generated/antlr/css/CSS3BaseListener.cpp.o
 .PHONY : generated/antlr/css/CSS3BaseListener.o
 
@@ -1363,6 +1376,30 @@ src/scanner/unified_scanner.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_test_lib.dir/build.make CMakeFiles/chtl_test_lib.dir/src/scanner/unified_scanner.cpp.s
 .PHONY : src/scanner/unified_scanner.cpp.s
 
+tests/chtl_syntax_test.o: tests/chtl_syntax_test.cpp.o
+.PHONY : tests/chtl_syntax_test.o
+
+# target to build an object file
+tests/chtl_syntax_test.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_test.dir/build.make CMakeFiles/chtl_syntax_test.dir/tests/chtl_syntax_test.cpp.o
+.PHONY : tests/chtl_syntax_test.cpp.o
+
+tests/chtl_syntax_test.i: tests/chtl_syntax_test.cpp.i
+.PHONY : tests/chtl_syntax_test.i
+
+# target to preprocess a source file
+tests/chtl_syntax_test.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_test.dir/build.make CMakeFiles/chtl_syntax_test.dir/tests/chtl_syntax_test.cpp.i
+.PHONY : tests/chtl_syntax_test.cpp.i
+
+tests/chtl_syntax_test.s: tests/chtl_syntax_test.cpp.s
+.PHONY : tests/chtl_syntax_test.s
+
+# target to generate assembly for a file
+tests/chtl_syntax_test.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_test.dir/build.make CMakeFiles/chtl_syntax_test.dir/tests/chtl_syntax_test.cpp.s
+.PHONY : tests/chtl_syntax_test.cpp.s
+
 tests/integrated_system_test.o: tests/integrated_system_test.cpp.o
 .PHONY : tests/integrated_system_test.o
 
@@ -1451,6 +1488,7 @@ help:
 	@echo "... chtl"
 	@echo "... chtl_compilers"
 	@echo "... chtl_core"
+	@echo "... chtl_syntax_test"
 	@echo "... chtl_test_lib"
 	@echo "... integrated_system_test"
 	@echo "... scanner_minimal_unit_test"
@@ -1581,6 +1619,9 @@ help:
 	@echo "... src/scanner/unified_scanner.o"
 	@echo "... src/scanner/unified_scanner.i"
 	@echo "... src/scanner/unified_scanner.s"
+	@echo "... tests/chtl_syntax_test.o"
+	@echo "... tests/chtl_syntax_test.i"
+	@echo "... tests/chtl_syntax_test.s"
 	@echo "... tests/integrated_system_test.o"
 	@echo "... tests/integrated_system_test.i"
 	@echo "... tests/integrated_system_test.s"
