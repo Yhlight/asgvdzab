@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <algorithm>
 #include <cassert>
 #include "core/chtl_unified_scanner.hpp"
 #include "core/compiler_dispatcher.hpp"

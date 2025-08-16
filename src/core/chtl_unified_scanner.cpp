@@ -393,14 +393,15 @@ CodeFragmentType CHTLUnifiedScanner::identifyFragmentType(const std::string& con
         }
     }
     
+    // 优先检查CHTL JS增强选择器语法
+    // 这很重要，因为{{title}}、{{message}}等应该被识别为CHTL JS，不是CSS
+    if (hasChtlJsSyntax(content)) {
+        return CodeFragmentType::CHTL_JS_FRAGMENT;
+    }
+    
     // 检查CHTL特有语法
     if (hasChtlSyntax(content)) {
-        // 检查是否同时包含CHTL JS语法
-        if (hasChtlJsSyntax(content)) {
-            return CodeFragmentType::CHTL_JS_FRAGMENT;
-        } else {
-            return CodeFragmentType::CHTL_FRAGMENT;
-        }
+        return CodeFragmentType::CHTL_FRAGMENT;
     }
     
     // 检查纯CSS语法（全局样式）

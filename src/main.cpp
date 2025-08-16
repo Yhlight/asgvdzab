@@ -5,7 +5,7 @@
 #include <memory>
 
 #include "scanner/unified_scanner.hpp"
-#include "dispatcher/compiler_dispatcher.hpp"
+#include "core/compiler_dispatcher.hpp"
 #include "common/types.hpp"
 
 using namespace chtl;
