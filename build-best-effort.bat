@@ -116,9 +116,39 @@ if %CLASS_COUNT% gtr 0 (
     REM Create JAR with whatever compiled
     echo.
     echo Creating JAR file...
+    
+    REM First check if there are any compiled classes
+    dir target\classes\*.class /s /b >nul 2>&1
+    if errorlevel 1 (
+        echo [ERROR] No compiled class files found in target\classes
+        goto :error
+    )
+    
+    REM Try to create JAR
     cd target\classes
-    jar cf ..\chtl-compiler.jar com\* 2>nul
-    cd ..\..
+    
+    REM Check if com directory exists
+    if exist com (
+        jar cf ..\chtl-compiler.jar com\* 2>jar_error.txt
+        if errorlevel 1 (
+            cd ..\..
+            echo [ERROR] JAR creation failed. Error details:
+            type target\classes\jar_error.txt 2>nul
+            del target\classes\jar_error.txt 2>nul
+            
+            echo.
+            echo Trying alternative JAR creation method...
+            cd target\classes
+            jar cf ..\chtl-compiler.jar . 2>nul
+            cd ..\..
+        ) else (
+            cd ..\..
+        )
+    ) else (
+        echo [WARNING] No com directory found, creating JAR with all classes...
+        jar cf ..\chtl-compiler.jar . 2>nul
+        cd ..\..
+    )
     
     if exist target\chtl-compiler.jar (
         REM Create distribution
@@ -171,3 +201,9 @@ if %CLASS_COUNT% gtr 0 (
 echo.
 pause
 exit /b 0
+
+:error
+echo.
+echo [ERROR] Build encountered an error.
+pause
+exit /b 1

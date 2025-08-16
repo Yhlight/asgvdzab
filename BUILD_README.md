@@ -6,22 +6,33 @@ The CHTL compiler project has significant compilation issues due to circular dep
 
 ## Build Scripts Available
 
-### 1. Best-Effort Build (Recommended)
+### 1. Windows Fixed Build (Recommended for Windows)
+- **Windows**: `build-windows-fixed.bat`
+
+This is the most reliable build script for Windows with improved JAR creation and error handling.
+
+### 2. Best-Effort Build
 - **Linux/Mac**: `./build-best-effort.sh`
 - **Windows**: `build-best-effort.bat`
 
 This script attempts to compile each Java file individually and creates a JAR with whatever compiles successfully. Currently, it can compile approximately 49 out of 224 classes.
 
-### 2. Standard Build Scripts
+### 3. Minimal Build
+- **Windows**: `build-minimal.bat`
+
+A simplified build script that focuses on essential classes and uses alternative JAR creation methods.
+
+### 4. Standard Build Scripts
 - **Linux/Mac**: `./build.sh`
 - **Windows**: `build-simple.bat`, `build-final.bat`, `build-universal.bat`
 
 These scripts attempt a full compilation but currently fail due to compilation errors.
 
-### 3. Diagnostic Script
-- **Windows**: `diagnose-build.bat`
+### 5. Diagnostic Scripts
+- **Windows**: `diagnose-build.bat` - Diagnoses build environment issues
+- **Windows**: `check-compiled-classes.bat` - Checks what classes were compiled
 
-This script helps diagnose build environment issues on Windows.
+These scripts help diagnose build issues and verify compilation results.
 
 ## Quick Start
 
@@ -33,7 +44,12 @@ chmod +x build-best-effort.sh
 
 ### On Windows:
 ```cmd
-build-best-effort.bat
+build-windows-fixed.bat
+```
+
+If the above fails, try:
+```cmd
+build-minimal.bat
 ```
 
 ## Build Output
