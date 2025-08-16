@@ -227,6 +227,26 @@ add_executable(chtl_origin_parser_test
     src/ast/chtl_ast.cpp
 )
 
+# CHTL Config Import Parser test
+add_executable(chtl_config_import_parser_test
+    tests/chtl_config_import_parser_test.cpp
+    src/parsers/chtl_config_import_parser.cpp
+    src/parsers/chtl_basic_parser.cpp
+    src/parsers/chtl_style_parser.cpp
+    src/lexer/chtl_lexer.cpp
+    src/ast/chtl_ast.cpp
+)
+
+# Debug config import parser
+add_executable(debug_config_import_parser
+    tests/debug_config_import_parser.cpp
+    src/parsers/chtl_config_import_parser.cpp
+    src/parsers/chtl_basic_parser.cpp
+    src/parsers/chtl_style_parser.cpp
+    src/lexer/chtl_lexer.cpp
+    src/ast/chtl_ast.cpp
+)
+
 # Debug style parser
 add_executable(debug_style_parser
     tests/debug_style_parser.cpp
