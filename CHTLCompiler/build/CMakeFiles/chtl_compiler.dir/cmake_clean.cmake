@@ -1,0 +1,24 @@
+file(REMOVE_RECURSE
+  "CMakeFiles/chtl_compiler.dir/link.d"
+  "CMakeFiles/chtl_compiler.dir/src/compiler/CHTLCompiler.cpp.o"
+  "CMakeFiles/chtl_compiler.dir/src/compiler/CHTLCompiler.cpp.o.d"
+  "CMakeFiles/chtl_compiler.dir/src/compiler/CHTLJSCompiler.cpp.o"
+  "CMakeFiles/chtl_compiler.dir/src/compiler/CHTLJSCompiler.cpp.o.d"
+  "CMakeFiles/chtl_compiler.dir/src/compiler/CSSCompiler.cpp.o"
+  "CMakeFiles/chtl_compiler.dir/src/compiler/CSSCompiler.cpp.o.d"
+  "CMakeFiles/chtl_compiler.dir/src/compiler/JavaScriptCompiler.cpp.o"
+  "CMakeFiles/chtl_compiler.dir/src/compiler/JavaScriptCompiler.cpp.o.d"
+  "CMakeFiles/chtl_compiler.dir/src/dispatcher/CompilerDispatcher.cpp.o"
+  "CMakeFiles/chtl_compiler.dir/src/dispatcher/CompilerDispatcher.cpp.o.d"
+  "CMakeFiles/chtl_compiler.dir/src/main.cpp.o"
+  "CMakeFiles/chtl_compiler.dir/src/main.cpp.o.d"
+  "CMakeFiles/chtl_compiler.dir/src/scanner/CHTLUnifiedScanner.cpp.o"
+  "CMakeFiles/chtl_compiler.dir/src/scanner/CHTLUnifiedScanner.cpp.o.d"
+  "chtl_compiler"
+  "chtl_compiler.pdb"
+)
+
+# Per-language clean rules from dependency scanning.
+foreach(lang CXX)
+  include(CMakeFiles/chtl_compiler.dir/cmake_clean_${lang}.cmake OPTIONAL)
+endforeach()
