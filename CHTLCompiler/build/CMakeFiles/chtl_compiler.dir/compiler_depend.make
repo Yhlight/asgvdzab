@@ -5905,6 +5905,7 @@ chtl_compiler: /lib/x86_64-linux-gnu/Scrt1.o \
   CMakeFiles/chtl_compiler.dir/src/main.cpp.o \
   CMakeFiles/chtl_compiler.dir/src/parser/AttributeSystem.cpp.o \
   CMakeFiles/chtl_compiler.dir/src/parser/BasicSyntaxParser.cpp.o \
+  CMakeFiles/chtl_compiler.dir/src/parser/CustomSystem.cpp.o \
   CMakeFiles/chtl_compiler.dir/src/parser/StyleBlockParser.cpp.o \
   CMakeFiles/chtl_compiler.dir/src/parser/TemplateSystem.cpp.o \
   CMakeFiles/chtl_compiler.dir/src/scanner/CHTLUnifiedScanner.cpp.o
@@ -5953,6 +5954,8 @@ CMakeFiles/chtl_compiler.dir/src/ast/AttributeNode.cpp.o:
 /usr/include/c++/14/bits/random.h:
 
 /workspace/CHTLCompiler/include/statemachine/CHTLStateMachine.h:
+
+CMakeFiles/chtl_compiler.dir/src/parser/CustomSystem.cpp.o:
 
 /workspace/CHTLCompiler/include/parser/CustomSystem.h:
 

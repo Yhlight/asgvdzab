@@ -5927,6 +5927,7 @@ chtl_compiler
  /workspace/CHTLCompiler/build/CMakeFiles/chtl_compiler.dir/src/main.cpp.o
  /workspace/CHTLCompiler/build/CMakeFiles/chtl_compiler.dir/src/parser/AttributeSystem.cpp.o
  /workspace/CHTLCompiler/build/CMakeFiles/chtl_compiler.dir/src/parser/BasicSyntaxParser.cpp.o
+ /workspace/CHTLCompiler/build/CMakeFiles/chtl_compiler.dir/src/parser/CustomSystem.cpp.o
  /workspace/CHTLCompiler/build/CMakeFiles/chtl_compiler.dir/src/parser/StyleBlockParser.cpp.o
  /workspace/CHTLCompiler/build/CMakeFiles/chtl_compiler.dir/src/parser/TemplateSystem.cpp.o
  /workspace/CHTLCompiler/build/CMakeFiles/chtl_compiler.dir/src/scanner/CHTLUnifiedScanner.cpp.o

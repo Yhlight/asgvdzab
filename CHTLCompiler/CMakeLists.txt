@@ -67,6 +67,7 @@ set(BASIC_SYNTAX_SOURCES
     src/parser/StyleBlockParser.cpp
     src/parser/TemplateSystem.cpp
     src/parser/CustomSystem.cpp
+    src/parser/OriginSystem.cpp
 )
 
 # 创建可执行文件
