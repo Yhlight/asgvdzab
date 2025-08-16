@@ -1,33 +1,35 @@
 package com.chtl.model;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
- * 元素节点
+ * Element node in the model
  */
 public class ElementNode extends CHTLNode {
-    private Map<String, String> attributes;
-    
+    private String tagName;
+    private List<AttributeNode> attributes;
+    private List<CHTLNode> children;
+
     public ElementNode(String tagName) {
-        super(tagName);
-        this.attributes = new HashMap<>();
+        this.tagName = tagName;
+        this.attributes = new ArrayList<>();
+        this.children = new ArrayList<>();
     }
-    
-    public void setAttribute(String name, String value) {
-        attributes.put(name, value);
+
+    public String getTagName() { return tagName; }
+    public List<AttributeNode> getAttributes() { return attributes; }
+    public List<CHTLNode> getChildren() { return children; }
+
+    public void addAttribute(AttributeNode attr) {
+        attributes.add(attr);
     }
-    
-    public String getAttribute(String name) {
-        return attributes.get(name);
+
+    public void addChild(CHTLNode child) {
+        children.add(child);
     }
-    
-    public Map<String, String> getAttributes() {
-        return attributes;
-    }
-    
-    @Override
+
     public void accept(CHTLNodeVisitor visitor) {
-        visitor.visit(this);
+        visitor.visitElement(this);
     }
 }

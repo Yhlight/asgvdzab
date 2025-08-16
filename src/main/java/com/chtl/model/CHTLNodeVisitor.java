@@ -1,14 +1,14 @@
 package com.chtl.model;
 
-import com.chtl.ast.AbstractCHTLASTNode;
-import com.chtl.ast.NodeType;
-
-public class CHTLNodeVisitor extends AbstractCHTLASTNode {
+/**
+ * Visitor interface for CHTL model nodes
+ */
 public interface CHTLNodeVisitor {
+    void visitElement(ElementNode node);
+    void visitAttribute(AttributeNode node);
+    void visitText(TextNode node);
     void visitTemplate(TemplateNode node);
     void visitScript(ScriptNode node);
     void visitStyle(StyleNode node);
     void visitCustom(CustomNode node);
-}
-
 }

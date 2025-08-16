@@ -132,6 +132,7 @@ for %%F in (
     CreateMissingNodes.java
     FixAllImports.java
     FixRemainingIssues.java
+    FixFinalIssues.java
 ) do (
     if exist %%F (
         javac %%F 2>nul
@@ -157,7 +158,7 @@ del stage1_files.txt
 
 if %RESULT% neq 0 (
     echo [ERROR] Stage 1 compilation failed:
-    type stage1_errors.txt | findstr "error:" | head -10
+    type stage1_errors.txt | findstr "error:" | more +0
 )
 del stage1_errors.txt 2>nul
 exit /b %RESULT%
