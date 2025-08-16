@@ -2053,16 +2053,7 @@ src/parsers/chtl_parser.o: src/parsers/chtl_parser.cpp.o
 
 # target to build an object file
 src/parsers/chtl_parser.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/parsers/chtl_parser.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/parsers/chtl_parser.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/parsers/chtl_parser.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/parsers/chtl_parser.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/parsers/chtl_parser.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_parser.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/parsers/chtl_parser.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/parsers/chtl_parser.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/parsers/chtl_parser.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/parsers/chtl_parser.cpp.o
 .PHONY : src/parsers/chtl_parser.cpp.o
 
 src/parsers/chtl_parser.i: src/parsers/chtl_parser.cpp.i
@@ -2070,16 +2061,7 @@ src/parsers/chtl_parser.i: src/parsers/chtl_parser.cpp.i
 
 # target to preprocess a source file
 src/parsers/chtl_parser.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/parsers/chtl_parser.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/parsers/chtl_parser.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/parsers/chtl_parser.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/parsers/chtl_parser.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/parsers/chtl_parser.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_parser.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/parsers/chtl_parser.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/parsers/chtl_parser.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/parsers/chtl_parser.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/parsers/chtl_parser.cpp.i
 .PHONY : src/parsers/chtl_parser.cpp.i
 
 src/parsers/chtl_parser.s: src/parsers/chtl_parser.cpp.s
@@ -2087,16 +2069,7 @@ src/parsers/chtl_parser.s: src/parsers/chtl_parser.cpp.s
 
 # target to generate assembly for a file
 src/parsers/chtl_parser.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/parsers/chtl_parser.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/parsers/chtl_parser.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/parsers/chtl_parser.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/parsers/chtl_parser.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/parsers/chtl_parser.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_parser.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/parsers/chtl_parser.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/parsers/chtl_parser.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/parsers/chtl_parser.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/parsers/chtl_parser.cpp.s
 .PHONY : src/parsers/chtl_parser.cpp.s
 
 src/parsers/chtl_style_parser.o: src/parsers/chtl_style_parser.cpp.o
@@ -2359,16 +2332,6 @@ src/tools/chtl_cjmod_tool.o: src/tools/chtl_cjmod_tool.cpp.o
 
 # target to build an object file
 src/tools/chtl_cjmod_tool.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/tools/chtl_cjmod_tool.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/tools/chtl_cjmod_tool.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/tools/chtl_cjmod_tool.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/tools/chtl_cjmod_tool.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/tools/chtl_cjmod_tool.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/tools/chtl_cjmod_tool.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/tools/chtl_cjmod_tool.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/tools/chtl_cjmod_tool.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/tools/chtl_cjmod_tool.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/tools/chtl_cjmod_tool.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl-cjmod.dir/build.make CMakeFiles/chtl-cjmod.dir/src/tools/chtl_cjmod_tool.cpp.o
 .PHONY : src/tools/chtl_cjmod_tool.cpp.o
 
@@ -2377,16 +2340,6 @@ src/tools/chtl_cjmod_tool.i: src/tools/chtl_cjmod_tool.cpp.i
 
 # target to preprocess a source file
 src/tools/chtl_cjmod_tool.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/tools/chtl_cjmod_tool.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/tools/chtl_cjmod_tool.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/tools/chtl_cjmod_tool.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/tools/chtl_cjmod_tool.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/tools/chtl_cjmod_tool.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/tools/chtl_cjmod_tool.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/tools/chtl_cjmod_tool.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/tools/chtl_cjmod_tool.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/tools/chtl_cjmod_tool.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/tools/chtl_cjmod_tool.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl-cjmod.dir/build.make CMakeFiles/chtl-cjmod.dir/src/tools/chtl_cjmod_tool.cpp.i
 .PHONY : src/tools/chtl_cjmod_tool.cpp.i
 
@@ -2395,16 +2348,6 @@ src/tools/chtl_cjmod_tool.s: src/tools/chtl_cjmod_tool.cpp.s
 
 # target to generate assembly for a file
 src/tools/chtl_cjmod_tool.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/tools/chtl_cjmod_tool.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/tools/chtl_cjmod_tool.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/tools/chtl_cjmod_tool.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/tools/chtl_cjmod_tool.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/tools/chtl_cjmod_tool.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/tools/chtl_cjmod_tool.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/tools/chtl_cjmod_tool.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/tools/chtl_cjmod_tool.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/tools/chtl_cjmod_tool.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/tools/chtl_cjmod_tool.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl-cjmod.dir/build.make CMakeFiles/chtl-cjmod.dir/src/tools/chtl_cjmod_tool.cpp.s
 .PHONY : src/tools/chtl_cjmod_tool.cpp.s
 
@@ -2413,16 +2356,6 @@ src/tools/chtl_cmod_tool.o: src/tools/chtl_cmod_tool.cpp.o
 
 # target to build an object file
 src/tools/chtl_cmod_tool.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/tools/chtl_cmod_tool.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/tools/chtl_cmod_tool.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/tools/chtl_cmod_tool.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/tools/chtl_cmod_tool.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/tools/chtl_cmod_tool.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/tools/chtl_cmod_tool.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/tools/chtl_cmod_tool.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/tools/chtl_cmod_tool.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/tools/chtl_cmod_tool.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/tools/chtl_cmod_tool.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl-cmod.dir/build.make CMakeFiles/chtl-cmod.dir/src/tools/chtl_cmod_tool.cpp.o
 .PHONY : src/tools/chtl_cmod_tool.cpp.o
 
@@ -2431,16 +2364,6 @@ src/tools/chtl_cmod_tool.i: src/tools/chtl_cmod_tool.cpp.i
 
 # target to preprocess a source file
 src/tools/chtl_cmod_tool.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/tools/chtl_cmod_tool.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/tools/chtl_cmod_tool.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/tools/chtl_cmod_tool.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/tools/chtl_cmod_tool.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/tools/chtl_cmod_tool.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/tools/chtl_cmod_tool.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/tools/chtl_cmod_tool.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/tools/chtl_cmod_tool.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/tools/chtl_cmod_tool.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/tools/chtl_cmod_tool.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl-cmod.dir/build.make CMakeFiles/chtl-cmod.dir/src/tools/chtl_cmod_tool.cpp.i
 .PHONY : src/tools/chtl_cmod_tool.cpp.i
 
@@ -2449,16 +2372,6 @@ src/tools/chtl_cmod_tool.s: src/tools/chtl_cmod_tool.cpp.s
 
 # target to generate assembly for a file
 src/tools/chtl_cmod_tool.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/tools/chtl_cmod_tool.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/tools/chtl_cmod_tool.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/tools/chtl_cmod_tool.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/tools/chtl_cmod_tool.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/tools/chtl_cmod_tool.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/tools/chtl_cmod_tool.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/tools/chtl_cmod_tool.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/tools/chtl_cmod_tool.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/tools/chtl_cmod_tool.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/tools/chtl_cmod_tool.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl-cmod.dir/build.make CMakeFiles/chtl-cmod.dir/src/tools/chtl_cmod_tool.cpp.s
 .PHONY : src/tools/chtl_cmod_tool.cpp.s
 
@@ -2491,7 +2404,6 @@ tests/chtl_ast_conformance_test.o: tests/chtl_ast_conformance_test.cpp.o
 
 # target to build an object file
 tests/chtl_ast_conformance_test.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/chtl_ast_conformance_test.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/tests/chtl_ast_conformance_test.cpp.o
 .PHONY : tests/chtl_ast_conformance_test.cpp.o
 
@@ -2500,7 +2412,6 @@ tests/chtl_ast_conformance_test.i: tests/chtl_ast_conformance_test.cpp.i
 
 # target to preprocess a source file
 tests/chtl_ast_conformance_test.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/chtl_ast_conformance_test.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/tests/chtl_ast_conformance_test.cpp.i
 .PHONY : tests/chtl_ast_conformance_test.cpp.i
 
@@ -2509,7 +2420,6 @@ tests/chtl_ast_conformance_test.s: tests/chtl_ast_conformance_test.cpp.s
 
 # target to generate assembly for a file
 tests/chtl_ast_conformance_test.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/chtl_ast_conformance_test.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/tests/chtl_ast_conformance_test.cpp.s
 .PHONY : tests/chtl_ast_conformance_test.cpp.s
 
@@ -2518,7 +2428,6 @@ tests/chtl_basic_parser_test.o: tests/chtl_basic_parser_test.cpp.o
 
 # target to build an object file
 tests/chtl_basic_parser_test.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/chtl_basic_parser_test.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_basic_parser_test.dir/build.make CMakeFiles/chtl_basic_parser_test.dir/tests/chtl_basic_parser_test.cpp.o
 .PHONY : tests/chtl_basic_parser_test.cpp.o
 
@@ -2527,7 +2436,6 @@ tests/chtl_basic_parser_test.i: tests/chtl_basic_parser_test.cpp.i
 
 # target to preprocess a source file
 tests/chtl_basic_parser_test.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/chtl_basic_parser_test.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_basic_parser_test.dir/build.make CMakeFiles/chtl_basic_parser_test.dir/tests/chtl_basic_parser_test.cpp.i
 .PHONY : tests/chtl_basic_parser_test.cpp.i
 
@@ -2536,7 +2444,6 @@ tests/chtl_basic_parser_test.s: tests/chtl_basic_parser_test.cpp.s
 
 # target to generate assembly for a file
 tests/chtl_basic_parser_test.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/chtl_basic_parser_test.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_basic_parser_test.dir/build.make CMakeFiles/chtl_basic_parser_test.dir/tests/chtl_basic_parser_test.cpp.s
 .PHONY : tests/chtl_basic_parser_test.cpp.s
 
@@ -2545,7 +2452,6 @@ tests/chtl_config_import_parser_test.o: tests/chtl_config_import_parser_test.cpp
 
 # target to build an object file
 tests/chtl_config_import_parser_test.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/chtl_config_import_parser_test.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_config_import_parser_test.dir/build.make CMakeFiles/chtl_config_import_parser_test.dir/tests/chtl_config_import_parser_test.cpp.o
 .PHONY : tests/chtl_config_import_parser_test.cpp.o
 
@@ -2554,7 +2460,6 @@ tests/chtl_config_import_parser_test.i: tests/chtl_config_import_parser_test.cpp
 
 # target to preprocess a source file
 tests/chtl_config_import_parser_test.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/chtl_config_import_parser_test.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_config_import_parser_test.dir/build.make CMakeFiles/chtl_config_import_parser_test.dir/tests/chtl_config_import_parser_test.cpp.i
 .PHONY : tests/chtl_config_import_parser_test.cpp.i
 
@@ -2563,7 +2468,6 @@ tests/chtl_config_import_parser_test.s: tests/chtl_config_import_parser_test.cpp
 
 # target to generate assembly for a file
 tests/chtl_config_import_parser_test.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/chtl_config_import_parser_test.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_config_import_parser_test.dir/build.make CMakeFiles/chtl_config_import_parser_test.dir/tests/chtl_config_import_parser_test.cpp.s
 .PHONY : tests/chtl_config_import_parser_test.cpp.s
 
@@ -2572,7 +2476,6 @@ tests/chtl_custom_parser_test.o: tests/chtl_custom_parser_test.cpp.o
 
 # target to build an object file
 tests/chtl_custom_parser_test.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/chtl_custom_parser_test.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_custom_parser_test.dir/build.make CMakeFiles/chtl_custom_parser_test.dir/tests/chtl_custom_parser_test.cpp.o
 .PHONY : tests/chtl_custom_parser_test.cpp.o
 
@@ -2581,7 +2484,6 @@ tests/chtl_custom_parser_test.i: tests/chtl_custom_parser_test.cpp.i
 
 # target to preprocess a source file
 tests/chtl_custom_parser_test.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/chtl_custom_parser_test.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_custom_parser_test.dir/build.make CMakeFiles/chtl_custom_parser_test.dir/tests/chtl_custom_parser_test.cpp.i
 .PHONY : tests/chtl_custom_parser_test.cpp.i
 
@@ -2590,7 +2492,6 @@ tests/chtl_custom_parser_test.s: tests/chtl_custom_parser_test.cpp.s
 
 # target to generate assembly for a file
 tests/chtl_custom_parser_test.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/chtl_custom_parser_test.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_custom_parser_test.dir/build.make CMakeFiles/chtl_custom_parser_test.dir/tests/chtl_custom_parser_test.cpp.s
 .PHONY : tests/chtl_custom_parser_test.cpp.s
 
@@ -2599,7 +2500,6 @@ tests/chtl_grammar_conformance_test.o: tests/chtl_grammar_conformance_test.cpp.o
 
 # target to build an object file
 tests/chtl_grammar_conformance_test.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/chtl_grammar_conformance_test.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/tests/chtl_grammar_conformance_test.cpp.o
 .PHONY : tests/chtl_grammar_conformance_test.cpp.o
 
@@ -2608,7 +2508,6 @@ tests/chtl_grammar_conformance_test.i: tests/chtl_grammar_conformance_test.cpp.i
 
 # target to preprocess a source file
 tests/chtl_grammar_conformance_test.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/chtl_grammar_conformance_test.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/tests/chtl_grammar_conformance_test.cpp.i
 .PHONY : tests/chtl_grammar_conformance_test.cpp.i
 
@@ -2617,7 +2516,6 @@ tests/chtl_grammar_conformance_test.s: tests/chtl_grammar_conformance_test.cpp.s
 
 # target to generate assembly for a file
 tests/chtl_grammar_conformance_test.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/chtl_grammar_conformance_test.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/tests/chtl_grammar_conformance_test.cpp.s
 .PHONY : tests/chtl_grammar_conformance_test.cpp.s
 
@@ -2626,7 +2524,6 @@ tests/chtl_js_parser_test.o: tests/chtl_js_parser_test.cpp.o
 
 # target to build an object file
 tests/chtl_js_parser_test.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/chtl_js_parser_test.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_js_parser_test.dir/build.make CMakeFiles/chtl_js_parser_test.dir/tests/chtl_js_parser_test.cpp.o
 .PHONY : tests/chtl_js_parser_test.cpp.o
 
@@ -2635,7 +2532,6 @@ tests/chtl_js_parser_test.i: tests/chtl_js_parser_test.cpp.i
 
 # target to preprocess a source file
 tests/chtl_js_parser_test.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/chtl_js_parser_test.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_js_parser_test.dir/build.make CMakeFiles/chtl_js_parser_test.dir/tests/chtl_js_parser_test.cpp.i
 .PHONY : tests/chtl_js_parser_test.cpp.i
 
@@ -2644,7 +2540,6 @@ tests/chtl_js_parser_test.s: tests/chtl_js_parser_test.cpp.s
 
 # target to generate assembly for a file
 tests/chtl_js_parser_test.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/chtl_js_parser_test.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_js_parser_test.dir/build.make CMakeFiles/chtl_js_parser_test.dir/tests/chtl_js_parser_test.cpp.s
 .PHONY : tests/chtl_js_parser_test.cpp.s
 
@@ -2653,7 +2548,6 @@ tests/chtl_namespace_parser_test.o: tests/chtl_namespace_parser_test.cpp.o
 
 # target to build an object file
 tests/chtl_namespace_parser_test.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/chtl_namespace_parser_test.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_namespace_parser_test.dir/build.make CMakeFiles/chtl_namespace_parser_test.dir/tests/chtl_namespace_parser_test.cpp.o
 .PHONY : tests/chtl_namespace_parser_test.cpp.o
 
@@ -2662,7 +2556,6 @@ tests/chtl_namespace_parser_test.i: tests/chtl_namespace_parser_test.cpp.i
 
 # target to preprocess a source file
 tests/chtl_namespace_parser_test.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/chtl_namespace_parser_test.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_namespace_parser_test.dir/build.make CMakeFiles/chtl_namespace_parser_test.dir/tests/chtl_namespace_parser_test.cpp.i
 .PHONY : tests/chtl_namespace_parser_test.cpp.i
 
@@ -2671,7 +2564,6 @@ tests/chtl_namespace_parser_test.s: tests/chtl_namespace_parser_test.cpp.s
 
 # target to generate assembly for a file
 tests/chtl_namespace_parser_test.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/chtl_namespace_parser_test.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_namespace_parser_test.dir/build.make CMakeFiles/chtl_namespace_parser_test.dir/tests/chtl_namespace_parser_test.cpp.s
 .PHONY : tests/chtl_namespace_parser_test.cpp.s
 
@@ -2680,7 +2572,6 @@ tests/chtl_origin_parser_test.o: tests/chtl_origin_parser_test.cpp.o
 
 # target to build an object file
 tests/chtl_origin_parser_test.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/chtl_origin_parser_test.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_origin_parser_test.dir/build.make CMakeFiles/chtl_origin_parser_test.dir/tests/chtl_origin_parser_test.cpp.o
 .PHONY : tests/chtl_origin_parser_test.cpp.o
 
@@ -2689,7 +2580,6 @@ tests/chtl_origin_parser_test.i: tests/chtl_origin_parser_test.cpp.i
 
 # target to preprocess a source file
 tests/chtl_origin_parser_test.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/chtl_origin_parser_test.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_origin_parser_test.dir/build.make CMakeFiles/chtl_origin_parser_test.dir/tests/chtl_origin_parser_test.cpp.i
 .PHONY : tests/chtl_origin_parser_test.cpp.i
 
@@ -2698,7 +2588,6 @@ tests/chtl_origin_parser_test.s: tests/chtl_origin_parser_test.cpp.s
 
 # target to generate assembly for a file
 tests/chtl_origin_parser_test.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/chtl_origin_parser_test.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_origin_parser_test.dir/build.make CMakeFiles/chtl_origin_parser_test.dir/tests/chtl_origin_parser_test.cpp.s
 .PHONY : tests/chtl_origin_parser_test.cpp.s
 
@@ -2707,7 +2596,6 @@ tests/chtl_style_parser_test.o: tests/chtl_style_parser_test.cpp.o
 
 # target to build an object file
 tests/chtl_style_parser_test.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/chtl_style_parser_test.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_style_parser_test.dir/build.make CMakeFiles/chtl_style_parser_test.dir/tests/chtl_style_parser_test.cpp.o
 .PHONY : tests/chtl_style_parser_test.cpp.o
 
@@ -2716,7 +2604,6 @@ tests/chtl_style_parser_test.i: tests/chtl_style_parser_test.cpp.i
 
 # target to preprocess a source file
 tests/chtl_style_parser_test.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/chtl_style_parser_test.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_style_parser_test.dir/build.make CMakeFiles/chtl_style_parser_test.dir/tests/chtl_style_parser_test.cpp.i
 .PHONY : tests/chtl_style_parser_test.cpp.i
 
@@ -2725,7 +2612,6 @@ tests/chtl_style_parser_test.s: tests/chtl_style_parser_test.cpp.s
 
 # target to generate assembly for a file
 tests/chtl_style_parser_test.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/chtl_style_parser_test.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_style_parser_test.dir/build.make CMakeFiles/chtl_style_parser_test.dir/tests/chtl_style_parser_test.cpp.s
 .PHONY : tests/chtl_style_parser_test.cpp.s
 
@@ -2734,7 +2620,6 @@ tests/chtl_syntax_validation_test.o: tests/chtl_syntax_validation_test.cpp.o
 
 # target to build an object file
 tests/chtl_syntax_validation_test.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/chtl_syntax_validation_test.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/tests/chtl_syntax_validation_test.cpp.o
 .PHONY : tests/chtl_syntax_validation_test.cpp.o
 
@@ -2743,7 +2628,6 @@ tests/chtl_syntax_validation_test.i: tests/chtl_syntax_validation_test.cpp.i
 
 # target to preprocess a source file
 tests/chtl_syntax_validation_test.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/chtl_syntax_validation_test.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/tests/chtl_syntax_validation_test.cpp.i
 .PHONY : tests/chtl_syntax_validation_test.cpp.i
 
@@ -2752,7 +2636,6 @@ tests/chtl_syntax_validation_test.s: tests/chtl_syntax_validation_test.cpp.s
 
 # target to generate assembly for a file
 tests/chtl_syntax_validation_test.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/chtl_syntax_validation_test.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/tests/chtl_syntax_validation_test.cpp.s
 .PHONY : tests/chtl_syntax_validation_test.cpp.s
 
@@ -2761,7 +2644,6 @@ tests/chtl_template_parser_test.o: tests/chtl_template_parser_test.cpp.o
 
 # target to build an object file
 tests/chtl_template_parser_test.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/chtl_template_parser_test.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_template_parser_test.dir/build.make CMakeFiles/chtl_template_parser_test.dir/tests/chtl_template_parser_test.cpp.o
 .PHONY : tests/chtl_template_parser_test.cpp.o
 
@@ -2770,7 +2652,6 @@ tests/chtl_template_parser_test.i: tests/chtl_template_parser_test.cpp.i
 
 # target to preprocess a source file
 tests/chtl_template_parser_test.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/chtl_template_parser_test.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_template_parser_test.dir/build.make CMakeFiles/chtl_template_parser_test.dir/tests/chtl_template_parser_test.cpp.i
 .PHONY : tests/chtl_template_parser_test.cpp.i
 
@@ -2779,7 +2660,6 @@ tests/chtl_template_parser_test.s: tests/chtl_template_parser_test.cpp.s
 
 # target to generate assembly for a file
 tests/chtl_template_parser_test.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/chtl_template_parser_test.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_template_parser_test.dir/build.make CMakeFiles/chtl_template_parser_test.dir/tests/chtl_template_parser_test.cpp.s
 .PHONY : tests/chtl_template_parser_test.cpp.s
 
@@ -2788,7 +2668,6 @@ tests/cjmod_system_test.o: tests/cjmod_system_test.cpp.o
 
 # target to build an object file
 tests/cjmod_system_test.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/cjmod_system_test.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/cjmod_system_test.dir/build.make CMakeFiles/cjmod_system_test.dir/tests/cjmod_system_test.cpp.o
 .PHONY : tests/cjmod_system_test.cpp.o
 
@@ -2797,7 +2676,6 @@ tests/cjmod_system_test.i: tests/cjmod_system_test.cpp.i
 
 # target to preprocess a source file
 tests/cjmod_system_test.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/cjmod_system_test.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/cjmod_system_test.dir/build.make CMakeFiles/cjmod_system_test.dir/tests/cjmod_system_test.cpp.i
 .PHONY : tests/cjmod_system_test.cpp.i
 
@@ -2806,7 +2684,6 @@ tests/cjmod_system_test.s: tests/cjmod_system_test.cpp.s
 
 # target to generate assembly for a file
 tests/cjmod_system_test.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/cjmod_system_test.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/cjmod_system_test.dir/build.make CMakeFiles/cjmod_system_test.dir/tests/cjmod_system_test.cpp.s
 .PHONY : tests/cjmod_system_test.cpp.s
 
@@ -2815,7 +2692,6 @@ tests/cmod_system_test.o: tests/cmod_system_test.cpp.o
 
 # target to build an object file
 tests/cmod_system_test.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/cmod_system_test.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/cmod_system_test.dir/build.make CMakeFiles/cmod_system_test.dir/tests/cmod_system_test.cpp.o
 .PHONY : tests/cmod_system_test.cpp.o
 
@@ -2824,7 +2700,6 @@ tests/cmod_system_test.i: tests/cmod_system_test.cpp.i
 
 # target to preprocess a source file
 tests/cmod_system_test.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/cmod_system_test.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/cmod_system_test.dir/build.make CMakeFiles/cmod_system_test.dir/tests/cmod_system_test.cpp.i
 .PHONY : tests/cmod_system_test.cpp.i
 
@@ -2833,7 +2708,6 @@ tests/cmod_system_test.s: tests/cmod_system_test.cpp.s
 
 # target to generate assembly for a file
 tests/cmod_system_test.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/cmod_system_test.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/cmod_system_test.dir/build.make CMakeFiles/cmod_system_test.dir/tests/cmod_system_test.cpp.s
 .PHONY : tests/cmod_system_test.cpp.s
 
@@ -2842,7 +2716,6 @@ tests/comprehensive_lexer_test.o: tests/comprehensive_lexer_test.cpp.o
 
 # target to build an object file
 tests/comprehensive_lexer_test.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/comprehensive_lexer_test.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/tests/comprehensive_lexer_test.cpp.o
 .PHONY : tests/comprehensive_lexer_test.cpp.o
 
@@ -2851,7 +2724,6 @@ tests/comprehensive_lexer_test.i: tests/comprehensive_lexer_test.cpp.i
 
 # target to preprocess a source file
 tests/comprehensive_lexer_test.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/comprehensive_lexer_test.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/tests/comprehensive_lexer_test.cpp.i
 .PHONY : tests/comprehensive_lexer_test.cpp.i
 
@@ -2860,7 +2732,6 @@ tests/comprehensive_lexer_test.s: tests/comprehensive_lexer_test.cpp.s
 
 # target to generate assembly for a file
 tests/comprehensive_lexer_test.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/comprehensive_lexer_test.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/tests/comprehensive_lexer_test.cpp.s
 .PHONY : tests/comprehensive_lexer_test.cpp.s
 
@@ -2869,7 +2740,6 @@ tests/debug_config_import_parser.o: tests/debug_config_import_parser.cpp.o
 
 # target to build an object file
 tests/debug_config_import_parser.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/debug_config_import_parser.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_config_import_parser.dir/build.make CMakeFiles/debug_config_import_parser.dir/tests/debug_config_import_parser.cpp.o
 .PHONY : tests/debug_config_import_parser.cpp.o
 
@@ -2878,7 +2748,6 @@ tests/debug_config_import_parser.i: tests/debug_config_import_parser.cpp.i
 
 # target to preprocess a source file
 tests/debug_config_import_parser.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/debug_config_import_parser.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_config_import_parser.dir/build.make CMakeFiles/debug_config_import_parser.dir/tests/debug_config_import_parser.cpp.i
 .PHONY : tests/debug_config_import_parser.cpp.i
 
@@ -2887,7 +2756,6 @@ tests/debug_config_import_parser.s: tests/debug_config_import_parser.cpp.s
 
 # target to generate assembly for a file
 tests/debug_config_import_parser.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/debug_config_import_parser.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_config_import_parser.dir/build.make CMakeFiles/debug_config_import_parser.dir/tests/debug_config_import_parser.cpp.s
 .PHONY : tests/debug_config_import_parser.cpp.s
 
@@ -2896,7 +2764,6 @@ tests/debug_import_test.o: tests/debug_import_test.cpp.o
 
 # target to build an object file
 tests/debug_import_test.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/debug_import_test.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_import_test.dir/build.make CMakeFiles/debug_import_test.dir/tests/debug_import_test.cpp.o
 .PHONY : tests/debug_import_test.cpp.o
 
@@ -2905,7 +2772,6 @@ tests/debug_import_test.i: tests/debug_import_test.cpp.i
 
 # target to preprocess a source file
 tests/debug_import_test.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/debug_import_test.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_import_test.dir/build.make CMakeFiles/debug_import_test.dir/tests/debug_import_test.cpp.i
 .PHONY : tests/debug_import_test.cpp.i
 
@@ -2914,7 +2780,6 @@ tests/debug_import_test.s: tests/debug_import_test.cpp.s
 
 # target to generate assembly for a file
 tests/debug_import_test.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/debug_import_test.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_import_test.dir/build.make CMakeFiles/debug_import_test.dir/tests/debug_import_test.cpp.s
 .PHONY : tests/debug_import_test.cpp.s
 
@@ -2923,7 +2788,6 @@ tests/debug_js_parser.o: tests/debug_js_parser.cpp.o
 
 # target to build an object file
 tests/debug_js_parser.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/debug_js_parser.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_js_parser.dir/build.make CMakeFiles/debug_js_parser.dir/tests/debug_js_parser.cpp.o
 .PHONY : tests/debug_js_parser.cpp.o
 
@@ -2932,7 +2796,6 @@ tests/debug_js_parser.i: tests/debug_js_parser.cpp.i
 
 # target to preprocess a source file
 tests/debug_js_parser.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/debug_js_parser.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_js_parser.dir/build.make CMakeFiles/debug_js_parser.dir/tests/debug_js_parser.cpp.i
 .PHONY : tests/debug_js_parser.cpp.i
 
@@ -2941,7 +2804,6 @@ tests/debug_js_parser.s: tests/debug_js_parser.cpp.s
 
 # target to generate assembly for a file
 tests/debug_js_parser.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/debug_js_parser.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_js_parser.dir/build.make CMakeFiles/debug_js_parser.dir/tests/debug_js_parser.cpp.s
 .PHONY : tests/debug_js_parser.cpp.s
 
@@ -2950,7 +2812,6 @@ tests/debug_namespace_parser.o: tests/debug_namespace_parser.cpp.o
 
 # target to build an object file
 tests/debug_namespace_parser.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/debug_namespace_parser.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_namespace_parser.dir/build.make CMakeFiles/debug_namespace_parser.dir/tests/debug_namespace_parser.cpp.o
 .PHONY : tests/debug_namespace_parser.cpp.o
 
@@ -2959,7 +2820,6 @@ tests/debug_namespace_parser.i: tests/debug_namespace_parser.cpp.i
 
 # target to preprocess a source file
 tests/debug_namespace_parser.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/debug_namespace_parser.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_namespace_parser.dir/build.make CMakeFiles/debug_namespace_parser.dir/tests/debug_namespace_parser.cpp.i
 .PHONY : tests/debug_namespace_parser.cpp.i
 
@@ -2968,7 +2828,6 @@ tests/debug_namespace_parser.s: tests/debug_namespace_parser.cpp.s
 
 # target to generate assembly for a file
 tests/debug_namespace_parser.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/debug_namespace_parser.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_namespace_parser.dir/build.make CMakeFiles/debug_namespace_parser.dir/tests/debug_namespace_parser.cpp.s
 .PHONY : tests/debug_namespace_parser.cpp.s
 
@@ -2977,7 +2836,6 @@ tests/debug_namespace_test.o: tests/debug_namespace_test.cpp.o
 
 # target to build an object file
 tests/debug_namespace_test.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/debug_namespace_test.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_namespace_test.dir/build.make CMakeFiles/debug_namespace_test.dir/tests/debug_namespace_test.cpp.o
 .PHONY : tests/debug_namespace_test.cpp.o
 
@@ -2986,7 +2844,6 @@ tests/debug_namespace_test.i: tests/debug_namespace_test.cpp.i
 
 # target to preprocess a source file
 tests/debug_namespace_test.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/debug_namespace_test.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_namespace_test.dir/build.make CMakeFiles/debug_namespace_test.dir/tests/debug_namespace_test.cpp.i
 .PHONY : tests/debug_namespace_test.cpp.i
 
@@ -2995,7 +2852,6 @@ tests/debug_namespace_test.s: tests/debug_namespace_test.cpp.s
 
 # target to generate assembly for a file
 tests/debug_namespace_test.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/debug_namespace_test.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_namespace_test.dir/build.make CMakeFiles/debug_namespace_test.dir/tests/debug_namespace_test.cpp.s
 .PHONY : tests/debug_namespace_test.cpp.s
 
@@ -3004,7 +2860,6 @@ tests/debug_parser.o: tests/debug_parser.cpp.o
 
 # target to build an object file
 tests/debug_parser.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/debug_parser.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_parser.dir/build.make CMakeFiles/debug_parser.dir/tests/debug_parser.cpp.o
 .PHONY : tests/debug_parser.cpp.o
 
@@ -3013,7 +2868,6 @@ tests/debug_parser.i: tests/debug_parser.cpp.i
 
 # target to preprocess a source file
 tests/debug_parser.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/debug_parser.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_parser.dir/build.make CMakeFiles/debug_parser.dir/tests/debug_parser.cpp.i
 .PHONY : tests/debug_parser.cpp.i
 
@@ -3022,7 +2876,6 @@ tests/debug_parser.s: tests/debug_parser.cpp.s
 
 # target to generate assembly for a file
 tests/debug_parser.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/debug_parser.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_parser.dir/build.make CMakeFiles/debug_parser.dir/tests/debug_parser.cpp.s
 .PHONY : tests/debug_parser.cpp.s
 
@@ -3031,7 +2884,6 @@ tests/debug_style_parser.o: tests/debug_style_parser.cpp.o
 
 # target to build an object file
 tests/debug_style_parser.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/debug_style_parser.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_style_parser.dir/build.make CMakeFiles/debug_style_parser.dir/tests/debug_style_parser.cpp.o
 .PHONY : tests/debug_style_parser.cpp.o
 
@@ -3040,7 +2892,6 @@ tests/debug_style_parser.i: tests/debug_style_parser.cpp.i
 
 # target to preprocess a source file
 tests/debug_style_parser.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/debug_style_parser.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_style_parser.dir/build.make CMakeFiles/debug_style_parser.dir/tests/debug_style_parser.cpp.i
 .PHONY : tests/debug_style_parser.cpp.i
 
@@ -3049,7 +2900,6 @@ tests/debug_style_parser.s: tests/debug_style_parser.cpp.s
 
 # target to generate assembly for a file
 tests/debug_style_parser.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/debug_style_parser.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_style_parser.dir/build.make CMakeFiles/debug_style_parser.dir/tests/debug_style_parser.cpp.s
 .PHONY : tests/debug_style_parser.cpp.s
 
@@ -3058,7 +2908,6 @@ tests/debug_template_parser.o: tests/debug_template_parser.cpp.o
 
 # target to build an object file
 tests/debug_template_parser.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/debug_template_parser.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_template_parser.dir/build.make CMakeFiles/debug_template_parser.dir/tests/debug_template_parser.cpp.o
 .PHONY : tests/debug_template_parser.cpp.o
 
@@ -3067,7 +2916,6 @@ tests/debug_template_parser.i: tests/debug_template_parser.cpp.i
 
 # target to preprocess a source file
 tests/debug_template_parser.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/debug_template_parser.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_template_parser.dir/build.make CMakeFiles/debug_template_parser.dir/tests/debug_template_parser.cpp.i
 .PHONY : tests/debug_template_parser.cpp.i
 
@@ -3076,7 +2924,6 @@ tests/debug_template_parser.s: tests/debug_template_parser.cpp.s
 
 # target to generate assembly for a file
 tests/debug_template_parser.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/debug_template_parser.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_template_parser.dir/build.make CMakeFiles/debug_template_parser.dir/tests/debug_template_parser.cpp.s
 .PHONY : tests/debug_template_parser.cpp.s
 
@@ -3085,7 +2932,6 @@ tests/enhanced_import_namespace_test.o: tests/enhanced_import_namespace_test.cpp
 
 # target to build an object file
 tests/enhanced_import_namespace_test.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/enhanced_import_namespace_test.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/enhanced_import_namespace_demo.dir/build.make CMakeFiles/enhanced_import_namespace_demo.dir/tests/enhanced_import_namespace_test.cpp.o
 .PHONY : tests/enhanced_import_namespace_test.cpp.o
 
@@ -3094,7 +2940,6 @@ tests/enhanced_import_namespace_test.i: tests/enhanced_import_namespace_test.cpp
 
 # target to preprocess a source file
 tests/enhanced_import_namespace_test.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/enhanced_import_namespace_test.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/enhanced_import_namespace_demo.dir/build.make CMakeFiles/enhanced_import_namespace_demo.dir/tests/enhanced_import_namespace_test.cpp.i
 .PHONY : tests/enhanced_import_namespace_test.cpp.i
 
@@ -3103,40 +2948,14 @@ tests/enhanced_import_namespace_test.s: tests/enhanced_import_namespace_test.cpp
 
 # target to generate assembly for a file
 tests/enhanced_import_namespace_test.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/enhanced_import_namespace_test.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/enhanced_import_namespace_demo.dir/build.make CMakeFiles/enhanced_import_namespace_demo.dir/tests/enhanced_import_namespace_test.cpp.s
 .PHONY : tests/enhanced_import_namespace_test.cpp.s
-
-tests/independent_compiler_architecture_test.o: tests/independent_compiler_architecture_test.cpp.o
-.PHONY : tests/independent_compiler_architecture_test.o
-
-# target to build an object file
-tests/independent_compiler_architecture_test.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/independent_compiler_architecture_test.cpp.o
-.PHONY : tests/independent_compiler_architecture_test.cpp.o
-
-tests/independent_compiler_architecture_test.i: tests/independent_compiler_architecture_test.cpp.i
-.PHONY : tests/independent_compiler_architecture_test.i
-
-# target to preprocess a source file
-tests/independent_compiler_architecture_test.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/independent_compiler_architecture_test.cpp.i
-.PHONY : tests/independent_compiler_architecture_test.cpp.i
-
-tests/independent_compiler_architecture_test.s: tests/independent_compiler_architecture_test.cpp.s
-.PHONY : tests/independent_compiler_architecture_test.s
-
-# target to generate assembly for a file
-tests/independent_compiler_architecture_test.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/independent_compiler_architecture_test.cpp.s
-.PHONY : tests/independent_compiler_architecture_test.cpp.s
 
 tests/parser_generator_integration_test.o: tests/parser_generator_integration_test.cpp.o
 .PHONY : tests/parser_generator_integration_test.o
 
 # target to build an object file
 tests/parser_generator_integration_test.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/parser_generator_integration_test.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/tests/parser_generator_integration_test.cpp.o
 .PHONY : tests/parser_generator_integration_test.cpp.o
 
@@ -3145,7 +2964,6 @@ tests/parser_generator_integration_test.i: tests/parser_generator_integration_te
 
 # target to preprocess a source file
 tests/parser_generator_integration_test.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/parser_generator_integration_test.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/tests/parser_generator_integration_test.cpp.i
 .PHONY : tests/parser_generator_integration_test.cpp.i
 
@@ -3154,7 +2972,6 @@ tests/parser_generator_integration_test.s: tests/parser_generator_integration_te
 
 # target to generate assembly for a file
 tests/parser_generator_integration_test.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/parser_generator_integration_test.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/tests/parser_generator_integration_test.cpp.s
 .PHONY : tests/parser_generator_integration_test.cpp.s
 
@@ -3163,7 +2980,6 @@ tests/quick_import_namespace_test.o: tests/quick_import_namespace_test.cpp.o
 
 # target to build an object file
 tests/quick_import_namespace_test.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/quick_import_namespace_test.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/quick_import_namespace_test.dir/build.make CMakeFiles/quick_import_namespace_test.dir/tests/quick_import_namespace_test.cpp.o
 .PHONY : tests/quick_import_namespace_test.cpp.o
 
@@ -3172,7 +2988,6 @@ tests/quick_import_namespace_test.i: tests/quick_import_namespace_test.cpp.i
 
 # target to preprocess a source file
 tests/quick_import_namespace_test.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/quick_import_namespace_test.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/quick_import_namespace_test.dir/build.make CMakeFiles/quick_import_namespace_test.dir/tests/quick_import_namespace_test.cpp.i
 .PHONY : tests/quick_import_namespace_test.cpp.i
 
@@ -3181,7 +2996,6 @@ tests/quick_import_namespace_test.s: tests/quick_import_namespace_test.cpp.s
 
 # target to generate assembly for a file
 tests/quick_import_namespace_test.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/quick_import_namespace_test.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/quick_import_namespace_test.dir/build.make CMakeFiles/quick_import_namespace_test.dir/tests/quick_import_namespace_test.cpp.s
 .PHONY : tests/quick_import_namespace_test.cpp.s
 
@@ -3190,7 +3004,6 @@ tests/raii_state_management_demo.o: tests/raii_state_management_demo.cpp.o
 
 # target to build an object file
 tests/raii_state_management_demo.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/raii_state_management_demo.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_demo.dir/build.make CMakeFiles/raii_state_management_demo.dir/tests/raii_state_management_demo.cpp.o
 .PHONY : tests/raii_state_management_demo.cpp.o
 
@@ -3199,7 +3012,6 @@ tests/raii_state_management_demo.i: tests/raii_state_management_demo.cpp.i
 
 # target to preprocess a source file
 tests/raii_state_management_demo.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/raii_state_management_demo.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_demo.dir/build.make CMakeFiles/raii_state_management_demo.dir/tests/raii_state_management_demo.cpp.i
 .PHONY : tests/raii_state_management_demo.cpp.i
 
@@ -3208,7 +3020,6 @@ tests/raii_state_management_demo.s: tests/raii_state_management_demo.cpp.s
 
 # target to generate assembly for a file
 tests/raii_state_management_demo.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/raii_state_management_demo.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_demo.dir/build.make CMakeFiles/raii_state_management_demo.dir/tests/raii_state_management_demo.cpp.s
 .PHONY : tests/raii_state_management_demo.cpp.s
 
@@ -3217,7 +3028,6 @@ tests/raii_state_management_integration_test.o: tests/raii_state_management_inte
 
 # target to build an object file
 tests/raii_state_management_integration_test.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/raii_state_management_integration_test.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/tests/raii_state_management_integration_test.cpp.o
 .PHONY : tests/raii_state_management_integration_test.cpp.o
 
@@ -3226,7 +3036,6 @@ tests/raii_state_management_integration_test.i: tests/raii_state_management_inte
 
 # target to preprocess a source file
 tests/raii_state_management_integration_test.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/raii_state_management_integration_test.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/tests/raii_state_management_integration_test.cpp.i
 .PHONY : tests/raii_state_management_integration_test.cpp.i
 
@@ -3235,7 +3044,6 @@ tests/raii_state_management_integration_test.s: tests/raii_state_management_inte
 
 # target to generate assembly for a file
 tests/raii_state_management_integration_test.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/raii_state_management_integration_test.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/tests/raii_state_management_integration_test.cpp.s
 .PHONY : tests/raii_state_management_integration_test.cpp.s
 
@@ -3244,7 +3052,6 @@ tests/slice_scanner_test.o: tests/slice_scanner_test.cpp.o
 
 # target to build an object file
 tests/slice_scanner_test.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/slice_scanner_test.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/tests/slice_scanner_test.cpp.o
 .PHONY : tests/slice_scanner_test.cpp.o
 
@@ -3253,7 +3060,6 @@ tests/slice_scanner_test.i: tests/slice_scanner_test.cpp.i
 
 # target to preprocess a source file
 tests/slice_scanner_test.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/slice_scanner_test.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/tests/slice_scanner_test.cpp.i
 .PHONY : tests/slice_scanner_test.cpp.i
 
@@ -3262,7 +3068,6 @@ tests/slice_scanner_test.s: tests/slice_scanner_test.cpp.s
 
 # target to generate assembly for a file
 tests/slice_scanner_test.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/slice_scanner_test.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/tests/slice_scanner_test.cpp.s
 .PHONY : tests/slice_scanner_test.cpp.s
 
@@ -3271,7 +3076,6 @@ tests/token_test.o: tests/token_test.cpp.o
 
 # target to build an object file
 tests/token_test.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/token_test.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/tests/token_test.cpp.o
 .PHONY : tests/token_test.cpp.o
 
@@ -3280,7 +3084,6 @@ tests/token_test.i: tests/token_test.cpp.i
 
 # target to preprocess a source file
 tests/token_test.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/token_test.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/tests/token_test.cpp.i
 .PHONY : tests/token_test.cpp.i
 
@@ -3289,7 +3092,6 @@ tests/token_test.s: tests/token_test.cpp.s
 
 # target to generate assembly for a file
 tests/token_test.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/token_test.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/tests/token_test.cpp.s
 .PHONY : tests/token_test.cpp.s
 
@@ -3506,9 +3308,6 @@ help:
 	@echo "... tests/enhanced_import_namespace_test.o"
 	@echo "... tests/enhanced_import_namespace_test.i"
 	@echo "... tests/enhanced_import_namespace_test.s"
-	@echo "... tests/independent_compiler_architecture_test.o"
-	@echo "... tests/independent_compiler_architecture_test.i"
-	@echo "... tests/independent_compiler_architecture_test.s"
 	@echo "... tests/parser_generator_integration_test.o"
 	@echo "... tests/parser_generator_integration_test.i"
 	@echo "... tests/parser_generator_integration_test.s"

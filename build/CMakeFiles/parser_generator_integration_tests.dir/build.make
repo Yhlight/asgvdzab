@@ -492,34 +492,6 @@ CMakeFiles/parser_generator_integration_tests.dir/src/scanner/unified_scanner.cp
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/parser_generator_integration_tests.dir/src/scanner/unified_scanner.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/scanner/unified_scanner.cpp -o CMakeFiles/parser_generator_integration_tests.dir/src/scanner/unified_scanner.cpp.s
 
-CMakeFiles/parser_generator_integration_tests.dir/src/tools/chtl_cjmod_tool.cpp.o: CMakeFiles/parser_generator_integration_tests.dir/flags.make
-CMakeFiles/parser_generator_integration_tests.dir/src/tools/chtl_cjmod_tool.cpp.o: /workspace/src/tools/chtl_cjmod_tool.cpp
-CMakeFiles/parser_generator_integration_tests.dir/src/tools/chtl_cjmod_tool.cpp.o: CMakeFiles/parser_generator_integration_tests.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_31) "Building CXX object CMakeFiles/parser_generator_integration_tests.dir/src/tools/chtl_cjmod_tool.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/parser_generator_integration_tests.dir/src/tools/chtl_cjmod_tool.cpp.o -MF CMakeFiles/parser_generator_integration_tests.dir/src/tools/chtl_cjmod_tool.cpp.o.d -o CMakeFiles/parser_generator_integration_tests.dir/src/tools/chtl_cjmod_tool.cpp.o -c /workspace/src/tools/chtl_cjmod_tool.cpp
-
-CMakeFiles/parser_generator_integration_tests.dir/src/tools/chtl_cjmod_tool.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/parser_generator_integration_tests.dir/src/tools/chtl_cjmod_tool.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/tools/chtl_cjmod_tool.cpp > CMakeFiles/parser_generator_integration_tests.dir/src/tools/chtl_cjmod_tool.cpp.i
-
-CMakeFiles/parser_generator_integration_tests.dir/src/tools/chtl_cjmod_tool.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/parser_generator_integration_tests.dir/src/tools/chtl_cjmod_tool.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/tools/chtl_cjmod_tool.cpp -o CMakeFiles/parser_generator_integration_tests.dir/src/tools/chtl_cjmod_tool.cpp.s
-
-CMakeFiles/parser_generator_integration_tests.dir/src/tools/chtl_cmod_tool.cpp.o: CMakeFiles/parser_generator_integration_tests.dir/flags.make
-CMakeFiles/parser_generator_integration_tests.dir/src/tools/chtl_cmod_tool.cpp.o: /workspace/src/tools/chtl_cmod_tool.cpp
-CMakeFiles/parser_generator_integration_tests.dir/src/tools/chtl_cmod_tool.cpp.o: CMakeFiles/parser_generator_integration_tests.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_32) "Building CXX object CMakeFiles/parser_generator_integration_tests.dir/src/tools/chtl_cmod_tool.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/parser_generator_integration_tests.dir/src/tools/chtl_cmod_tool.cpp.o -MF CMakeFiles/parser_generator_integration_tests.dir/src/tools/chtl_cmod_tool.cpp.o.d -o CMakeFiles/parser_generator_integration_tests.dir/src/tools/chtl_cmod_tool.cpp.o -c /workspace/src/tools/chtl_cmod_tool.cpp
-
-CMakeFiles/parser_generator_integration_tests.dir/src/tools/chtl_cmod_tool.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/parser_generator_integration_tests.dir/src/tools/chtl_cmod_tool.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/tools/chtl_cmod_tool.cpp > CMakeFiles/parser_generator_integration_tests.dir/src/tools/chtl_cmod_tool.cpp.i
-
-CMakeFiles/parser_generator_integration_tests.dir/src/tools/chtl_cmod_tool.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/parser_generator_integration_tests.dir/src/tools/chtl_cmod_tool.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/tools/chtl_cmod_tool.cpp -o CMakeFiles/parser_generator_integration_tests.dir/src/tools/chtl_cmod_tool.cpp.s
-
 # Object files for target parser_generator_integration_tests
 parser_generator_integration_tests_OBJECTS = \
 "CMakeFiles/parser_generator_integration_tests.dir/tests/parser_generator_integration_test.cpp.o" \
@@ -551,9 +523,7 @@ parser_generator_integration_tests_OBJECTS = \
 "CMakeFiles/parser_generator_integration_tests.dir/src/parsers/chtl_style_parser.cpp.o" \
 "CMakeFiles/parser_generator_integration_tests.dir/src/parsers/chtl_template_parser.cpp.o" \
 "CMakeFiles/parser_generator_integration_tests.dir/src/scanner/slice_scanner.cpp.o" \
-"CMakeFiles/parser_generator_integration_tests.dir/src/scanner/unified_scanner.cpp.o" \
-"CMakeFiles/parser_generator_integration_tests.dir/src/tools/chtl_cjmod_tool.cpp.o" \
-"CMakeFiles/parser_generator_integration_tests.dir/src/tools/chtl_cmod_tool.cpp.o"
+"CMakeFiles/parser_generator_integration_tests.dir/src/scanner/unified_scanner.cpp.o"
 
 # External object files for target parser_generator_integration_tests
 parser_generator_integration_tests_EXTERNAL_OBJECTS =
@@ -588,12 +558,10 @@ bin/parser_generator_integration_tests: CMakeFiles/parser_generator_integration_
 bin/parser_generator_integration_tests: CMakeFiles/parser_generator_integration_tests.dir/src/parsers/chtl_template_parser.cpp.o
 bin/parser_generator_integration_tests: CMakeFiles/parser_generator_integration_tests.dir/src/scanner/slice_scanner.cpp.o
 bin/parser_generator_integration_tests: CMakeFiles/parser_generator_integration_tests.dir/src/scanner/unified_scanner.cpp.o
-bin/parser_generator_integration_tests: CMakeFiles/parser_generator_integration_tests.dir/src/tools/chtl_cjmod_tool.cpp.o
-bin/parser_generator_integration_tests: CMakeFiles/parser_generator_integration_tests.dir/src/tools/chtl_cmod_tool.cpp.o
 bin/parser_generator_integration_tests: CMakeFiles/parser_generator_integration_tests.dir/build.make
 bin/parser_generator_integration_tests: CMakeFiles/parser_generator_integration_tests.dir/compiler_depend.ts
 bin/parser_generator_integration_tests: CMakeFiles/parser_generator_integration_tests.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_33) "Linking CXX executable bin/parser_generator_integration_tests"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_31) "Linking CXX executable bin/parser_generator_integration_tests"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/parser_generator_integration_tests.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

@@ -32,13 +32,10 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/workspace/src/parsers/chtl_js_parser.cpp" "CMakeFiles/comprehensive_lexer_tests.dir/src/parsers/chtl_js_parser.cpp.o" "gcc" "CMakeFiles/comprehensive_lexer_tests.dir/src/parsers/chtl_js_parser.cpp.o.d"
   "/workspace/src/parsers/chtl_namespace_parser.cpp" "CMakeFiles/comprehensive_lexer_tests.dir/src/parsers/chtl_namespace_parser.cpp.o" "gcc" "CMakeFiles/comprehensive_lexer_tests.dir/src/parsers/chtl_namespace_parser.cpp.o.d"
   "/workspace/src/parsers/chtl_origin_parser.cpp" "CMakeFiles/comprehensive_lexer_tests.dir/src/parsers/chtl_origin_parser.cpp.o" "gcc" "CMakeFiles/comprehensive_lexer_tests.dir/src/parsers/chtl_origin_parser.cpp.o.d"
-  "/workspace/src/parsers/chtl_parser.cpp" "CMakeFiles/comprehensive_lexer_tests.dir/src/parsers/chtl_parser.cpp.o" "gcc" "CMakeFiles/comprehensive_lexer_tests.dir/src/parsers/chtl_parser.cpp.o.d"
   "/workspace/src/parsers/chtl_style_parser.cpp" "CMakeFiles/comprehensive_lexer_tests.dir/src/parsers/chtl_style_parser.cpp.o" "gcc" "CMakeFiles/comprehensive_lexer_tests.dir/src/parsers/chtl_style_parser.cpp.o.d"
   "/workspace/src/parsers/chtl_template_parser.cpp" "CMakeFiles/comprehensive_lexer_tests.dir/src/parsers/chtl_template_parser.cpp.o" "gcc" "CMakeFiles/comprehensive_lexer_tests.dir/src/parsers/chtl_template_parser.cpp.o.d"
   "/workspace/src/scanner/slice_scanner.cpp" "CMakeFiles/comprehensive_lexer_tests.dir/src/scanner/slice_scanner.cpp.o" "gcc" "CMakeFiles/comprehensive_lexer_tests.dir/src/scanner/slice_scanner.cpp.o.d"
   "/workspace/src/scanner/unified_scanner.cpp" "CMakeFiles/comprehensive_lexer_tests.dir/src/scanner/unified_scanner.cpp.o" "gcc" "CMakeFiles/comprehensive_lexer_tests.dir/src/scanner/unified_scanner.cpp.o.d"
-  "/workspace/src/tools/chtl_cjmod_tool.cpp" "CMakeFiles/comprehensive_lexer_tests.dir/src/tools/chtl_cjmod_tool.cpp.o" "gcc" "CMakeFiles/comprehensive_lexer_tests.dir/src/tools/chtl_cjmod_tool.cpp.o.d"
-  "/workspace/src/tools/chtl_cmod_tool.cpp" "CMakeFiles/comprehensive_lexer_tests.dir/src/tools/chtl_cmod_tool.cpp.o" "gcc" "CMakeFiles/comprehensive_lexer_tests.dir/src/tools/chtl_cmod_tool.cpp.o.d"
   "/workspace/tests/comprehensive_lexer_test.cpp" "CMakeFiles/comprehensive_lexer_tests.dir/tests/comprehensive_lexer_test.cpp.o" "gcc" "CMakeFiles/comprehensive_lexer_tests.dir/tests/comprehensive_lexer_test.cpp.o.d"
   "" "bin/comprehensive_lexer_tests" "gcc" "CMakeFiles/comprehensive_lexer_tests.dir/link.d"
   )

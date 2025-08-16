@@ -62,8 +62,8 @@ struct CHTLParserConfig {
  * - 导入系统 ([Import])
  * - 命名空间 ([Namespace])
  * - 配置组 ([Configuration])
- * - 注释 (//, /**/, --)
- * - 字面量 (双引号、单引号、无修饰)
+ * - 注释 (//, 块注释, --)
+ * - 字面量 (双引号, 单引号, 无修饰)
  * - CE对等式 (: 与 = 等价)
  */
 class CHTLParser {

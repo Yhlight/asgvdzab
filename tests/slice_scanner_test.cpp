@@ -1,6 +1,8 @@
-#include "common/slice_scanner.hpp"
+#include "scanner/unified_scanner.hpp"
 #include <cassert>
 #include <iostream>
+
+using namespace chtl;
 
 void testBasicCHTLScanning() {
     std::cout << "测试基础CHTL代码扫描..." << std::endl;
@@ -21,7 +23,7 @@ div {
 }
 )";
 
-    SliceScanner scanner;
+    CHTLUnifiedScanner scanner;
     auto result = scanner.scan(chtlCode);
     
     // 验证扫描成功
@@ -47,7 +49,7 @@ div {
 void testCHTLJSFeatureDetection() {
     std::cout << "测试CHTL JS特征检测..." << std::endl;
     
-    SliceScanner scanner;
+    CHTLUnifiedScanner scanner;
     
     // 测试增强选择器
     std::string selectorCode = R"(
@@ -102,7 +104,7 @@ script {
 }
 )";
 
-    SliceScanner scanner;
+    CHTLUnifiedScanner scanner;
     auto result = scanner.scan(listenCode);
     
     assert(result.success);
@@ -135,7 +137,7 @@ script {
 }
 )";
 
-    SliceScanner scanner;
+    CHTLUnifiedScanner scanner;
     auto result = scanner.scan(delegateCode);
     
     assert(result.success);
@@ -176,7 +178,7 @@ script {
 }
 )";
 
-    SliceScanner scanner;
+    CHTLUnifiedScanner scanner;
     auto result = scanner.scan(animateCode);
     
     assert(result.success);
@@ -225,7 +227,7 @@ div {
 }
 )";
 
-    SliceScanner scanner;
+    CHTLUnifiedScanner scanner;
     auto result = scanner.scan(mixedCode);
     
     assert(result.success);

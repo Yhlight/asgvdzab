@@ -251,12 +251,12 @@ void testStateUtils() {
     assert(!StateUtils::allowsNesting(LexerStateType::ERROR_STATE));
     
     // 测试代码段类型转换
-    assert(StateUtils::getCodeSegmentType(LexerStateType::IN_CHTL_BLOCK) == CodeSegmentType::CHTL);
-    assert(StateUtils::getCodeSegmentType(LexerStateType::IN_CHTL_JS_BLOCK) == CodeSegmentType::CHTL_JS);
-    assert(StateUtils::getCodeSegmentType(LexerStateType::IN_CSS_BLOCK) == CodeSegmentType::CSS);
+    assert(StateUtils::getCodeSegmentType(LexerStateType::IN_CHTL_BLOCK) == CodeSegmentType::CHTL_CORE);
+    assert(StateUtils::getCodeSegmentType(LexerStateType::IN_CHTL_JS_BLOCK) == CodeSegmentType::CHTL_JS_SCRIPT);
+    assert(StateUtils::getCodeSegmentType(LexerStateType::IN_CSS_BLOCK) == CodeSegmentType::CSS_LOCAL_STYLE);
     
-    assert(StateUtils::getStateFromCodeSegmentType(CodeSegmentType::CHTL) == LexerStateType::IN_CHTL_BLOCK);
-    assert(StateUtils::getStateFromCodeSegmentType(CodeSegmentType::CHTL_JS) == LexerStateType::IN_CHTL_JS_BLOCK);
+    assert(StateUtils::getStateFromCodeSegmentType(CodeSegmentType::CHTL_CORE) == LexerStateType::IN_CHTL_BLOCK);
+    assert(StateUtils::getStateFromCodeSegmentType(CodeSegmentType::CHTL_JS_SCRIPT) == LexerStateType::IN_CHTL_JS_BLOCK);
     
     std::cout << "✓ 状态工具类测试通过" << std::endl;
 }
@@ -316,7 +316,7 @@ void testComplexScenarios() {
     
     // 模拟属性解析 color: red;
     CHTLToken colorToken(CHTLTokenType::IDENTIFIER, "color", Position{2, 5, 32});
-    CHTLToken colonToken(CHTLTokenType::COLON, ":", Position{2, 10, 37});
+    CHTLToken colonToken(CHTLTokenType::COLON_EQUALS, ":", Position{2, 10, 37});
     stateManager.transitionOnToken(colonToken);
     assert(stateManager.isExpectingValue());
     

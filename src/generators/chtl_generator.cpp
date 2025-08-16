@@ -402,6 +402,10 @@ void CHTLGenerator::generateComment(CHTLASTNodePtr node) {
         case CHTLASTNodeType::COMMENT_GENERATOR:
             htmlStream_ << "<!-- " << commentNode->content << " -->";
             break;
+        default:
+            // 对于其他类型的节点，生成为普通注释
+            htmlStream_ << "<!-- " << commentNode->content << " -->";
+            break;
     }
     
     if (config_.enablePrettyPrint) htmlStream_ << "\n";
