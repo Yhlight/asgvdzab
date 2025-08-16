@@ -5,6 +5,8 @@
 #include <regex>
 
 using namespace chtl;
+using namespace antlr4;
+using namespace antlr4::tree;
 
 // CSSSelector实现
 void CSSSelector::calculateSpecificity() {
@@ -68,22 +70,33 @@ CSSCompileResult ANTLRCSSCompiler::compileCSS(const std::string& cssCode, const 
     result.originalSize = cssCode.length();
     
     try {
-        // 使用基于正则表达式的标准CSS解析，避免ANTLR复杂性
-        std::cout << "开始标准CSS编译..." << std::endl;
+        std::cout << "开始ANTLR CSS编译..." << std::endl;
         
-        // 提取标准选择器
-        if (options.extractSelectors) {
-            result.selectors = extractStandardSelectorsRegex(cssCode);
-            std::cout << "提取的标准选择器数量: " << result.selectors.size() << std::endl;
+        // 使用ANTLR解析CSS
+        std::vector<std::string> parseErrors;
+        auto parseTree = parseCSS(cssCode, parseErrors);
+        
+        if (!parseErrors.empty()) {
+            result.errors.insert(result.errors.end(), parseErrors.begin(), parseErrors.end());
         }
         
-        // 提取CSS规则
-        result.rules = extractCSSRulesRegex(cssCode);
-        std::cout << "提取的CSS规则数量: " << result.rules.size() << std::endl;
-        
-        // 提取颜色
-        if (options.extractColors) {
-            result.colors = StandardCSSUtils::extractColorsFromValue(cssCode);
+        if (parseTree) {
+            // 从解析树中提取信息
+            extractInfoFromParseTree(parseTree.get(), result, options);
+            std::cout << "ANTLR解析成功，提取的选择器数量: " << result.selectors.size() << std::endl;
+            std::cout << "提取的CSS规则数量: " << result.rules.size() << std::endl;
+        } else {
+            // 如果ANTLR解析失败，回退到正则表达式解析
+            std::cout << "ANTLR解析失败，回退到正则表达式解析..." << std::endl;
+            
+            if (options.extractSelectors) {
+                result.selectors = extractStandardSelectorsRegex(cssCode);
+            }
+            result.rules = extractCSSRulesRegex(cssCode);
+            
+            if (options.extractColors) {
+                result.colors = StandardCSSUtils::extractColorsFromValue(cssCode);
+            }
         }
         
         // 验证标准合规性
@@ -92,7 +105,7 @@ CSSCompileResult ANTLRCSSCompiler::compileCSS(const std::string& cssCode, const 
         }
         
         // 生成CSS
-        result.css = cssCode; // 基础版本直接返回原始CSS
+        result.css = cssCode;
         if (options.minify) {
             result.css = StandardCSSUtils::removeWhitespace(result.css);
         }
@@ -533,4 +546,157 @@ std::string StandardCSSUtils::generateCSS3ComplianceReport(const std::vector<CSS
     report << "- 选择器合规率: " << (totalSelectors == 0 ? 0 : (compliantSelectors * 100 / totalSelectors)) << "%\n\n";
     
     return report.str();
+}
+
+// ========== ANTLR监听器实现 ==========
+
+void CSSListener::enterStylesheet(CSS3Parser::StylesheetContext *ctx) {
+    // 重置状态
+    selectors_.clear();
+    rules_.clear();
+    colors_.clear();
+    fonts_.clear();
+    errors_.clear();
+}
+
+void CSSListener::exitStylesheet(CSS3Parser::StylesheetContext *ctx) {
+    // 样式表解析完成
+}
+
+void CSSListener::enterRuleset(CSS3Parser::RulesetContext *ctx) {
+    // 开始新的CSS规则
+    currentRule_ = std::make_unique<CSSRule>();
+}
+
+void CSSListener::exitRuleset(CSS3Parser::RulesetContext *ctx) {
+    // 完成当前CSS规则
+    if (currentRule_ && !currentRule_->selectors.empty()) {
+        rules_.push_back(*currentRule_);
+        currentRule_.reset();
+    }
+}
+
+void CSSListener::enterSelector(CSS3Parser::SelectorContext *ctx) {
+    if (ctx) {
+        std::string selectorText = ctx->getText();
+        
+        // 分析选择器类型
+        StandardCSSSelector selectorType = StandardCSSSelector::TYPE;
+        if (selectorText.find('#') != std::string::npos) {
+            selectorType = StandardCSSSelector::ID;
+        } else if (selectorText.find('.') != std::string::npos) {
+            selectorType = StandardCSSSelector::CLASS;
+        } else if (selectorText.find('[') != std::string::npos) {
+            selectorType = StandardCSSSelector::ATTRIBUTE;
+        } else if (selectorText.find(':') != std::string::npos) {
+            if (selectorText.find("::") != std::string::npos) {
+                selectorType = StandardCSSSelector::PSEUDO_ELEMENT;
+            } else {
+                selectorType = StandardCSSSelector::PSEUDO_CLASS;
+            }
+        }
+        
+        // 创建选择器对象
+        CSSSelector selector(selectorType, selectorText);
+        selector.originalText = selectorText;
+        selectors_.push_back(selector);
+        
+        // 更新当前规则
+        if (currentRule_) {
+            currentRule_->selectors.push_back(selector);
+        }
+    }
+}
+
+void CSSListener::enterDeclaration(CSS3Parser::DeclarationContext *ctx) {
+    if (ctx) {
+        std::string declarationText = ctx->getText();
+        
+        // 提取属性和值
+        size_t colonPos = declarationText.find(':');
+        if (colonPos != std::string::npos && colonPos + 1 < declarationText.length()) {
+            std::string property = declarationText.substr(0, colonPos);
+            std::string value = declarationText.substr(colonPos + 1);
+            
+            // 清理空白字符
+            property.erase(std::remove_if(property.begin(), property.end(), ::isspace), property.end());
+            value.erase(0, value.find_first_not_of(" \t"));
+            value.erase(value.find_last_not_of(" \t") + 1);
+            
+            if (currentRule_) {
+                currentRule_->properties.emplace_back(property, value);
+            }
+            
+            // 提取颜色值
+            std::regex colorRegex(R"(#[0-9a-fA-F]{3,6}|rgb\([^)]+\)|rgba\([^)]+\)|hsl\([^)]+\)|hsla\([^)]+\))");
+            std::smatch match;
+            if (std::regex_search(value, match, colorRegex)) {
+                colors_.push_back(match.str());
+            }
+            
+            // 提取字体信息
+            if (property == "font-family" || property == "font") {
+                fonts_.push_back(value);
+            }
+        }
+    }
+}
+
+void CSSErrorListener::syntaxError(antlr4::Recognizer *recognizer, antlr4::Token *offendingSymbol,
+                                  size_t line, size_t charPositionInLine,
+                                  const std::string &msg, std::exception_ptr e) {
+    std::ostringstream error;
+    error << "语法错误 第" << line << "行第" << charPositionInLine << "列: " << msg;
+    errors_.push_back(error.str());
+}
+
+// ========== ANTLR解析方法实现 ==========
+
+std::unique_ptr<ParseTree> ANTLRCSSCompiler::parseCSS(const std::string& cssCode, std::vector<std::string>& errors) {
+    try {
+        std::string inputCopy = cssCode;  // 确保字符串的生命周期
+        ANTLRInputStream input(inputCopy);
+        CSS3Lexer lexer(&input);
+        CommonTokenStream tokens(&lexer);
+        CSS3Parser parser(&tokens);
+        
+        // 添加错误监听器
+        CSSErrorListener errorListener;
+        parser.removeErrorListeners();
+        lexer.removeErrorListeners();
+        parser.addErrorListener(&errorListener);
+        lexer.addErrorListener(&errorListener);
+        
+        auto result = parser.stylesheet();
+        
+        if (errorListener.hasErrors()) {
+            auto listenerErrors = errorListener.getErrors();
+            errors.insert(errors.end(), listenerErrors.begin(), listenerErrors.end());
+        }
+        
+        return std::unique_ptr<ParseTree>(result);
+    } catch (const std::exception& e) {
+        errors.push_back(std::string("ANTLR解析错误: ") + e.what());
+        return nullptr;
+    }
+}
+
+void ANTLRCSSCompiler::extractInfoFromParseTree(ParseTree* tree, CSSCompileResult& result, const CSSCompileOptions& options) {
+    if (!tree) return;
+    
+    try {
+        CSSListener listener;
+        ParseTreeWalker walker;
+        walker.walk(&listener, tree);
+        
+        result.selectors = listener.getSelectors();
+        result.rules = listener.getRules();
+        result.colors = listener.getColors();
+        result.fonts = listener.getFonts();
+        
+        auto listenerErrors = listener.getErrors();
+        result.errors.insert(result.errors.end(), listenerErrors.begin(), listenerErrors.end());
+    } catch (const std::exception& e) {
+        result.errors.push_back(std::string("信息提取错误: ") + e.what());
+    }
 }

@@ -1,5 +1,5 @@
 
-// Generated from JavaScript.g4 by ANTLR 4.9.2
+// Generated from grammars/JavaScript.g4 by ANTLR 4.13.1
 
 #pragma once
 

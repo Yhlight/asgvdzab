@@ -6,10 +6,55 @@
 #include <vector>
 #include <memory>
 
-// 标准JavaScript解析器 - 基于正则表达式
-// 专注于JavaScript基本语法元素的识别和分析
+// ANTLR4 JavaScript解析器 - 使用ANTLR 4.13.1
+#include "antlr4-runtime.h"
+#include "JavaScriptLexer.h"
+#include "JavaScriptParser.h"
+#include "JavaScriptBaseListener.h"
 
 namespace chtl {
+
+/**
+ * ANTLR JavaScript监听器类
+ * 用于遍历JavaScript解析树并提取信息
+ */
+class JSListener : public JavaScriptBaseListener {
+public:
+    void enterProgram(JavaScriptParser::ProgramContext *ctx) override;
+    void exitProgram(JavaScriptParser::ProgramContext *ctx) override;
+    void enterFunctionDeclaration(JavaScriptParser::FunctionDeclarationContext *ctx) override;
+    void enterVariableDeclaration(JavaScriptParser::VariableDeclarationContext *ctx) override;
+    // 注意：当前JavaScript语法文件没有ClassDeclarationContext
+    // void enterClassDeclaration(JavaScriptParser::ClassDeclarationContext *ctx) override;
+    
+    // 获取提取的信息
+    const std::vector<std::string>& getFunctions() const { return functions_; }
+    const std::vector<std::string>& getVariables() const { return variables_; }
+    const std::vector<std::string>& getClasses() const { return classes_; }
+    const std::vector<std::string>& getErrors() const { return errors_; }
+
+private:
+    std::vector<std::string> functions_;
+    std::vector<std::string> variables_;
+    std::vector<std::string> classes_;
+    std::vector<std::string> errors_;
+};
+
+/**
+ * ANTLR JavaScript错误监听器
+ */
+class JSErrorListener : public antlr4::BaseErrorListener {
+public:
+    void syntaxError(antlr4::Recognizer *recognizer, antlr4::Token *offendingSymbol,
+                    size_t line, size_t charPositionInLine,
+                    const std::string &msg, std::exception_ptr e) override;
+    
+    bool hasErrors() const { return !errors_.empty(); }
+    const std::vector<std::string>& getErrors() const { return errors_; }
+
+private:
+    std::vector<std::string> errors_;
+};
 
 /**
  * JavaScript编译选项
@@ -73,7 +118,11 @@ public:
     std::string convertToES6(const std::string& jsCode);
 
 private:
-    // 标准JavaScript解析（基于正则表达式）
+    // ANTLR解析方法
+    std::unique_ptr<antlr4::tree::ParseTree> parseJS(const std::string& jsCode, std::vector<std::string>& errors);
+    void extractInfoFromParseTree(antlr4::tree::ParseTree* tree, JSCompileResult& result, const JSCompileOptions& options);
+    
+    // 辅助方法 - 保留正则表达式作为备用
     std::vector<std::string> extractFunctionsRegex(const std::string& jsCode);
     std::vector<std::string> extractVariablesRegex(const std::string& jsCode);
     std::vector<std::string> extractClassesRegex(const std::string& jsCode);

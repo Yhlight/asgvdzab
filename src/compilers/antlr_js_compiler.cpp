@@ -5,6 +5,8 @@
 #include <regex>
 
 using namespace chtl;
+using namespace antlr4;
+using namespace antlr4::tree;
 
 // ANTLRJSCompiler实现
 ANTLRJSCompiler::ANTLRJSCompiler() {
@@ -41,28 +43,39 @@ JSCompileResult ANTLRJSCompiler::compileJS(const std::string& jsCode, const JSCo
     result.originalSize = jsCode.length();
     
     try {
-        std::cout << "开始标准JavaScript编译..." << std::endl;
+        std::cout << "开始ANTLR JavaScript编译..." << std::endl;
         
-        // 提取函数
-        if (options.extractFunctions) {
-            result.functions = extractFunctionsRegex(jsCode);
-            std::cout << "提取的函数数量: " << result.functions.size() << std::endl;
+        // 使用ANTLR解析JavaScript
+        std::vector<std::string> parseErrors;
+        auto parseTree = parseJS(jsCode, parseErrors);
+        
+        if (!parseErrors.empty()) {
+            result.errors.insert(result.errors.end(), parseErrors.begin(), parseErrors.end());
         }
         
-        // 提取变量
-        if (options.extractVariables) {
-            result.variables = extractVariablesRegex(jsCode);
+        if (parseTree) {
+            // 从解析树中提取信息
+            extractInfoFromParseTree(parseTree.get(), result, options);
+            std::cout << "ANTLR解析成功，提取的函数数量: " << result.functions.size() << std::endl;
             std::cout << "提取的变量数量: " << result.variables.size() << std::endl;
-        }
-        
-        // 提取类
-        if (options.extractClasses) {
-            result.classes = extractClassesRegex(jsCode);
             std::cout << "提取的类数量: " << result.classes.size() << std::endl;
+        } else {
+            // 如果ANTLR解析失败，回退到正则表达式解析
+            std::cout << "ANTLR解析失败，回退到正则表达式解析..." << std::endl;
+            
+            if (options.extractFunctions) {
+                result.functions = extractFunctionsRegex(jsCode);
+            }
+            if (options.extractVariables) {
+                result.variables = extractVariablesRegex(jsCode);
+            }
+            if (options.extractClasses) {
+                result.classes = extractClassesRegex(jsCode);
+            }
         }
         
         // 生成JavaScript
-        result.javascript = jsCode; // 基础版本直接返回原始代码
+        result.javascript = jsCode;
         if (options.minify) {
             result.javascript = JSUtils::removeWhitespace(result.javascript);
         }
@@ -70,7 +83,7 @@ JSCompileResult ANTLRJSCompiler::compileJS(const std::string& jsCode, const JSCo
         result.compiledSize = result.javascript.length();
         result.success = true;
         
-        std::cout << "标准JavaScript编译完成" << std::endl;
+        std::cout << "ANTLR JavaScript编译完成" << std::endl;
         
     } catch (const std::exception& e) {
         result.success = false;
@@ -349,4 +362,112 @@ std::vector<std::string> JSUtils::findDependencies(const std::string& jsCode) {
     }
     
     return dependencies;
+}
+
+// ========== ANTLR JavaScript监听器实现 ==========
+
+void JSListener::enterProgram(JavaScriptParser::ProgramContext *ctx) {
+    // 重置状态
+    functions_.clear();
+    variables_.clear();
+    classes_.clear();
+    errors_.clear();
+}
+
+void JSListener::exitProgram(JavaScriptParser::ProgramContext *ctx) {
+    // 程序解析完成
+}
+
+void JSListener::enterFunctionDeclaration(JavaScriptParser::FunctionDeclarationContext *ctx) {
+    if (ctx) {
+        // 提取函数名
+        auto identifier = ctx->Identifier();
+        if (identifier) {
+            std::string functionName = identifier->getText();
+            functions_.push_back(functionName);
+        }
+    }
+}
+
+void JSListener::enterVariableDeclaration(JavaScriptParser::VariableDeclarationContext *ctx) {
+    if (ctx) {
+        // 提取变量名
+        std::string varText = ctx->getText();
+        
+        // 简单的变量名提取（可以进一步完善）
+        std::regex varRegex(R"((?:var|let|const)\s+([a-zA-Z_$][a-zA-Z0-9_$]*))");
+        std::smatch match;
+        if (std::regex_search(varText, match, varRegex)) {
+            variables_.push_back(match.str(1));
+        }
+    }
+}
+
+// 注意：当前JavaScript语法文件没有ClassDeclarationContext
+// void JSListener::enterClassDeclaration(JavaScriptParser::ClassDeclarationContext *ctx) {
+//     if (ctx) {
+//         // 提取类名
+//         auto identifier = ctx->Identifier();
+//         if (identifier) {
+//             std::string className = identifier->getText();
+//             classes_.push_back(className);
+//         }
+//     }
+// }
+
+void JSErrorListener::syntaxError(antlr4::Recognizer *recognizer, antlr4::Token *offendingSymbol,
+                                 size_t line, size_t charPositionInLine,
+                                 const std::string &msg, std::exception_ptr e) {
+    std::ostringstream error;
+    error << "JavaScript语法错误 第" << line << "行第" << charPositionInLine << "列: " << msg;
+    errors_.push_back(error.str());
+}
+
+// ========== ANTLR JavaScript解析方法实现 ==========
+
+std::unique_ptr<ParseTree> ANTLRJSCompiler::parseJS(const std::string& jsCode, std::vector<std::string>& errors) {
+    try {
+        ANTLRInputStream input(jsCode);
+        JavaScriptLexer lexer(&input);
+        CommonTokenStream tokens(&lexer);
+        JavaScriptParser parser(&tokens);
+        
+        // 添加错误监听器
+        JSErrorListener errorListener;
+        parser.removeErrorListeners();
+        lexer.removeErrorListeners();
+        parser.addErrorListener(&errorListener);
+        lexer.addErrorListener(&errorListener);
+        
+        auto result = parser.program();
+        
+        if (errorListener.hasErrors()) {
+            auto listenerErrors = errorListener.getErrors();
+            errors.insert(errors.end(), listenerErrors.begin(), listenerErrors.end());
+        }
+        
+        return std::unique_ptr<ParseTree>(result);
+    } catch (const std::exception& e) {
+        errors.push_back(std::string("ANTLR JavaScript解析错误: ") + e.what());
+        return nullptr;
+    }
+}
+
+void ANTLRJSCompiler::extractInfoFromParseTree(ParseTree* tree, JSCompileResult& result, const JSCompileOptions& options) {
+    if (!tree) return;
+    
+    try {
+        JSListener listener;
+        ParseTreeWalker walker;
+        walker.walk(&listener, tree);
+        
+        result.functions = listener.getFunctions();
+        result.variables = listener.getVariables();
+        result.classes = listener.getClasses();
+        
+        auto listenerErrors = listener.getErrors();
+        result.errors.insert(result.errors.end(), listenerErrors.begin(), listenerErrors.end());
+    } catch (const std::exception& e) {
+        result.errors.push_back(std::string("JavaScript信息提取错误: ") + e.what());
+    }
 }

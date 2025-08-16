@@ -6,10 +6,65 @@
 #include <vector>
 #include <memory>
 
-// 标准CSS解析器 - 不再依赖ANTLR
-// 使用基于正则表达式的解析方式
+// ANTLR4 CSS解析器 - 使用ANTLR 4.13.1
+#include "antlr4-runtime.h"
+#include "CSS3Lexer.h"
+#include "CSS3Parser.h"
+#include "CSS3BaseListener.h"
 
 namespace chtl {
+
+// 前向声明
+enum class StandardCSSSelector;
+struct CSSSelector;
+struct CSSRule;
+
+/**
+ * ANTLR CSS监听器类
+ * 用于遍历CSS解析树并提取信息
+ */
+class CSSListener : public CSS3BaseListener {
+public:
+    void enterStylesheet(CSS3Parser::StylesheetContext *ctx) override;
+    void exitStylesheet(CSS3Parser::StylesheetContext *ctx) override;
+    void enterRuleset(CSS3Parser::RulesetContext *ctx) override;
+    void exitRuleset(CSS3Parser::RulesetContext *ctx) override;
+    void enterSelector(CSS3Parser::SelectorContext *ctx) override;
+    void enterDeclaration(CSS3Parser::DeclarationContext *ctx) override;
+    
+    // 获取提取的信息
+    const std::vector<CSSSelector>& getSelectors() const { return selectors_; }
+    const std::vector<CSSRule>& getRules() const { return rules_; }
+    const std::vector<std::string>& getColors() const { return colors_; }
+    const std::vector<std::string>& getFonts() const { return fonts_; }
+    const std::vector<std::string>& getErrors() const { return errors_; }
+
+private:
+    std::vector<CSSSelector> selectors_;
+    std::vector<CSSRule> rules_;
+    std::vector<std::string> colors_;
+    std::vector<std::string> fonts_;
+    std::vector<std::string> errors_;
+    
+    // 当前正在处理的规则（使用指针避免不完整类型问题）
+    std::unique_ptr<CSSRule> currentRule_;
+};
+
+/**
+ * ANTLR错误监听器
+ */
+class CSSErrorListener : public antlr4::BaseErrorListener {
+public:
+    void syntaxError(antlr4::Recognizer *recognizer, antlr4::Token *offendingSymbol,
+                    size_t line, size_t charPositionInLine,
+                    const std::string &msg, std::exception_ptr e) override;
+    
+    bool hasErrors() const { return !errors_.empty(); }
+    const std::vector<std::string>& getErrors() const { return errors_; }
+
+private:
+    std::vector<std::string> errors_;
+};
 
 /**
  * 标准CSS选择器类型
@@ -129,7 +184,11 @@ public:
     std::string generateSelectorDocumentation(const std::vector<CSSSelector>& selectors);
 
 private:
-    // 标准CSS解析（基于正则表达式）
+    // ANTLR解析方法
+    std::unique_ptr<antlr4::tree::ParseTree> parseCSS(const std::string& cssCode, std::vector<std::string>& errors);
+    void extractInfoFromParseTree(antlr4::tree::ParseTree* tree, CSSCompileResult& result, const CSSCompileOptions& options);
+    
+    // 辅助方法 - 保留正则表达式作为备用
     std::vector<CSSSelector> extractStandardSelectorsRegex(const std::string& cssCode);
     std::vector<CSSRule> extractCSSRulesRegex(const std::string& cssCode);
     StandardCSSSelector detectSelectorTypeRegex(const std::string& selector);
