@@ -143,10 +143,30 @@ add_executable(cmod_system_test
 )
 
 # 创建独立的Cmod命令行工具
-add_executable(chtl-cmod 
+add_executable(chtl-cmod
     src/tools/chtl_cmod_tool.cpp
     src/cmod/cmod_manager.cpp
     src/compiler/cmod_compiler_extension.cpp
+)
+
+# CJmod system test
+add_executable(cjmod_system_test
+    tests/cjmod_system_test.cpp
+    src/cjmod/cjmod_manager.cpp
+    src/compiler/cjmod_compiler_extension.cpp
+    src/cmod/cmod_manager.cpp
+    src/import/enhanced_import_manager.cpp
+    src/namespace/enhanced_namespace_manager.cpp
+)
+
+# CJmod standalone tool
+add_executable(chtl-cjmod
+    src/tools/chtl_cjmod_tool.cpp
+    src/cjmod/cjmod_manager.cpp
+    src/compiler/cjmod_compiler_extension.cpp
+    src/cmod/cmod_manager.cpp
+    src/import/enhanced_import_manager.cpp
+    src/namespace/enhanced_namespace_manager.cpp
 )
 
 # 创建RAII状态管理演示程序（不依赖gtest）

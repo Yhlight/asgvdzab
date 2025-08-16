@@ -10,8 +10,10 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/workspace/src/ast/chtl_ast.cpp" "CMakeFiles/chtl_compiler.dir/src/ast/chtl_ast.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/ast/chtl_ast.cpp.o.d"
   "/workspace/src/ast/chtl_js_ast.cpp" "CMakeFiles/chtl_compiler.dir/src/ast/chtl_js_ast.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/ast/chtl_js_ast.cpp.o.d"
+  "/workspace/src/cjmod/cjmod_manager.cpp" "CMakeFiles/chtl_compiler.dir/src/cjmod/cjmod_manager.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/cjmod/cjmod_manager.cpp.o.d"
   "/workspace/src/cmod/cmod_manager.cpp" "CMakeFiles/chtl_compiler.dir/src/cmod/cmod_manager.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/cmod/cmod_manager.cpp.o.d"
   "/workspace/src/common/types.cpp" "CMakeFiles/chtl_compiler.dir/src/common/types.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/common/types.cpp.o.d"
+  "/workspace/src/compiler/cjmod_compiler_extension.cpp" "CMakeFiles/chtl_compiler.dir/src/compiler/cjmod_compiler_extension.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/compiler/cjmod_compiler_extension.cpp.o.d"
   "/workspace/src/compiler/cmod_compiler_extension.cpp" "CMakeFiles/chtl_compiler.dir/src/compiler/cmod_compiler_extension.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/compiler/cmod_compiler_extension.cpp.o.d"
   "/workspace/src/compilers/chtl_compiler.cpp" "CMakeFiles/chtl_compiler.dir/src/compilers/chtl_compiler.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/compilers/chtl_compiler.cpp.o.d"
   "/workspace/src/dispatcher/compiler_dispatcher.cpp" "CMakeFiles/chtl_compiler.dir/src/dispatcher/compiler_dispatcher.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/dispatcher/compiler_dispatcher.cpp.o.d"
@@ -26,6 +28,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/workspace/src/parsers/chtl_parser.cpp" "CMakeFiles/chtl_compiler.dir/src/parsers/chtl_parser.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/parsers/chtl_parser.cpp.o.d"
   "/workspace/src/scanner/slice_scanner.cpp" "CMakeFiles/chtl_compiler.dir/src/scanner/slice_scanner.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/scanner/slice_scanner.cpp.o.d"
   "/workspace/src/scanner/unified_scanner.cpp" "CMakeFiles/chtl_compiler.dir/src/scanner/unified_scanner.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/scanner/unified_scanner.cpp.o.d"
+  "/workspace/src/tools/chtl_cjmod_tool.cpp" "CMakeFiles/chtl_compiler.dir/src/tools/chtl_cjmod_tool.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/tools/chtl_cjmod_tool.cpp.o.d"
   "/workspace/src/tools/chtl_cmod_tool.cpp" "CMakeFiles/chtl_compiler.dir/src/tools/chtl_cmod_tool.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/tools/chtl_cmod_tool.cpp.o.d"
   "" "bin/chtl_compiler" "gcc" "CMakeFiles/chtl_compiler.dir/link.d"
   )

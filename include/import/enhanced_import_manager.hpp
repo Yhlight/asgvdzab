@@ -286,6 +286,29 @@ public:
      */
     ImportResult processCjmodImport(const ImportPathInfo& pathInfo, const std::string& sourceFile);
     
+    // ===== 官方模块前缀支持 =====
+    
+    /**
+     * 解析模块导入路径（支持chtl::官方前缀）
+     * @param importPath 导入路径
+     * @param importType 导入类型
+     * @return 解析后的实际路径
+     */
+    std::string resolveModuleImportPath(const std::string& importPath, ImportType importType);
+    
+    /**
+     * 检查是否为官方模块
+     * @param moduleName 模块名称
+     * @return 是否为官方模块
+     */
+    bool isOfficialModule(const std::string& moduleName);
+    
+    /**
+     * 设置官方模块根目录
+     * @param path 官方模块根目录路径
+     */
+    void setOfficialModuleRoot(const std::string& path);
+    
     // ===== 路径搜索和解析 =====
     
     /**
@@ -417,6 +440,7 @@ private:
     std::vector<ImportRecord> importRecords_;       // 导入记录
     std::unordered_set<std::string> duplicateChecker_; // 重复导入检查器
     std::unique_ptr<CircularDependencyDetector> circularDetector_; // 循环依赖检测器
+    std::string officialModuleRoot_;                // 官方模块根目录
     mutable std::mutex mutex_;                      // 线程安全互斥锁
     
     // 内部工具方法

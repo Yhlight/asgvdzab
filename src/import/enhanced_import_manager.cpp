@@ -233,7 +233,8 @@ bool PathNormalizer::isWildcardPath(const std::string& path) {
 // ========== EnhancedImportManager 实现 ==========
 
 EnhancedImportManager::EnhancedImportManager(const ImportSearchConfig& config)
-    : config_(config), circularDetector_(std::make_unique<CircularDependencyDetector>()) {
+    : config_(config), circularDetector_(std::make_unique<CircularDependencyDetector>()),
+      officialModuleRoot_("/usr/local/share/chtl/official") {
 }
 
 EnhancedImportManager::~EnhancedImportManager() = default;
@@ -750,6 +751,52 @@ void EnhancedImportManager::updateDependencies(const std::string& sourceFile, co
     for (const auto& targetFile : targetFiles) {
         circularDetector_->addDependency(sourceFile, targetFile);
     }
+}
+
+// ===== 官方模块前缀支持 =====
+
+std::string EnhancedImportManager::resolveModuleImportPath(const std::string& importPath, ImportType importType) {
+    // 检查是否为官方模块（chtl::前缀）
+    if (importPath.length() >= 6 && importPath.substr(0, 6) == "chtl::") {
+        std::string moduleName = importPath.substr(6); // 去除chtl::前缀
+        
+        std::string moduleTypeStr;
+        if (importType == ImportType::CHTL) {
+            moduleTypeStr = "cmod";
+        } else if (importType == ImportType::CJMOD) {
+            moduleTypeStr = "cjmod";
+        } else {
+            return importPath; // 其他类型不支持官方前缀
+        }
+        
+        std::string basePath = officialModuleRoot_ + "/" + moduleTypeStr + "/" + moduleName;
+        
+        // 优先查找打包后的模块文件
+        std::string packedPath = basePath + "." + moduleTypeStr;
+        if (std::filesystem::exists(packedPath)) {
+            return packedPath;
+        }
+        
+        // 查找源码目录
+        if (std::filesystem::exists(basePath) && std::filesystem::is_directory(basePath)) {
+            return basePath;
+        }
+        
+        // 如果官方模块不存在，返回空字符串表示未找到
+        return "";
+    }
+    
+    // 普通模块，返回原路径
+    return importPath;
+}
+
+bool EnhancedImportManager::isOfficialModule(const std::string& moduleName) {
+    return moduleName.length() >= 6 && moduleName.substr(0, 6) == "chtl::";
+}
+
+void EnhancedImportManager::setOfficialModuleRoot(const std::string& path) {
+    std::lock_guard<std::mutex> lock(mutex_);
+    officialModuleRoot_ = path;
 }
 
 } // namespace chtl
