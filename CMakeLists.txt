@@ -136,6 +136,13 @@ if(EXISTS "${CMAKE_SOURCE_DIR}/tests")
         target_link_libraries(unified_compiler_test chtl_test_lib)
         target_include_directories(unified_compiler_test PRIVATE ${CHTL_INCLUDE_DIRS})
     endif()
+    
+    # 集成编译器系统测试
+    if(EXISTS "${CMAKE_SOURCE_DIR}/tests/integrated_system_test.cpp")
+        add_executable(integrated_system_test tests/integrated_system_test.cpp)
+        target_link_libraries(integrated_system_test chtl_test_lib)
+        target_include_directories(integrated_system_test PRIVATE ${CHTL_INCLUDE_DIRS})
+    endif()
 endif()
 
 # 安装配置

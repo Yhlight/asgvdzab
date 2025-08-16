@@ -72,122 +72,10 @@ include CMakeFiles/chtl_test_lib.dir/flags.make
 CMakeFiles/chtl_test_lib.dir/codegen:
 .PHONY : CMakeFiles/chtl_test_lib.dir/codegen
 
-CMakeFiles/chtl_test_lib.dir/generated/antlr/css/CSS3BaseListener.cpp.o: CMakeFiles/chtl_test_lib.dir/flags.make
-CMakeFiles/chtl_test_lib.dir/generated/antlr/css/CSS3BaseListener.cpp.o: /workspace/generated/antlr/css/CSS3BaseListener.cpp
-CMakeFiles/chtl_test_lib.dir/generated/antlr/css/CSS3BaseListener.cpp.o: CMakeFiles/chtl_test_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/chtl_test_lib.dir/generated/antlr/css/CSS3BaseListener.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_test_lib.dir/generated/antlr/css/CSS3BaseListener.cpp.o -MF CMakeFiles/chtl_test_lib.dir/generated/antlr/css/CSS3BaseListener.cpp.o.d -o CMakeFiles/chtl_test_lib.dir/generated/antlr/css/CSS3BaseListener.cpp.o -c /workspace/generated/antlr/css/CSS3BaseListener.cpp
-
-CMakeFiles/chtl_test_lib.dir/generated/antlr/css/CSS3BaseListener.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/chtl_test_lib.dir/generated/antlr/css/CSS3BaseListener.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/generated/antlr/css/CSS3BaseListener.cpp > CMakeFiles/chtl_test_lib.dir/generated/antlr/css/CSS3BaseListener.cpp.i
-
-CMakeFiles/chtl_test_lib.dir/generated/antlr/css/CSS3BaseListener.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/chtl_test_lib.dir/generated/antlr/css/CSS3BaseListener.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/generated/antlr/css/CSS3BaseListener.cpp -o CMakeFiles/chtl_test_lib.dir/generated/antlr/css/CSS3BaseListener.cpp.s
-
-CMakeFiles/chtl_test_lib.dir/generated/antlr/css/CSS3Lexer.cpp.o: CMakeFiles/chtl_test_lib.dir/flags.make
-CMakeFiles/chtl_test_lib.dir/generated/antlr/css/CSS3Lexer.cpp.o: /workspace/generated/antlr/css/CSS3Lexer.cpp
-CMakeFiles/chtl_test_lib.dir/generated/antlr/css/CSS3Lexer.cpp.o: CMakeFiles/chtl_test_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/chtl_test_lib.dir/generated/antlr/css/CSS3Lexer.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_test_lib.dir/generated/antlr/css/CSS3Lexer.cpp.o -MF CMakeFiles/chtl_test_lib.dir/generated/antlr/css/CSS3Lexer.cpp.o.d -o CMakeFiles/chtl_test_lib.dir/generated/antlr/css/CSS3Lexer.cpp.o -c /workspace/generated/antlr/css/CSS3Lexer.cpp
-
-CMakeFiles/chtl_test_lib.dir/generated/antlr/css/CSS3Lexer.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/chtl_test_lib.dir/generated/antlr/css/CSS3Lexer.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/generated/antlr/css/CSS3Lexer.cpp > CMakeFiles/chtl_test_lib.dir/generated/antlr/css/CSS3Lexer.cpp.i
-
-CMakeFiles/chtl_test_lib.dir/generated/antlr/css/CSS3Lexer.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/chtl_test_lib.dir/generated/antlr/css/CSS3Lexer.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/generated/antlr/css/CSS3Lexer.cpp -o CMakeFiles/chtl_test_lib.dir/generated/antlr/css/CSS3Lexer.cpp.s
-
-CMakeFiles/chtl_test_lib.dir/generated/antlr/css/CSS3Listener.cpp.o: CMakeFiles/chtl_test_lib.dir/flags.make
-CMakeFiles/chtl_test_lib.dir/generated/antlr/css/CSS3Listener.cpp.o: /workspace/generated/antlr/css/CSS3Listener.cpp
-CMakeFiles/chtl_test_lib.dir/generated/antlr/css/CSS3Listener.cpp.o: CMakeFiles/chtl_test_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/chtl_test_lib.dir/generated/antlr/css/CSS3Listener.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_test_lib.dir/generated/antlr/css/CSS3Listener.cpp.o -MF CMakeFiles/chtl_test_lib.dir/generated/antlr/css/CSS3Listener.cpp.o.d -o CMakeFiles/chtl_test_lib.dir/generated/antlr/css/CSS3Listener.cpp.o -c /workspace/generated/antlr/css/CSS3Listener.cpp
-
-CMakeFiles/chtl_test_lib.dir/generated/antlr/css/CSS3Listener.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/chtl_test_lib.dir/generated/antlr/css/CSS3Listener.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/generated/antlr/css/CSS3Listener.cpp > CMakeFiles/chtl_test_lib.dir/generated/antlr/css/CSS3Listener.cpp.i
-
-CMakeFiles/chtl_test_lib.dir/generated/antlr/css/CSS3Listener.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/chtl_test_lib.dir/generated/antlr/css/CSS3Listener.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/generated/antlr/css/CSS3Listener.cpp -o CMakeFiles/chtl_test_lib.dir/generated/antlr/css/CSS3Listener.cpp.s
-
-CMakeFiles/chtl_test_lib.dir/generated/antlr/css/CSS3Parser.cpp.o: CMakeFiles/chtl_test_lib.dir/flags.make
-CMakeFiles/chtl_test_lib.dir/generated/antlr/css/CSS3Parser.cpp.o: /workspace/generated/antlr/css/CSS3Parser.cpp
-CMakeFiles/chtl_test_lib.dir/generated/antlr/css/CSS3Parser.cpp.o: CMakeFiles/chtl_test_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/chtl_test_lib.dir/generated/antlr/css/CSS3Parser.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_test_lib.dir/generated/antlr/css/CSS3Parser.cpp.o -MF CMakeFiles/chtl_test_lib.dir/generated/antlr/css/CSS3Parser.cpp.o.d -o CMakeFiles/chtl_test_lib.dir/generated/antlr/css/CSS3Parser.cpp.o -c /workspace/generated/antlr/css/CSS3Parser.cpp
-
-CMakeFiles/chtl_test_lib.dir/generated/antlr/css/CSS3Parser.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/chtl_test_lib.dir/generated/antlr/css/CSS3Parser.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/generated/antlr/css/CSS3Parser.cpp > CMakeFiles/chtl_test_lib.dir/generated/antlr/css/CSS3Parser.cpp.i
-
-CMakeFiles/chtl_test_lib.dir/generated/antlr/css/CSS3Parser.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/chtl_test_lib.dir/generated/antlr/css/CSS3Parser.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/generated/antlr/css/CSS3Parser.cpp -o CMakeFiles/chtl_test_lib.dir/generated/antlr/css/CSS3Parser.cpp.s
-
-CMakeFiles/chtl_test_lib.dir/generated/antlr/js/JavaScriptBaseListener.cpp.o: CMakeFiles/chtl_test_lib.dir/flags.make
-CMakeFiles/chtl_test_lib.dir/generated/antlr/js/JavaScriptBaseListener.cpp.o: /workspace/generated/antlr/js/JavaScriptBaseListener.cpp
-CMakeFiles/chtl_test_lib.dir/generated/antlr/js/JavaScriptBaseListener.cpp.o: CMakeFiles/chtl_test_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/chtl_test_lib.dir/generated/antlr/js/JavaScriptBaseListener.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_test_lib.dir/generated/antlr/js/JavaScriptBaseListener.cpp.o -MF CMakeFiles/chtl_test_lib.dir/generated/antlr/js/JavaScriptBaseListener.cpp.o.d -o CMakeFiles/chtl_test_lib.dir/generated/antlr/js/JavaScriptBaseListener.cpp.o -c /workspace/generated/antlr/js/JavaScriptBaseListener.cpp
-
-CMakeFiles/chtl_test_lib.dir/generated/antlr/js/JavaScriptBaseListener.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/chtl_test_lib.dir/generated/antlr/js/JavaScriptBaseListener.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/generated/antlr/js/JavaScriptBaseListener.cpp > CMakeFiles/chtl_test_lib.dir/generated/antlr/js/JavaScriptBaseListener.cpp.i
-
-CMakeFiles/chtl_test_lib.dir/generated/antlr/js/JavaScriptBaseListener.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/chtl_test_lib.dir/generated/antlr/js/JavaScriptBaseListener.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/generated/antlr/js/JavaScriptBaseListener.cpp -o CMakeFiles/chtl_test_lib.dir/generated/antlr/js/JavaScriptBaseListener.cpp.s
-
-CMakeFiles/chtl_test_lib.dir/generated/antlr/js/JavaScriptLexer.cpp.o: CMakeFiles/chtl_test_lib.dir/flags.make
-CMakeFiles/chtl_test_lib.dir/generated/antlr/js/JavaScriptLexer.cpp.o: /workspace/generated/antlr/js/JavaScriptLexer.cpp
-CMakeFiles/chtl_test_lib.dir/generated/antlr/js/JavaScriptLexer.cpp.o: CMakeFiles/chtl_test_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/chtl_test_lib.dir/generated/antlr/js/JavaScriptLexer.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_test_lib.dir/generated/antlr/js/JavaScriptLexer.cpp.o -MF CMakeFiles/chtl_test_lib.dir/generated/antlr/js/JavaScriptLexer.cpp.o.d -o CMakeFiles/chtl_test_lib.dir/generated/antlr/js/JavaScriptLexer.cpp.o -c /workspace/generated/antlr/js/JavaScriptLexer.cpp
-
-CMakeFiles/chtl_test_lib.dir/generated/antlr/js/JavaScriptLexer.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/chtl_test_lib.dir/generated/antlr/js/JavaScriptLexer.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/generated/antlr/js/JavaScriptLexer.cpp > CMakeFiles/chtl_test_lib.dir/generated/antlr/js/JavaScriptLexer.cpp.i
-
-CMakeFiles/chtl_test_lib.dir/generated/antlr/js/JavaScriptLexer.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/chtl_test_lib.dir/generated/antlr/js/JavaScriptLexer.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/generated/antlr/js/JavaScriptLexer.cpp -o CMakeFiles/chtl_test_lib.dir/generated/antlr/js/JavaScriptLexer.cpp.s
-
-CMakeFiles/chtl_test_lib.dir/generated/antlr/js/JavaScriptListener.cpp.o: CMakeFiles/chtl_test_lib.dir/flags.make
-CMakeFiles/chtl_test_lib.dir/generated/antlr/js/JavaScriptListener.cpp.o: /workspace/generated/antlr/js/JavaScriptListener.cpp
-CMakeFiles/chtl_test_lib.dir/generated/antlr/js/JavaScriptListener.cpp.o: CMakeFiles/chtl_test_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/chtl_test_lib.dir/generated/antlr/js/JavaScriptListener.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_test_lib.dir/generated/antlr/js/JavaScriptListener.cpp.o -MF CMakeFiles/chtl_test_lib.dir/generated/antlr/js/JavaScriptListener.cpp.o.d -o CMakeFiles/chtl_test_lib.dir/generated/antlr/js/JavaScriptListener.cpp.o -c /workspace/generated/antlr/js/JavaScriptListener.cpp
-
-CMakeFiles/chtl_test_lib.dir/generated/antlr/js/JavaScriptListener.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/chtl_test_lib.dir/generated/antlr/js/JavaScriptListener.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/generated/antlr/js/JavaScriptListener.cpp > CMakeFiles/chtl_test_lib.dir/generated/antlr/js/JavaScriptListener.cpp.i
-
-CMakeFiles/chtl_test_lib.dir/generated/antlr/js/JavaScriptListener.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/chtl_test_lib.dir/generated/antlr/js/JavaScriptListener.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/generated/antlr/js/JavaScriptListener.cpp -o CMakeFiles/chtl_test_lib.dir/generated/antlr/js/JavaScriptListener.cpp.s
-
-CMakeFiles/chtl_test_lib.dir/generated/antlr/js/JavaScriptParser.cpp.o: CMakeFiles/chtl_test_lib.dir/flags.make
-CMakeFiles/chtl_test_lib.dir/generated/antlr/js/JavaScriptParser.cpp.o: /workspace/generated/antlr/js/JavaScriptParser.cpp
-CMakeFiles/chtl_test_lib.dir/generated/antlr/js/JavaScriptParser.cpp.o: CMakeFiles/chtl_test_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/chtl_test_lib.dir/generated/antlr/js/JavaScriptParser.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_test_lib.dir/generated/antlr/js/JavaScriptParser.cpp.o -MF CMakeFiles/chtl_test_lib.dir/generated/antlr/js/JavaScriptParser.cpp.o.d -o CMakeFiles/chtl_test_lib.dir/generated/antlr/js/JavaScriptParser.cpp.o -c /workspace/generated/antlr/js/JavaScriptParser.cpp
-
-CMakeFiles/chtl_test_lib.dir/generated/antlr/js/JavaScriptParser.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/chtl_test_lib.dir/generated/antlr/js/JavaScriptParser.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/generated/antlr/js/JavaScriptParser.cpp > CMakeFiles/chtl_test_lib.dir/generated/antlr/js/JavaScriptParser.cpp.i
-
-CMakeFiles/chtl_test_lib.dir/generated/antlr/js/JavaScriptParser.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/chtl_test_lib.dir/generated/antlr/js/JavaScriptParser.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/generated/antlr/js/JavaScriptParser.cpp -o CMakeFiles/chtl_test_lib.dir/generated/antlr/js/JavaScriptParser.cpp.s
-
 CMakeFiles/chtl_test_lib.dir/src/ast/chtl_ast.cpp.o: CMakeFiles/chtl_test_lib.dir/flags.make
 CMakeFiles/chtl_test_lib.dir/src/ast/chtl_ast.cpp.o: /workspace/src/ast/chtl_ast.cpp
 CMakeFiles/chtl_test_lib.dir/src/ast/chtl_ast.cpp.o: CMakeFiles/chtl_test_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/chtl_test_lib.dir/src/ast/chtl_ast.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/chtl_test_lib.dir/src/ast/chtl_ast.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_test_lib.dir/src/ast/chtl_ast.cpp.o -MF CMakeFiles/chtl_test_lib.dir/src/ast/chtl_ast.cpp.o.d -o CMakeFiles/chtl_test_lib.dir/src/ast/chtl_ast.cpp.o -c /workspace/src/ast/chtl_ast.cpp
 
 CMakeFiles/chtl_test_lib.dir/src/ast/chtl_ast.cpp.i: cmake_force
@@ -201,7 +89,7 @@ CMakeFiles/chtl_test_lib.dir/src/ast/chtl_ast.cpp.s: cmake_force
 CMakeFiles/chtl_test_lib.dir/src/ast/chtl_js_ast.cpp.o: CMakeFiles/chtl_test_lib.dir/flags.make
 CMakeFiles/chtl_test_lib.dir/src/ast/chtl_js_ast.cpp.o: /workspace/src/ast/chtl_js_ast.cpp
 CMakeFiles/chtl_test_lib.dir/src/ast/chtl_js_ast.cpp.o: CMakeFiles/chtl_test_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/chtl_test_lib.dir/src/ast/chtl_js_ast.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/chtl_test_lib.dir/src/ast/chtl_js_ast.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_test_lib.dir/src/ast/chtl_js_ast.cpp.o -MF CMakeFiles/chtl_test_lib.dir/src/ast/chtl_js_ast.cpp.o.d -o CMakeFiles/chtl_test_lib.dir/src/ast/chtl_js_ast.cpp.o -c /workspace/src/ast/chtl_js_ast.cpp
 
 CMakeFiles/chtl_test_lib.dir/src/ast/chtl_js_ast.cpp.i: cmake_force
@@ -212,10 +100,38 @@ CMakeFiles/chtl_test_lib.dir/src/ast/chtl_js_ast.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/chtl_test_lib.dir/src/ast/chtl_js_ast.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/ast/chtl_js_ast.cpp -o CMakeFiles/chtl_test_lib.dir/src/ast/chtl_js_ast.cpp.s
 
+CMakeFiles/chtl_test_lib.dir/src/cjmod/cjmod_manager.cpp.o: CMakeFiles/chtl_test_lib.dir/flags.make
+CMakeFiles/chtl_test_lib.dir/src/cjmod/cjmod_manager.cpp.o: /workspace/src/cjmod/cjmod_manager.cpp
+CMakeFiles/chtl_test_lib.dir/src/cjmod/cjmod_manager.cpp.o: CMakeFiles/chtl_test_lib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/chtl_test_lib.dir/src/cjmod/cjmod_manager.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_test_lib.dir/src/cjmod/cjmod_manager.cpp.o -MF CMakeFiles/chtl_test_lib.dir/src/cjmod/cjmod_manager.cpp.o.d -o CMakeFiles/chtl_test_lib.dir/src/cjmod/cjmod_manager.cpp.o -c /workspace/src/cjmod/cjmod_manager.cpp
+
+CMakeFiles/chtl_test_lib.dir/src/cjmod/cjmod_manager.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/chtl_test_lib.dir/src/cjmod/cjmod_manager.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/cjmod/cjmod_manager.cpp > CMakeFiles/chtl_test_lib.dir/src/cjmod/cjmod_manager.cpp.i
+
+CMakeFiles/chtl_test_lib.dir/src/cjmod/cjmod_manager.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/chtl_test_lib.dir/src/cjmod/cjmod_manager.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/cjmod/cjmod_manager.cpp -o CMakeFiles/chtl_test_lib.dir/src/cjmod/cjmod_manager.cpp.s
+
+CMakeFiles/chtl_test_lib.dir/src/cmod/cmod_manager.cpp.o: CMakeFiles/chtl_test_lib.dir/flags.make
+CMakeFiles/chtl_test_lib.dir/src/cmod/cmod_manager.cpp.o: /workspace/src/cmod/cmod_manager.cpp
+CMakeFiles/chtl_test_lib.dir/src/cmod/cmod_manager.cpp.o: CMakeFiles/chtl_test_lib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/chtl_test_lib.dir/src/cmod/cmod_manager.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_test_lib.dir/src/cmod/cmod_manager.cpp.o -MF CMakeFiles/chtl_test_lib.dir/src/cmod/cmod_manager.cpp.o.d -o CMakeFiles/chtl_test_lib.dir/src/cmod/cmod_manager.cpp.o -c /workspace/src/cmod/cmod_manager.cpp
+
+CMakeFiles/chtl_test_lib.dir/src/cmod/cmod_manager.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/chtl_test_lib.dir/src/cmod/cmod_manager.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/cmod/cmod_manager.cpp > CMakeFiles/chtl_test_lib.dir/src/cmod/cmod_manager.cpp.i
+
+CMakeFiles/chtl_test_lib.dir/src/cmod/cmod_manager.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/chtl_test_lib.dir/src/cmod/cmod_manager.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/cmod/cmod_manager.cpp -o CMakeFiles/chtl_test_lib.dir/src/cmod/cmod_manager.cpp.s
+
 CMakeFiles/chtl_test_lib.dir/src/common/types.cpp.o: CMakeFiles/chtl_test_lib.dir/flags.make
 CMakeFiles/chtl_test_lib.dir/src/common/types.cpp.o: /workspace/src/common/types.cpp
 CMakeFiles/chtl_test_lib.dir/src/common/types.cpp.o: CMakeFiles/chtl_test_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/chtl_test_lib.dir/src/common/types.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/chtl_test_lib.dir/src/common/types.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_test_lib.dir/src/common/types.cpp.o -MF CMakeFiles/chtl_test_lib.dir/src/common/types.cpp.o.d -o CMakeFiles/chtl_test_lib.dir/src/common/types.cpp.o -c /workspace/src/common/types.cpp
 
 CMakeFiles/chtl_test_lib.dir/src/common/types.cpp.i: cmake_force
@@ -226,80 +142,192 @@ CMakeFiles/chtl_test_lib.dir/src/common/types.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/chtl_test_lib.dir/src/common/types.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/common/types.cpp -o CMakeFiles/chtl_test_lib.dir/src/common/types.cpp.s
 
-CMakeFiles/chtl_test_lib.dir/src/compilers/antlr_css_compiler.cpp.o: CMakeFiles/chtl_test_lib.dir/flags.make
-CMakeFiles/chtl_test_lib.dir/src/compilers/antlr_css_compiler.cpp.o: /workspace/src/compilers/antlr_css_compiler.cpp
-CMakeFiles/chtl_test_lib.dir/src/compilers/antlr_css_compiler.cpp.o: CMakeFiles/chtl_test_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/chtl_test_lib.dir/src/compilers/antlr_css_compiler.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_test_lib.dir/src/compilers/antlr_css_compiler.cpp.o -MF CMakeFiles/chtl_test_lib.dir/src/compilers/antlr_css_compiler.cpp.o.d -o CMakeFiles/chtl_test_lib.dir/src/compilers/antlr_css_compiler.cpp.o -c /workspace/src/compilers/antlr_css_compiler.cpp
+CMakeFiles/chtl_test_lib.dir/src/compiler/cjmod_compiler_extension.cpp.o: CMakeFiles/chtl_test_lib.dir/flags.make
+CMakeFiles/chtl_test_lib.dir/src/compiler/cjmod_compiler_extension.cpp.o: /workspace/src/compiler/cjmod_compiler_extension.cpp
+CMakeFiles/chtl_test_lib.dir/src/compiler/cjmod_compiler_extension.cpp.o: CMakeFiles/chtl_test_lib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/chtl_test_lib.dir/src/compiler/cjmod_compiler_extension.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_test_lib.dir/src/compiler/cjmod_compiler_extension.cpp.o -MF CMakeFiles/chtl_test_lib.dir/src/compiler/cjmod_compiler_extension.cpp.o.d -o CMakeFiles/chtl_test_lib.dir/src/compiler/cjmod_compiler_extension.cpp.o -c /workspace/src/compiler/cjmod_compiler_extension.cpp
 
-CMakeFiles/chtl_test_lib.dir/src/compilers/antlr_css_compiler.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/chtl_test_lib.dir/src/compilers/antlr_css_compiler.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/compilers/antlr_css_compiler.cpp > CMakeFiles/chtl_test_lib.dir/src/compilers/antlr_css_compiler.cpp.i
+CMakeFiles/chtl_test_lib.dir/src/compiler/cjmod_compiler_extension.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/chtl_test_lib.dir/src/compiler/cjmod_compiler_extension.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/compiler/cjmod_compiler_extension.cpp > CMakeFiles/chtl_test_lib.dir/src/compiler/cjmod_compiler_extension.cpp.i
 
-CMakeFiles/chtl_test_lib.dir/src/compilers/antlr_css_compiler.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/chtl_test_lib.dir/src/compilers/antlr_css_compiler.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/compilers/antlr_css_compiler.cpp -o CMakeFiles/chtl_test_lib.dir/src/compilers/antlr_css_compiler.cpp.s
+CMakeFiles/chtl_test_lib.dir/src/compiler/cjmod_compiler_extension.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/chtl_test_lib.dir/src/compiler/cjmod_compiler_extension.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/compiler/cjmod_compiler_extension.cpp -o CMakeFiles/chtl_test_lib.dir/src/compiler/cjmod_compiler_extension.cpp.s
 
-CMakeFiles/chtl_test_lib.dir/src/compilers/antlr_js_compiler.cpp.o: CMakeFiles/chtl_test_lib.dir/flags.make
-CMakeFiles/chtl_test_lib.dir/src/compilers/antlr_js_compiler.cpp.o: /workspace/src/compilers/antlr_js_compiler.cpp
-CMakeFiles/chtl_test_lib.dir/src/compilers/antlr_js_compiler.cpp.o: CMakeFiles/chtl_test_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/chtl_test_lib.dir/src/compilers/antlr_js_compiler.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_test_lib.dir/src/compilers/antlr_js_compiler.cpp.o -MF CMakeFiles/chtl_test_lib.dir/src/compilers/antlr_js_compiler.cpp.o.d -o CMakeFiles/chtl_test_lib.dir/src/compilers/antlr_js_compiler.cpp.o -c /workspace/src/compilers/antlr_js_compiler.cpp
+CMakeFiles/chtl_test_lib.dir/src/compiler/cmod_compiler_extension.cpp.o: CMakeFiles/chtl_test_lib.dir/flags.make
+CMakeFiles/chtl_test_lib.dir/src/compiler/cmod_compiler_extension.cpp.o: /workspace/src/compiler/cmod_compiler_extension.cpp
+CMakeFiles/chtl_test_lib.dir/src/compiler/cmod_compiler_extension.cpp.o: CMakeFiles/chtl_test_lib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/chtl_test_lib.dir/src/compiler/cmod_compiler_extension.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_test_lib.dir/src/compiler/cmod_compiler_extension.cpp.o -MF CMakeFiles/chtl_test_lib.dir/src/compiler/cmod_compiler_extension.cpp.o.d -o CMakeFiles/chtl_test_lib.dir/src/compiler/cmod_compiler_extension.cpp.o -c /workspace/src/compiler/cmod_compiler_extension.cpp
 
-CMakeFiles/chtl_test_lib.dir/src/compilers/antlr_js_compiler.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/chtl_test_lib.dir/src/compilers/antlr_js_compiler.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/compilers/antlr_js_compiler.cpp > CMakeFiles/chtl_test_lib.dir/src/compilers/antlr_js_compiler.cpp.i
+CMakeFiles/chtl_test_lib.dir/src/compiler/cmod_compiler_extension.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/chtl_test_lib.dir/src/compiler/cmod_compiler_extension.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/compiler/cmod_compiler_extension.cpp > CMakeFiles/chtl_test_lib.dir/src/compiler/cmod_compiler_extension.cpp.i
 
-CMakeFiles/chtl_test_lib.dir/src/compilers/antlr_js_compiler.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/chtl_test_lib.dir/src/compilers/antlr_js_compiler.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/compilers/antlr_js_compiler.cpp -o CMakeFiles/chtl_test_lib.dir/src/compilers/antlr_js_compiler.cpp.s
+CMakeFiles/chtl_test_lib.dir/src/compiler/cmod_compiler_extension.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/chtl_test_lib.dir/src/compiler/cmod_compiler_extension.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/compiler/cmod_compiler_extension.cpp -o CMakeFiles/chtl_test_lib.dir/src/compiler/cmod_compiler_extension.cpp.s
 
-CMakeFiles/chtl_test_lib.dir/src/compilers/chtl_compiler.cpp.o: CMakeFiles/chtl_test_lib.dir/flags.make
-CMakeFiles/chtl_test_lib.dir/src/compilers/chtl_compiler.cpp.o: /workspace/src/compilers/chtl_compiler.cpp
-CMakeFiles/chtl_test_lib.dir/src/compilers/chtl_compiler.cpp.o: CMakeFiles/chtl_test_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/chtl_test_lib.dir/src/compilers/chtl_compiler.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_test_lib.dir/src/compilers/chtl_compiler.cpp.o -MF CMakeFiles/chtl_test_lib.dir/src/compilers/chtl_compiler.cpp.o.d -o CMakeFiles/chtl_test_lib.dir/src/compilers/chtl_compiler.cpp.o -c /workspace/src/compilers/chtl_compiler.cpp
+CMakeFiles/chtl_test_lib.dir/src/constraints/chtl_global_style_constraint.cpp.o: CMakeFiles/chtl_test_lib.dir/flags.make
+CMakeFiles/chtl_test_lib.dir/src/constraints/chtl_global_style_constraint.cpp.o: /workspace/src/constraints/chtl_global_style_constraint.cpp
+CMakeFiles/chtl_test_lib.dir/src/constraints/chtl_global_style_constraint.cpp.o: CMakeFiles/chtl_test_lib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/chtl_test_lib.dir/src/constraints/chtl_global_style_constraint.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_test_lib.dir/src/constraints/chtl_global_style_constraint.cpp.o -MF CMakeFiles/chtl_test_lib.dir/src/constraints/chtl_global_style_constraint.cpp.o.d -o CMakeFiles/chtl_test_lib.dir/src/constraints/chtl_global_style_constraint.cpp.o -c /workspace/src/constraints/chtl_global_style_constraint.cpp
 
-CMakeFiles/chtl_test_lib.dir/src/compilers/chtl_compiler.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/chtl_test_lib.dir/src/compilers/chtl_compiler.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/compilers/chtl_compiler.cpp > CMakeFiles/chtl_test_lib.dir/src/compilers/chtl_compiler.cpp.i
+CMakeFiles/chtl_test_lib.dir/src/constraints/chtl_global_style_constraint.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/chtl_test_lib.dir/src/constraints/chtl_global_style_constraint.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/constraints/chtl_global_style_constraint.cpp > CMakeFiles/chtl_test_lib.dir/src/constraints/chtl_global_style_constraint.cpp.i
 
-CMakeFiles/chtl_test_lib.dir/src/compilers/chtl_compiler.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/chtl_test_lib.dir/src/compilers/chtl_compiler.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/compilers/chtl_compiler.cpp -o CMakeFiles/chtl_test_lib.dir/src/compilers/chtl_compiler.cpp.s
+CMakeFiles/chtl_test_lib.dir/src/constraints/chtl_global_style_constraint.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/chtl_test_lib.dir/src/constraints/chtl_global_style_constraint.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/constraints/chtl_global_style_constraint.cpp -o CMakeFiles/chtl_test_lib.dir/src/constraints/chtl_global_style_constraint.cpp.s
 
-CMakeFiles/chtl_test_lib.dir/src/compilers/modern_antlr_css_compiler.cpp.o: CMakeFiles/chtl_test_lib.dir/flags.make
-CMakeFiles/chtl_test_lib.dir/src/compilers/modern_antlr_css_compiler.cpp.o: /workspace/src/compilers/modern_antlr_css_compiler.cpp
-CMakeFiles/chtl_test_lib.dir/src/compilers/modern_antlr_css_compiler.cpp.o: CMakeFiles/chtl_test_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/chtl_test_lib.dir/src/compilers/modern_antlr_css_compiler.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_test_lib.dir/src/compilers/modern_antlr_css_compiler.cpp.o -MF CMakeFiles/chtl_test_lib.dir/src/compilers/modern_antlr_css_compiler.cpp.o.d -o CMakeFiles/chtl_test_lib.dir/src/compilers/modern_antlr_css_compiler.cpp.o -c /workspace/src/compilers/modern_antlr_css_compiler.cpp
+CMakeFiles/chtl_test_lib.dir/src/constraints/chtl_local_script_constraint.cpp.o: CMakeFiles/chtl_test_lib.dir/flags.make
+CMakeFiles/chtl_test_lib.dir/src/constraints/chtl_local_script_constraint.cpp.o: /workspace/src/constraints/chtl_local_script_constraint.cpp
+CMakeFiles/chtl_test_lib.dir/src/constraints/chtl_local_script_constraint.cpp.o: CMakeFiles/chtl_test_lib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/chtl_test_lib.dir/src/constraints/chtl_local_script_constraint.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_test_lib.dir/src/constraints/chtl_local_script_constraint.cpp.o -MF CMakeFiles/chtl_test_lib.dir/src/constraints/chtl_local_script_constraint.cpp.o.d -o CMakeFiles/chtl_test_lib.dir/src/constraints/chtl_local_script_constraint.cpp.o -c /workspace/src/constraints/chtl_local_script_constraint.cpp
 
-CMakeFiles/chtl_test_lib.dir/src/compilers/modern_antlr_css_compiler.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/chtl_test_lib.dir/src/compilers/modern_antlr_css_compiler.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/compilers/modern_antlr_css_compiler.cpp > CMakeFiles/chtl_test_lib.dir/src/compilers/modern_antlr_css_compiler.cpp.i
+CMakeFiles/chtl_test_lib.dir/src/constraints/chtl_local_script_constraint.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/chtl_test_lib.dir/src/constraints/chtl_local_script_constraint.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/constraints/chtl_local_script_constraint.cpp > CMakeFiles/chtl_test_lib.dir/src/constraints/chtl_local_script_constraint.cpp.i
 
-CMakeFiles/chtl_test_lib.dir/src/compilers/modern_antlr_css_compiler.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/chtl_test_lib.dir/src/compilers/modern_antlr_css_compiler.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/compilers/modern_antlr_css_compiler.cpp -o CMakeFiles/chtl_test_lib.dir/src/compilers/modern_antlr_css_compiler.cpp.s
+CMakeFiles/chtl_test_lib.dir/src/constraints/chtl_local_script_constraint.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/chtl_test_lib.dir/src/constraints/chtl_local_script_constraint.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/constraints/chtl_local_script_constraint.cpp -o CMakeFiles/chtl_test_lib.dir/src/constraints/chtl_local_script_constraint.cpp.s
 
-CMakeFiles/chtl_test_lib.dir/src/dispatcher/compiler_dispatcher.cpp.o: CMakeFiles/chtl_test_lib.dir/flags.make
-CMakeFiles/chtl_test_lib.dir/src/dispatcher/compiler_dispatcher.cpp.o: /workspace/src/dispatcher/compiler_dispatcher.cpp
-CMakeFiles/chtl_test_lib.dir/src/dispatcher/compiler_dispatcher.cpp.o: CMakeFiles/chtl_test_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/chtl_test_lib.dir/src/dispatcher/compiler_dispatcher.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_test_lib.dir/src/dispatcher/compiler_dispatcher.cpp.o -MF CMakeFiles/chtl_test_lib.dir/src/dispatcher/compiler_dispatcher.cpp.o.d -o CMakeFiles/chtl_test_lib.dir/src/dispatcher/compiler_dispatcher.cpp.o -c /workspace/src/dispatcher/compiler_dispatcher.cpp
+CMakeFiles/chtl_test_lib.dir/src/constraints/chtl_local_style_constraint.cpp.o: CMakeFiles/chtl_test_lib.dir/flags.make
+CMakeFiles/chtl_test_lib.dir/src/constraints/chtl_local_style_constraint.cpp.o: /workspace/src/constraints/chtl_local_style_constraint.cpp
+CMakeFiles/chtl_test_lib.dir/src/constraints/chtl_local_style_constraint.cpp.o: CMakeFiles/chtl_test_lib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/chtl_test_lib.dir/src/constraints/chtl_local_style_constraint.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_test_lib.dir/src/constraints/chtl_local_style_constraint.cpp.o -MF CMakeFiles/chtl_test_lib.dir/src/constraints/chtl_local_style_constraint.cpp.o.d -o CMakeFiles/chtl_test_lib.dir/src/constraints/chtl_local_style_constraint.cpp.o -c /workspace/src/constraints/chtl_local_style_constraint.cpp
 
-CMakeFiles/chtl_test_lib.dir/src/dispatcher/compiler_dispatcher.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/chtl_test_lib.dir/src/dispatcher/compiler_dispatcher.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/dispatcher/compiler_dispatcher.cpp > CMakeFiles/chtl_test_lib.dir/src/dispatcher/compiler_dispatcher.cpp.i
+CMakeFiles/chtl_test_lib.dir/src/constraints/chtl_local_style_constraint.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/chtl_test_lib.dir/src/constraints/chtl_local_style_constraint.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/constraints/chtl_local_style_constraint.cpp > CMakeFiles/chtl_test_lib.dir/src/constraints/chtl_local_style_constraint.cpp.i
 
-CMakeFiles/chtl_test_lib.dir/src/dispatcher/compiler_dispatcher.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/chtl_test_lib.dir/src/dispatcher/compiler_dispatcher.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/dispatcher/compiler_dispatcher.cpp -o CMakeFiles/chtl_test_lib.dir/src/dispatcher/compiler_dispatcher.cpp.s
+CMakeFiles/chtl_test_lib.dir/src/constraints/chtl_local_style_constraint.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/chtl_test_lib.dir/src/constraints/chtl_local_style_constraint.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/constraints/chtl_local_style_constraint.cpp -o CMakeFiles/chtl_test_lib.dir/src/constraints/chtl_local_style_constraint.cpp.s
+
+CMakeFiles/chtl_test_lib.dir/src/constraints/chtl_script_constraint.cpp.o: CMakeFiles/chtl_test_lib.dir/flags.make
+CMakeFiles/chtl_test_lib.dir/src/constraints/chtl_script_constraint.cpp.o: /workspace/src/constraints/chtl_script_constraint.cpp
+CMakeFiles/chtl_test_lib.dir/src/constraints/chtl_script_constraint.cpp.o: CMakeFiles/chtl_test_lib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/chtl_test_lib.dir/src/constraints/chtl_script_constraint.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_test_lib.dir/src/constraints/chtl_script_constraint.cpp.o -MF CMakeFiles/chtl_test_lib.dir/src/constraints/chtl_script_constraint.cpp.o.d -o CMakeFiles/chtl_test_lib.dir/src/constraints/chtl_script_constraint.cpp.o -c /workspace/src/constraints/chtl_script_constraint.cpp
+
+CMakeFiles/chtl_test_lib.dir/src/constraints/chtl_script_constraint.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/chtl_test_lib.dir/src/constraints/chtl_script_constraint.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/constraints/chtl_script_constraint.cpp > CMakeFiles/chtl_test_lib.dir/src/constraints/chtl_script_constraint.cpp.i
+
+CMakeFiles/chtl_test_lib.dir/src/constraints/chtl_script_constraint.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/chtl_test_lib.dir/src/constraints/chtl_script_constraint.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/constraints/chtl_script_constraint.cpp -o CMakeFiles/chtl_test_lib.dir/src/constraints/chtl_script_constraint.cpp.s
+
+CMakeFiles/chtl_test_lib.dir/src/constraints/raw_embedding_parser.cpp.o: CMakeFiles/chtl_test_lib.dir/flags.make
+CMakeFiles/chtl_test_lib.dir/src/constraints/raw_embedding_parser.cpp.o: /workspace/src/constraints/raw_embedding_parser.cpp
+CMakeFiles/chtl_test_lib.dir/src/constraints/raw_embedding_parser.cpp.o: CMakeFiles/chtl_test_lib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/chtl_test_lib.dir/src/constraints/raw_embedding_parser.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_test_lib.dir/src/constraints/raw_embedding_parser.cpp.o -MF CMakeFiles/chtl_test_lib.dir/src/constraints/raw_embedding_parser.cpp.o.d -o CMakeFiles/chtl_test_lib.dir/src/constraints/raw_embedding_parser.cpp.o -c /workspace/src/constraints/raw_embedding_parser.cpp
+
+CMakeFiles/chtl_test_lib.dir/src/constraints/raw_embedding_parser.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/chtl_test_lib.dir/src/constraints/raw_embedding_parser.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/constraints/raw_embedding_parser.cpp > CMakeFiles/chtl_test_lib.dir/src/constraints/raw_embedding_parser.cpp.i
+
+CMakeFiles/chtl_test_lib.dir/src/constraints/raw_embedding_parser.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/chtl_test_lib.dir/src/constraints/raw_embedding_parser.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/constraints/raw_embedding_parser.cpp -o CMakeFiles/chtl_test_lib.dir/src/constraints/raw_embedding_parser.cpp.s
+
+CMakeFiles/chtl_test_lib.dir/src/core/chtl_configuration.cpp.o: CMakeFiles/chtl_test_lib.dir/flags.make
+CMakeFiles/chtl_test_lib.dir/src/core/chtl_configuration.cpp.o: /workspace/src/core/chtl_configuration.cpp
+CMakeFiles/chtl_test_lib.dir/src/core/chtl_configuration.cpp.o: CMakeFiles/chtl_test_lib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/chtl_test_lib.dir/src/core/chtl_configuration.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_test_lib.dir/src/core/chtl_configuration.cpp.o -MF CMakeFiles/chtl_test_lib.dir/src/core/chtl_configuration.cpp.o.d -o CMakeFiles/chtl_test_lib.dir/src/core/chtl_configuration.cpp.o -c /workspace/src/core/chtl_configuration.cpp
+
+CMakeFiles/chtl_test_lib.dir/src/core/chtl_configuration.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/chtl_test_lib.dir/src/core/chtl_configuration.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/core/chtl_configuration.cpp > CMakeFiles/chtl_test_lib.dir/src/core/chtl_configuration.cpp.i
+
+CMakeFiles/chtl_test_lib.dir/src/core/chtl_configuration.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/chtl_test_lib.dir/src/core/chtl_configuration.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/core/chtl_configuration.cpp -o CMakeFiles/chtl_test_lib.dir/src/core/chtl_configuration.cpp.s
+
+CMakeFiles/chtl_test_lib.dir/src/core/chtl_unified_scanner.cpp.o: CMakeFiles/chtl_test_lib.dir/flags.make
+CMakeFiles/chtl_test_lib.dir/src/core/chtl_unified_scanner.cpp.o: /workspace/src/core/chtl_unified_scanner.cpp
+CMakeFiles/chtl_test_lib.dir/src/core/chtl_unified_scanner.cpp.o: CMakeFiles/chtl_test_lib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/chtl_test_lib.dir/src/core/chtl_unified_scanner.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_test_lib.dir/src/core/chtl_unified_scanner.cpp.o -MF CMakeFiles/chtl_test_lib.dir/src/core/chtl_unified_scanner.cpp.o.d -o CMakeFiles/chtl_test_lib.dir/src/core/chtl_unified_scanner.cpp.o -c /workspace/src/core/chtl_unified_scanner.cpp
+
+CMakeFiles/chtl_test_lib.dir/src/core/chtl_unified_scanner.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/chtl_test_lib.dir/src/core/chtl_unified_scanner.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/core/chtl_unified_scanner.cpp > CMakeFiles/chtl_test_lib.dir/src/core/chtl_unified_scanner.cpp.i
+
+CMakeFiles/chtl_test_lib.dir/src/core/chtl_unified_scanner.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/chtl_test_lib.dir/src/core/chtl_unified_scanner.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/core/chtl_unified_scanner.cpp -o CMakeFiles/chtl_test_lib.dir/src/core/chtl_unified_scanner.cpp.s
+
+CMakeFiles/chtl_test_lib.dir/src/core/compiler_dispatcher.cpp.o: CMakeFiles/chtl_test_lib.dir/flags.make
+CMakeFiles/chtl_test_lib.dir/src/core/compiler_dispatcher.cpp.o: /workspace/src/core/compiler_dispatcher.cpp
+CMakeFiles/chtl_test_lib.dir/src/core/compiler_dispatcher.cpp.o: CMakeFiles/chtl_test_lib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/chtl_test_lib.dir/src/core/compiler_dispatcher.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_test_lib.dir/src/core/compiler_dispatcher.cpp.o -MF CMakeFiles/chtl_test_lib.dir/src/core/compiler_dispatcher.cpp.o.d -o CMakeFiles/chtl_test_lib.dir/src/core/compiler_dispatcher.cpp.o -c /workspace/src/core/compiler_dispatcher.cpp
+
+CMakeFiles/chtl_test_lib.dir/src/core/compiler_dispatcher.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/chtl_test_lib.dir/src/core/compiler_dispatcher.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/core/compiler_dispatcher.cpp > CMakeFiles/chtl_test_lib.dir/src/core/compiler_dispatcher.cpp.i
+
+CMakeFiles/chtl_test_lib.dir/src/core/compiler_dispatcher.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/chtl_test_lib.dir/src/core/compiler_dispatcher.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/core/compiler_dispatcher.cpp -o CMakeFiles/chtl_test_lib.dir/src/core/compiler_dispatcher.cpp.s
+
+CMakeFiles/chtl_test_lib.dir/src/core/constraint_validator.cpp.o: CMakeFiles/chtl_test_lib.dir/flags.make
+CMakeFiles/chtl_test_lib.dir/src/core/constraint_validator.cpp.o: /workspace/src/core/constraint_validator.cpp
+CMakeFiles/chtl_test_lib.dir/src/core/constraint_validator.cpp.o: CMakeFiles/chtl_test_lib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/chtl_test_lib.dir/src/core/constraint_validator.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_test_lib.dir/src/core/constraint_validator.cpp.o -MF CMakeFiles/chtl_test_lib.dir/src/core/constraint_validator.cpp.o.d -o CMakeFiles/chtl_test_lib.dir/src/core/constraint_validator.cpp.o -c /workspace/src/core/constraint_validator.cpp
+
+CMakeFiles/chtl_test_lib.dir/src/core/constraint_validator.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/chtl_test_lib.dir/src/core/constraint_validator.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/core/constraint_validator.cpp > CMakeFiles/chtl_test_lib.dir/src/core/constraint_validator.cpp.i
+
+CMakeFiles/chtl_test_lib.dir/src/core/constraint_validator.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/chtl_test_lib.dir/src/core/constraint_validator.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/core/constraint_validator.cpp -o CMakeFiles/chtl_test_lib.dir/src/core/constraint_validator.cpp.s
+
+CMakeFiles/chtl_test_lib.dir/src/core/integrated_compiler_system.cpp.o: CMakeFiles/chtl_test_lib.dir/flags.make
+CMakeFiles/chtl_test_lib.dir/src/core/integrated_compiler_system.cpp.o: /workspace/src/core/integrated_compiler_system.cpp
+CMakeFiles/chtl_test_lib.dir/src/core/integrated_compiler_system.cpp.o: CMakeFiles/chtl_test_lib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/chtl_test_lib.dir/src/core/integrated_compiler_system.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_test_lib.dir/src/core/integrated_compiler_system.cpp.o -MF CMakeFiles/chtl_test_lib.dir/src/core/integrated_compiler_system.cpp.o.d -o CMakeFiles/chtl_test_lib.dir/src/core/integrated_compiler_system.cpp.o -c /workspace/src/core/integrated_compiler_system.cpp
+
+CMakeFiles/chtl_test_lib.dir/src/core/integrated_compiler_system.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/chtl_test_lib.dir/src/core/integrated_compiler_system.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/core/integrated_compiler_system.cpp > CMakeFiles/chtl_test_lib.dir/src/core/integrated_compiler_system.cpp.i
+
+CMakeFiles/chtl_test_lib.dir/src/core/integrated_compiler_system.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/chtl_test_lib.dir/src/core/integrated_compiler_system.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/core/integrated_compiler_system.cpp -o CMakeFiles/chtl_test_lib.dir/src/core/integrated_compiler_system.cpp.s
+
+CMakeFiles/chtl_test_lib.dir/src/core/unified_scanner.cpp.o: CMakeFiles/chtl_test_lib.dir/flags.make
+CMakeFiles/chtl_test_lib.dir/src/core/unified_scanner.cpp.o: /workspace/src/core/unified_scanner.cpp
+CMakeFiles/chtl_test_lib.dir/src/core/unified_scanner.cpp.o: CMakeFiles/chtl_test_lib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object CMakeFiles/chtl_test_lib.dir/src/core/unified_scanner.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_test_lib.dir/src/core/unified_scanner.cpp.o -MF CMakeFiles/chtl_test_lib.dir/src/core/unified_scanner.cpp.o.d -o CMakeFiles/chtl_test_lib.dir/src/core/unified_scanner.cpp.o -c /workspace/src/core/unified_scanner.cpp
+
+CMakeFiles/chtl_test_lib.dir/src/core/unified_scanner.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/chtl_test_lib.dir/src/core/unified_scanner.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/core/unified_scanner.cpp > CMakeFiles/chtl_test_lib.dir/src/core/unified_scanner.cpp.i
+
+CMakeFiles/chtl_test_lib.dir/src/core/unified_scanner.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/chtl_test_lib.dir/src/core/unified_scanner.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/core/unified_scanner.cpp -o CMakeFiles/chtl_test_lib.dir/src/core/unified_scanner.cpp.s
 
 CMakeFiles/chtl_test_lib.dir/src/generators/chtl_generator.cpp.o: CMakeFiles/chtl_test_lib.dir/flags.make
 CMakeFiles/chtl_test_lib.dir/src/generators/chtl_generator.cpp.o: /workspace/src/generators/chtl_generator.cpp
 CMakeFiles/chtl_test_lib.dir/src/generators/chtl_generator.cpp.o: CMakeFiles/chtl_test_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/chtl_test_lib.dir/src/generators/chtl_generator.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CXX object CMakeFiles/chtl_test_lib.dir/src/generators/chtl_generator.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_test_lib.dir/src/generators/chtl_generator.cpp.o -MF CMakeFiles/chtl_test_lib.dir/src/generators/chtl_generator.cpp.o.d -o CMakeFiles/chtl_test_lib.dir/src/generators/chtl_generator.cpp.o -c /workspace/src/generators/chtl_generator.cpp
 
 CMakeFiles/chtl_test_lib.dir/src/generators/chtl_generator.cpp.i: cmake_force
@@ -310,10 +338,24 @@ CMakeFiles/chtl_test_lib.dir/src/generators/chtl_generator.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/chtl_test_lib.dir/src/generators/chtl_generator.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/generators/chtl_generator.cpp -o CMakeFiles/chtl_test_lib.dir/src/generators/chtl_generator.cpp.s
 
+CMakeFiles/chtl_test_lib.dir/src/import/enhanced_import_manager.cpp.o: CMakeFiles/chtl_test_lib.dir/flags.make
+CMakeFiles/chtl_test_lib.dir/src/import/enhanced_import_manager.cpp.o: /workspace/src/import/enhanced_import_manager.cpp
+CMakeFiles/chtl_test_lib.dir/src/import/enhanced_import_manager.cpp.o: CMakeFiles/chtl_test_lib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building CXX object CMakeFiles/chtl_test_lib.dir/src/import/enhanced_import_manager.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_test_lib.dir/src/import/enhanced_import_manager.cpp.o -MF CMakeFiles/chtl_test_lib.dir/src/import/enhanced_import_manager.cpp.o.d -o CMakeFiles/chtl_test_lib.dir/src/import/enhanced_import_manager.cpp.o -c /workspace/src/import/enhanced_import_manager.cpp
+
+CMakeFiles/chtl_test_lib.dir/src/import/enhanced_import_manager.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/chtl_test_lib.dir/src/import/enhanced_import_manager.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/import/enhanced_import_manager.cpp > CMakeFiles/chtl_test_lib.dir/src/import/enhanced_import_manager.cpp.i
+
+CMakeFiles/chtl_test_lib.dir/src/import/enhanced_import_manager.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/chtl_test_lib.dir/src/import/enhanced_import_manager.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/import/enhanced_import_manager.cpp -o CMakeFiles/chtl_test_lib.dir/src/import/enhanced_import_manager.cpp.s
+
 CMakeFiles/chtl_test_lib.dir/src/lexer/chtl_js_tokens.cpp.o: CMakeFiles/chtl_test_lib.dir/flags.make
 CMakeFiles/chtl_test_lib.dir/src/lexer/chtl_js_tokens.cpp.o: /workspace/src/lexer/chtl_js_tokens.cpp
 CMakeFiles/chtl_test_lib.dir/src/lexer/chtl_js_tokens.cpp.o: CMakeFiles/chtl_test_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object CMakeFiles/chtl_test_lib.dir/src/lexer/chtl_js_tokens.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building CXX object CMakeFiles/chtl_test_lib.dir/src/lexer/chtl_js_tokens.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_test_lib.dir/src/lexer/chtl_js_tokens.cpp.o -MF CMakeFiles/chtl_test_lib.dir/src/lexer/chtl_js_tokens.cpp.o.d -o CMakeFiles/chtl_test_lib.dir/src/lexer/chtl_js_tokens.cpp.o -c /workspace/src/lexer/chtl_js_tokens.cpp
 
 CMakeFiles/chtl_test_lib.dir/src/lexer/chtl_js_tokens.cpp.i: cmake_force
@@ -327,7 +369,7 @@ CMakeFiles/chtl_test_lib.dir/src/lexer/chtl_js_tokens.cpp.s: cmake_force
 CMakeFiles/chtl_test_lib.dir/src/lexer/chtl_lexer.cpp.o: CMakeFiles/chtl_test_lib.dir/flags.make
 CMakeFiles/chtl_test_lib.dir/src/lexer/chtl_lexer.cpp.o: /workspace/src/lexer/chtl_lexer.cpp
 CMakeFiles/chtl_test_lib.dir/src/lexer/chtl_lexer.cpp.o: CMakeFiles/chtl_test_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CXX object CMakeFiles/chtl_test_lib.dir/src/lexer/chtl_lexer.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building CXX object CMakeFiles/chtl_test_lib.dir/src/lexer/chtl_lexer.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_test_lib.dir/src/lexer/chtl_lexer.cpp.o -MF CMakeFiles/chtl_test_lib.dir/src/lexer/chtl_lexer.cpp.o.d -o CMakeFiles/chtl_test_lib.dir/src/lexer/chtl_lexer.cpp.o -c /workspace/src/lexer/chtl_lexer.cpp
 
 CMakeFiles/chtl_test_lib.dir/src/lexer/chtl_lexer.cpp.i: cmake_force
@@ -341,7 +383,7 @@ CMakeFiles/chtl_test_lib.dir/src/lexer/chtl_lexer.cpp.s: cmake_force
 CMakeFiles/chtl_test_lib.dir/src/lexer/chtl_tokens.cpp.o: CMakeFiles/chtl_test_lib.dir/flags.make
 CMakeFiles/chtl_test_lib.dir/src/lexer/chtl_tokens.cpp.o: /workspace/src/lexer/chtl_tokens.cpp
 CMakeFiles/chtl_test_lib.dir/src/lexer/chtl_tokens.cpp.o: CMakeFiles/chtl_test_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building CXX object CMakeFiles/chtl_test_lib.dir/src/lexer/chtl_tokens.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building CXX object CMakeFiles/chtl_test_lib.dir/src/lexer/chtl_tokens.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_test_lib.dir/src/lexer/chtl_tokens.cpp.o -MF CMakeFiles/chtl_test_lib.dir/src/lexer/chtl_tokens.cpp.o.d -o CMakeFiles/chtl_test_lib.dir/src/lexer/chtl_tokens.cpp.o -c /workspace/src/lexer/chtl_tokens.cpp
 
 CMakeFiles/chtl_test_lib.dir/src/lexer/chtl_tokens.cpp.i: cmake_force
@@ -355,7 +397,7 @@ CMakeFiles/chtl_test_lib.dir/src/lexer/chtl_tokens.cpp.s: cmake_force
 CMakeFiles/chtl_test_lib.dir/src/lexer/complete_chtl_tokens.cpp.o: CMakeFiles/chtl_test_lib.dir/flags.make
 CMakeFiles/chtl_test_lib.dir/src/lexer/complete_chtl_tokens.cpp.o: /workspace/src/lexer/complete_chtl_tokens.cpp
 CMakeFiles/chtl_test_lib.dir/src/lexer/complete_chtl_tokens.cpp.o: CMakeFiles/chtl_test_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building CXX object CMakeFiles/chtl_test_lib.dir/src/lexer/complete_chtl_tokens.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building CXX object CMakeFiles/chtl_test_lib.dir/src/lexer/complete_chtl_tokens.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_test_lib.dir/src/lexer/complete_chtl_tokens.cpp.o -MF CMakeFiles/chtl_test_lib.dir/src/lexer/complete_chtl_tokens.cpp.o.d -o CMakeFiles/chtl_test_lib.dir/src/lexer/complete_chtl_tokens.cpp.o -c /workspace/src/lexer/complete_chtl_tokens.cpp
 
 CMakeFiles/chtl_test_lib.dir/src/lexer/complete_chtl_tokens.cpp.i: cmake_force
@@ -369,7 +411,7 @@ CMakeFiles/chtl_test_lib.dir/src/lexer/complete_chtl_tokens.cpp.s: cmake_force
 CMakeFiles/chtl_test_lib.dir/src/lexer/global_map.cpp.o: CMakeFiles/chtl_test_lib.dir/flags.make
 CMakeFiles/chtl_test_lib.dir/src/lexer/global_map.cpp.o: /workspace/src/lexer/global_map.cpp
 CMakeFiles/chtl_test_lib.dir/src/lexer/global_map.cpp.o: CMakeFiles/chtl_test_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building CXX object CMakeFiles/chtl_test_lib.dir/src/lexer/global_map.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building CXX object CMakeFiles/chtl_test_lib.dir/src/lexer/global_map.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_test_lib.dir/src/lexer/global_map.cpp.o -MF CMakeFiles/chtl_test_lib.dir/src/lexer/global_map.cpp.o.d -o CMakeFiles/chtl_test_lib.dir/src/lexer/global_map.cpp.o -c /workspace/src/lexer/global_map.cpp
 
 CMakeFiles/chtl_test_lib.dir/src/lexer/global_map.cpp.i: cmake_force
@@ -383,7 +425,7 @@ CMakeFiles/chtl_test_lib.dir/src/lexer/global_map.cpp.s: cmake_force
 CMakeFiles/chtl_test_lib.dir/src/lexer/lexer_state.cpp.o: CMakeFiles/chtl_test_lib.dir/flags.make
 CMakeFiles/chtl_test_lib.dir/src/lexer/lexer_state.cpp.o: /workspace/src/lexer/lexer_state.cpp
 CMakeFiles/chtl_test_lib.dir/src/lexer/lexer_state.cpp.o: CMakeFiles/chtl_test_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building CXX object CMakeFiles/chtl_test_lib.dir/src/lexer/lexer_state.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Building CXX object CMakeFiles/chtl_test_lib.dir/src/lexer/lexer_state.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_test_lib.dir/src/lexer/lexer_state.cpp.o -MF CMakeFiles/chtl_test_lib.dir/src/lexer/lexer_state.cpp.o.d -o CMakeFiles/chtl_test_lib.dir/src/lexer/lexer_state.cpp.o -c /workspace/src/lexer/lexer_state.cpp
 
 CMakeFiles/chtl_test_lib.dir/src/lexer/lexer_state.cpp.i: cmake_force
@@ -394,10 +436,150 @@ CMakeFiles/chtl_test_lib.dir/src/lexer/lexer_state.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/chtl_test_lib.dir/src/lexer/lexer_state.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/lexer/lexer_state.cpp -o CMakeFiles/chtl_test_lib.dir/src/lexer/lexer_state.cpp.s
 
+CMakeFiles/chtl_test_lib.dir/src/namespace/enhanced_namespace_manager.cpp.o: CMakeFiles/chtl_test_lib.dir/flags.make
+CMakeFiles/chtl_test_lib.dir/src/namespace/enhanced_namespace_manager.cpp.o: /workspace/src/namespace/enhanced_namespace_manager.cpp
+CMakeFiles/chtl_test_lib.dir/src/namespace/enhanced_namespace_manager.cpp.o: CMakeFiles/chtl_test_lib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Building CXX object CMakeFiles/chtl_test_lib.dir/src/namespace/enhanced_namespace_manager.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_test_lib.dir/src/namespace/enhanced_namespace_manager.cpp.o -MF CMakeFiles/chtl_test_lib.dir/src/namespace/enhanced_namespace_manager.cpp.o.d -o CMakeFiles/chtl_test_lib.dir/src/namespace/enhanced_namespace_manager.cpp.o -c /workspace/src/namespace/enhanced_namespace_manager.cpp
+
+CMakeFiles/chtl_test_lib.dir/src/namespace/enhanced_namespace_manager.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/chtl_test_lib.dir/src/namespace/enhanced_namespace_manager.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/namespace/enhanced_namespace_manager.cpp > CMakeFiles/chtl_test_lib.dir/src/namespace/enhanced_namespace_manager.cpp.i
+
+CMakeFiles/chtl_test_lib.dir/src/namespace/enhanced_namespace_manager.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/chtl_test_lib.dir/src/namespace/enhanced_namespace_manager.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/namespace/enhanced_namespace_manager.cpp -o CMakeFiles/chtl_test_lib.dir/src/namespace/enhanced_namespace_manager.cpp.s
+
+CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_basic_parser.cpp.o: CMakeFiles/chtl_test_lib.dir/flags.make
+CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_basic_parser.cpp.o: /workspace/src/parsers/chtl_basic_parser.cpp
+CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_basic_parser.cpp.o: CMakeFiles/chtl_test_lib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_28) "Building CXX object CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_basic_parser.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_basic_parser.cpp.o -MF CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_basic_parser.cpp.o.d -o CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_basic_parser.cpp.o -c /workspace/src/parsers/chtl_basic_parser.cpp
+
+CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_basic_parser.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_basic_parser.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/parsers/chtl_basic_parser.cpp > CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_basic_parser.cpp.i
+
+CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_basic_parser.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_basic_parser.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/parsers/chtl_basic_parser.cpp -o CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_basic_parser.cpp.s
+
+CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_config_import_parser.cpp.o: CMakeFiles/chtl_test_lib.dir/flags.make
+CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_config_import_parser.cpp.o: /workspace/src/parsers/chtl_config_import_parser.cpp
+CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_config_import_parser.cpp.o: CMakeFiles/chtl_test_lib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_29) "Building CXX object CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_config_import_parser.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_config_import_parser.cpp.o -MF CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_config_import_parser.cpp.o.d -o CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_config_import_parser.cpp.o -c /workspace/src/parsers/chtl_config_import_parser.cpp
+
+CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_config_import_parser.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_config_import_parser.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/parsers/chtl_config_import_parser.cpp > CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_config_import_parser.cpp.i
+
+CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_config_import_parser.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_config_import_parser.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/parsers/chtl_config_import_parser.cpp -o CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_config_import_parser.cpp.s
+
+CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_custom_parser.cpp.o: CMakeFiles/chtl_test_lib.dir/flags.make
+CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_custom_parser.cpp.o: /workspace/src/parsers/chtl_custom_parser.cpp
+CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_custom_parser.cpp.o: CMakeFiles/chtl_test_lib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_30) "Building CXX object CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_custom_parser.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_custom_parser.cpp.o -MF CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_custom_parser.cpp.o.d -o CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_custom_parser.cpp.o -c /workspace/src/parsers/chtl_custom_parser.cpp
+
+CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_custom_parser.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_custom_parser.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/parsers/chtl_custom_parser.cpp > CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_custom_parser.cpp.i
+
+CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_custom_parser.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_custom_parser.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/parsers/chtl_custom_parser.cpp -o CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_custom_parser.cpp.s
+
+CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_js_parser.cpp.o: CMakeFiles/chtl_test_lib.dir/flags.make
+CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_js_parser.cpp.o: /workspace/src/parsers/chtl_js_parser.cpp
+CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_js_parser.cpp.o: CMakeFiles/chtl_test_lib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_31) "Building CXX object CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_js_parser.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_js_parser.cpp.o -MF CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_js_parser.cpp.o.d -o CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_js_parser.cpp.o -c /workspace/src/parsers/chtl_js_parser.cpp
+
+CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_js_parser.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_js_parser.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/parsers/chtl_js_parser.cpp > CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_js_parser.cpp.i
+
+CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_js_parser.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_js_parser.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/parsers/chtl_js_parser.cpp -o CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_js_parser.cpp.s
+
+CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_namespace_parser.cpp.o: CMakeFiles/chtl_test_lib.dir/flags.make
+CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_namespace_parser.cpp.o: /workspace/src/parsers/chtl_namespace_parser.cpp
+CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_namespace_parser.cpp.o: CMakeFiles/chtl_test_lib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_32) "Building CXX object CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_namespace_parser.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_namespace_parser.cpp.o -MF CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_namespace_parser.cpp.o.d -o CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_namespace_parser.cpp.o -c /workspace/src/parsers/chtl_namespace_parser.cpp
+
+CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_namespace_parser.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_namespace_parser.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/parsers/chtl_namespace_parser.cpp > CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_namespace_parser.cpp.i
+
+CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_namespace_parser.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_namespace_parser.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/parsers/chtl_namespace_parser.cpp -o CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_namespace_parser.cpp.s
+
+CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_origin_parser.cpp.o: CMakeFiles/chtl_test_lib.dir/flags.make
+CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_origin_parser.cpp.o: /workspace/src/parsers/chtl_origin_parser.cpp
+CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_origin_parser.cpp.o: CMakeFiles/chtl_test_lib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_33) "Building CXX object CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_origin_parser.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_origin_parser.cpp.o -MF CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_origin_parser.cpp.o.d -o CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_origin_parser.cpp.o -c /workspace/src/parsers/chtl_origin_parser.cpp
+
+CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_origin_parser.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_origin_parser.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/parsers/chtl_origin_parser.cpp > CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_origin_parser.cpp.i
+
+CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_origin_parser.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_origin_parser.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/parsers/chtl_origin_parser.cpp -o CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_origin_parser.cpp.s
+
+CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_parser.cpp.o: CMakeFiles/chtl_test_lib.dir/flags.make
+CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_parser.cpp.o: /workspace/src/parsers/chtl_parser.cpp
+CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_parser.cpp.o: CMakeFiles/chtl_test_lib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_34) "Building CXX object CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_parser.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_parser.cpp.o -MF CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_parser.cpp.o.d -o CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_parser.cpp.o -c /workspace/src/parsers/chtl_parser.cpp
+
+CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_parser.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_parser.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/parsers/chtl_parser.cpp > CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_parser.cpp.i
+
+CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_parser.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_parser.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/parsers/chtl_parser.cpp -o CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_parser.cpp.s
+
+CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_style_parser.cpp.o: CMakeFiles/chtl_test_lib.dir/flags.make
+CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_style_parser.cpp.o: /workspace/src/parsers/chtl_style_parser.cpp
+CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_style_parser.cpp.o: CMakeFiles/chtl_test_lib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_35) "Building CXX object CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_style_parser.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_style_parser.cpp.o -MF CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_style_parser.cpp.o.d -o CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_style_parser.cpp.o -c /workspace/src/parsers/chtl_style_parser.cpp
+
+CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_style_parser.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_style_parser.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/parsers/chtl_style_parser.cpp > CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_style_parser.cpp.i
+
+CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_style_parser.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_style_parser.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/parsers/chtl_style_parser.cpp -o CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_style_parser.cpp.s
+
+CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_template_parser.cpp.o: CMakeFiles/chtl_test_lib.dir/flags.make
+CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_template_parser.cpp.o: /workspace/src/parsers/chtl_template_parser.cpp
+CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_template_parser.cpp.o: CMakeFiles/chtl_test_lib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_36) "Building CXX object CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_template_parser.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_template_parser.cpp.o -MF CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_template_parser.cpp.o.d -o CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_template_parser.cpp.o -c /workspace/src/parsers/chtl_template_parser.cpp
+
+CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_template_parser.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_template_parser.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/parsers/chtl_template_parser.cpp > CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_template_parser.cpp.i
+
+CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_template_parser.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_template_parser.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/parsers/chtl_template_parser.cpp -o CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_template_parser.cpp.s
+
 CMakeFiles/chtl_test_lib.dir/src/scanner/slice_scanner.cpp.o: CMakeFiles/chtl_test_lib.dir/flags.make
 CMakeFiles/chtl_test_lib.dir/src/scanner/slice_scanner.cpp.o: /workspace/src/scanner/slice_scanner.cpp
 CMakeFiles/chtl_test_lib.dir/src/scanner/slice_scanner.cpp.o: CMakeFiles/chtl_test_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building CXX object CMakeFiles/chtl_test_lib.dir/src/scanner/slice_scanner.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_37) "Building CXX object CMakeFiles/chtl_test_lib.dir/src/scanner/slice_scanner.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_test_lib.dir/src/scanner/slice_scanner.cpp.o -MF CMakeFiles/chtl_test_lib.dir/src/scanner/slice_scanner.cpp.o.d -o CMakeFiles/chtl_test_lib.dir/src/scanner/slice_scanner.cpp.o -c /workspace/src/scanner/slice_scanner.cpp
 
 CMakeFiles/chtl_test_lib.dir/src/scanner/slice_scanner.cpp.i: cmake_force
@@ -411,7 +593,7 @@ CMakeFiles/chtl_test_lib.dir/src/scanner/slice_scanner.cpp.s: cmake_force
 CMakeFiles/chtl_test_lib.dir/src/scanner/unified_scanner.cpp.o: CMakeFiles/chtl_test_lib.dir/flags.make
 CMakeFiles/chtl_test_lib.dir/src/scanner/unified_scanner.cpp.o: /workspace/src/scanner/unified_scanner.cpp
 CMakeFiles/chtl_test_lib.dir/src/scanner/unified_scanner.cpp.o: CMakeFiles/chtl_test_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building CXX object CMakeFiles/chtl_test_lib.dir/src/scanner/unified_scanner.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_38) "Building CXX object CMakeFiles/chtl_test_lib.dir/src/scanner/unified_scanner.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_test_lib.dir/src/scanner/unified_scanner.cpp.o -MF CMakeFiles/chtl_test_lib.dir/src/scanner/unified_scanner.cpp.o.d -o CMakeFiles/chtl_test_lib.dir/src/scanner/unified_scanner.cpp.o -c /workspace/src/scanner/unified_scanner.cpp
 
 CMakeFiles/chtl_test_lib.dir/src/scanner/unified_scanner.cpp.i: cmake_force
@@ -424,68 +606,94 @@ CMakeFiles/chtl_test_lib.dir/src/scanner/unified_scanner.cpp.s: cmake_force
 
 # Object files for target chtl_test_lib
 chtl_test_lib_OBJECTS = \
-"CMakeFiles/chtl_test_lib.dir/generated/antlr/css/CSS3BaseListener.cpp.o" \
-"CMakeFiles/chtl_test_lib.dir/generated/antlr/css/CSS3Lexer.cpp.o" \
-"CMakeFiles/chtl_test_lib.dir/generated/antlr/css/CSS3Listener.cpp.o" \
-"CMakeFiles/chtl_test_lib.dir/generated/antlr/css/CSS3Parser.cpp.o" \
-"CMakeFiles/chtl_test_lib.dir/generated/antlr/js/JavaScriptBaseListener.cpp.o" \
-"CMakeFiles/chtl_test_lib.dir/generated/antlr/js/JavaScriptLexer.cpp.o" \
-"CMakeFiles/chtl_test_lib.dir/generated/antlr/js/JavaScriptListener.cpp.o" \
-"CMakeFiles/chtl_test_lib.dir/generated/antlr/js/JavaScriptParser.cpp.o" \
 "CMakeFiles/chtl_test_lib.dir/src/ast/chtl_ast.cpp.o" \
 "CMakeFiles/chtl_test_lib.dir/src/ast/chtl_js_ast.cpp.o" \
+"CMakeFiles/chtl_test_lib.dir/src/cjmod/cjmod_manager.cpp.o" \
+"CMakeFiles/chtl_test_lib.dir/src/cmod/cmod_manager.cpp.o" \
 "CMakeFiles/chtl_test_lib.dir/src/common/types.cpp.o" \
-"CMakeFiles/chtl_test_lib.dir/src/compilers/antlr_css_compiler.cpp.o" \
-"CMakeFiles/chtl_test_lib.dir/src/compilers/antlr_js_compiler.cpp.o" \
-"CMakeFiles/chtl_test_lib.dir/src/compilers/chtl_compiler.cpp.o" \
-"CMakeFiles/chtl_test_lib.dir/src/compilers/modern_antlr_css_compiler.cpp.o" \
-"CMakeFiles/chtl_test_lib.dir/src/dispatcher/compiler_dispatcher.cpp.o" \
+"CMakeFiles/chtl_test_lib.dir/src/compiler/cjmod_compiler_extension.cpp.o" \
+"CMakeFiles/chtl_test_lib.dir/src/compiler/cmod_compiler_extension.cpp.o" \
+"CMakeFiles/chtl_test_lib.dir/src/constraints/chtl_global_style_constraint.cpp.o" \
+"CMakeFiles/chtl_test_lib.dir/src/constraints/chtl_local_script_constraint.cpp.o" \
+"CMakeFiles/chtl_test_lib.dir/src/constraints/chtl_local_style_constraint.cpp.o" \
+"CMakeFiles/chtl_test_lib.dir/src/constraints/chtl_script_constraint.cpp.o" \
+"CMakeFiles/chtl_test_lib.dir/src/constraints/raw_embedding_parser.cpp.o" \
+"CMakeFiles/chtl_test_lib.dir/src/core/chtl_configuration.cpp.o" \
+"CMakeFiles/chtl_test_lib.dir/src/core/chtl_unified_scanner.cpp.o" \
+"CMakeFiles/chtl_test_lib.dir/src/core/compiler_dispatcher.cpp.o" \
+"CMakeFiles/chtl_test_lib.dir/src/core/constraint_validator.cpp.o" \
+"CMakeFiles/chtl_test_lib.dir/src/core/integrated_compiler_system.cpp.o" \
+"CMakeFiles/chtl_test_lib.dir/src/core/unified_scanner.cpp.o" \
 "CMakeFiles/chtl_test_lib.dir/src/generators/chtl_generator.cpp.o" \
+"CMakeFiles/chtl_test_lib.dir/src/import/enhanced_import_manager.cpp.o" \
 "CMakeFiles/chtl_test_lib.dir/src/lexer/chtl_js_tokens.cpp.o" \
 "CMakeFiles/chtl_test_lib.dir/src/lexer/chtl_lexer.cpp.o" \
 "CMakeFiles/chtl_test_lib.dir/src/lexer/chtl_tokens.cpp.o" \
 "CMakeFiles/chtl_test_lib.dir/src/lexer/complete_chtl_tokens.cpp.o" \
 "CMakeFiles/chtl_test_lib.dir/src/lexer/global_map.cpp.o" \
 "CMakeFiles/chtl_test_lib.dir/src/lexer/lexer_state.cpp.o" \
+"CMakeFiles/chtl_test_lib.dir/src/namespace/enhanced_namespace_manager.cpp.o" \
+"CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_basic_parser.cpp.o" \
+"CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_config_import_parser.cpp.o" \
+"CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_custom_parser.cpp.o" \
+"CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_js_parser.cpp.o" \
+"CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_namespace_parser.cpp.o" \
+"CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_origin_parser.cpp.o" \
+"CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_parser.cpp.o" \
+"CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_style_parser.cpp.o" \
+"CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_template_parser.cpp.o" \
 "CMakeFiles/chtl_test_lib.dir/src/scanner/slice_scanner.cpp.o" \
 "CMakeFiles/chtl_test_lib.dir/src/scanner/unified_scanner.cpp.o"
 
 # External object files for target chtl_test_lib
 chtl_test_lib_EXTERNAL_OBJECTS =
 
-libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/generated/antlr/css/CSS3BaseListener.cpp.o
-libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/generated/antlr/css/CSS3Lexer.cpp.o
-libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/generated/antlr/css/CSS3Listener.cpp.o
-libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/generated/antlr/css/CSS3Parser.cpp.o
-libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/generated/antlr/js/JavaScriptBaseListener.cpp.o
-libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/generated/antlr/js/JavaScriptLexer.cpp.o
-libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/generated/antlr/js/JavaScriptListener.cpp.o
-libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/generated/antlr/js/JavaScriptParser.cpp.o
-libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/src/ast/chtl_ast.cpp.o
-libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/src/ast/chtl_js_ast.cpp.o
-libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/src/common/types.cpp.o
-libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/src/compilers/antlr_css_compiler.cpp.o
-libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/src/compilers/antlr_js_compiler.cpp.o
-libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/src/compilers/chtl_compiler.cpp.o
-libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/src/compilers/modern_antlr_css_compiler.cpp.o
-libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/src/dispatcher/compiler_dispatcher.cpp.o
-libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/src/generators/chtl_generator.cpp.o
-libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/src/lexer/chtl_js_tokens.cpp.o
-libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/src/lexer/chtl_lexer.cpp.o
-libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/src/lexer/chtl_tokens.cpp.o
-libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/src/lexer/complete_chtl_tokens.cpp.o
-libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/src/lexer/global_map.cpp.o
-libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/src/lexer/lexer_state.cpp.o
-libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/src/scanner/slice_scanner.cpp.o
-libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/src/scanner/unified_scanner.cpp.o
-libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/build.make
-libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Linking CXX static library libchtl_test_lib.a"
+lib/libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/src/ast/chtl_ast.cpp.o
+lib/libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/src/ast/chtl_js_ast.cpp.o
+lib/libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/src/cjmod/cjmod_manager.cpp.o
+lib/libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/src/cmod/cmod_manager.cpp.o
+lib/libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/src/common/types.cpp.o
+lib/libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/src/compiler/cjmod_compiler_extension.cpp.o
+lib/libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/src/compiler/cmod_compiler_extension.cpp.o
+lib/libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/src/constraints/chtl_global_style_constraint.cpp.o
+lib/libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/src/constraints/chtl_local_script_constraint.cpp.o
+lib/libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/src/constraints/chtl_local_style_constraint.cpp.o
+lib/libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/src/constraints/chtl_script_constraint.cpp.o
+lib/libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/src/constraints/raw_embedding_parser.cpp.o
+lib/libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/src/core/chtl_configuration.cpp.o
+lib/libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/src/core/chtl_unified_scanner.cpp.o
+lib/libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/src/core/compiler_dispatcher.cpp.o
+lib/libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/src/core/constraint_validator.cpp.o
+lib/libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/src/core/integrated_compiler_system.cpp.o
+lib/libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/src/core/unified_scanner.cpp.o
+lib/libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/src/generators/chtl_generator.cpp.o
+lib/libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/src/import/enhanced_import_manager.cpp.o
+lib/libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/src/lexer/chtl_js_tokens.cpp.o
+lib/libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/src/lexer/chtl_lexer.cpp.o
+lib/libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/src/lexer/chtl_tokens.cpp.o
+lib/libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/src/lexer/complete_chtl_tokens.cpp.o
+lib/libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/src/lexer/global_map.cpp.o
+lib/libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/src/lexer/lexer_state.cpp.o
+lib/libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/src/namespace/enhanced_namespace_manager.cpp.o
+lib/libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_basic_parser.cpp.o
+lib/libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_config_import_parser.cpp.o
+lib/libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_custom_parser.cpp.o
+lib/libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_js_parser.cpp.o
+lib/libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_namespace_parser.cpp.o
+lib/libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_origin_parser.cpp.o
+lib/libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_parser.cpp.o
+lib/libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_style_parser.cpp.o
+lib/libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/src/parsers/chtl_template_parser.cpp.o
+lib/libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/src/scanner/slice_scanner.cpp.o
+lib/libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/src/scanner/unified_scanner.cpp.o
+lib/libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/build.make
+lib/libchtl_test_lib.a: CMakeFiles/chtl_test_lib.dir/link.txt
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_39) "Linking CXX static library lib/libchtl_test_lib.a"
 	$(CMAKE_COMMAND) -P CMakeFiles/chtl_test_lib.dir/cmake_clean_target.cmake
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/chtl_test_lib.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
-CMakeFiles/chtl_test_lib.dir/build: libchtl_test_lib.a
+CMakeFiles/chtl_test_lib.dir/build: lib/libchtl_test_lib.a
 .PHONY : CMakeFiles/chtl_test_lib.dir/build
 
 CMakeFiles/chtl_test_lib.dir/clean:

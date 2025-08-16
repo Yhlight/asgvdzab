@@ -1,3 +1,3 @@
 file(REMOVE_RECURSE
-  "libchtl_test_lib.a"
+  "lib/libchtl_test_lib.a"
 )

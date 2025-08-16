@@ -107,6 +107,11 @@ public:
     static std::shared_ptr<ICHTLJSCompiler> createCHTLJSCompiler();
     static std::shared_ptr<ICSSCompiler> createCSSCompiler();
     static std::shared_ptr<IJavaScriptCompiler> createJavaScriptCompiler();
+    
+    static void setDebugMode(bool enabled) { debugMode_ = enabled; }
+    
+private:
+    static bool debugMode_;
 };
 
 /**

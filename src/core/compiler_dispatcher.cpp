@@ -517,28 +517,38 @@ std::string CompilerDispatcher::optimizeHtmlOutput(const std::string& html) {
 
 // ==================== CompilerFactory 实现 ====================
 
+bool CompilerFactory::debugMode_ = false;
+
 std::shared_ptr<ICHTLCompiler> CompilerFactory::createCHTLCompiler() {
     // 这里应该返回实际的CHTL编译器实现
     // 目前返回nullptr，在独立编译器文件中实现
-    debugLog("CompilerFactory: 创建CHTL编译器（待实现）");
+    if (debugMode_) {
+        std::cout << "[CompilerFactory] 创建CHTL编译器（待实现）" << std::endl;
+    }
     return nullptr;
 }
 
 std::shared_ptr<ICHTLJSCompiler> CompilerFactory::createCHTLJSCompiler() {
     // 这里应该返回实际的CHTL JS编译器实现
-    debugLog("CompilerFactory: 创建CHTL JS编译器（待实现）");
+    if (debugMode_) {
+        std::cout << "[CompilerFactory] 创建CHTL JS编译器（待实现）" << std::endl;
+    }
     return nullptr;
 }
 
 std::shared_ptr<ICSSCompiler> CompilerFactory::createCSSCompiler() {
     // 这里应该返回实际的CSS编译器实现（基于ANTLR）
-    debugLog("CompilerFactory: 创建CSS编译器（待实现）");
+    if (debugMode_) {
+        std::cout << "[CompilerFactory] 创建CSS编译器（待实现）" << std::endl;
+    }
     return nullptr;
 }
 
 std::shared_ptr<IJavaScriptCompiler> CompilerFactory::createJavaScriptCompiler() {
     // 这里应该返回实际的JavaScript编译器实现（基于ANTLR）
-    debugLog("CompilerFactory: 创建JavaScript编译器（待实现）");
+    if (debugMode_) {
+        std::cout << "[CompilerFactory] 创建JavaScript编译器（待实现）" << std::endl;
+    }
     return nullptr;
 }
 
