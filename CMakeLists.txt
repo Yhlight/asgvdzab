@@ -169,6 +169,22 @@ add_executable(chtl-cjmod
     src/namespace/enhanced_namespace_manager.cpp
 )
 
+# CHTL Basic Parser test
+add_executable(chtl_basic_parser_test
+    tests/chtl_basic_parser_test.cpp
+    src/parsers/chtl_basic_parser.cpp
+    src/lexer/chtl_lexer.cpp
+    src/ast/chtl_ast.cpp
+)
+
+# Debug parser
+add_executable(debug_parser
+    tests/debug_parser.cpp
+    src/parsers/chtl_basic_parser.cpp
+    src/lexer/chtl_lexer.cpp
+    src/ast/chtl_ast.cpp
+)
+
 # 创建RAII状态管理演示程序（不依赖gtest）
 add_executable(raii_state_management_demo 
     tests/raii_state_management_demo.cpp

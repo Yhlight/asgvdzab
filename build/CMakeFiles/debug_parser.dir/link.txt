@@ -1,0 +1,1 @@
+/usr/bin/c++ -Xlinker --dependency-file=CMakeFiles/debug_parser.dir/link.d CMakeFiles/debug_parser.dir/tests/debug_parser.cpp.o CMakeFiles/debug_parser.dir/src/parsers/chtl_basic_parser.cpp.o CMakeFiles/debug_parser.dir/src/lexer/chtl_lexer.cpp.o CMakeFiles/debug_parser.dir/src/ast/chtl_ast.cpp.o -o bin/debug_parser

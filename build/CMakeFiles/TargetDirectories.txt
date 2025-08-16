@@ -16,6 +16,8 @@
 /workspace/build/CMakeFiles/chtl-cmod.dir
 /workspace/build/CMakeFiles/cjmod_system_test.dir
 /workspace/build/CMakeFiles/chtl-cjmod.dir
+/workspace/build/CMakeFiles/chtl_basic_parser_test.dir
+/workspace/build/CMakeFiles/debug_parser.dir
 /workspace/build/CMakeFiles/raii_state_management_demo.dir
 /workspace/build/CMakeFiles/edit_cache.dir
 /workspace/build/CMakeFiles/rebuild_cache.dir

@@ -82,6 +82,46 @@ struct CodeSegment {
 };
 
 /**
+ * 解析错误信息
+ */
+struct ParseError {
+    std::string message;        // 错误消息
+    Position position;          // 错误位置
+    std::string filename;       // 文件名
+    
+    ParseError() = default;
+    ParseError(const std::string& msg, const Position& pos, const std::string& file = "")
+        : message(msg), position(pos), filename(file) {}
+};
+
+/**
+ * 解析警告信息
+ */
+struct ParseWarning {
+    std::string message;        // 警告消息
+    Position position;          // 警告位置
+    std::string filename;       // 文件名
+    
+    ParseWarning() = default;
+    ParseWarning(const std::string& msg, const Position& pos, const std::string& file = "")
+        : message(msg), position(pos), filename(file) {}
+};
+
+// 前向声明
+class CHTLASTNode;
+using CHTLASTNodePtr = std::shared_ptr<CHTLASTNode>;
+
+/**
+ * 解析结果
+ */
+struct ParseResult {
+    bool success = false;                   // 解析是否成功
+    CHTLASTNodePtr rootNode = nullptr;      // AST根节点
+    std::vector<ParseError> errors;         // 错误列表
+    std::vector<ParseWarning> warnings;     // 警告列表
+};
+
+/**
  * 扫描结果
  */
 struct ScanResult {
