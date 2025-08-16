@@ -16,6 +16,12 @@ antlr-quick/antlr4
 antlr-manual-build/
 antlr-manual-install/
 
+# ANTLR预编译包中的二进制文件
+antlr-prebuilt/bin/antlr4.jar
+antlr-prebuilt/lib/*.a
+antlr-prebuilt/lib/*.so
+antlr-prebuilt/test_example.cpp
+
 # IDE和编辑器文件
 .vscode/
 .idea/
