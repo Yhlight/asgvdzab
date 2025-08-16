@@ -630,6 +630,78 @@ src/parser/CustomSystem.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/parser/CustomSystem.cpp.s
 .PHONY : src/parser/CustomSystem.cpp.s
 
+src/parser/ImportSystem.o: src/parser/ImportSystem.cpp.o
+.PHONY : src/parser/ImportSystem.o
+
+# target to build an object file
+src/parser/ImportSystem.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/parser/ImportSystem.cpp.o
+.PHONY : src/parser/ImportSystem.cpp.o
+
+src/parser/ImportSystem.i: src/parser/ImportSystem.cpp.i
+.PHONY : src/parser/ImportSystem.i
+
+# target to preprocess a source file
+src/parser/ImportSystem.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/parser/ImportSystem.cpp.i
+.PHONY : src/parser/ImportSystem.cpp.i
+
+src/parser/ImportSystem.s: src/parser/ImportSystem.cpp.s
+.PHONY : src/parser/ImportSystem.s
+
+# target to generate assembly for a file
+src/parser/ImportSystem.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/parser/ImportSystem.cpp.s
+.PHONY : src/parser/ImportSystem.cpp.s
+
+src/parser/ModuleSystem.o: src/parser/ModuleSystem.cpp.o
+.PHONY : src/parser/ModuleSystem.o
+
+# target to build an object file
+src/parser/ModuleSystem.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/parser/ModuleSystem.cpp.o
+.PHONY : src/parser/ModuleSystem.cpp.o
+
+src/parser/ModuleSystem.i: src/parser/ModuleSystem.cpp.i
+.PHONY : src/parser/ModuleSystem.i
+
+# target to preprocess a source file
+src/parser/ModuleSystem.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/parser/ModuleSystem.cpp.i
+.PHONY : src/parser/ModuleSystem.cpp.i
+
+src/parser/ModuleSystem.s: src/parser/ModuleSystem.cpp.s
+.PHONY : src/parser/ModuleSystem.s
+
+# target to generate assembly for a file
+src/parser/ModuleSystem.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/parser/ModuleSystem.cpp.s
+.PHONY : src/parser/ModuleSystem.cpp.s
+
+src/parser/NamespaceSystem.o: src/parser/NamespaceSystem.cpp.o
+.PHONY : src/parser/NamespaceSystem.o
+
+# target to build an object file
+src/parser/NamespaceSystem.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/parser/NamespaceSystem.cpp.o
+.PHONY : src/parser/NamespaceSystem.cpp.o
+
+src/parser/NamespaceSystem.i: src/parser/NamespaceSystem.cpp.i
+.PHONY : src/parser/NamespaceSystem.i
+
+# target to preprocess a source file
+src/parser/NamespaceSystem.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/parser/NamespaceSystem.cpp.i
+.PHONY : src/parser/NamespaceSystem.cpp.i
+
+src/parser/NamespaceSystem.s: src/parser/NamespaceSystem.cpp.s
+.PHONY : src/parser/NamespaceSystem.s
+
+# target to generate assembly for a file
+src/parser/NamespaceSystem.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/parser/NamespaceSystem.cpp.s
+.PHONY : src/parser/NamespaceSystem.cpp.s
+
 src/parser/OriginSystem.o: src/parser/OriginSystem.cpp.o
 .PHONY : src/parser/OriginSystem.o
 
@@ -796,6 +868,15 @@ help:
 	@echo "... src/parser/CustomSystem.o"
 	@echo "... src/parser/CustomSystem.i"
 	@echo "... src/parser/CustomSystem.s"
+	@echo "... src/parser/ImportSystem.o"
+	@echo "... src/parser/ImportSystem.i"
+	@echo "... src/parser/ImportSystem.s"
+	@echo "... src/parser/ModuleSystem.o"
+	@echo "... src/parser/ModuleSystem.i"
+	@echo "... src/parser/ModuleSystem.s"
+	@echo "... src/parser/NamespaceSystem.o"
+	@echo "... src/parser/NamespaceSystem.i"
+	@echo "... src/parser/NamespaceSystem.s"
 	@echo "... src/parser/OriginSystem.o"
 	@echo "... src/parser/OriginSystem.i"
 	@echo "... src/parser/OriginSystem.s"

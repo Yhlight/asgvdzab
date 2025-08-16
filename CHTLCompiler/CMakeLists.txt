@@ -69,6 +69,9 @@ set(BASIC_SYNTAX_SOURCES
     src/parser/CustomSystem.cpp
     src/parser/OriginSystem.cpp
     src/parser/ConfigurationSystem.cpp
+    src/parser/ImportSystem.cpp
+    src/parser/NamespaceSystem.cpp
+    src/parser/ModuleSystem.cpp
 )
 
 # 创建可执行文件

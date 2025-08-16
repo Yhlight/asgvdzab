@@ -394,6 +394,48 @@ CMakeFiles/chtl_compiler.dir/src/parser/ConfigurationSystem.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/chtl_compiler.dir/src/parser/ConfigurationSystem.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/CHTLCompiler/src/parser/ConfigurationSystem.cpp -o CMakeFiles/chtl_compiler.dir/src/parser/ConfigurationSystem.cpp.s
 
+CMakeFiles/chtl_compiler.dir/src/parser/ImportSystem.cpp.o: CMakeFiles/chtl_compiler.dir/flags.make
+CMakeFiles/chtl_compiler.dir/src/parser/ImportSystem.cpp.o: /workspace/CHTLCompiler/src/parser/ImportSystem.cpp
+CMakeFiles/chtl_compiler.dir/src/parser/ImportSystem.cpp.o: CMakeFiles/chtl_compiler.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/CHTLCompiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building CXX object CMakeFiles/chtl_compiler.dir/src/parser/ImportSystem.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_compiler.dir/src/parser/ImportSystem.cpp.o -MF CMakeFiles/chtl_compiler.dir/src/parser/ImportSystem.cpp.o.d -o CMakeFiles/chtl_compiler.dir/src/parser/ImportSystem.cpp.o -c /workspace/CHTLCompiler/src/parser/ImportSystem.cpp
+
+CMakeFiles/chtl_compiler.dir/src/parser/ImportSystem.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/chtl_compiler.dir/src/parser/ImportSystem.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/CHTLCompiler/src/parser/ImportSystem.cpp > CMakeFiles/chtl_compiler.dir/src/parser/ImportSystem.cpp.i
+
+CMakeFiles/chtl_compiler.dir/src/parser/ImportSystem.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/chtl_compiler.dir/src/parser/ImportSystem.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/CHTLCompiler/src/parser/ImportSystem.cpp -o CMakeFiles/chtl_compiler.dir/src/parser/ImportSystem.cpp.s
+
+CMakeFiles/chtl_compiler.dir/src/parser/NamespaceSystem.cpp.o: CMakeFiles/chtl_compiler.dir/flags.make
+CMakeFiles/chtl_compiler.dir/src/parser/NamespaceSystem.cpp.o: /workspace/CHTLCompiler/src/parser/NamespaceSystem.cpp
+CMakeFiles/chtl_compiler.dir/src/parser/NamespaceSystem.cpp.o: CMakeFiles/chtl_compiler.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/CHTLCompiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building CXX object CMakeFiles/chtl_compiler.dir/src/parser/NamespaceSystem.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_compiler.dir/src/parser/NamespaceSystem.cpp.o -MF CMakeFiles/chtl_compiler.dir/src/parser/NamespaceSystem.cpp.o.d -o CMakeFiles/chtl_compiler.dir/src/parser/NamespaceSystem.cpp.o -c /workspace/CHTLCompiler/src/parser/NamespaceSystem.cpp
+
+CMakeFiles/chtl_compiler.dir/src/parser/NamespaceSystem.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/chtl_compiler.dir/src/parser/NamespaceSystem.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/CHTLCompiler/src/parser/NamespaceSystem.cpp > CMakeFiles/chtl_compiler.dir/src/parser/NamespaceSystem.cpp.i
+
+CMakeFiles/chtl_compiler.dir/src/parser/NamespaceSystem.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/chtl_compiler.dir/src/parser/NamespaceSystem.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/CHTLCompiler/src/parser/NamespaceSystem.cpp -o CMakeFiles/chtl_compiler.dir/src/parser/NamespaceSystem.cpp.s
+
+CMakeFiles/chtl_compiler.dir/src/parser/ModuleSystem.cpp.o: CMakeFiles/chtl_compiler.dir/flags.make
+CMakeFiles/chtl_compiler.dir/src/parser/ModuleSystem.cpp.o: /workspace/CHTLCompiler/src/parser/ModuleSystem.cpp
+CMakeFiles/chtl_compiler.dir/src/parser/ModuleSystem.cpp.o: CMakeFiles/chtl_compiler.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/CHTLCompiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Building CXX object CMakeFiles/chtl_compiler.dir/src/parser/ModuleSystem.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_compiler.dir/src/parser/ModuleSystem.cpp.o -MF CMakeFiles/chtl_compiler.dir/src/parser/ModuleSystem.cpp.o.d -o CMakeFiles/chtl_compiler.dir/src/parser/ModuleSystem.cpp.o -c /workspace/CHTLCompiler/src/parser/ModuleSystem.cpp
+
+CMakeFiles/chtl_compiler.dir/src/parser/ModuleSystem.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/chtl_compiler.dir/src/parser/ModuleSystem.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/CHTLCompiler/src/parser/ModuleSystem.cpp > CMakeFiles/chtl_compiler.dir/src/parser/ModuleSystem.cpp.i
+
+CMakeFiles/chtl_compiler.dir/src/parser/ModuleSystem.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/chtl_compiler.dir/src/parser/ModuleSystem.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/CHTLCompiler/src/parser/ModuleSystem.cpp -o CMakeFiles/chtl_compiler.dir/src/parser/ModuleSystem.cpp.s
+
 # Object files for target chtl_compiler
 chtl_compiler_OBJECTS = \
 "CMakeFiles/chtl_compiler.dir/src/main.cpp.o" \
@@ -418,7 +460,10 @@ chtl_compiler_OBJECTS = \
 "CMakeFiles/chtl_compiler.dir/src/parser/TemplateSystem.cpp.o" \
 "CMakeFiles/chtl_compiler.dir/src/parser/CustomSystem.cpp.o" \
 "CMakeFiles/chtl_compiler.dir/src/parser/OriginSystem.cpp.o" \
-"CMakeFiles/chtl_compiler.dir/src/parser/ConfigurationSystem.cpp.o"
+"CMakeFiles/chtl_compiler.dir/src/parser/ConfigurationSystem.cpp.o" \
+"CMakeFiles/chtl_compiler.dir/src/parser/ImportSystem.cpp.o" \
+"CMakeFiles/chtl_compiler.dir/src/parser/NamespaceSystem.cpp.o" \
+"CMakeFiles/chtl_compiler.dir/src/parser/ModuleSystem.cpp.o"
 
 # External object files for target chtl_compiler
 chtl_compiler_EXTERNAL_OBJECTS =
@@ -446,10 +491,13 @@ chtl_compiler: CMakeFiles/chtl_compiler.dir/src/parser/TemplateSystem.cpp.o
 chtl_compiler: CMakeFiles/chtl_compiler.dir/src/parser/CustomSystem.cpp.o
 chtl_compiler: CMakeFiles/chtl_compiler.dir/src/parser/OriginSystem.cpp.o
 chtl_compiler: CMakeFiles/chtl_compiler.dir/src/parser/ConfigurationSystem.cpp.o
+chtl_compiler: CMakeFiles/chtl_compiler.dir/src/parser/ImportSystem.cpp.o
+chtl_compiler: CMakeFiles/chtl_compiler.dir/src/parser/NamespaceSystem.cpp.o
+chtl_compiler: CMakeFiles/chtl_compiler.dir/src/parser/ModuleSystem.cpp.o
 chtl_compiler: CMakeFiles/chtl_compiler.dir/build.make
 chtl_compiler: CMakeFiles/chtl_compiler.dir/compiler_depend.ts
 chtl_compiler: CMakeFiles/chtl_compiler.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/workspace/CHTLCompiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Linking CXX executable chtl_compiler"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/workspace/CHTLCompiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Linking CXX executable chtl_compiler"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/chtl_compiler.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

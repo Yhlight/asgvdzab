@@ -25,6 +25,9 @@ chtl_compiler: \
   CMakeFiles/chtl_compiler.dir/src/parser/CustomSystem.cpp.o \
   CMakeFiles/chtl_compiler.dir/src/parser/OriginSystem.cpp.o \
   CMakeFiles/chtl_compiler.dir/src/parser/ConfigurationSystem.cpp.o \
+  CMakeFiles/chtl_compiler.dir/src/parser/ImportSystem.cpp.o \
+  CMakeFiles/chtl_compiler.dir/src/parser/NamespaceSystem.cpp.o \
+  CMakeFiles/chtl_compiler.dir/src/parser/ModuleSystem.cpp.o \
   /usr/lib/gcc/x86_64-linux-gnu/14/libstdc++.so \
   /lib/x86_64-linux-gnu/libm.so \
   /lib/x86_64-linux-gnu/libm.so \
@@ -104,6 +107,12 @@ CMakeFiles/chtl_compiler.dir/src/parser/CustomSystem.cpp.o:
 CMakeFiles/chtl_compiler.dir/src/parser/OriginSystem.cpp.o:
 
 CMakeFiles/chtl_compiler.dir/src/parser/ConfigurationSystem.cpp.o:
+
+CMakeFiles/chtl_compiler.dir/src/parser/ImportSystem.cpp.o:
+
+CMakeFiles/chtl_compiler.dir/src/parser/NamespaceSystem.cpp.o:
+
+CMakeFiles/chtl_compiler.dir/src/parser/ModuleSystem.cpp.o:
 
 /usr/lib/gcc/x86_64-linux-gnu/14/libstdc++.so:
 
