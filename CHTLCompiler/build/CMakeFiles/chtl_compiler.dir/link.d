@@ -20,6 +20,7 @@ chtl_compiler: \
   CMakeFiles/chtl_compiler.dir/src/ast/DocumentNode.cpp.o \
   CMakeFiles/chtl_compiler.dir/src/parser/BasicSyntaxParser.cpp.o \
   CMakeFiles/chtl_compiler.dir/src/parser/AttributeSystem.cpp.o \
+  CMakeFiles/chtl_compiler.dir/src/parser/StyleBlockParser.cpp.o \
   /usr/lib/gcc/x86_64-linux-gnu/14/libstdc++.so \
   /lib/x86_64-linux-gnu/libm.so \
   /lib/x86_64-linux-gnu/libm.so \
@@ -89,6 +90,8 @@ CMakeFiles/chtl_compiler.dir/src/ast/DocumentNode.cpp.o:
 CMakeFiles/chtl_compiler.dir/src/parser/BasicSyntaxParser.cpp.o:
 
 CMakeFiles/chtl_compiler.dir/src/parser/AttributeSystem.cpp.o:
+
+CMakeFiles/chtl_compiler.dir/src/parser/StyleBlockParser.cpp.o:
 
 /usr/lib/gcc/x86_64-linux-gnu/14/libstdc++.so:
 

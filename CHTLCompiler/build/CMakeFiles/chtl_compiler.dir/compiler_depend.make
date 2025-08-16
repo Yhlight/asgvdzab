@@ -4962,6 +4962,7 @@ chtl_compiler: /lib/x86_64-linux-gnu/Scrt1.o \
   CMakeFiles/chtl_compiler.dir/src/lexer/CHTLToken.cpp.o \
   CMakeFiles/chtl_compiler.dir/src/lexer/GlobalMap.cpp.o \
   CMakeFiles/chtl_compiler.dir/src/main.cpp.o \
+  CMakeFiles/chtl_compiler.dir/src/parser/AttributeSystem.cpp.o \
   CMakeFiles/chtl_compiler.dir/src/parser/BasicSyntaxParser.cpp.o \
   CMakeFiles/chtl_compiler.dir/src/scanner/CHTLUnifiedScanner.cpp.o
 
@@ -5663,6 +5664,8 @@ CMakeFiles/chtl_compiler.dir/src/ast/HTMLElementNode.cpp.o:
 /usr/include/c++/14/ext/string_conversions.h:
 
 /usr/include/c++/14/ext/type_traits.h:
+
+CMakeFiles/chtl_compiler.dir/src/parser/AttributeSystem.cpp.o:
 
 /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h:
 

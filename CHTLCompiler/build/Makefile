@@ -582,6 +582,30 @@ src/parser/BasicSyntaxParser.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/parser/BasicSyntaxParser.cpp.s
 .PHONY : src/parser/BasicSyntaxParser.cpp.s
 
+src/parser/StyleBlockParser.o: src/parser/StyleBlockParser.cpp.o
+.PHONY : src/parser/StyleBlockParser.o
+
+# target to build an object file
+src/parser/StyleBlockParser.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/parser/StyleBlockParser.cpp.o
+.PHONY : src/parser/StyleBlockParser.cpp.o
+
+src/parser/StyleBlockParser.i: src/parser/StyleBlockParser.cpp.i
+.PHONY : src/parser/StyleBlockParser.i
+
+# target to preprocess a source file
+src/parser/StyleBlockParser.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/parser/StyleBlockParser.cpp.i
+.PHONY : src/parser/StyleBlockParser.cpp.i
+
+src/parser/StyleBlockParser.s: src/parser/StyleBlockParser.cpp.s
+.PHONY : src/parser/StyleBlockParser.s
+
+# target to generate assembly for a file
+src/parser/StyleBlockParser.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/parser/StyleBlockParser.cpp.s
+.PHONY : src/parser/StyleBlockParser.cpp.s
+
 src/scanner/CHTLUnifiedScanner.o: src/scanner/CHTLUnifiedScanner.cpp.o
 .PHONY : src/scanner/CHTLUnifiedScanner.o
 
@@ -670,6 +694,9 @@ help:
 	@echo "... src/parser/BasicSyntaxParser.o"
 	@echo "... src/parser/BasicSyntaxParser.i"
 	@echo "... src/parser/BasicSyntaxParser.s"
+	@echo "... src/parser/StyleBlockParser.o"
+	@echo "... src/parser/StyleBlockParser.i"
+	@echo "... src/parser/StyleBlockParser.s"
 	@echo "... src/scanner/CHTLUnifiedScanner.o"
 	@echo "... src/scanner/CHTLUnifiedScanner.i"
 	@echo "... src/scanner/CHTLUnifiedScanner.s"
