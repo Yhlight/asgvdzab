@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import com.chtl.ast.CHTLASTNode;
 import com.chtl.ast.node.CHTLJSAnimateNode;
 import com.chtl.ast.node.CHTLJSExpressionNode;
@@ -14,21 +13,14 @@ import com.chtl.ast.node.CHTLJSSelectorNode;
 import com.chtl.ast.node.NumberLiteralNode;
 import com.chtl.ast.node.ScriptBlockNode;
 import com.chtl.ast.node.StringLiteralNode;
-import com.chtl.compiler.chtljs.CHTLJSSystem.DelegationInfo;
-import com.chtl.compiler.chtljs.CHTLJSSystem.DelegationTarget;
 import com.chtl.context.CompilationError;
 import com.chtl.model.TextNode;
-
-
 import com.chtl.ast.*;
-import com.chtl.ast.node.*;
 import com.chtl.context.CompilationContext;
 import com.chtl.scanner.ScannerStateMachine;
 import com.chtl.compiler.chtljs.selector.SelectorParser;
 import com.chtl.compiler.chtljs.event.EventBindingProcessor;
 import com.chtl.compiler.chtljs.animation.AnimationProcessor;
-
-import java.util.*;
 
 /**
  * CHTL JS系统

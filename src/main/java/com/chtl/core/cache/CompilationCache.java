@@ -10,24 +10,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-
 import com.chtl.compiler.chtl.token.CHTLToken;
-import com.chtl.core.cache.CompilationCache.ASTCacheData;
-import com.chtl.core.cache.CompilationCache.CacheEntry;
-import com.chtl.core.cache.CompilationCache.CacheStatistics;
-import com.chtl.core.cache.CompilationCache.DependenciesCacheData;
-import com.chtl.core.cache.CompilationCache.OutputCacheData;
-import com.chtl.core.cache.CompilationCache.TokensCacheData;
-
-
 import com.chtl.ast.CHTLASTNode;
-import com.chtl.lexer.CHTLToken;
-
 import java.io.*;
-import java.nio.file.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;

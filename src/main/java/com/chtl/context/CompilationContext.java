@@ -1,10 +1,17 @@
 package com.chtl.context;
+
+import com.chtl.model.CHTLNode;
+import com.chtl.model.SourceLocation;
+import com.chtl.model.CompilationResult;
+import com.chtl.exception.CHTLException;
+import java.util.*;
+import java.io.*;
+import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import com.chtl.ast.CHTLASTNode;
 import com.chtl.ast.node.ConfigurationNode;
 import com.chtl.ast.node.CustomDefinitionNode;
@@ -12,17 +19,9 @@ import com.chtl.ast.node.TemplateDefinitionNode;
 import com.chtl.ast.node.VarGroupDefinitionNode;
 import com.chtl.context.CHTLJSContext.NodeGuard;
 import com.chtl.context.CHTLJSContext.StateGuard;
-import com.chtl.context.CompilationContext.NamespaceGuard;
-import com.chtl.context.CompilationContext.Scope;
-import com.chtl.context.CompilationContext.ScopeGuard;
 import com.chtl.scanner.State;
-
-
-import com.chtl.ast.*;
-import com.chtl.ast.node.*;
 import com.chtl.compiler.constraint.ConstraintManager;
 import com.chtl.compiler.importer.ImportManager;
-import java.util.*;
 
 /**
  * CHTL编译上下文

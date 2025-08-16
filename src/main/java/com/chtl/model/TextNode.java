@@ -1,5 +1,7 @@
 package com.chtl.model;
 
+
+import com.chtl.model.CHTLNode;
 /**
  * Text node in the model
  */

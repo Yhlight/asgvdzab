@@ -1,7 +1,6 @@
-package com.chtl.ast.chtljs;import com.chtl.ast.NodeType;
-
-
-import com.chtl.ast.SourceLocation;
+package com.chtl.ast.chtljs;
+import com.chtl.model.SourceLocation;
+import com.chtl.ast.NodeType;
 
 /**
  * CHTL JS AST节点接口

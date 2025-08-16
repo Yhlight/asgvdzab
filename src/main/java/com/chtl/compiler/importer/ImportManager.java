@@ -1,4 +1,8 @@
 package com.chtl.compiler.importer;
+
+import com.chtl.model.CHTLNode;
+import com.chtl.model.CompilationResult;
+import com.chtl.exception.CHTLException;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -12,24 +16,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import com.chtl.ast.CHTLASTNode;
 import com.chtl.ast.node.ImportStatementNode;
 import com.chtl.ast.node.OriginBlockNode;
 import com.chtl.ast.node.RootNode;
 import com.chtl.compiler.chtl.CHTLParser;
-import com.chtl.compiler.importer.ImportManager.ImportNode;
-import com.chtl.compiler.importer.ImportManager.ImportResult;
-
-
 import com.chtl.ast.*;
-import com.chtl.ast.node.*;
 import com.chtl.context.CompilationContext;
 import com.chtl.context.CompilationError;
-
-import java.io.*;
-import java.nio.file.*;
-import java.util.*;
 import java.util.stream.Collectors;
 
 /**

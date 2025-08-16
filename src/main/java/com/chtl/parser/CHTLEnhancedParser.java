@@ -6,16 +6,11 @@ import com.chtl.ast.node.TemplateDefinitionNode;
 import com.chtl.ast.node.VarGroupDefinitionNode;
 import com.chtl.compiler.chtl.CHTLParser;
 import com.chtl.model.ElementNode;
-
-
 import com.chtl.ast.*;
-import com.chtl.ast.node.*;
 import com.chtl.compiler.chtl.token.CHTLToken;
 import com.chtl.compiler.chtl.token.CHTLTokenType;
 import com.chtl.compiler.chtl.lexer.CHTLLexer;
 import com.chtl.context.CompilationContext;
-
-import java.util.*;
 
 /**
  * 增强的CHTL解析器

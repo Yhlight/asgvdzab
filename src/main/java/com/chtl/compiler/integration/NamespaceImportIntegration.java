@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
 import com.chtl.ast.CHTLASTNode;
 import com.chtl.ast.node.CustomDefinitionNode;
 import com.chtl.ast.node.CustomUsageNode;
@@ -12,21 +11,14 @@ import com.chtl.ast.node.ImportStatementNode;
 import com.chtl.ast.node.NamespaceNode;
 import com.chtl.ast.node.TemplateDefinitionNode;
 import com.chtl.ast.node.TemplateUsageNode;
-import com.chtl.compiler.integration.NamespaceImportIntegration.CircularDependencyDetector;
-import com.chtl.compiler.integration.NamespaceImportIntegration.ImportPriorityManager;
 import com.chtl.context.CompilationError;
 import com.chtl.context.CompilationWarning;
-
-
 import com.chtl.ast.*;
-import com.chtl.ast.node.*;
 import com.chtl.context.CompilationContext;
 import com.chtl.compiler.namespace.NamespaceManager;
 import com.chtl.compiler.importer.ImportManager;
 import com.chtl.scanner.ScannerStateMachine;
-
 import java.nio.file.Path;
-import java.util.*;
 
 /**
  * 命名空间与导入集成系统

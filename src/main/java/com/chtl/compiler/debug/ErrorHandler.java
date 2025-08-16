@@ -1,21 +1,15 @@
 package com.chtl.compiler.debug;
+
+import com.chtl.model.SourceLocation;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import com.chtl.context.CompilationContext;
 import com.chtl.context.CompilationError;
 import com.chtl.context.CompilationWarning;
-
-
 import com.chtl.context.*;
-import com.chtl.ast.SourceLocation;
 import com.chtl.scanner.ScannerStateMachine;
-
-import java.util.*;
-import java.io.*;
-import java.nio.file.*;
 
 /**
  * 错误处理器

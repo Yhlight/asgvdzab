@@ -3,7 +3,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import com.chtl.ast.CHTLASTNode;
 import com.chtl.ast.node.ConstraintNode;
 import com.chtl.ast.node.CustomDefinitionNode;
@@ -15,11 +14,7 @@ import com.chtl.ast.node.VarGroupDefinitionNode;
 import com.chtl.compiler.constraint.ConstraintManager;
 import com.chtl.compiler.constraint.ConstraintManager.ConstraintScope;
 import com.chtl.model.ElementNode;
-
-
 import com.chtl.ast.*;
-import com.chtl.ast.node.*;
-import java.util.*;
 
 /**
  * 约束管理器

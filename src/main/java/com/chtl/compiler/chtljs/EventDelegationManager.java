@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.chtl.compiler.chtljs.CHTLJSSystem.DelegationInfo;
-import com.chtl.compiler.chtljs.EventDelegationManager.TargetHandler;
 
 
 import java.util.*;

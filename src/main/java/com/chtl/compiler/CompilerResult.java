@@ -13,7 +13,7 @@ import java.util.*;
 /**
  * 编译结果
  */
-public class CompilationResult {
+public class CompilerResult {
     private boolean success;
     private String output;
     private List<CompilationError> errors = new ArrayList<>();
@@ -22,7 +22,7 @@ public class CompilationResult {
     private Map<String, String> sourceMaps = new HashMap<>();
     
     // 构造函数
-    public CompilationResult() {
+    public CompilerResult() {
     }
     
     // 便捷方法

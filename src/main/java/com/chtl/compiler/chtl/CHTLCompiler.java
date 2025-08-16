@@ -1,10 +1,8 @@
 package com.chtl.compiler.chtl;
 import java.util.HashMap;
 import java.util.Map;
-
 import com.chtl.compiler.CHTLCompiler;
-import com.chtl.compiler.CompilationResult;
-import com.chtl.compiler.chtl.CHTLCompiler.DefinitionCollector;
+import com.chtl.compiler.CompilerResult;
 import com.chtl.compiler.style.LocalStyleProcessor;
 import com.chtl.model.AttributeNode;
 import com.chtl.model.CHTLNode;
@@ -16,13 +14,9 @@ import com.chtl.model.ScriptNode;
 import com.chtl.model.StyleNode;
 import com.chtl.model.TemplateNode;
 import com.chtl.model.TextNode;
-
-
 import com.chtl.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.*;
 
 /**
  * CHTL编译器 - 手写实现

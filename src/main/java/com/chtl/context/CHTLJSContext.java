@@ -4,20 +4,13 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import com.chtl.ast.chtljs.ArrowOperationNode;
 import com.chtl.ast.chtljs.CHTLJSASTNode;
 import com.chtl.ast.chtljs.EnhancedSelectorNode;
 import com.chtl.ast.chtljs.EventHandlerNode;
 import com.chtl.ast.chtljs.PropertyAccessNode;
-import com.chtl.compiler.chtljs.CHTLJSSystem.DelegationInfo;
-import com.chtl.context.CHTLJSContext.NodeGuard;
-import com.chtl.context.CHTLJSContext.StateGuard;
 import com.chtl.scanner.State;
-
-
 import com.chtl.ast.chtljs.*;
-import java.util.*;
 
 /**
  * CHTL JS编译上下文
@@ -32,7 +25,7 @@ public class CHTLJSContext {
     private final Map<String, String> selectorCache;
     
     // 事件委托注册表
-    private final Map<String, List<DelegationInfo>> delegationRegistry;
+    // private final Map<String, List<DelegationInfo>> delegationRegistry; // TODO: Fix DelegationInfo access
     
     // 当前处理的节点栈
     private final Stack<CHTLJSASTNode> nodeStack;
@@ -83,13 +76,13 @@ public class CHTLJSContext {
     /**
      * 事件委托信息
      */
-    public static class DelegationInfo {
+    // public static class DelegationInfo { // TODO: Fix DelegationInfo access
         private final String parentSelector;
         private final List<String> targetSelectors;
         private final String eventName;
         private final EventHandlerNode handler;
         
-        public DelegationInfo(String parentSelector, List<String> targetSelectors, 
+    // public DelegationInfo(String parentSelector, List<String> targetSelectors, // TODO: Fix DelegationInfo access
                               String eventName, EventHandlerNode handler) {
             this.parentSelector = parentSelector;
             this.targetSelectors = new ArrayList<>(targetSelectors);
@@ -210,11 +203,11 @@ public class CHTLJSContext {
     
     // 事件委托管理
     
-    public void registerDelegation(DelegationInfo info) {
+    // public void registerDelegation(DelegationInfo info) { // TODO: Fix DelegationInfo access
         delegationRegistry.computeIfAbsent(info.getParentSelector(), k -> new ArrayList<>()).add(info);
     }
     
-    public Map<String, List<DelegationInfo>> getDelegationRegistry() {
+    // public Map<String, List<DelegationInfo>> getDelegationRegistry() { // TODO: Fix DelegationInfo access
         return Collections.unmodifiableMap(delegationRegistry);
     }
     

@@ -6,14 +6,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-
 import com.chtl.context.CompilationContext;
 import com.chtl.compiler.optimization.OptimizationOptions.JsOptions;
 import com.chtl.compiler.optimization.OutputOptimizer.JsFile;
-
 import java.util.*;
-import java.util.regex.*;
 
 /**
  * JavaScript优化器

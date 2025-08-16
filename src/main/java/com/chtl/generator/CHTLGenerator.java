@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import com.chtl.ast.CHTLASTNode;
 import com.chtl.ast.CHTLASTVisitor;
 import com.chtl.ast.chtljs.CHTLJSASTNode;
@@ -36,11 +35,7 @@ import com.chtl.model.AttributeNode;
 import com.chtl.model.ElementNode;
 import com.chtl.model.TextNode;
 import com.chtl.parser.CHTLJSParser;
-
-
 import com.chtl.ast.*;
-import com.chtl.ast.node.*;
-import java.util.*;
 
 /**
  * CHTL代码生成器

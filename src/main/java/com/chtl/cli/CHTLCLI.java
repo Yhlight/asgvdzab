@@ -4,20 +4,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Map;
-
-import com.chtl.cli.CHTLCLI.CLIOptions;
 import com.chtl.compiler.CHTLCompiler;
-import com.chtl.compiler.CompilationResult;
+import com.chtl.compiler.CompilerResult;
 import com.chtl.compiler.CompilerOptions;
-
-
 import com.chtl.compiler.*;
 import com.chtl.compiler.debug.ColorUtil;
 import com.chtl.compiler.optimization.OptimizationOptions;
-
-import java.io.*;
-import java.nio.file.*;
-import java.util.*;
 
 /**
  * CHTL命令行接口

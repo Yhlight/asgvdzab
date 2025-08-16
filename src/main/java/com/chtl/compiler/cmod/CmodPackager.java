@@ -10,7 +10,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import com.chtl.ast.CHTLASTNode;
 import com.chtl.ast.CHTLASTVisitor;
 import com.chtl.ast.node.CommentNode;
@@ -37,24 +36,14 @@ import com.chtl.ast.node.UnquotedLiteralNode;
 import com.chtl.ast.node.VarGroupDefinitionNode;
 import com.chtl.ast.node.VarGroupUsageNode;
 import com.chtl.compiler.chtl.CHTLParser;
-import com.chtl.compiler.cmod.CmodPackager.SymbolInfo;
-import com.chtl.compiler.cmod.CmodPackager.SymbolTable;
 import com.chtl.compiler.cmod.CmodUnpacker.CompiledModule;
 import com.chtl.model.AttributeNode;
 import com.chtl.model.ElementNode;
 import com.chtl.model.TextNode;
-
-
 import com.chtl.ast.*;
-import com.chtl.ast.node.*;
-import com.chtl.parser.CHTLParser;
 import com.chtl.context.CompilationContext;
-
-import java.io.*;
-import java.nio.file.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
 
 /**
  * Cmod打包器

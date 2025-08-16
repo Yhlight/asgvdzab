@@ -1,22 +1,20 @@
 package com.chtl;
+
+import com.chtl.model.SourceLocation;
+
+import com.chtl.model.SourceLocation;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-
-import com.chtl.compiler.CompilationResult;
+import com.chtl.compiler.CompilerResult;
 import com.chtl.compiler.cmod.CmodPackager;
 import com.chtl.compiler.cmod.CmodUnpacker;
-
-
 import com.chtl.scanner.CHTLUnifiedScanner;
 import com.chtl.model.CodeFragment;
 import com.chtl.compiler.dispatcher.CompilerDispatcher;
-import com.chtl.model.CompilationResult;
 import com.chtl.output.HTMLMerger;
 import com.chtl.context.CompilationContext;
 import com.chtl.compiler.cmod.*;
-
 import java.io.IOException;
-import java.nio.file.*;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 

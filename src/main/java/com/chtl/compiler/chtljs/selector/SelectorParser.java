@@ -1,17 +1,12 @@
 package com.chtl.compiler.chtljs.selector;
 import java.util.List;
-
 import com.chtl.ast.node.CHTLJSSelectorNode;
 import com.chtl.context.CompilationError;
-
-
 import com.chtl.ast.node.*;
 import com.chtl.context.CompilationContext;
 import com.chtl.compiler.chtljs.lexer.CHTLJSStateMachineLexer;
 import com.chtl.compiler.chtljs.token.CHTLJSToken;
 import com.chtl.compiler.chtljs.token.CHTLJSTokenType;
-
-import java.util.*;
 
 /**
  * CHTL JS选择器解析器

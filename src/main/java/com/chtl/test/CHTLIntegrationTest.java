@@ -5,18 +5,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.chtl.test.CHTLIntegrationTest.TestCase;
-
-
 import com.chtl.compiler.CHTLCompiler;
 import com.chtl.context.CompilationContext;
 import com.chtl.compiler.debug.*;
 import com.chtl.compiler.optimization.OptimizationOptions;
-
-import java.io.*;
-import java.nio.file.*;
-import java.util.*;
 
 /**
  * CHTL集成测试框架

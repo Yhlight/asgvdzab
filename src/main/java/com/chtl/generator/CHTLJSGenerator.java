@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import com.chtl.ast.chtljs.AnimateCallNode;
 import com.chtl.ast.chtljs.AnimationConfigNode;
 import com.chtl.ast.chtljs.AnimationControllerNode;
@@ -19,10 +18,7 @@ import com.chtl.ast.chtljs.ExpressionNode;
 import com.chtl.ast.chtljs.ListenCallNode;
 import com.chtl.ast.chtljs.PropertyAccessNode;
 import com.chtl.compiler.chtljs.CHTLJSSystem.DelegationInfo;
-
-
 import com.chtl.ast.chtljs.*;
-import java.util.*;
 
 /**
  * CHTL JS代码生成器

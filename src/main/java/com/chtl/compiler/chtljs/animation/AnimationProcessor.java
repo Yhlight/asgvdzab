@@ -1,7 +1,6 @@
 package com.chtl.compiler.chtljs.animation;
 import java.util.List;
 import java.util.Map;
-
 import com.chtl.ast.CHTLASTNode;
 import com.chtl.ast.node.CHTLJSAnimateNode;
 import com.chtl.ast.node.CHTLJSFunctionNode;
@@ -10,13 +9,8 @@ import com.chtl.ast.node.CHTLJSSelectorNode;
 import com.chtl.ast.node.NumberLiteralNode;
 import com.chtl.ast.node.StringLiteralNode;
 import com.chtl.ast.node.UnquotedLiteralNode;
-
-
 import com.chtl.ast.*;
-import com.chtl.ast.node.*;
 import com.chtl.compiler.chtljs.CHTLJSSystem;
-
-import java.util.*;
 
 /**
  * 动画处理器

@@ -2,7 +2,6 @@ package com.chtl.compiler.debug;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import com.chtl.ast.AbstractCHTLASTNode;
 import com.chtl.ast.CHTLASTNode;
 import com.chtl.ast.node.CustomDefinitionNode;
@@ -12,14 +11,9 @@ import com.chtl.context.CompilationContext;
 import com.chtl.context.CompilationError;
 import com.chtl.context.CompilationWarning;
 import com.chtl.model.ElementNode;
-
-
 import com.chtl.context.*;
-import com.chtl.ast.*;
 import com.chtl.scanner.ScannerStateMachine;
-
 import java.io.PrintStream;
-import java.util.*;
 
 /**
  * 调试信息输出器

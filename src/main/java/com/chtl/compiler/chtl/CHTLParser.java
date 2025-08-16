@@ -1,9 +1,6 @@
 package com.chtl.compiler.chtl;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.chtl.compiler.chtl.CHTLParser.Lexer;
-import com.chtl.compiler.chtl.CHTLParser.Token;
 import com.chtl.model.CHTLNode;
 import com.chtl.model.CustomNode;
 import com.chtl.model.ElementNode;
@@ -11,13 +8,9 @@ import com.chtl.model.ScriptNode;
 import com.chtl.model.StyleNode;
 import com.chtl.model.TemplateNode;
 import com.chtl.model.TextNode;
-
-
 import com.chtl.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

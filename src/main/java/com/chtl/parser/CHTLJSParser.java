@@ -5,7 +5,6 @@ import com.chtl.exception.CompilationException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 import com.chtl.ast.chtljs.AnimateCallNode;
 import com.chtl.ast.chtljs.AnimationConfigNode;
 import com.chtl.ast.chtljs.AnimationKeyframeNode;
@@ -17,14 +16,10 @@ import com.chtl.ast.chtljs.EventHandlerNode;
 import com.chtl.ast.chtljs.ExpressionNode;
 import com.chtl.ast.chtljs.ListenCallNode;
 import com.chtl.ast.chtljs.PropertyAccessNode;
-
-
 import com.chtl.ast.chtljs.*;
 import com.chtl.compiler.chtljs.token.CHTLJSToken;
 import com.chtl.compiler.chtljs.token.CHTLJSTokenType;
 import com.chtl.compiler.chtljs.lexer.CHTLJSLexer;
-
-import java.util.*;
 
 /**
  * CHTL JS解析器

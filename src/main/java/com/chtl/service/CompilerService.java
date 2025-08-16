@@ -9,45 +9,14 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicLong;
-
 import com.chtl.compiler.CHTLCompiler;
-import com.chtl.compiler.CompilationResult;
-import com.chtl.service.CompilerService.BatchCompileHandler;
-import com.chtl.service.CompilerService.BatchCompileRequest;
-import com.chtl.service.CompilerService.BatchCompileResponse;
-import com.chtl.service.CompilerService.CacheClearHandler;
-import com.chtl.service.CompilerService.CacheStatsHandler;
-import com.chtl.service.CompilerService.CompileHandler;
-import com.chtl.service.CompilerService.CompileRequest;
-import com.chtl.service.CompilerService.CompileResponse;
-import com.chtl.service.CompilerService.CompileResult;
-import com.chtl.service.CompilerService.ErrorResponse;
-import com.chtl.service.CompilerService.HealthCheckHandler;
-import com.chtl.service.CompilerService.HealthStatus;
-import com.chtl.service.CompilerService.IncrementalCompileHandler;
-import com.chtl.service.CompilerService.IncrementalCompileRequest;
-import com.chtl.service.CompilerService.IncrementalResult;
-import com.chtl.service.CompilerService.ServiceStatistics;
-import com.chtl.service.CompilerService.StatsHandler;
-import com.chtl.service.CompilerService.ValidateHandler;
-import com.chtl.service.CompilerService.ValidateRequest;
-import com.chtl.service.CompilerService.ValidateResponse;
-
+import com.chtl.compiler.CompilerResult;
 import java.util.function.Consumer;
-
 import com.chtl.compiler.*;
 import com.chtl.context.CompilationContext;
 import com.chtl.core.error.GlobalErrorHandler;
 import com.chtl.core.cache.CompilationCache;
 import com.chtl.core.memory.StreamingFileProcessor;
-
-import java.io.*;
-import java.net.*;
-import java.nio.file.*;
-import java.util.*;
-import java.util.concurrent.*;
-
-import com.sun.net.httpserver.*;
 
 /**
  * CHTL编译器服务

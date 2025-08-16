@@ -1,9 +1,5 @@
 package com.chtl.ast;
 
-import com.chtl.ast.AbstractCHTLASTNode;
-import com.chtl.ast.NodeType;
-
-public class NodeType extends AbstractCHTLASTNode {
 public enum NodeType {
     // Element types
     ELEMENT,
@@ -64,6 +60,4 @@ public enum NodeType {
     CHTLJS_IDENTIFIER,
     ANIMATION_CONTROLLER,
     CHTLJS_EXPRESSION
-}
-
 }

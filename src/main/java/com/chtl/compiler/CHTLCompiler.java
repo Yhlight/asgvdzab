@@ -1,4 +1,6 @@
 package com.chtl.compiler;
+
+import com.chtl.model.SourceLocation;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -8,14 +10,10 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
 import com.chtl.ast.CHTLASTNode;
-import com.chtl.ast.SourceLocation;
 import com.chtl.ast.chtljs.CHTLJSASTNode;
 import com.chtl.ast.node.ImportStatementNode;
 import com.chtl.ast.node.NamespaceNode;
-import com.chtl.compiler.CHTLCompiler.CompilationOutput;
-import com.chtl.compiler.CHTLCompiler.OptimizedOutput;
 import com.chtl.compiler.chtl.CHTLParser;
 import com.chtl.compiler.chtl.lexer.CHTLStateMachineLexer;
 import com.chtl.compiler.chtl.token.CHTLToken;
@@ -30,28 +28,15 @@ import com.chtl.context.CompilationError;
 import com.chtl.generator.CHTLGenerator;
 import com.chtl.generator.CHTLJSGenerator;
 import com.chtl.parser.CHTLJSParser;
-
-
 import com.chtl.scanner.CHTLUnifiedScanner;
 import com.chtl.scanner.Fragment;
 import com.chtl.scanner.ScannerStateMachine;
 import com.chtl.context.CompilationContext;
 import com.chtl.compiler.debug.*;
-import com.chtl.compiler.optimization.*;
-import com.chtl.lexer.*;
-import com.chtl.parser.*;
-import com.chtl.generator.*;
-import com.chtl.ast.*;
-import com.chtl.ast.node.*;
 import com.chtl.compiler.importer.ImportManager;
 import com.chtl.compiler.namespace.NamespaceManager;
 import com.chtl.compiler.constraint.ConstraintManager;
 import com.chtl.compiler.integration.NamespaceImportIntegration;
-
-import java.io.*;
-import java.nio.file.*;
-import java.util.*;
-import java.util.concurrent.*;
 import java.util.stream.Collectors;
 
 /**

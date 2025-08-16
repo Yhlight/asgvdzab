@@ -19,17 +19,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
-
-import com.chtl.cjmod.ModuleRepository.Dependency;
-import com.chtl.cjmod.ModuleRepository.DependencyResolution;
 import com.chtl.compiler.cjmod.CJmodManager.ModuleInfo;
-
-
 import java.io.*;
-import java.nio.file.*;
-import java.util.*;
-import java.util.concurrent.*;
-import java.util.stream.*;
 
 /**
  * 模块仓库管理器

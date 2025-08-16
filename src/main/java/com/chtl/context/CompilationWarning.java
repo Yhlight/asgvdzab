@@ -1,6 +1,8 @@
 package com.chtl.context;
 
-import com.chtl.ast.SourceLocation;
+import com.chtl.model.SourceLocation;
+
+import com.chtl.model.SourceLocation;
 
 /**
  * 编译警告

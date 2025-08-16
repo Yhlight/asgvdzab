@@ -1,7 +1,5 @@
 package com.chtl.javascript;import org.antlr.v4.runtime.CharStream;
 
-import com.chtl.compiler.chtl.CHTLParser.Lexer;
-
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.atn.ATN;
 

@@ -2,7 +2,6 @@ package com.chtl.scanner;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.chtl.scanner.BlockScanner.RawBlock;
 
 
 import com.chtl.model.CodeFragment;

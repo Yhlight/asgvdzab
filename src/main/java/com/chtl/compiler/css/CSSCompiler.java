@@ -1,22 +1,16 @@
 package com.chtl.compiler.css;import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
-
-import com.chtl.compiler.CompilationResult;
+import com.chtl.compiler.CompilerResult;
 import com.chtl.compiler.css.CSSCompiler.CSSOptimizingVisitor;
 import com.chtl.css.CSS3BaseVisitor;
-
-
 import com.chtl.css.CSS3Lexer;
 import com.chtl.css.CSS3Parser;
 import com.chtl.model.CodeFragment;
-import com.chtl.model.CompilationResult;
 import com.chtl.model.FragmentType;
 import org.antlr.v4.runtime.*;
-import org.antlr.v4.runtime.tree.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.util.ArrayList;
 import java.util.List;
 

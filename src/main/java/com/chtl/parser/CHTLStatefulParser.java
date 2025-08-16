@@ -3,7 +3,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-
 import com.chtl.ast.CHTLASTNode;
 import com.chtl.ast.node.CustomDefinitionNode;
 import com.chtl.ast.node.CustomOperationNode;
@@ -15,17 +14,12 @@ import com.chtl.ast.node.TemplateDefinitionNode;
 import com.chtl.ast.node.UnquotedLiteralNode;
 import com.chtl.ast.node.VarGroupDefinitionNode;
 import com.chtl.model.ElementNode;
-
-
 import com.chtl.ast.*;
-import com.chtl.ast.node.*;
 import com.chtl.context.CompilationContext;
 import com.chtl.scanner.CHTLUnifiedScanner;
 import com.chtl.scanner.ScannerStateMachine;
 import com.chtl.model.CodeFragment;
 import com.chtl.model.FragmentType;
-
-import java.util.*;
 
 /**
  * 基于状态机的CHTL解析器

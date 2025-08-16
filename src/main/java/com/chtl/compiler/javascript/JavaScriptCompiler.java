@@ -1,32 +1,23 @@
-package com.chtl.compiler.javascript;import org.antlr.v4.runtime.CharStreams;
-import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.TokenStream;
-import org.antlr.v4.runtime.tree.ParseTree;
+package com.chtl.compiler.javascript;
 
-import com.chtl.compiler.CompilationResult;
-import com.chtl.compiler.javascript.JavaScriptCompiler.ECMAScriptParser;
-import com.chtl.compiler.javascript.JavaScriptCompiler.JavaScriptOptimizingVisitor;
-import com.chtl.javascript.ECMAScriptBaseVisitor;
-
-
-import com.chtl.javascript.ECMAScriptLexer;
-import com.chtl.javascript.ECMAScriptParser;
 import com.chtl.model.CodeFragment;
 import com.chtl.model.CompilationResult;
-import com.chtl.model.FragmentType;
-import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
 import org.slf4j.Logger;
+import com.chtl.javascript.ECMAScriptParser;
+import org.antlr.v4.runtime.CommonTokenStream;
 import org.slf4j.LoggerFactory;
-
+import com.chtl.javascript.ECMAScriptBaseVisitor;
+import java.util.function.BiPredicate;
+import com.chtl.javascript.ECMAScriptLexer;
 import java.util.ArrayList;
+import org.antlr.v4.runtime.TokenStream;
+import java.util.HashMap;
 import java.util.List;
+import org.antlr.v4.runtime.tree.ParseTree;
 import java.util.Map;
-import java.util.HashMap;
-import java.util.function.BiPredicate;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.function.BiPredicate;
+import org.antlr.v4.runtime.CharStreams;
+import com.chtl.model.FragmentType;
 
 /**
  * JavaScript编译器 - 基于ANTLR实现

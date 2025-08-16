@@ -7,19 +7,11 @@ import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.Future;
-
-import com.chtl.compiler.CompilationResult;
-import com.chtl.core.memory.StreamingFileProcessor.ChunkResult;
-import com.chtl.core.memory.StreamingFileProcessor.OptimizedStringBuilder;
-import com.chtl.core.memory.StreamingFileProcessor.StreamingScanner;
+import com.chtl.compiler.CompilerResult;
 import com.chtl.model.FragmentType;
-
 import java.nio.MappedByteBuffer;
-
 import com.chtl.scanner.Fragment;
-import com.chtl.scanner.FragmentType;
 import com.chtl.context.CompilationContext;
-
 import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
@@ -27,8 +19,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
-import java.util.*;
-import java.util.concurrent.*;
 import java.util.function.Consumer;
 
 /**

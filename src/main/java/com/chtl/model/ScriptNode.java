@@ -1,5 +1,7 @@
 package com.chtl.model;
 
+
+import com.chtl.model.CHTLNode;
 /**
  * 脚本节点
  */

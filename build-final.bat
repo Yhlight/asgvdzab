@@ -133,6 +133,7 @@ for %%F in (
     FixAllImports.java
     FixRemainingIssues.java
     FixFinalIssues.java
+    FixCompilationErrors.java
 ) do (
     if exist %%F (
         javac %%F 2>nul
@@ -147,10 +148,11 @@ goto :eof
 :compileStage1
 REM Compile core model and exception classes
 echo Compiling core classes...
-dir /s /b src\main\java\com\chtl\model\*.java > stage1_files.txt
-dir /s /b src\main\java\com\chtl\exception\*.java >> stage1_files.txt
-dir /s /b src\main\java\com\chtl\context\Compilation*.java >> stage1_files.txt
-dir /s /b src\main\java\com\chtl\core\error\*.java >> stage1_files.txt
+if exist stage1_files.txt del stage1_files.txt
+for /r src\main\java\com\chtl\model %%f in (*.java) do echo %%f >> stage1_files.txt
+for /r src\main\java\com\chtl\exception %%f in (*.java) do echo %%f >> stage1_files.txt
+for /r src\main\java\com\chtl\context %%f in (Compilation*.java) do echo %%f >> stage1_files.txt
+for /r src\main\java\com\chtl\core\error %%f in (*.java) do echo %%f >> stage1_files.txt
 
 javac -cp "lib\*" -d target\classes -encoding UTF-8 -source 17 -target 17 -Xlint:none @stage1_files.txt 2>stage1_errors.txt
 set RESULT=%errorlevel%
@@ -166,10 +168,11 @@ exit /b %RESULT%
 :compileStage2
 REM Compile AST interfaces and base classes
 echo Compiling AST classes...
-dir /s /b src\main\java\com\chtl\ast\*.java > stage2_files.txt
-dir /s /b src\main\java\com\chtl\ast\node\*.java >> stage2_files.txt
-dir /s /b src\main\java\com\chtl\ast\chtljs\*.java >> stage2_files.txt
-dir /s /b src\main\java\com\chtl\chtljs\ast\*.java >> stage2_files.txt
+if exist stage2_files.txt del stage2_files.txt
+for /r src\main\java\com\chtl\ast %%f in (*.java) do echo %%f >> stage2_files.txt
+for /r src\main\java\com\chtl\ast\node %%f in (*.java) do echo %%f >> stage2_files.txt
+for /r src\main\java\com\chtl\ast\chtljs %%f in (*.java) do echo %%f >> stage2_files.txt
+for /r src\main\java\com\chtl\chtljs\ast %%f in (*.java) do echo %%f >> stage2_files.txt
 
 javac -cp "lib\*;target\classes" -d target\classes -encoding UTF-8 -source 17 -target 17 -Xlint:none @stage2_files.txt 2>stage2_errors.txt
 set RESULT=%errorlevel%
@@ -184,7 +187,8 @@ exit /b 0
 :compileStage3
 REM Compile everything else
 echo Compiling all remaining classes...
-dir /s /b src\main\java\*.java > all_files.txt
+if exist all_files.txt del all_files.txt
+for /r src\main\java %%f in (*.java) do echo %%f >> all_files.txt
 
 javac -cp "lib\*;target\classes" -d target\classes -encoding UTF-8 -source 17 -target 17 -Xlint:none -XDignore.symbol.file @all_files.txt 2>final_errors.txt
 set RESULT=%errorlevel%

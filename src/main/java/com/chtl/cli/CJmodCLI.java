@@ -7,19 +7,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
-
 import com.chtl.cjmod.ModulePackager;
 import com.chtl.cjmod.ModuleRepository;
 import com.chtl.cjmod.ModuleSigner;
 import com.chtl.cjmod.ModuleVersion;
 import com.chtl.compiler.cjmod.CJmodManager;
-
-
 import com.chtl.cjmod.*;
-import java.io.*;
-import java.nio.file.*;
-import java.util.*;
-import java.util.concurrent.*;
 
 /**
  * CJMOD命令行工具
@@ -149,9 +142,21 @@ public class CJmodCLI {
         String mainClassContent = String.format("""
             package %s;
             
-            import com.chtl.cjmod.*;
-            import java.util.*;
-            
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import com.chtl.cjmod.ModulePackager;
+import com.chtl.cjmod.ModuleRepository;
+import com.chtl.cjmod.ModuleSigner;
+import com.chtl.cjmod.ModuleVersion;
+import com.chtl.compiler.cjmod.CJmodManager;
+import com.chtl.cjmod.*;
+
             public class %s extends CJmodBase {
                 
                 @Override

@@ -7,7 +7,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import com.chtl.ast.CHTLASTNode;
 import com.chtl.ast.node.CustomDefinitionNode;
 import com.chtl.ast.node.CustomUsageNode;
@@ -17,17 +16,10 @@ import com.chtl.ast.node.StylePropertyNode;
 import com.chtl.ast.node.TemplateDefinitionNode;
 import com.chtl.ast.node.TemplateUsageNode;
 import com.chtl.ast.node.UnquotedLiteralNode;
-import com.chtl.compiler.style.StyleGroupManager.ImportedStyleGroup;
-import com.chtl.compiler.style.StyleGroupManager.ResolvedStyleGroup;
 import com.chtl.context.CompilationError;
 import com.chtl.context.CompilationWarning;
-
-
 import com.chtl.ast.*;
-import com.chtl.ast.node.*;
 import com.chtl.context.CompilationContext;
-
-import java.util.*;
 
 /**
  * 样式组管理器

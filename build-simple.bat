@@ -14,11 +14,31 @@ if not exist dist mkdir dist
 REM Run fix programs
 echo Running fixes...
 javac FixFinalIssues.java 2>nul && java FixFinalIssues >nul 2>&1
+javac FixCompilationErrors.java 2>nul && java FixCompilationErrors >nul 2>&1
+javac FixAllCompilationIssues.java 2>nul && java FixAllCompilationIssues >nul 2>&1
+javac FixFileNaming.java 2>nul && java FixFileNaming >nul 2>&1
+javac FixRemainingCompilationErrors.java 2>nul && java FixRemainingCompilationErrors >nul 2>&1
 
 REM Compile everything at once with lenient options
 echo.
 echo Compiling project...
-dir /s /b src\main\java\*.java > all_files.txt
+
+REM Create file list using FOR loop which is more reliable on Windows
+if exist all_files.txt del all_files.txt
+set FILE_COUNT=0
+for /r src\main\java %%f in (*.java) do (
+    echo %%f >> all_files.txt
+    set /a FILE_COUNT+=1
+)
+
+if %FILE_COUNT%==0 (
+    echo [ERROR] No Java source files found in src\main\java!
+    echo Please check that source files exist.
+    pause
+    exit /b 1
+)
+
+echo Found %FILE_COUNT% source files to compile...
 
 javac -cp "lib\*" -d target\classes -encoding UTF-8 ^
     -source 17 -target 17 ^

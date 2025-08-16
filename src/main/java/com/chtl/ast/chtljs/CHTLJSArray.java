@@ -2,10 +2,7 @@ package com.chtl.ast.chtljs;
 import com.chtl.ast.NodeType;
 import java.util.ArrayList;
 import java.util.List;
-
-
 import com.chtl.chtljs.ast.*;
-import java.util.*;
 
 public class CHTLJSArray extends AbstractCHTLJSASTNode {
     private List<CHTLJSASTNode> elements = new ArrayList<>();

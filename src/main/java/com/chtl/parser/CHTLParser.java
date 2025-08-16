@@ -4,7 +4,6 @@ import com.chtl.model.SourceLocation;
 import java.util.Stack;
 import java.util.ArrayList;
 import java.util.List;
-
 import com.chtl.ast.CHTLASTNode;
 import com.chtl.ast.node.CommentNode;
 import com.chtl.ast.node.ConfigurationNode;
@@ -34,15 +33,10 @@ import com.chtl.context.CompilationContext;
 import com.chtl.model.AttributeNode;
 import com.chtl.model.ElementNode;
 import com.chtl.model.TextNode;
-
-
 import com.chtl.ast.*;
-import com.chtl.ast.node.*;
 import com.chtl.compiler.chtl.token.CHTLToken;
 import com.chtl.compiler.chtl.token.CHTLTokenType;
 import com.chtl.compiler.chtl.lexer.CHTLStateMachineLexer;
-
-import java.util.*;
 
 /**
  * CHTL解析器

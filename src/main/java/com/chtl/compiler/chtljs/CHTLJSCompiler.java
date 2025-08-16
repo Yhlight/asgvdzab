@@ -1,4 +1,4 @@
-package com.chtl.compiler.chtljs;import com.chtl.compiler.CompilationResult;
+package com.chtl.compiler.chtljs;import com.chtl.compiler.CompilerResult;
 
 
 import com.chtl.model.CodeFragment;

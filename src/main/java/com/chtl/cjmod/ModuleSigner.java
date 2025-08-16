@@ -11,18 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import com.chtl.cjmod.ModuleSigner.KeyPairInfo;
-import com.chtl.cjmod.ModuleSigner.SignatureInfo;
-import com.chtl.cjmod.ModuleSigner.VerificationResult;
-
-
 import java.io.*;
-import java.nio.file.*;
-import java.security.*;
-import java.security.spec.*;
-import java.util.*;
-import javax.crypto.*;
 import java.util.Base64;
 
 /**
