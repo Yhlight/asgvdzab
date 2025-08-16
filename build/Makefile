@@ -318,6 +318,32 @@ quick_import_namespace_test/fast:
 .PHONY : quick_import_namespace_test/fast
 
 #=============================================================================
+# Target rules for targets named debug_namespace_test
+
+# Build rule for target.
+debug_namespace_test: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 debug_namespace_test
+.PHONY : debug_namespace_test
+
+# fast build rule for target.
+debug_namespace_test/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_namespace_test.dir/build.make CMakeFiles/debug_namespace_test.dir/build
+.PHONY : debug_namespace_test/fast
+
+#=============================================================================
+# Target rules for targets named debug_import_test
+
+# Build rule for target.
+debug_import_test: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 debug_import_test
+.PHONY : debug_import_test
+
+# fast build rule for target.
+debug_import_test/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_import_test.dir/build.make CMakeFiles/debug_import_test.dir/build
+.PHONY : debug_import_test/fast
+
+#=============================================================================
 # Target rules for targets named raii_state_management_demo
 
 # Build rule for target.
@@ -653,6 +679,7 @@ src/import/enhanced_import_manager.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/import/enhanced_import_manager.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/enhanced_import_namespace_demo.dir/build.make CMakeFiles/enhanced_import_namespace_demo.dir/src/import/enhanced_import_manager.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/quick_import_namespace_test.dir/build.make CMakeFiles/quick_import_namespace_test.dir/src/import/enhanced_import_manager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_import_test.dir/build.make CMakeFiles/debug_import_test.dir/src/import/enhanced_import_manager.cpp.o
 .PHONY : src/import/enhanced_import_manager.cpp.o
 
 src/import/enhanced_import_manager.i: src/import/enhanced_import_manager.cpp.i
@@ -672,6 +699,7 @@ src/import/enhanced_import_manager.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/import/enhanced_import_manager.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/enhanced_import_namespace_demo.dir/build.make CMakeFiles/enhanced_import_namespace_demo.dir/src/import/enhanced_import_manager.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/quick_import_namespace_test.dir/build.make CMakeFiles/quick_import_namespace_test.dir/src/import/enhanced_import_manager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_import_test.dir/build.make CMakeFiles/debug_import_test.dir/src/import/enhanced_import_manager.cpp.i
 .PHONY : src/import/enhanced_import_manager.cpp.i
 
 src/import/enhanced_import_manager.s: src/import/enhanced_import_manager.cpp.s
@@ -691,6 +719,7 @@ src/import/enhanced_import_manager.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/import/enhanced_import_manager.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/enhanced_import_namespace_demo.dir/build.make CMakeFiles/enhanced_import_namespace_demo.dir/src/import/enhanced_import_manager.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/quick_import_namespace_test.dir/build.make CMakeFiles/quick_import_namespace_test.dir/src/import/enhanced_import_manager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_import_test.dir/build.make CMakeFiles/debug_import_test.dir/src/import/enhanced_import_manager.cpp.s
 .PHONY : src/import/enhanced_import_manager.cpp.s
 
 src/lexer/chtl_js_tokens.o: src/lexer/chtl_js_tokens.cpp.o
@@ -938,6 +967,7 @@ src/namespace/enhanced_namespace_manager.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/namespace/enhanced_namespace_manager.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/enhanced_import_namespace_demo.dir/build.make CMakeFiles/enhanced_import_namespace_demo.dir/src/namespace/enhanced_namespace_manager.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/quick_import_namespace_test.dir/build.make CMakeFiles/quick_import_namespace_test.dir/src/namespace/enhanced_namespace_manager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_namespace_test.dir/build.make CMakeFiles/debug_namespace_test.dir/src/namespace/enhanced_namespace_manager.cpp.o
 .PHONY : src/namespace/enhanced_namespace_manager.cpp.o
 
 src/namespace/enhanced_namespace_manager.i: src/namespace/enhanced_namespace_manager.cpp.i
@@ -957,6 +987,7 @@ src/namespace/enhanced_namespace_manager.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/namespace/enhanced_namespace_manager.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/enhanced_import_namespace_demo.dir/build.make CMakeFiles/enhanced_import_namespace_demo.dir/src/namespace/enhanced_namespace_manager.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/quick_import_namespace_test.dir/build.make CMakeFiles/quick_import_namespace_test.dir/src/namespace/enhanced_namespace_manager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_namespace_test.dir/build.make CMakeFiles/debug_namespace_test.dir/src/namespace/enhanced_namespace_manager.cpp.i
 .PHONY : src/namespace/enhanced_namespace_manager.cpp.i
 
 src/namespace/enhanced_namespace_manager.s: src/namespace/enhanced_namespace_manager.cpp.s
@@ -976,6 +1007,7 @@ src/namespace/enhanced_namespace_manager.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/namespace/enhanced_namespace_manager.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/enhanced_import_namespace_demo.dir/build.make CMakeFiles/enhanced_import_namespace_demo.dir/src/namespace/enhanced_namespace_manager.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/quick_import_namespace_test.dir/build.make CMakeFiles/quick_import_namespace_test.dir/src/namespace/enhanced_namespace_manager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_namespace_test.dir/build.make CMakeFiles/debug_namespace_test.dir/src/namespace/enhanced_namespace_manager.cpp.s
 .PHONY : src/namespace/enhanced_namespace_manager.cpp.s
 
 src/parsers/chtl_parser.o: src/parsers/chtl_parser.cpp.o
@@ -1263,6 +1295,60 @@ tests/comprehensive_lexer_test.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/tests/comprehensive_lexer_test.cpp.s
 .PHONY : tests/comprehensive_lexer_test.cpp.s
 
+tests/debug_import_test.o: tests/debug_import_test.cpp.o
+.PHONY : tests/debug_import_test.o
+
+# target to build an object file
+tests/debug_import_test.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/debug_import_test.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_import_test.dir/build.make CMakeFiles/debug_import_test.dir/tests/debug_import_test.cpp.o
+.PHONY : tests/debug_import_test.cpp.o
+
+tests/debug_import_test.i: tests/debug_import_test.cpp.i
+.PHONY : tests/debug_import_test.i
+
+# target to preprocess a source file
+tests/debug_import_test.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/debug_import_test.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_import_test.dir/build.make CMakeFiles/debug_import_test.dir/tests/debug_import_test.cpp.i
+.PHONY : tests/debug_import_test.cpp.i
+
+tests/debug_import_test.s: tests/debug_import_test.cpp.s
+.PHONY : tests/debug_import_test.s
+
+# target to generate assembly for a file
+tests/debug_import_test.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/debug_import_test.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_import_test.dir/build.make CMakeFiles/debug_import_test.dir/tests/debug_import_test.cpp.s
+.PHONY : tests/debug_import_test.cpp.s
+
+tests/debug_namespace_test.o: tests/debug_namespace_test.cpp.o
+.PHONY : tests/debug_namespace_test.o
+
+# target to build an object file
+tests/debug_namespace_test.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/debug_namespace_test.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_namespace_test.dir/build.make CMakeFiles/debug_namespace_test.dir/tests/debug_namespace_test.cpp.o
+.PHONY : tests/debug_namespace_test.cpp.o
+
+tests/debug_namespace_test.i: tests/debug_namespace_test.cpp.i
+.PHONY : tests/debug_namespace_test.i
+
+# target to preprocess a source file
+tests/debug_namespace_test.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/debug_namespace_test.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_namespace_test.dir/build.make CMakeFiles/debug_namespace_test.dir/tests/debug_namespace_test.cpp.i
+.PHONY : tests/debug_namespace_test.cpp.i
+
+tests/debug_namespace_test.s: tests/debug_namespace_test.cpp.s
+.PHONY : tests/debug_namespace_test.s
+
+# target to generate assembly for a file
+tests/debug_namespace_test.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/debug_namespace_test.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_namespace_test.dir/build.make CMakeFiles/debug_namespace_test.dir/tests/debug_namespace_test.cpp.s
+.PHONY : tests/debug_namespace_test.cpp.s
+
 tests/enhanced_import_namespace_test.o: tests/enhanced_import_namespace_test.cpp.o
 .PHONY : tests/enhanced_import_namespace_test.o
 
@@ -1494,6 +1580,8 @@ help:
 	@echo "... chtl_syntax_validation_tests"
 	@echo "... chtl_tests"
 	@echo "... comprehensive_lexer_tests"
+	@echo "... debug_import_test"
+	@echo "... debug_namespace_test"
 	@echo "... enhanced_import_namespace_demo"
 	@echo "... parser_generator_integration_tests"
 	@echo "... quick_import_namespace_test"
@@ -1564,6 +1652,12 @@ help:
 	@echo "... tests/comprehensive_lexer_test.o"
 	@echo "... tests/comprehensive_lexer_test.i"
 	@echo "... tests/comprehensive_lexer_test.s"
+	@echo "... tests/debug_import_test.o"
+	@echo "... tests/debug_import_test.i"
+	@echo "... tests/debug_import_test.s"
+	@echo "... tests/debug_namespace_test.o"
+	@echo "... tests/debug_namespace_test.i"
+	@echo "... tests/debug_namespace_test.s"
 	@echo "... tests/enhanced_import_namespace_test.o"
 	@echo "... tests/enhanced_import_namespace_test.i"
 	@echo "... tests/enhanced_import_namespace_test.s"

@@ -14,8 +14,9 @@ CircularDependencyDetector::CircularDependencyDetector() {
 bool CircularDependencyDetector::addDependency(const std::string& from, const std::string& to) {
     std::lock_guard<std::mutex> lock(mutex_);
     
-    // 检查是否会造成循环依赖
-    if (hasCircularDependency(to, from)) {
+    // 检查是否会造成循环依赖 (使用内部方法避免重复加锁)
+    std::unordered_set<std::string> visited;
+    if (hasPathDFS(to, from, visited)) {
         return false;
     }
     

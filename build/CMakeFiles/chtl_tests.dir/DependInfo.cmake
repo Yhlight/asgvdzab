@@ -28,6 +28,8 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/workspace/tests/chtl_grammar_conformance_test.cpp" "CMakeFiles/chtl_tests.dir/tests/chtl_grammar_conformance_test.cpp.o" "gcc" "CMakeFiles/chtl_tests.dir/tests/chtl_grammar_conformance_test.cpp.o.d"
   "/workspace/tests/chtl_syntax_validation_test.cpp" "CMakeFiles/chtl_tests.dir/tests/chtl_syntax_validation_test.cpp.o" "gcc" "CMakeFiles/chtl_tests.dir/tests/chtl_syntax_validation_test.cpp.o.d"
   "/workspace/tests/comprehensive_lexer_test.cpp" "CMakeFiles/chtl_tests.dir/tests/comprehensive_lexer_test.cpp.o" "gcc" "CMakeFiles/chtl_tests.dir/tests/comprehensive_lexer_test.cpp.o.d"
+  "/workspace/tests/debug_import_test.cpp" "CMakeFiles/chtl_tests.dir/tests/debug_import_test.cpp.o" "gcc" "CMakeFiles/chtl_tests.dir/tests/debug_import_test.cpp.o.d"
+  "/workspace/tests/debug_namespace_test.cpp" "CMakeFiles/chtl_tests.dir/tests/debug_namespace_test.cpp.o" "gcc" "CMakeFiles/chtl_tests.dir/tests/debug_namespace_test.cpp.o.d"
   "/workspace/tests/enhanced_import_namespace_test.cpp" "CMakeFiles/chtl_tests.dir/tests/enhanced_import_namespace_test.cpp.o" "gcc" "CMakeFiles/chtl_tests.dir/tests/enhanced_import_namespace_test.cpp.o.d"
   "/workspace/tests/independent_compiler_architecture_test.cpp" "CMakeFiles/chtl_tests.dir/tests/independent_compiler_architecture_test.cpp.o" "gcc" "CMakeFiles/chtl_tests.dir/tests/independent_compiler_architecture_test.cpp.o.d"
   "/workspace/tests/parser_generator_integration_test.cpp" "CMakeFiles/chtl_tests.dir/tests/parser_generator_integration_test.cpp.o" "gcc" "CMakeFiles/chtl_tests.dir/tests/parser_generator_integration_test.cpp.o.d"

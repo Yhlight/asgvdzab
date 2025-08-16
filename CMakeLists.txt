@@ -121,6 +121,18 @@ add_executable(quick_import_namespace_test
     src/namespace/enhanced_namespace_manager.cpp
 )
 
+# 创建调试程序
+add_executable(debug_namespace_test 
+    tests/debug_namespace_test.cpp
+    src/namespace/enhanced_namespace_manager.cpp
+)
+
+# 创建Import调试程序
+add_executable(debug_import_test 
+    tests/debug_import_test.cpp
+    src/import/enhanced_import_manager.cpp
+)
+
 # 创建RAII状态管理演示程序（不依赖gtest）
 add_executable(raii_state_management_demo 
     tests/raii_state_management_demo.cpp

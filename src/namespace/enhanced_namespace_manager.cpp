@@ -692,16 +692,19 @@ NamespaceDefinition& EnhancedNamespaceManager::getOrCreateNamespace(const std::s
     newNs.position = position;
     newNs.sourceFile = sourceFile;
     
+    // 保存父路径以便后续使用
+    std::string parentPath = newNs.parentPath;
+    
     // 确保父命名空间存在
-    if (!newNs.parentPath.empty()) {
+    if (!parentPath.empty()) {
         createParentNamespaces(namespacePath, position, sourceFile);
     }
     
     auto result = namespaces_.emplace(namespacePath, std::move(newNs));
     
     // 更新父命名空间的子列表
-    if (!newNs.parentPath.empty()) {
-        auto parentIt = namespaces_.find(newNs.parentPath);
+    if (!parentPath.empty()) {
+        auto parentIt = namespaces_.find(parentPath);
         if (parentIt != namespaces_.end()) {
             parentIt->second.childNamespaces.insert(namespacePath);
         }

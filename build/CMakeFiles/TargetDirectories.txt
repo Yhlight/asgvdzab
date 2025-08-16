@@ -10,6 +10,8 @@
 /workspace/build/CMakeFiles/raii_state_management_integration_tests.dir
 /workspace/build/CMakeFiles/enhanced_import_namespace_demo.dir
 /workspace/build/CMakeFiles/quick_import_namespace_test.dir
+/workspace/build/CMakeFiles/debug_namespace_test.dir
+/workspace/build/CMakeFiles/debug_import_test.dir
 /workspace/build/CMakeFiles/raii_state_management_demo.dir
 /workspace/build/CMakeFiles/edit_cache.dir
 /workspace/build/CMakeFiles/rebuild_cache.dir
