@@ -89,6 +89,16 @@ elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
     endif()
 endif()
 
+# 创建解析器和生成器集成测试
+add_executable(parser_generator_integration_tests 
+    tests/parser_generator_integration_test.cpp 
+    src/parsers/chtl_parser.cpp
+    src/generators/chtl_generator.cpp
+    src/ast/chtl_ast.cpp 
+    src/ast/chtl_js_ast.cpp
+    ${TEST_LIB_SOURCES}
+)
+
 # 安装规则
 install(TARGETS chtl_compiler
     RUNTIME DESTINATION bin
