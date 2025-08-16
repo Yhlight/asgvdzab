@@ -140,6 +140,11 @@ if(EXISTS "${CMAKE_SOURCE_DIR}/tests")
         add_executable(integrated_system_test tests/integrated_system_test.cpp)
         target_link_libraries(integrated_system_test chtl_test_lib)
         target_include_directories(integrated_system_test PRIVATE ${CHTL_INCLUDE_DIRS})
+        
+        # 添加扫描器最小单元切割测试
+        add_executable(scanner_minimal_unit_test tests/scanner_minimal_unit_test.cpp)
+        target_link_libraries(scanner_minimal_unit_test chtl_test_lib)
+        target_include_directories(scanner_minimal_unit_test PRIVATE ${CHTL_INCLUDE_DIRS})
     endif()
 endif()
 

@@ -69,6 +69,7 @@ all: CMakeFiles/chtl.dir/all
 all: CMakeFiles/chtl_test_lib.dir/all
 all: CMakeFiles/unified_compiler_test.dir/all
 all: CMakeFiles/integrated_system_test.dir/all
+all: CMakeFiles/scanner_minimal_unit_test.dir/all
 .PHONY : all
 
 # The main recursive "codegen" target.
@@ -78,6 +79,7 @@ codegen: CMakeFiles/chtl.dir/codegen
 codegen: CMakeFiles/chtl_test_lib.dir/codegen
 codegen: CMakeFiles/unified_compiler_test.dir/codegen
 codegen: CMakeFiles/integrated_system_test.dir/codegen
+codegen: CMakeFiles/scanner_minimal_unit_test.dir/codegen
 .PHONY : codegen
 
 # The main recursive "preinstall" target.
@@ -92,6 +94,7 @@ clean: CMakeFiles/generate_antlr_parsers.dir/clean
 clean: CMakeFiles/chtl_test_lib.dir/clean
 clean: CMakeFiles/unified_compiler_test.dir/clean
 clean: CMakeFiles/integrated_system_test.dir/clean
+clean: CMakeFiles/scanner_minimal_unit_test.dir/clean
 .PHONY : clean
 
 #=============================================================================
@@ -262,7 +265,7 @@ CMakeFiles/chtl_test_lib.dir/clean:
 CMakeFiles/unified_compiler_test.dir/all: CMakeFiles/chtl_test_lib.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/unified_compiler_test.dir/build.make CMakeFiles/unified_compiler_test.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/unified_compiler_test.dir/build.make CMakeFiles/unified_compiler_test.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=80,81 "Built target unified_compiler_test"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=82,83 "Built target unified_compiler_test"
 .PHONY : CMakeFiles/unified_compiler_test.dir/all
 
 # Build rule for subdir invocation for target.
@@ -279,7 +282,7 @@ unified_compiler_test: CMakeFiles/unified_compiler_test.dir/rule
 # codegen rule for target.
 CMakeFiles/unified_compiler_test.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/unified_compiler_test.dir/build.make CMakeFiles/unified_compiler_test.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=80,81 "Finished codegen for target unified_compiler_test"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=82,83 "Finished codegen for target unified_compiler_test"
 .PHONY : CMakeFiles/unified_compiler_test.dir/codegen
 
 # clean rule for target.
@@ -318,6 +321,38 @@ CMakeFiles/integrated_system_test.dir/codegen:
 CMakeFiles/integrated_system_test.dir/clean:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/integrated_system_test.dir/build.make CMakeFiles/integrated_system_test.dir/clean
 .PHONY : CMakeFiles/integrated_system_test.dir/clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/scanner_minimal_unit_test.dir
+
+# All Build rule for target.
+CMakeFiles/scanner_minimal_unit_test.dir/all: CMakeFiles/chtl_test_lib.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/scanner_minimal_unit_test.dir/build.make CMakeFiles/scanner_minimal_unit_test.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/scanner_minimal_unit_test.dir/build.make CMakeFiles/scanner_minimal_unit_test.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=80,81 "Built target scanner_minimal_unit_test"
+.PHONY : CMakeFiles/scanner_minimal_unit_test.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/scanner_minimal_unit_test.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /workspace/build/CMakeFiles 32
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/scanner_minimal_unit_test.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /workspace/build/CMakeFiles 0
+.PHONY : CMakeFiles/scanner_minimal_unit_test.dir/rule
+
+# Convenience name for target.
+scanner_minimal_unit_test: CMakeFiles/scanner_minimal_unit_test.dir/rule
+.PHONY : scanner_minimal_unit_test
+
+# codegen rule for target.
+CMakeFiles/scanner_minimal_unit_test.dir/codegen:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/scanner_minimal_unit_test.dir/build.make CMakeFiles/scanner_minimal_unit_test.dir/codegen
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=80,81 "Finished codegen for target scanner_minimal_unit_test"
+.PHONY : CMakeFiles/scanner_minimal_unit_test.dir/codegen
+
+# clean rule for target.
+CMakeFiles/scanner_minimal_unit_test.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/scanner_minimal_unit_test.dir/build.make CMakeFiles/scanner_minimal_unit_test.dir/clean
+.PHONY : CMakeFiles/scanner_minimal_unit_test.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

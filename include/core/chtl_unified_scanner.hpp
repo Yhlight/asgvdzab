@@ -119,6 +119,11 @@ public:
      * 启用调试模式
      */
     void setDebugMode(bool enabled) { debugMode_ = enabled; }
+    
+    // 测试接口（临时公开）
+    std::vector<CodeFragment> testMinimalUnitCutting(const std::string& content, CodeFragmentType type, size_t basePos) {
+        return performMinimalUnitCutting(content, type, basePos);
+    }
 
 private:
     size_t initialSliceSize_;      // 初始切片大小

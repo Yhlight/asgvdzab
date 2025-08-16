@@ -252,6 +252,19 @@ integrated_system_test/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/integrated_system_test.dir/build.make CMakeFiles/integrated_system_test.dir/build
 .PHONY : integrated_system_test/fast
 
+#=============================================================================
+# Target rules for targets named scanner_minimal_unit_test
+
+# Build rule for target.
+scanner_minimal_unit_test: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 scanner_minimal_unit_test
+.PHONY : scanner_minimal_unit_test
+
+# fast build rule for target.
+scanner_minimal_unit_test/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/scanner_minimal_unit_test.dir/build.make CMakeFiles/scanner_minimal_unit_test.dir/build
+.PHONY : scanner_minimal_unit_test/fast
+
 generated/antlr/css/CSS3BaseListener.o: generated/antlr/css/CSS3BaseListener.cpp.o
 .PHONY : generated/antlr/css/CSS3BaseListener.o
 
@@ -1374,6 +1387,30 @@ tests/integrated_system_test.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/integrated_system_test.dir/build.make CMakeFiles/integrated_system_test.dir/tests/integrated_system_test.cpp.s
 .PHONY : tests/integrated_system_test.cpp.s
 
+tests/scanner_minimal_unit_test.o: tests/scanner_minimal_unit_test.cpp.o
+.PHONY : tests/scanner_minimal_unit_test.o
+
+# target to build an object file
+tests/scanner_minimal_unit_test.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/scanner_minimal_unit_test.dir/build.make CMakeFiles/scanner_minimal_unit_test.dir/tests/scanner_minimal_unit_test.cpp.o
+.PHONY : tests/scanner_minimal_unit_test.cpp.o
+
+tests/scanner_minimal_unit_test.i: tests/scanner_minimal_unit_test.cpp.i
+.PHONY : tests/scanner_minimal_unit_test.i
+
+# target to preprocess a source file
+tests/scanner_minimal_unit_test.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/scanner_minimal_unit_test.dir/build.make CMakeFiles/scanner_minimal_unit_test.dir/tests/scanner_minimal_unit_test.cpp.i
+.PHONY : tests/scanner_minimal_unit_test.cpp.i
+
+tests/scanner_minimal_unit_test.s: tests/scanner_minimal_unit_test.cpp.s
+.PHONY : tests/scanner_minimal_unit_test.s
+
+# target to generate assembly for a file
+tests/scanner_minimal_unit_test.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/scanner_minimal_unit_test.dir/build.make CMakeFiles/scanner_minimal_unit_test.dir/tests/scanner_minimal_unit_test.cpp.s
+.PHONY : tests/scanner_minimal_unit_test.cpp.s
+
 tests/unified_compiler_test.o: tests/unified_compiler_test.cpp.o
 .PHONY : tests/unified_compiler_test.o
 
@@ -1416,6 +1453,7 @@ help:
 	@echo "... chtl_core"
 	@echo "... chtl_test_lib"
 	@echo "... integrated_system_test"
+	@echo "... scanner_minimal_unit_test"
 	@echo "... unified_compiler_test"
 	@echo "... generated/antlr/css/CSS3BaseListener.o"
 	@echo "... generated/antlr/css/CSS3BaseListener.i"
@@ -1546,6 +1584,9 @@ help:
 	@echo "... tests/integrated_system_test.o"
 	@echo "... tests/integrated_system_test.i"
 	@echo "... tests/integrated_system_test.s"
+	@echo "... tests/scanner_minimal_unit_test.o"
+	@echo "... tests/scanner_minimal_unit_test.i"
+	@echo "... tests/scanner_minimal_unit_test.s"
 	@echo "... tests/unified_compiler_test.o"
 	@echo "... tests/unified_compiler_test.i"
 	@echo "... tests/unified_compiler_test.s"

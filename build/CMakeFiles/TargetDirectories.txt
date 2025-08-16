@@ -5,6 +5,7 @@
 /workspace/build/CMakeFiles/chtl_test_lib.dir
 /workspace/build/CMakeFiles/unified_compiler_test.dir
 /workspace/build/CMakeFiles/integrated_system_test.dir
+/workspace/build/CMakeFiles/scanner_minimal_unit_test.dir
 /workspace/build/CMakeFiles/edit_cache.dir
 /workspace/build/CMakeFiles/rebuild_cache.dir
 /workspace/build/CMakeFiles/list_install_components.dir

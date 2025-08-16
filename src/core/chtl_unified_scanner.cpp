@@ -3,6 +3,7 @@
 #include <iostream>
 #include <algorithm>
 #include <sstream>
+#include <set>
 #include <cctype>
 
 namespace chtl {
@@ -11,53 +12,84 @@ namespace chtl {
 
 const std::vector<std::string>& MinimalUnit::getChtlMinimalPatterns() {
     static std::vector<std::string> patterns = {
-        // 变量引用模式
-        R"(\{\{[^}]+\}\})",                    // {{variable}}
-        R"(\{\{\{[^}]+\}\}\})",                // {{{htmlContent}}}
-        R"(\{\{&[^}]+\}\})",                   // {{&unescaped}}
+        // CHTL模板和自定义语法（基于语法文档）
+        R"(\[(?:Template|Custom)\]\s*@(?:Style|Element|Var)\s+\w+)",  // [Template] @Style Name
+        R"(\[(?:Origin|Import|Namespace|Configuration)\])",          // 其他块标记
         
-        // CHTL语法模式
-        R"(@(?:Var|Style|Element)\s+\w+)",     // @Var/@Style/@Element
-        R"(\[(?:Custom|Template|Origin|Import|Namespace)\])", // 块标记
-        R"(\w+\(\w+(?:\s*=\s*[^)]+)?\))",       // 变量组语法
-        R"(\w+\s+from\s+[\w./]+)",             // from语句
-        R"(inherit\s+@?\w+)",                  // inherit语句
-        R"(delete\s+@?\w+(?:\.\w+)?)",         // delete语句
-        R"(--[^\r\n]*)",                       // 生成器注释
+        // 变量组语法（正确的CHTL语法）
+        R"(\w+\([^)]*\))",                     // ThemeColor(tableColor) 或 ThemeColor(tableColor = value)
         
-        // 运算符和连接符
-        R"(->)",                               // 箭头操作符
-        R"(\+\+|--)",                          // 自增自减
-        R"([+\-*/=<>!&|]+)",                   // 其他操作符
+        // 样式组和元素模板使用
+        R"(@(?:Style|Element|Var)\s+\w+)",     // @Style DefaultText;
+        
+        // 继承和删除操作
+        R"(\binherit\s+@?\w+)",                // inherit @Style ThemeColor
+        R"(\bdelete\s+@?\w+)",                 // delete @Style WhiteText
+        R"(\bdelete\s+[\w-]+(?:\s*,\s*[\w-]+)*)", // delete line-height, border
+        
+        // 插入操作
+        R"(\binsert\s+(?:after|before|replace|at\s+(?:top|bottom))\s+[^{]+)", // insert after div[0]
+        
+        // from语句和命名空间
+        R"(\w+\s+from\s+[\w./]+)",             // @Element Box from space
+        
+        // HTML元素语法
+        R"(\b(?:html|head|body|div|span|p|a|img|ul|li|table|tr|td|th|form|input|button|h[1-6]|section|article|nav|header|footer|aside|main)\s*\{)", // div {
+        
+        // text节点
+        R"(\btext\s*\{)",                      // text {
+        
+        // 属性语法
+        R"(\b\w+\s*[:=]\s*[^;]+;)",            // id: box; class: welcome;
+        
+        // 局部样式和脚本块
+        R"(\bstyle\s*\{)",                     // style {
+        R"(\bscript\s*\{)",                    // script {
+        
+        // 生成器注释
+        R"(--[^\r\n]*)",                       // -- 注释
+        
+        // 控制结构分隔符（不包含大括号，避免过度切割模板变量）
+        R"([();,])",                           // 基本分隔符（去除大括号）
     };
     return patterns;
 }
 
 const std::vector<std::string>& MinimalUnit::getChtlJsMinimalPatterns() {
     static std::vector<std::string> patterns = {
-        // CHTL JS混合模式（继承CHTL模式）
-        R"(\{\{[^}]+\}\})",                    // {{variable}}
-        R"(\{\{\{[^}]+\}\}\})",                // {{{htmlContent}}}
-        R"(\{\{&[^}]+\}\})",                   // {{&unescaped}}
+        // CHTL JS增强选择器（核心语法）
+        R"(\{\{[^}]+\}\})",                    // {{box}}, {{.box}}, {{#box}}, {{button[0]}}
         
-        // CHTL语法在JS中
-        R"(\w+\(\w+(?:\s*=\s*[^)]+)?\))",       // 变量组语法
+        // CHTL JS箭头操作符组合（关键切割点！）
+        R"(\{\{[^}]+\}\}\s*->)",               // {{box}}-> （作为一个完整单元）
+        
+        // CHTL JS特殊方法调用
+        R"(->listen\s*\([^)]*\))",             // ->listen({ click: ... })
+        R"(->delegate\s*\([^)]*\))",           // ->delegate({ target: ... })
+        R"(\banimate\s*\([^)]*\))",            // animate({ duration: ... })
+        
+        // 在script块中的CHTL语法
+        R"(\w+\([^)]*\))",                     // ColorGroup(primary = value) 变量组语法
         R"(\w+\s+from\s+[\w./]+)",             // from语句
-        R"(\[Origin\]\s+@\w+)",                // 原始嵌入
-        R"(--[^\r\n]*)",                       // 生成器注释
+        R"(\[Origin\]\s*@(?:Html|Style|JavaScript))", // 原始嵌入
+        R"(--[^\r\n]*)",                       // -- 生成器注释
         
-        // JavaScript语法模式
-        R"(function\s+\w+\s*\([^)]*\))",       // 函数定义
-        R"(\w+\s*=\s*\([^)]*\)\s*=>)",         // 箭头函数
-        R"(\w+\.\w+\s*\([^)]*\))",             // 方法调用
-        R"(new\s+\w+\s*\([^)]*\))",            // 构造函数
-        R"(\w+\[[\w"']+\])",                   // 数组/对象访问
+        // JavaScript标准语法（在script块中）
+        R"(\bfunction\s+\w+\s*\([^)]*\))",     // function declaration
+        R"(\w+\s*=\s*\([^)]*\)\s*=>)",         // arrow function
+        R"(\w+\.\w+\s*\([^)]*\))",             // method call
+        R"(\bnew\s+\w+\s*\([^)]*\))",          // constructor
+        R"(\w+\[[\w"']+\])",                   // array/object access
         
-        // 运算符
-        R"(->)",                               // 箭头操作符（CHTL特有）
-        R"(=>)",                               // 箭头函数（JS）
-        R"(\+\+|--)",                          // 自增自减
-        R"([+\-*/=<>!&|]+)",                   // 其他操作符
+        // JavaScript关键字和控制结构
+        R"(\b(?:if|else|for|while|do|switch|case|break|continue|return|try|catch|finally|throw)\b)",
+        R"(\b(?:var|let|const)\s+\w+)",        // variable declarations
+        
+        // 运算符和表达式（分离->以便精确切割）
+        R"(->)",                               // CHTL JS箭头操作符（单独匹配）
+        R"(=>)",                               // JavaScript箭头函数
+        R"([+\-*/=<>!&|%^]+)",                 // 其他操作符
+        R"([();,\[\]])",                       // 分隔符（去除大括号，保持{{}}完整性）
     };
     return patterns;
 }
@@ -132,6 +164,9 @@ std::vector<size_t> MinimalUnit::findMinimalUnitBoundaries(const std::string& co
     const auto& patterns = (type == CodeFragmentType::CHTL_FRAGMENT) ? 
                           getChtlMinimalPatterns() : getChtlJsMinimalPatterns();
     
+    // 收集所有匹配的边界
+    std::vector<std::pair<size_t, size_t>> matches; // (start, end)
+    
     for (const auto& pattern : patterns) {
         std::regex regex(pattern);
         std::sregex_iterator iter(content.begin(), content.end(), regex);
@@ -139,16 +174,62 @@ std::vector<size_t> MinimalUnit::findMinimalUnitBoundaries(const std::string& co
         
         for (; iter != end; ++iter) {
             const auto& match = *iter;
-            boundaries.push_back(match.position());
-            boundaries.push_back(match.position() + match.length());
+            matches.emplace_back(match.position(), match.position() + match.length());
         }
     }
     
-    boundaries.push_back(content.length()); // 结束边界
+    // 按起始位置排序
+    std::sort(matches.begin(), matches.end());
     
-    // 排序并去重
-    std::sort(boundaries.begin(), boundaries.end());
-    boundaries.erase(std::unique(boundaries.begin(), boundaries.end()), boundaries.end());
+    // 应用智能组合逻辑，避免过度细分
+    std::set<size_t> addedBoundaries;
+    addedBoundaries.insert(0);
+    addedBoundaries.insert(content.length());
+    
+    for (const auto& match : matches) {
+        std::string matchStr = content.substr(match.first, match.second - match.first);
+        
+        // 组合逻辑1: CHTL JS增强选择器 + 箭头操作符
+        if (type == CodeFragmentType::CHTL_JS_FRAGMENT) {
+            // 检查是否是增强选择器
+            if (std::regex_match(matchStr, std::regex(R"(\{\{[^}]+\}\})"))) {
+                size_t nextPos = match.second;
+                // 跳过空白
+                while (nextPos < content.length() && std::isspace(content[nextPos])) {
+                    nextPos++;
+                }
+                // 检查是否紧跟->
+                if (nextPos + 1 < content.length() && content.substr(nextPos, 2) == "->") {
+                    // 组合为 {{selector}}->
+                    addedBoundaries.insert(match.first);
+                    addedBoundaries.insert(nextPos + 2);
+                    continue;
+                }
+            }
+        }
+        
+        // 组合逻辑2: 变量组语法保持完整
+        if (std::regex_match(matchStr, std::regex(R"(\w+\([^)]*\))"))) {
+            // ThemeColor(tableColor) 作为一个完整单元
+            addedBoundaries.insert(match.first);
+            addedBoundaries.insert(match.second);
+            continue;
+        }
+        
+        // 组合逻辑3: 模板和自定义块保持完整
+        if (std::regex_match(matchStr, std::regex(R"(\[(?:Template|Custom|Origin|Import)\]\s*@\w+\s+\w+)"))) {
+            addedBoundaries.insert(match.first);
+            addedBoundaries.insert(match.second);
+            continue;
+        }
+        
+        // 默认处理：添加匹配的边界（但避免重复）
+        addedBoundaries.insert(match.first);
+        addedBoundaries.insert(match.second);
+    }
+    
+    // 将set转换为vector（set已经自动排序和去重）
+    boundaries.assign(addedBoundaries.begin(), addedBoundaries.end());
     
     return boundaries;
 }
