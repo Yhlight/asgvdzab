@@ -534,6 +534,30 @@ src/main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/main.cpp.s
 .PHONY : src/main.cpp.s
 
+src/parser/AttributeSystem.o: src/parser/AttributeSystem.cpp.o
+.PHONY : src/parser/AttributeSystem.o
+
+# target to build an object file
+src/parser/AttributeSystem.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/parser/AttributeSystem.cpp.o
+.PHONY : src/parser/AttributeSystem.cpp.o
+
+src/parser/AttributeSystem.i: src/parser/AttributeSystem.cpp.i
+.PHONY : src/parser/AttributeSystem.i
+
+# target to preprocess a source file
+src/parser/AttributeSystem.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/parser/AttributeSystem.cpp.i
+.PHONY : src/parser/AttributeSystem.cpp.i
+
+src/parser/AttributeSystem.s: src/parser/AttributeSystem.cpp.s
+.PHONY : src/parser/AttributeSystem.s
+
+# target to generate assembly for a file
+src/parser/AttributeSystem.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/parser/AttributeSystem.cpp.s
+.PHONY : src/parser/AttributeSystem.cpp.s
+
 src/parser/BasicSyntaxParser.o: src/parser/BasicSyntaxParser.cpp.o
 .PHONY : src/parser/BasicSyntaxParser.o
 
@@ -640,6 +664,9 @@ help:
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
+	@echo "... src/parser/AttributeSystem.o"
+	@echo "... src/parser/AttributeSystem.i"
+	@echo "... src/parser/AttributeSystem.s"
 	@echo "... src/parser/BasicSyntaxParser.o"
 	@echo "... src/parser/BasicSyntaxParser.i"
 	@echo "... src/parser/BasicSyntaxParser.s"

@@ -23,6 +23,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/workspace/CHTLCompiler/src/lexer/CHTLToken.cpp" "CMakeFiles/chtl_compiler.dir/src/lexer/CHTLToken.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/lexer/CHTLToken.cpp.o.d"
   "/workspace/CHTLCompiler/src/lexer/GlobalMap.cpp" "CMakeFiles/chtl_compiler.dir/src/lexer/GlobalMap.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/lexer/GlobalMap.cpp.o.d"
   "/workspace/CHTLCompiler/src/main.cpp" "CMakeFiles/chtl_compiler.dir/src/main.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/main.cpp.o.d"
+  "/workspace/CHTLCompiler/src/parser/AttributeSystem.cpp" "CMakeFiles/chtl_compiler.dir/src/parser/AttributeSystem.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/parser/AttributeSystem.cpp.o.d"
   "/workspace/CHTLCompiler/src/parser/BasicSyntaxParser.cpp" "CMakeFiles/chtl_compiler.dir/src/parser/BasicSyntaxParser.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/parser/BasicSyntaxParser.cpp.o.d"
   "/workspace/CHTLCompiler/src/scanner/CHTLUnifiedScanner.cpp" "CMakeFiles/chtl_compiler.dir/src/scanner/CHTLUnifiedScanner.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/scanner/CHTLUnifiedScanner.cpp.o.d"
   "" "chtl_compiler" "gcc" "CMakeFiles/chtl_compiler.dir/link.d"

@@ -63,6 +63,7 @@ set(MODULE_SOURCES
 # 确保基础语法解析器源文件被包含
 set(BASIC_SYNTAX_SOURCES
     src/parser/BasicSyntaxParser.cpp
+    src/parser/AttributeSystem.cpp
 )
 
 # 创建可执行文件
