@@ -184,10 +184,24 @@ CMakeFiles/parser_generator_integration_tests.dir/src/dispatcher/compiler_dispat
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/parser_generator_integration_tests.dir/src/dispatcher/compiler_dispatcher.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/dispatcher/compiler_dispatcher.cpp -o CMakeFiles/parser_generator_integration_tests.dir/src/dispatcher/compiler_dispatcher.cpp.s
 
+CMakeFiles/parser_generator_integration_tests.dir/src/import/enhanced_import_manager.cpp.o: CMakeFiles/parser_generator_integration_tests.dir/flags.make
+CMakeFiles/parser_generator_integration_tests.dir/src/import/enhanced_import_manager.cpp.o: /workspace/src/import/enhanced_import_manager.cpp
+CMakeFiles/parser_generator_integration_tests.dir/src/import/enhanced_import_manager.cpp.o: CMakeFiles/parser_generator_integration_tests.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/parser_generator_integration_tests.dir/src/import/enhanced_import_manager.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/parser_generator_integration_tests.dir/src/import/enhanced_import_manager.cpp.o -MF CMakeFiles/parser_generator_integration_tests.dir/src/import/enhanced_import_manager.cpp.o.d -o CMakeFiles/parser_generator_integration_tests.dir/src/import/enhanced_import_manager.cpp.o -c /workspace/src/import/enhanced_import_manager.cpp
+
+CMakeFiles/parser_generator_integration_tests.dir/src/import/enhanced_import_manager.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/parser_generator_integration_tests.dir/src/import/enhanced_import_manager.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/import/enhanced_import_manager.cpp > CMakeFiles/parser_generator_integration_tests.dir/src/import/enhanced_import_manager.cpp.i
+
+CMakeFiles/parser_generator_integration_tests.dir/src/import/enhanced_import_manager.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/parser_generator_integration_tests.dir/src/import/enhanced_import_manager.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/import/enhanced_import_manager.cpp -o CMakeFiles/parser_generator_integration_tests.dir/src/import/enhanced_import_manager.cpp.s
+
 CMakeFiles/parser_generator_integration_tests.dir/src/lexer/chtl_js_tokens.cpp.o: CMakeFiles/parser_generator_integration_tests.dir/flags.make
 CMakeFiles/parser_generator_integration_tests.dir/src/lexer/chtl_js_tokens.cpp.o: /workspace/src/lexer/chtl_js_tokens.cpp
 CMakeFiles/parser_generator_integration_tests.dir/src/lexer/chtl_js_tokens.cpp.o: CMakeFiles/parser_generator_integration_tests.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/parser_generator_integration_tests.dir/src/lexer/chtl_js_tokens.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/parser_generator_integration_tests.dir/src/lexer/chtl_js_tokens.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/parser_generator_integration_tests.dir/src/lexer/chtl_js_tokens.cpp.o -MF CMakeFiles/parser_generator_integration_tests.dir/src/lexer/chtl_js_tokens.cpp.o.d -o CMakeFiles/parser_generator_integration_tests.dir/src/lexer/chtl_js_tokens.cpp.o -c /workspace/src/lexer/chtl_js_tokens.cpp
 
 CMakeFiles/parser_generator_integration_tests.dir/src/lexer/chtl_js_tokens.cpp.i: cmake_force
@@ -201,7 +215,7 @@ CMakeFiles/parser_generator_integration_tests.dir/src/lexer/chtl_js_tokens.cpp.s
 CMakeFiles/parser_generator_integration_tests.dir/src/lexer/chtl_tokens.cpp.o: CMakeFiles/parser_generator_integration_tests.dir/flags.make
 CMakeFiles/parser_generator_integration_tests.dir/src/lexer/chtl_tokens.cpp.o: /workspace/src/lexer/chtl_tokens.cpp
 CMakeFiles/parser_generator_integration_tests.dir/src/lexer/chtl_tokens.cpp.o: CMakeFiles/parser_generator_integration_tests.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/parser_generator_integration_tests.dir/src/lexer/chtl_tokens.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/parser_generator_integration_tests.dir/src/lexer/chtl_tokens.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/parser_generator_integration_tests.dir/src/lexer/chtl_tokens.cpp.o -MF CMakeFiles/parser_generator_integration_tests.dir/src/lexer/chtl_tokens.cpp.o.d -o CMakeFiles/parser_generator_integration_tests.dir/src/lexer/chtl_tokens.cpp.o -c /workspace/src/lexer/chtl_tokens.cpp
 
 CMakeFiles/parser_generator_integration_tests.dir/src/lexer/chtl_tokens.cpp.i: cmake_force
@@ -215,7 +229,7 @@ CMakeFiles/parser_generator_integration_tests.dir/src/lexer/chtl_tokens.cpp.s: c
 CMakeFiles/parser_generator_integration_tests.dir/src/lexer/global_map.cpp.o: CMakeFiles/parser_generator_integration_tests.dir/flags.make
 CMakeFiles/parser_generator_integration_tests.dir/src/lexer/global_map.cpp.o: /workspace/src/lexer/global_map.cpp
 CMakeFiles/parser_generator_integration_tests.dir/src/lexer/global_map.cpp.o: CMakeFiles/parser_generator_integration_tests.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/parser_generator_integration_tests.dir/src/lexer/global_map.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/parser_generator_integration_tests.dir/src/lexer/global_map.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/parser_generator_integration_tests.dir/src/lexer/global_map.cpp.o -MF CMakeFiles/parser_generator_integration_tests.dir/src/lexer/global_map.cpp.o.d -o CMakeFiles/parser_generator_integration_tests.dir/src/lexer/global_map.cpp.o -c /workspace/src/lexer/global_map.cpp
 
 CMakeFiles/parser_generator_integration_tests.dir/src/lexer/global_map.cpp.i: cmake_force
@@ -229,7 +243,7 @@ CMakeFiles/parser_generator_integration_tests.dir/src/lexer/global_map.cpp.s: cm
 CMakeFiles/parser_generator_integration_tests.dir/src/lexer/lexer_state.cpp.o: CMakeFiles/parser_generator_integration_tests.dir/flags.make
 CMakeFiles/parser_generator_integration_tests.dir/src/lexer/lexer_state.cpp.o: /workspace/src/lexer/lexer_state.cpp
 CMakeFiles/parser_generator_integration_tests.dir/src/lexer/lexer_state.cpp.o: CMakeFiles/parser_generator_integration_tests.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/parser_generator_integration_tests.dir/src/lexer/lexer_state.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/parser_generator_integration_tests.dir/src/lexer/lexer_state.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/parser_generator_integration_tests.dir/src/lexer/lexer_state.cpp.o -MF CMakeFiles/parser_generator_integration_tests.dir/src/lexer/lexer_state.cpp.o.d -o CMakeFiles/parser_generator_integration_tests.dir/src/lexer/lexer_state.cpp.o -c /workspace/src/lexer/lexer_state.cpp
 
 CMakeFiles/parser_generator_integration_tests.dir/src/lexer/lexer_state.cpp.i: cmake_force
@@ -240,10 +254,24 @@ CMakeFiles/parser_generator_integration_tests.dir/src/lexer/lexer_state.cpp.s: c
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/parser_generator_integration_tests.dir/src/lexer/lexer_state.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/lexer/lexer_state.cpp -o CMakeFiles/parser_generator_integration_tests.dir/src/lexer/lexer_state.cpp.s
 
+CMakeFiles/parser_generator_integration_tests.dir/src/namespace/enhanced_namespace_manager.cpp.o: CMakeFiles/parser_generator_integration_tests.dir/flags.make
+CMakeFiles/parser_generator_integration_tests.dir/src/namespace/enhanced_namespace_manager.cpp.o: /workspace/src/namespace/enhanced_namespace_manager.cpp
+CMakeFiles/parser_generator_integration_tests.dir/src/namespace/enhanced_namespace_manager.cpp.o: CMakeFiles/parser_generator_integration_tests.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/parser_generator_integration_tests.dir/src/namespace/enhanced_namespace_manager.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/parser_generator_integration_tests.dir/src/namespace/enhanced_namespace_manager.cpp.o -MF CMakeFiles/parser_generator_integration_tests.dir/src/namespace/enhanced_namespace_manager.cpp.o.d -o CMakeFiles/parser_generator_integration_tests.dir/src/namespace/enhanced_namespace_manager.cpp.o -c /workspace/src/namespace/enhanced_namespace_manager.cpp
+
+CMakeFiles/parser_generator_integration_tests.dir/src/namespace/enhanced_namespace_manager.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/parser_generator_integration_tests.dir/src/namespace/enhanced_namespace_manager.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/namespace/enhanced_namespace_manager.cpp > CMakeFiles/parser_generator_integration_tests.dir/src/namespace/enhanced_namespace_manager.cpp.i
+
+CMakeFiles/parser_generator_integration_tests.dir/src/namespace/enhanced_namespace_manager.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/parser_generator_integration_tests.dir/src/namespace/enhanced_namespace_manager.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/namespace/enhanced_namespace_manager.cpp -o CMakeFiles/parser_generator_integration_tests.dir/src/namespace/enhanced_namespace_manager.cpp.s
+
 CMakeFiles/parser_generator_integration_tests.dir/src/scanner/slice_scanner.cpp.o: CMakeFiles/parser_generator_integration_tests.dir/flags.make
 CMakeFiles/parser_generator_integration_tests.dir/src/scanner/slice_scanner.cpp.o: /workspace/src/scanner/slice_scanner.cpp
 CMakeFiles/parser_generator_integration_tests.dir/src/scanner/slice_scanner.cpp.o: CMakeFiles/parser_generator_integration_tests.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/parser_generator_integration_tests.dir/src/scanner/slice_scanner.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/parser_generator_integration_tests.dir/src/scanner/slice_scanner.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/parser_generator_integration_tests.dir/src/scanner/slice_scanner.cpp.o -MF CMakeFiles/parser_generator_integration_tests.dir/src/scanner/slice_scanner.cpp.o.d -o CMakeFiles/parser_generator_integration_tests.dir/src/scanner/slice_scanner.cpp.o -c /workspace/src/scanner/slice_scanner.cpp
 
 CMakeFiles/parser_generator_integration_tests.dir/src/scanner/slice_scanner.cpp.i: cmake_force
@@ -257,7 +285,7 @@ CMakeFiles/parser_generator_integration_tests.dir/src/scanner/slice_scanner.cpp.
 CMakeFiles/parser_generator_integration_tests.dir/src/scanner/unified_scanner.cpp.o: CMakeFiles/parser_generator_integration_tests.dir/flags.make
 CMakeFiles/parser_generator_integration_tests.dir/src/scanner/unified_scanner.cpp.o: /workspace/src/scanner/unified_scanner.cpp
 CMakeFiles/parser_generator_integration_tests.dir/src/scanner/unified_scanner.cpp.o: CMakeFiles/parser_generator_integration_tests.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/parser_generator_integration_tests.dir/src/scanner/unified_scanner.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/parser_generator_integration_tests.dir/src/scanner/unified_scanner.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/parser_generator_integration_tests.dir/src/scanner/unified_scanner.cpp.o -MF CMakeFiles/parser_generator_integration_tests.dir/src/scanner/unified_scanner.cpp.o.d -o CMakeFiles/parser_generator_integration_tests.dir/src/scanner/unified_scanner.cpp.o -c /workspace/src/scanner/unified_scanner.cpp
 
 CMakeFiles/parser_generator_integration_tests.dir/src/scanner/unified_scanner.cpp.i: cmake_force
@@ -278,10 +306,12 @@ parser_generator_integration_tests_OBJECTS = \
 "CMakeFiles/parser_generator_integration_tests.dir/src/common/types.cpp.o" \
 "CMakeFiles/parser_generator_integration_tests.dir/src/compilers/chtl_compiler.cpp.o" \
 "CMakeFiles/parser_generator_integration_tests.dir/src/dispatcher/compiler_dispatcher.cpp.o" \
+"CMakeFiles/parser_generator_integration_tests.dir/src/import/enhanced_import_manager.cpp.o" \
 "CMakeFiles/parser_generator_integration_tests.dir/src/lexer/chtl_js_tokens.cpp.o" \
 "CMakeFiles/parser_generator_integration_tests.dir/src/lexer/chtl_tokens.cpp.o" \
 "CMakeFiles/parser_generator_integration_tests.dir/src/lexer/global_map.cpp.o" \
 "CMakeFiles/parser_generator_integration_tests.dir/src/lexer/lexer_state.cpp.o" \
+"CMakeFiles/parser_generator_integration_tests.dir/src/namespace/enhanced_namespace_manager.cpp.o" \
 "CMakeFiles/parser_generator_integration_tests.dir/src/scanner/slice_scanner.cpp.o" \
 "CMakeFiles/parser_generator_integration_tests.dir/src/scanner/unified_scanner.cpp.o"
 
@@ -296,16 +326,18 @@ bin/parser_generator_integration_tests: CMakeFiles/parser_generator_integration_
 bin/parser_generator_integration_tests: CMakeFiles/parser_generator_integration_tests.dir/src/common/types.cpp.o
 bin/parser_generator_integration_tests: CMakeFiles/parser_generator_integration_tests.dir/src/compilers/chtl_compiler.cpp.o
 bin/parser_generator_integration_tests: CMakeFiles/parser_generator_integration_tests.dir/src/dispatcher/compiler_dispatcher.cpp.o
+bin/parser_generator_integration_tests: CMakeFiles/parser_generator_integration_tests.dir/src/import/enhanced_import_manager.cpp.o
 bin/parser_generator_integration_tests: CMakeFiles/parser_generator_integration_tests.dir/src/lexer/chtl_js_tokens.cpp.o
 bin/parser_generator_integration_tests: CMakeFiles/parser_generator_integration_tests.dir/src/lexer/chtl_tokens.cpp.o
 bin/parser_generator_integration_tests: CMakeFiles/parser_generator_integration_tests.dir/src/lexer/global_map.cpp.o
 bin/parser_generator_integration_tests: CMakeFiles/parser_generator_integration_tests.dir/src/lexer/lexer_state.cpp.o
+bin/parser_generator_integration_tests: CMakeFiles/parser_generator_integration_tests.dir/src/namespace/enhanced_namespace_manager.cpp.o
 bin/parser_generator_integration_tests: CMakeFiles/parser_generator_integration_tests.dir/src/scanner/slice_scanner.cpp.o
 bin/parser_generator_integration_tests: CMakeFiles/parser_generator_integration_tests.dir/src/scanner/unified_scanner.cpp.o
 bin/parser_generator_integration_tests: CMakeFiles/parser_generator_integration_tests.dir/build.make
 bin/parser_generator_integration_tests: CMakeFiles/parser_generator_integration_tests.dir/compiler_depend.ts
 bin/parser_generator_integration_tests: CMakeFiles/parser_generator_integration_tests.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Linking CXX executable bin/parser_generator_integration_tests"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Linking CXX executable bin/parser_generator_integration_tests"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/parser_generator_integration_tests.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

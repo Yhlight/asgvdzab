@@ -292,6 +292,32 @@ raii_state_management_integration_tests/fast:
 .PHONY : raii_state_management_integration_tests/fast
 
 #=============================================================================
+# Target rules for targets named enhanced_import_namespace_demo
+
+# Build rule for target.
+enhanced_import_namespace_demo: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 enhanced_import_namespace_demo
+.PHONY : enhanced_import_namespace_demo
+
+# fast build rule for target.
+enhanced_import_namespace_demo/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/enhanced_import_namespace_demo.dir/build.make CMakeFiles/enhanced_import_namespace_demo.dir/build
+.PHONY : enhanced_import_namespace_demo/fast
+
+#=============================================================================
+# Target rules for targets named quick_import_namespace_test
+
+# Build rule for target.
+quick_import_namespace_test: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 quick_import_namespace_test
+.PHONY : quick_import_namespace_test
+
+# fast build rule for target.
+quick_import_namespace_test/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/quick_import_namespace_test.dir/build.make CMakeFiles/quick_import_namespace_test.dir/build
+.PHONY : quick_import_namespace_test/fast
+
+#=============================================================================
 # Target rules for targets named raii_state_management_demo
 
 # Build rule for target.
@@ -610,6 +636,63 @@ src/generators/chtl_generator.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/generators/chtl_generator.cpp.s
 .PHONY : src/generators/chtl_generator.cpp.s
 
+src/import/enhanced_import_manager.o: src/import/enhanced_import_manager.cpp.o
+.PHONY : src/import/enhanced_import_manager.o
+
+# target to build an object file
+src/import/enhanced_import_manager.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/import/enhanced_import_manager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/import/enhanced_import_manager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/import/enhanced_import_manager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/import/enhanced_import_manager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/import/enhanced_import_manager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/import/enhanced_import_manager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/import/enhanced_import_manager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/import/enhanced_import_manager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/import/enhanced_import_manager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/import/enhanced_import_manager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/enhanced_import_namespace_demo.dir/build.make CMakeFiles/enhanced_import_namespace_demo.dir/src/import/enhanced_import_manager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/quick_import_namespace_test.dir/build.make CMakeFiles/quick_import_namespace_test.dir/src/import/enhanced_import_manager.cpp.o
+.PHONY : src/import/enhanced_import_manager.cpp.o
+
+src/import/enhanced_import_manager.i: src/import/enhanced_import_manager.cpp.i
+.PHONY : src/import/enhanced_import_manager.i
+
+# target to preprocess a source file
+src/import/enhanced_import_manager.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/import/enhanced_import_manager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/import/enhanced_import_manager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/import/enhanced_import_manager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/import/enhanced_import_manager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/import/enhanced_import_manager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/import/enhanced_import_manager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/import/enhanced_import_manager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/import/enhanced_import_manager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/import/enhanced_import_manager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/import/enhanced_import_manager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/enhanced_import_namespace_demo.dir/build.make CMakeFiles/enhanced_import_namespace_demo.dir/src/import/enhanced_import_manager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/quick_import_namespace_test.dir/build.make CMakeFiles/quick_import_namespace_test.dir/src/import/enhanced_import_manager.cpp.i
+.PHONY : src/import/enhanced_import_manager.cpp.i
+
+src/import/enhanced_import_manager.s: src/import/enhanced_import_manager.cpp.s
+.PHONY : src/import/enhanced_import_manager.s
+
+# target to generate assembly for a file
+src/import/enhanced_import_manager.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/import/enhanced_import_manager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/import/enhanced_import_manager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/import/enhanced_import_manager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/import/enhanced_import_manager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/import/enhanced_import_manager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/import/enhanced_import_manager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/import/enhanced_import_manager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/import/enhanced_import_manager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/import/enhanced_import_manager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/import/enhanced_import_manager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/enhanced_import_namespace_demo.dir/build.make CMakeFiles/enhanced_import_namespace_demo.dir/src/import/enhanced_import_manager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/quick_import_namespace_test.dir/build.make CMakeFiles/quick_import_namespace_test.dir/src/import/enhanced_import_manager.cpp.s
+.PHONY : src/import/enhanced_import_manager.cpp.s
+
 src/lexer/chtl_js_tokens.o: src/lexer/chtl_js_tokens.cpp.o
 .PHONY : src/lexer/chtl_js_tokens.o
 
@@ -837,6 +920,63 @@ src/main.s: src/main.cpp.s
 src/main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/main.cpp.s
 .PHONY : src/main.cpp.s
+
+src/namespace/enhanced_namespace_manager.o: src/namespace/enhanced_namespace_manager.cpp.o
+.PHONY : src/namespace/enhanced_namespace_manager.o
+
+# target to build an object file
+src/namespace/enhanced_namespace_manager.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/namespace/enhanced_namespace_manager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/namespace/enhanced_namespace_manager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/namespace/enhanced_namespace_manager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/namespace/enhanced_namespace_manager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/namespace/enhanced_namespace_manager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/namespace/enhanced_namespace_manager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/namespace/enhanced_namespace_manager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/namespace/enhanced_namespace_manager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/namespace/enhanced_namespace_manager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/namespace/enhanced_namespace_manager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/enhanced_import_namespace_demo.dir/build.make CMakeFiles/enhanced_import_namespace_demo.dir/src/namespace/enhanced_namespace_manager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/quick_import_namespace_test.dir/build.make CMakeFiles/quick_import_namespace_test.dir/src/namespace/enhanced_namespace_manager.cpp.o
+.PHONY : src/namespace/enhanced_namespace_manager.cpp.o
+
+src/namespace/enhanced_namespace_manager.i: src/namespace/enhanced_namespace_manager.cpp.i
+.PHONY : src/namespace/enhanced_namespace_manager.i
+
+# target to preprocess a source file
+src/namespace/enhanced_namespace_manager.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/namespace/enhanced_namespace_manager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/namespace/enhanced_namespace_manager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/namespace/enhanced_namespace_manager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/namespace/enhanced_namespace_manager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/namespace/enhanced_namespace_manager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/namespace/enhanced_namespace_manager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/namespace/enhanced_namespace_manager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/namespace/enhanced_namespace_manager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/namespace/enhanced_namespace_manager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/namespace/enhanced_namespace_manager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/enhanced_import_namespace_demo.dir/build.make CMakeFiles/enhanced_import_namespace_demo.dir/src/namespace/enhanced_namespace_manager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/quick_import_namespace_test.dir/build.make CMakeFiles/quick_import_namespace_test.dir/src/namespace/enhanced_namespace_manager.cpp.i
+.PHONY : src/namespace/enhanced_namespace_manager.cpp.i
+
+src/namespace/enhanced_namespace_manager.s: src/namespace/enhanced_namespace_manager.cpp.s
+.PHONY : src/namespace/enhanced_namespace_manager.s
+
+# target to generate assembly for a file
+src/namespace/enhanced_namespace_manager.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/namespace/enhanced_namespace_manager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/namespace/enhanced_namespace_manager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/namespace/enhanced_namespace_manager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/namespace/enhanced_namespace_manager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/namespace/enhanced_namespace_manager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/namespace/enhanced_namespace_manager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/namespace/enhanced_namespace_manager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/namespace/enhanced_namespace_manager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/namespace/enhanced_namespace_manager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/namespace/enhanced_namespace_manager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/enhanced_import_namespace_demo.dir/build.make CMakeFiles/enhanced_import_namespace_demo.dir/src/namespace/enhanced_namespace_manager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/quick_import_namespace_test.dir/build.make CMakeFiles/quick_import_namespace_test.dir/src/namespace/enhanced_namespace_manager.cpp.s
+.PHONY : src/namespace/enhanced_namespace_manager.cpp.s
 
 src/parsers/chtl_parser.o: src/parsers/chtl_parser.cpp.o
 .PHONY : src/parsers/chtl_parser.o
@@ -1123,6 +1263,33 @@ tests/comprehensive_lexer_test.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/tests/comprehensive_lexer_test.cpp.s
 .PHONY : tests/comprehensive_lexer_test.cpp.s
 
+tests/enhanced_import_namespace_test.o: tests/enhanced_import_namespace_test.cpp.o
+.PHONY : tests/enhanced_import_namespace_test.o
+
+# target to build an object file
+tests/enhanced_import_namespace_test.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/enhanced_import_namespace_test.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/enhanced_import_namespace_demo.dir/build.make CMakeFiles/enhanced_import_namespace_demo.dir/tests/enhanced_import_namespace_test.cpp.o
+.PHONY : tests/enhanced_import_namespace_test.cpp.o
+
+tests/enhanced_import_namespace_test.i: tests/enhanced_import_namespace_test.cpp.i
+.PHONY : tests/enhanced_import_namespace_test.i
+
+# target to preprocess a source file
+tests/enhanced_import_namespace_test.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/enhanced_import_namespace_test.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/enhanced_import_namespace_demo.dir/build.make CMakeFiles/enhanced_import_namespace_demo.dir/tests/enhanced_import_namespace_test.cpp.i
+.PHONY : tests/enhanced_import_namespace_test.cpp.i
+
+tests/enhanced_import_namespace_test.s: tests/enhanced_import_namespace_test.cpp.s
+.PHONY : tests/enhanced_import_namespace_test.s
+
+# target to generate assembly for a file
+tests/enhanced_import_namespace_test.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/enhanced_import_namespace_test.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/enhanced_import_namespace_demo.dir/build.make CMakeFiles/enhanced_import_namespace_demo.dir/tests/enhanced_import_namespace_test.cpp.s
+.PHONY : tests/enhanced_import_namespace_test.cpp.s
+
 tests/independent_compiler_architecture_test.o: tests/independent_compiler_architecture_test.cpp.o
 .PHONY : tests/independent_compiler_architecture_test.o
 
@@ -1173,6 +1340,33 @@ tests/parser_generator_integration_test.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/parser_generator_integration_test.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/tests/parser_generator_integration_test.cpp.s
 .PHONY : tests/parser_generator_integration_test.cpp.s
+
+tests/quick_import_namespace_test.o: tests/quick_import_namespace_test.cpp.o
+.PHONY : tests/quick_import_namespace_test.o
+
+# target to build an object file
+tests/quick_import_namespace_test.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/quick_import_namespace_test.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/quick_import_namespace_test.dir/build.make CMakeFiles/quick_import_namespace_test.dir/tests/quick_import_namespace_test.cpp.o
+.PHONY : tests/quick_import_namespace_test.cpp.o
+
+tests/quick_import_namespace_test.i: tests/quick_import_namespace_test.cpp.i
+.PHONY : tests/quick_import_namespace_test.i
+
+# target to preprocess a source file
+tests/quick_import_namespace_test.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/quick_import_namespace_test.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/quick_import_namespace_test.dir/build.make CMakeFiles/quick_import_namespace_test.dir/tests/quick_import_namespace_test.cpp.i
+.PHONY : tests/quick_import_namespace_test.cpp.i
+
+tests/quick_import_namespace_test.s: tests/quick_import_namespace_test.cpp.s
+.PHONY : tests/quick_import_namespace_test.s
+
+# target to generate assembly for a file
+tests/quick_import_namespace_test.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/quick_import_namespace_test.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/quick_import_namespace_test.dir/build.make CMakeFiles/quick_import_namespace_test.dir/tests/quick_import_namespace_test.cpp.s
+.PHONY : tests/quick_import_namespace_test.cpp.s
 
 tests/raii_state_management_demo.o: tests/raii_state_management_demo.cpp.o
 .PHONY : tests/raii_state_management_demo.o
@@ -1300,7 +1494,9 @@ help:
 	@echo "... chtl_syntax_validation_tests"
 	@echo "... chtl_tests"
 	@echo "... comprehensive_lexer_tests"
+	@echo "... enhanced_import_namespace_demo"
 	@echo "... parser_generator_integration_tests"
+	@echo "... quick_import_namespace_test"
 	@echo "... raii_state_management_demo"
 	@echo "... raii_state_management_integration_tests"
 	@echo "... slice_scanner_tests"
@@ -1323,6 +1519,9 @@ help:
 	@echo "... src/generators/chtl_generator.o"
 	@echo "... src/generators/chtl_generator.i"
 	@echo "... src/generators/chtl_generator.s"
+	@echo "... src/import/enhanced_import_manager.o"
+	@echo "... src/import/enhanced_import_manager.i"
+	@echo "... src/import/enhanced_import_manager.s"
 	@echo "... src/lexer/chtl_js_tokens.o"
 	@echo "... src/lexer/chtl_js_tokens.i"
 	@echo "... src/lexer/chtl_js_tokens.s"
@@ -1338,6 +1537,9 @@ help:
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
+	@echo "... src/namespace/enhanced_namespace_manager.o"
+	@echo "... src/namespace/enhanced_namespace_manager.i"
+	@echo "... src/namespace/enhanced_namespace_manager.s"
 	@echo "... src/parsers/chtl_parser.o"
 	@echo "... src/parsers/chtl_parser.i"
 	@echo "... src/parsers/chtl_parser.s"
@@ -1362,12 +1564,18 @@ help:
 	@echo "... tests/comprehensive_lexer_test.o"
 	@echo "... tests/comprehensive_lexer_test.i"
 	@echo "... tests/comprehensive_lexer_test.s"
+	@echo "... tests/enhanced_import_namespace_test.o"
+	@echo "... tests/enhanced_import_namespace_test.i"
+	@echo "... tests/enhanced_import_namespace_test.s"
 	@echo "... tests/independent_compiler_architecture_test.o"
 	@echo "... tests/independent_compiler_architecture_test.i"
 	@echo "... tests/independent_compiler_architecture_test.s"
 	@echo "... tests/parser_generator_integration_test.o"
 	@echo "... tests/parser_generator_integration_test.i"
 	@echo "... tests/parser_generator_integration_test.s"
+	@echo "... tests/quick_import_namespace_test.o"
+	@echo "... tests/quick_import_namespace_test.i"
+	@echo "... tests/quick_import_namespace_test.s"
 	@echo "... tests/raii_state_management_demo.o"
 	@echo "... tests/raii_state_management_demo.i"
 	@echo "... tests/raii_state_management_demo.s"

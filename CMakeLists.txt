@@ -107,6 +107,20 @@ add_executable(raii_state_management_integration_tests
     ${TEST_LIB_SOURCES}
 )
 
+# 创建增强Import和命名空间测试程序（不依赖gtest）
+add_executable(enhanced_import_namespace_demo 
+    tests/enhanced_import_namespace_test.cpp
+    src/import/enhanced_import_manager.cpp
+    src/namespace/enhanced_namespace_manager.cpp
+)
+
+# 创建快速验证程序
+add_executable(quick_import_namespace_test 
+    tests/quick_import_namespace_test.cpp
+    src/import/enhanced_import_manager.cpp
+    src/namespace/enhanced_namespace_manager.cpp
+)
+
 # 创建RAII状态管理演示程序（不依赖gtest）
 add_executable(raii_state_management_demo 
     tests/raii_state_management_demo.cpp
