@@ -76,37 +76,77 @@ private:
     std::string compileChtlToHtml(const std::string& chtlCode) {
         std::string result;
         
-        // 检查是否是模板定义
+        // 1. 配置组处理 (最高优先级)
+        if (isConfigurationBlock(chtlCode)) {
+            return compileConfigurationBlock(chtlCode);
+        }
+        
+        // 2. 命名空间处理
+        if (isNamespaceBlock(chtlCode)) {
+            return compileNamespaceBlock(chtlCode);
+        }
+        
+        // 3. 导入系统处理
+        if (isImportStatement(chtlCode)) {
+            return compileImportStatement(chtlCode);
+        }
+        
+        // 4. 模板定义处理
         if (isTemplateDefinition(chtlCode)) {
             return compileTemplateDefinition(chtlCode);
         }
         
-        // 检查是否是原始嵌入
+        // 5. 自定义定义处理
+        if (isCustomDefinition(chtlCode)) {
+            return compileCustomDefinition(chtlCode);
+        }
+        
+        // 6. 原始嵌入处理
         if (isOriginEmbedding(chtlCode)) {
             return compileOriginEmbedding(chtlCode);
         }
         
-        // 检查是否是HTML元素
+        // 7. 约束系统处理
+        if (isConstraintStatement(chtlCode)) {
+            return compileConstraintStatement(chtlCode);
+        }
+        
+        // 8. 变量组使用处理
+        if (isVariableGroupUsage(chtlCode)) {
+            return compileVariableGroupUsage(chtlCode);
+        }
+        
+        // 9. 模板/自定义使用处理
+        if (isTemplateUsage(chtlCode)) {
+            return compileTemplateUsage(chtlCode);
+        }
+        
+        // 10. HTML元素处理
         if (isHtmlElement(chtlCode)) {
             return compileHtmlElement(chtlCode);
         }
         
-        // 检查是否是文本节点
+        // 11. 文本节点处理
         if (isTextNode(chtlCode)) {
             return compileTextNode(chtlCode);
         }
         
-        // 检查是否是属性
+        // 12. 属性处理
         if (isAttribute(chtlCode)) {
             return compileAttribute(chtlCode);
         }
         
-        // 处理模板变量引用
-        if (isTemplateVariable(chtlCode)) {
-            return compileTemplateVariable(chtlCode);
+        // 13. 注释处理
+        if (isComment(chtlCode)) {
+            return compileComment(chtlCode);
         }
         
-        // 默认处理：去除多余空白，返回内容
+        // 14. 局部样式块处理
+        if (isLocalStyleBlock(chtlCode)) {
+            return compileLocalStyleBlock(chtlCode);
+        }
+        
+        // 15. 默认处理：去除多余空白，返回内容
         return trimAndClean(chtlCode);
     }
     
