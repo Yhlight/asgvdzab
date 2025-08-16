@@ -28,6 +28,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/workspace/src/namespace/enhanced_namespace_manager.cpp" "CMakeFiles/comprehensive_lexer_tests.dir/src/namespace/enhanced_namespace_manager.cpp.o" "gcc" "CMakeFiles/comprehensive_lexer_tests.dir/src/namespace/enhanced_namespace_manager.cpp.o.d"
   "/workspace/src/parsers/chtl_basic_parser.cpp" "CMakeFiles/comprehensive_lexer_tests.dir/src/parsers/chtl_basic_parser.cpp.o" "gcc" "CMakeFiles/comprehensive_lexer_tests.dir/src/parsers/chtl_basic_parser.cpp.o.d"
   "/workspace/src/parsers/chtl_custom_parser.cpp" "CMakeFiles/comprehensive_lexer_tests.dir/src/parsers/chtl_custom_parser.cpp.o" "gcc" "CMakeFiles/comprehensive_lexer_tests.dir/src/parsers/chtl_custom_parser.cpp.o.d"
+  "/workspace/src/parsers/chtl_origin_parser.cpp" "CMakeFiles/comprehensive_lexer_tests.dir/src/parsers/chtl_origin_parser.cpp.o" "gcc" "CMakeFiles/comprehensive_lexer_tests.dir/src/parsers/chtl_origin_parser.cpp.o.d"
   "/workspace/src/parsers/chtl_parser.cpp" "CMakeFiles/comprehensive_lexer_tests.dir/src/parsers/chtl_parser.cpp.o" "gcc" "CMakeFiles/comprehensive_lexer_tests.dir/src/parsers/chtl_parser.cpp.o.d"
   "/workspace/src/parsers/chtl_style_parser.cpp" "CMakeFiles/comprehensive_lexer_tests.dir/src/parsers/chtl_style_parser.cpp.o" "gcc" "CMakeFiles/comprehensive_lexer_tests.dir/src/parsers/chtl_style_parser.cpp.o.d"
   "/workspace/src/parsers/chtl_template_parser.cpp" "CMakeFiles/comprehensive_lexer_tests.dir/src/parsers/chtl_template_parser.cpp.o" "gcc" "CMakeFiles/comprehensive_lexer_tests.dir/src/parsers/chtl_template_parser.cpp.o.d"

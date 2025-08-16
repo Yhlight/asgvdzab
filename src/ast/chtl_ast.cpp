@@ -417,6 +417,25 @@ CHTLASTNodePtr OriginDeclarationNode::clone() const {
     return cloned;
 }
 
+// OriginEmbedNode 实现
+std::string OriginEmbedNode::toString() const {
+    std::string result = "OriginEmbedNode(" + originType;
+    if (!name.empty()) {
+        result += " " + name;
+    }
+    result += ", content length: " + std::to_string(content.length()) + ")";
+    return result;
+}
+
+CHTLASTNodePtr OriginEmbedNode::clone() const {
+    auto cloned = std::make_shared<OriginEmbedNode>(originType, content, position);
+    cloned->name = name;
+    for (const auto& child : children) {
+        cloned->addChild(child->clone());
+    }
+    return cloned;
+}
+
 // ExceptStatementNode 实现
 std::string ExceptStatementNode::toString() const {
     return "ExceptStatementNode(except " + constraint + ";)";

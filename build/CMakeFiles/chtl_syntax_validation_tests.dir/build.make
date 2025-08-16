@@ -366,10 +366,24 @@ CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_custom_parser.cpp.s
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_custom_parser.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/parsers/chtl_custom_parser.cpp -o CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_custom_parser.cpp.s
 
+CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_origin_parser.cpp.o: CMakeFiles/chtl_syntax_validation_tests.dir/flags.make
+CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_origin_parser.cpp.o: /workspace/src/parsers/chtl_origin_parser.cpp
+CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_origin_parser.cpp.o: CMakeFiles/chtl_syntax_validation_tests.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building CXX object CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_origin_parser.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_origin_parser.cpp.o -MF CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_origin_parser.cpp.o.d -o CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_origin_parser.cpp.o -c /workspace/src/parsers/chtl_origin_parser.cpp
+
+CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_origin_parser.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_origin_parser.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/parsers/chtl_origin_parser.cpp > CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_origin_parser.cpp.i
+
+CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_origin_parser.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_origin_parser.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/parsers/chtl_origin_parser.cpp -o CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_origin_parser.cpp.s
+
 CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_parser.cpp.o: CMakeFiles/chtl_syntax_validation_tests.dir/flags.make
 CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_parser.cpp.o: /workspace/src/parsers/chtl_parser.cpp
 CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_parser.cpp.o: CMakeFiles/chtl_syntax_validation_tests.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building CXX object CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_parser.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building CXX object CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_parser.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_parser.cpp.o -MF CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_parser.cpp.o.d -o CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_parser.cpp.o -c /workspace/src/parsers/chtl_parser.cpp
 
 CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_parser.cpp.i: cmake_force
@@ -383,7 +397,7 @@ CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_parser.cpp.s: cmake
 CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_style_parser.cpp.o: CMakeFiles/chtl_syntax_validation_tests.dir/flags.make
 CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_style_parser.cpp.o: /workspace/src/parsers/chtl_style_parser.cpp
 CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_style_parser.cpp.o: CMakeFiles/chtl_syntax_validation_tests.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building CXX object CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_style_parser.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building CXX object CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_style_parser.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_style_parser.cpp.o -MF CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_style_parser.cpp.o.d -o CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_style_parser.cpp.o -c /workspace/src/parsers/chtl_style_parser.cpp
 
 CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_style_parser.cpp.i: cmake_force
@@ -397,7 +411,7 @@ CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_style_parser.cpp.s:
 CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_template_parser.cpp.o: CMakeFiles/chtl_syntax_validation_tests.dir/flags.make
 CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_template_parser.cpp.o: /workspace/src/parsers/chtl_template_parser.cpp
 CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_template_parser.cpp.o: CMakeFiles/chtl_syntax_validation_tests.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building CXX object CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_template_parser.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building CXX object CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_template_parser.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_template_parser.cpp.o -MF CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_template_parser.cpp.o.d -o CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_template_parser.cpp.o -c /workspace/src/parsers/chtl_template_parser.cpp
 
 CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_template_parser.cpp.i: cmake_force
@@ -411,7 +425,7 @@ CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_template_parser.cpp
 CMakeFiles/chtl_syntax_validation_tests.dir/src/scanner/slice_scanner.cpp.o: CMakeFiles/chtl_syntax_validation_tests.dir/flags.make
 CMakeFiles/chtl_syntax_validation_tests.dir/src/scanner/slice_scanner.cpp.o: /workspace/src/scanner/slice_scanner.cpp
 CMakeFiles/chtl_syntax_validation_tests.dir/src/scanner/slice_scanner.cpp.o: CMakeFiles/chtl_syntax_validation_tests.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building CXX object CMakeFiles/chtl_syntax_validation_tests.dir/src/scanner/slice_scanner.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Building CXX object CMakeFiles/chtl_syntax_validation_tests.dir/src/scanner/slice_scanner.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_syntax_validation_tests.dir/src/scanner/slice_scanner.cpp.o -MF CMakeFiles/chtl_syntax_validation_tests.dir/src/scanner/slice_scanner.cpp.o.d -o CMakeFiles/chtl_syntax_validation_tests.dir/src/scanner/slice_scanner.cpp.o -c /workspace/src/scanner/slice_scanner.cpp
 
 CMakeFiles/chtl_syntax_validation_tests.dir/src/scanner/slice_scanner.cpp.i: cmake_force
@@ -425,7 +439,7 @@ CMakeFiles/chtl_syntax_validation_tests.dir/src/scanner/slice_scanner.cpp.s: cma
 CMakeFiles/chtl_syntax_validation_tests.dir/src/scanner/unified_scanner.cpp.o: CMakeFiles/chtl_syntax_validation_tests.dir/flags.make
 CMakeFiles/chtl_syntax_validation_tests.dir/src/scanner/unified_scanner.cpp.o: /workspace/src/scanner/unified_scanner.cpp
 CMakeFiles/chtl_syntax_validation_tests.dir/src/scanner/unified_scanner.cpp.o: CMakeFiles/chtl_syntax_validation_tests.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Building CXX object CMakeFiles/chtl_syntax_validation_tests.dir/src/scanner/unified_scanner.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Building CXX object CMakeFiles/chtl_syntax_validation_tests.dir/src/scanner/unified_scanner.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_syntax_validation_tests.dir/src/scanner/unified_scanner.cpp.o -MF CMakeFiles/chtl_syntax_validation_tests.dir/src/scanner/unified_scanner.cpp.o.d -o CMakeFiles/chtl_syntax_validation_tests.dir/src/scanner/unified_scanner.cpp.o -c /workspace/src/scanner/unified_scanner.cpp
 
 CMakeFiles/chtl_syntax_validation_tests.dir/src/scanner/unified_scanner.cpp.i: cmake_force
@@ -439,7 +453,7 @@ CMakeFiles/chtl_syntax_validation_tests.dir/src/scanner/unified_scanner.cpp.s: c
 CMakeFiles/chtl_syntax_validation_tests.dir/src/tools/chtl_cjmod_tool.cpp.o: CMakeFiles/chtl_syntax_validation_tests.dir/flags.make
 CMakeFiles/chtl_syntax_validation_tests.dir/src/tools/chtl_cjmod_tool.cpp.o: /workspace/src/tools/chtl_cjmod_tool.cpp
 CMakeFiles/chtl_syntax_validation_tests.dir/src/tools/chtl_cjmod_tool.cpp.o: CMakeFiles/chtl_syntax_validation_tests.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Building CXX object CMakeFiles/chtl_syntax_validation_tests.dir/src/tools/chtl_cjmod_tool.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_28) "Building CXX object CMakeFiles/chtl_syntax_validation_tests.dir/src/tools/chtl_cjmod_tool.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_syntax_validation_tests.dir/src/tools/chtl_cjmod_tool.cpp.o -MF CMakeFiles/chtl_syntax_validation_tests.dir/src/tools/chtl_cjmod_tool.cpp.o.d -o CMakeFiles/chtl_syntax_validation_tests.dir/src/tools/chtl_cjmod_tool.cpp.o -c /workspace/src/tools/chtl_cjmod_tool.cpp
 
 CMakeFiles/chtl_syntax_validation_tests.dir/src/tools/chtl_cjmod_tool.cpp.i: cmake_force
@@ -453,7 +467,7 @@ CMakeFiles/chtl_syntax_validation_tests.dir/src/tools/chtl_cjmod_tool.cpp.s: cma
 CMakeFiles/chtl_syntax_validation_tests.dir/src/tools/chtl_cmod_tool.cpp.o: CMakeFiles/chtl_syntax_validation_tests.dir/flags.make
 CMakeFiles/chtl_syntax_validation_tests.dir/src/tools/chtl_cmod_tool.cpp.o: /workspace/src/tools/chtl_cmod_tool.cpp
 CMakeFiles/chtl_syntax_validation_tests.dir/src/tools/chtl_cmod_tool.cpp.o: CMakeFiles/chtl_syntax_validation_tests.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_28) "Building CXX object CMakeFiles/chtl_syntax_validation_tests.dir/src/tools/chtl_cmod_tool.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_29) "Building CXX object CMakeFiles/chtl_syntax_validation_tests.dir/src/tools/chtl_cmod_tool.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/chtl_syntax_validation_tests.dir/src/tools/chtl_cmod_tool.cpp.o -MF CMakeFiles/chtl_syntax_validation_tests.dir/src/tools/chtl_cmod_tool.cpp.o.d -o CMakeFiles/chtl_syntax_validation_tests.dir/src/tools/chtl_cmod_tool.cpp.o -c /workspace/src/tools/chtl_cmod_tool.cpp
 
 CMakeFiles/chtl_syntax_validation_tests.dir/src/tools/chtl_cmod_tool.cpp.i: cmake_force
@@ -487,6 +501,7 @@ chtl_syntax_validation_tests_OBJECTS = \
 "CMakeFiles/chtl_syntax_validation_tests.dir/src/namespace/enhanced_namespace_manager.cpp.o" \
 "CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_basic_parser.cpp.o" \
 "CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_custom_parser.cpp.o" \
+"CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_origin_parser.cpp.o" \
 "CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_parser.cpp.o" \
 "CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_style_parser.cpp.o" \
 "CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_template_parser.cpp.o" \
@@ -519,6 +534,7 @@ bin/chtl_syntax_validation_tests: CMakeFiles/chtl_syntax_validation_tests.dir/sr
 bin/chtl_syntax_validation_tests: CMakeFiles/chtl_syntax_validation_tests.dir/src/namespace/enhanced_namespace_manager.cpp.o
 bin/chtl_syntax_validation_tests: CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_basic_parser.cpp.o
 bin/chtl_syntax_validation_tests: CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_custom_parser.cpp.o
+bin/chtl_syntax_validation_tests: CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_origin_parser.cpp.o
 bin/chtl_syntax_validation_tests: CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_parser.cpp.o
 bin/chtl_syntax_validation_tests: CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_style_parser.cpp.o
 bin/chtl_syntax_validation_tests: CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_template_parser.cpp.o
@@ -529,7 +545,7 @@ bin/chtl_syntax_validation_tests: CMakeFiles/chtl_syntax_validation_tests.dir/sr
 bin/chtl_syntax_validation_tests: CMakeFiles/chtl_syntax_validation_tests.dir/build.make
 bin/chtl_syntax_validation_tests: CMakeFiles/chtl_syntax_validation_tests.dir/compiler_depend.ts
 bin/chtl_syntax_validation_tests: CMakeFiles/chtl_syntax_validation_tests.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_29) "Linking CXX executable bin/chtl_syntax_validation_tests"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_30) "Linking CXX executable bin/chtl_syntax_validation_tests"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/chtl_syntax_validation_tests.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

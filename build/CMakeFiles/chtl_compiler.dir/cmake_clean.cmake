@@ -42,6 +42,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/chtl_compiler.dir/src/parsers/chtl_basic_parser.cpp.o.d"
   "CMakeFiles/chtl_compiler.dir/src/parsers/chtl_custom_parser.cpp.o"
   "CMakeFiles/chtl_compiler.dir/src/parsers/chtl_custom_parser.cpp.o.d"
+  "CMakeFiles/chtl_compiler.dir/src/parsers/chtl_origin_parser.cpp.o"
+  "CMakeFiles/chtl_compiler.dir/src/parsers/chtl_origin_parser.cpp.o.d"
   "CMakeFiles/chtl_compiler.dir/src/parsers/chtl_parser.cpp.o"
   "CMakeFiles/chtl_compiler.dir/src/parsers/chtl_parser.cpp.o.d"
   "CMakeFiles/chtl_compiler.dir/src/parsers/chtl_style_parser.cpp.o"

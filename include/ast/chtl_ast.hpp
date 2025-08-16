@@ -549,6 +549,23 @@ public:
 };
 
 /**
+ * 原始嵌入节点
+ * 对应原始嵌入的通用节点
+ */
+class OriginEmbedNode : public CHTLASTNode {
+public:
+    std::string originType;     // @Html, @Style, @JavaScript
+    std::string content;        // 原始代码内容
+    std::string name;           // 嵌入名称 (用于增强模式)
+
+    OriginEmbedNode(const std::string& type, const std::string& embedContent, Position pos = Position{})
+        : CHTLASTNode(CHTLASTNodeType::ORIGIN_DECLARATION, pos), originType(type), content(embedContent) {}
+
+    std::string toString() const override;
+    CHTLASTNodePtr clone() const override;
+};
+
+/**
  * 约束语句节点
  * 对应: except @Html; except [Template] @Var;
  */
