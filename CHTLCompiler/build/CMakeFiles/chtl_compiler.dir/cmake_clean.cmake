@@ -34,6 +34,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/chtl_compiler.dir/src/parser/AttributeSystem.cpp.o.d"
   "CMakeFiles/chtl_compiler.dir/src/parser/BasicSyntaxParser.cpp.o"
   "CMakeFiles/chtl_compiler.dir/src/parser/BasicSyntaxParser.cpp.o.d"
+  "CMakeFiles/chtl_compiler.dir/src/parser/ConfigurationSystem.cpp.o"
+  "CMakeFiles/chtl_compiler.dir/src/parser/ConfigurationSystem.cpp.o.d"
   "CMakeFiles/chtl_compiler.dir/src/parser/CustomSystem.cpp.o"
   "CMakeFiles/chtl_compiler.dir/src/parser/CustomSystem.cpp.o.d"
   "CMakeFiles/chtl_compiler.dir/src/parser/OriginSystem.cpp.o"

@@ -25,6 +25,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/workspace/CHTLCompiler/src/main.cpp" "CMakeFiles/chtl_compiler.dir/src/main.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/main.cpp.o.d"
   "/workspace/CHTLCompiler/src/parser/AttributeSystem.cpp" "CMakeFiles/chtl_compiler.dir/src/parser/AttributeSystem.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/parser/AttributeSystem.cpp.o.d"
   "/workspace/CHTLCompiler/src/parser/BasicSyntaxParser.cpp" "CMakeFiles/chtl_compiler.dir/src/parser/BasicSyntaxParser.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/parser/BasicSyntaxParser.cpp.o.d"
+  "/workspace/CHTLCompiler/src/parser/ConfigurationSystem.cpp" "CMakeFiles/chtl_compiler.dir/src/parser/ConfigurationSystem.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/parser/ConfigurationSystem.cpp.o.d"
   "/workspace/CHTLCompiler/src/parser/CustomSystem.cpp" "CMakeFiles/chtl_compiler.dir/src/parser/CustomSystem.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/parser/CustomSystem.cpp.o.d"
   "/workspace/CHTLCompiler/src/parser/OriginSystem.cpp" "CMakeFiles/chtl_compiler.dir/src/parser/OriginSystem.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/parser/OriginSystem.cpp.o.d"
   "/workspace/CHTLCompiler/src/parser/StyleBlockParser.cpp" "CMakeFiles/chtl_compiler.dir/src/parser/StyleBlockParser.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/parser/StyleBlockParser.cpp.o.d"

@@ -582,6 +582,30 @@ src/parser/BasicSyntaxParser.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/parser/BasicSyntaxParser.cpp.s
 .PHONY : src/parser/BasicSyntaxParser.cpp.s
 
+src/parser/ConfigurationSystem.o: src/parser/ConfigurationSystem.cpp.o
+.PHONY : src/parser/ConfigurationSystem.o
+
+# target to build an object file
+src/parser/ConfigurationSystem.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/parser/ConfigurationSystem.cpp.o
+.PHONY : src/parser/ConfigurationSystem.cpp.o
+
+src/parser/ConfigurationSystem.i: src/parser/ConfigurationSystem.cpp.i
+.PHONY : src/parser/ConfigurationSystem.i
+
+# target to preprocess a source file
+src/parser/ConfigurationSystem.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/parser/ConfigurationSystem.cpp.i
+.PHONY : src/parser/ConfigurationSystem.cpp.i
+
+src/parser/ConfigurationSystem.s: src/parser/ConfigurationSystem.cpp.s
+.PHONY : src/parser/ConfigurationSystem.s
+
+# target to generate assembly for a file
+src/parser/ConfigurationSystem.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/parser/ConfigurationSystem.cpp.s
+.PHONY : src/parser/ConfigurationSystem.cpp.s
+
 src/parser/CustomSystem.o: src/parser/CustomSystem.cpp.o
 .PHONY : src/parser/CustomSystem.o
 
@@ -766,6 +790,9 @@ help:
 	@echo "... src/parser/BasicSyntaxParser.o"
 	@echo "... src/parser/BasicSyntaxParser.i"
 	@echo "... src/parser/BasicSyntaxParser.s"
+	@echo "... src/parser/ConfigurationSystem.o"
+	@echo "... src/parser/ConfigurationSystem.i"
+	@echo "... src/parser/ConfigurationSystem.s"
 	@echo "... src/parser/CustomSystem.o"
 	@echo "... src/parser/CustomSystem.i"
 	@echo "... src/parser/CustomSystem.s"
