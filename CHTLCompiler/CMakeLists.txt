@@ -39,8 +39,13 @@ set(STATEMACHINE_SOURCES
     src/statemachine/CHTLStateMachine.cpp
 )
 
+# 确保Import和Namespace源文件被包含
+set(IMPORT_NAMESPACE_SOURCES
+    src/import/ImportManager.cpp
+)
+
 # 创建可执行文件
-add_executable(chtl_compiler ${SOURCES} ${LEXER_SOURCES} ${AST_SOURCES} ${PARSER_SOURCES} ${STATEMACHINE_SOURCES})
+add_executable(chtl_compiler ${SOURCES} ${LEXER_SOURCES} ${AST_SOURCES} ${PARSER_SOURCES} ${STATEMACHINE_SOURCES} ${IMPORT_NAMESPACE_SOURCES})
 
 # 安装规则
 install(TARGETS chtl_compiler DESTINATION bin)
