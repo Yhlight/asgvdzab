@@ -27,6 +27,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/workspace/src/lexer/lexer_state.cpp" "CMakeFiles/chtl_ast_conformance_tests.dir/src/lexer/lexer_state.cpp.o" "gcc" "CMakeFiles/chtl_ast_conformance_tests.dir/src/lexer/lexer_state.cpp.o.d"
   "/workspace/src/namespace/enhanced_namespace_manager.cpp" "CMakeFiles/chtl_ast_conformance_tests.dir/src/namespace/enhanced_namespace_manager.cpp.o" "gcc" "CMakeFiles/chtl_ast_conformance_tests.dir/src/namespace/enhanced_namespace_manager.cpp.o.d"
   "/workspace/src/parsers/chtl_basic_parser.cpp" "CMakeFiles/chtl_ast_conformance_tests.dir/src/parsers/chtl_basic_parser.cpp.o" "gcc" "CMakeFiles/chtl_ast_conformance_tests.dir/src/parsers/chtl_basic_parser.cpp.o.d"
+  "/workspace/src/parsers/chtl_custom_parser.cpp" "CMakeFiles/chtl_ast_conformance_tests.dir/src/parsers/chtl_custom_parser.cpp.o" "gcc" "CMakeFiles/chtl_ast_conformance_tests.dir/src/parsers/chtl_custom_parser.cpp.o.d"
   "/workspace/src/parsers/chtl_parser.cpp" "CMakeFiles/chtl_ast_conformance_tests.dir/src/parsers/chtl_parser.cpp.o" "gcc" "CMakeFiles/chtl_ast_conformance_tests.dir/src/parsers/chtl_parser.cpp.o.d"
   "/workspace/src/parsers/chtl_style_parser.cpp" "CMakeFiles/chtl_ast_conformance_tests.dir/src/parsers/chtl_style_parser.cpp.o" "gcc" "CMakeFiles/chtl_ast_conformance_tests.dir/src/parsers/chtl_style_parser.cpp.o.d"
   "/workspace/src/parsers/chtl_template_parser.cpp" "CMakeFiles/chtl_ast_conformance_tests.dir/src/parsers/chtl_template_parser.cpp.o" "gcc" "CMakeFiles/chtl_ast_conformance_tests.dir/src/parsers/chtl_template_parser.cpp.o.d"

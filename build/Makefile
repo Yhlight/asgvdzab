@@ -448,6 +448,19 @@ chtl_template_parser_test/fast:
 .PHONY : chtl_template_parser_test/fast
 
 #=============================================================================
+# Target rules for targets named chtl_custom_parser_test
+
+# Build rule for target.
+chtl_custom_parser_test: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 chtl_custom_parser_test
+.PHONY : chtl_custom_parser_test
+
+# fast build rule for target.
+chtl_custom_parser_test/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_custom_parser_test.dir/build.make CMakeFiles/chtl_custom_parser_test.dir/build
+.PHONY : chtl_custom_parser_test/fast
+
+#=============================================================================
 # Target rules for targets named debug_style_parser
 
 # Build rule for target.
@@ -505,6 +518,7 @@ src/ast/chtl_ast.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_parser.dir/build.make CMakeFiles/debug_parser.dir/src/ast/chtl_ast.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_style_parser_test.dir/build.make CMakeFiles/chtl_style_parser_test.dir/src/ast/chtl_ast.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_template_parser_test.dir/build.make CMakeFiles/chtl_template_parser_test.dir/src/ast/chtl_ast.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_custom_parser_test.dir/build.make CMakeFiles/chtl_custom_parser_test.dir/src/ast/chtl_ast.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_style_parser.dir/build.make CMakeFiles/debug_style_parser.dir/src/ast/chtl_ast.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_template_parser.dir/build.make CMakeFiles/debug_template_parser.dir/src/ast/chtl_ast.cpp.o
 .PHONY : src/ast/chtl_ast.cpp.o
@@ -528,6 +542,7 @@ src/ast/chtl_ast.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_parser.dir/build.make CMakeFiles/debug_parser.dir/src/ast/chtl_ast.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_style_parser_test.dir/build.make CMakeFiles/chtl_style_parser_test.dir/src/ast/chtl_ast.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_template_parser_test.dir/build.make CMakeFiles/chtl_template_parser_test.dir/src/ast/chtl_ast.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_custom_parser_test.dir/build.make CMakeFiles/chtl_custom_parser_test.dir/src/ast/chtl_ast.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_style_parser.dir/build.make CMakeFiles/debug_style_parser.dir/src/ast/chtl_ast.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_template_parser.dir/build.make CMakeFiles/debug_template_parser.dir/src/ast/chtl_ast.cpp.i
 .PHONY : src/ast/chtl_ast.cpp.i
@@ -551,6 +566,7 @@ src/ast/chtl_ast.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_parser.dir/build.make CMakeFiles/debug_parser.dir/src/ast/chtl_ast.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_style_parser_test.dir/build.make CMakeFiles/chtl_style_parser_test.dir/src/ast/chtl_ast.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_template_parser_test.dir/build.make CMakeFiles/chtl_template_parser_test.dir/src/ast/chtl_ast.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_custom_parser_test.dir/build.make CMakeFiles/chtl_custom_parser_test.dir/src/ast/chtl_ast.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_style_parser.dir/build.make CMakeFiles/debug_style_parser.dir/src/ast/chtl_ast.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_template_parser.dir/build.make CMakeFiles/debug_template_parser.dir/src/ast/chtl_ast.cpp.s
 .PHONY : src/ast/chtl_ast.cpp.s
@@ -1180,6 +1196,7 @@ src/lexer/chtl_lexer.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_parser.dir/build.make CMakeFiles/debug_parser.dir/src/lexer/chtl_lexer.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_style_parser_test.dir/build.make CMakeFiles/chtl_style_parser_test.dir/src/lexer/chtl_lexer.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_template_parser_test.dir/build.make CMakeFiles/chtl_template_parser_test.dir/src/lexer/chtl_lexer.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_custom_parser_test.dir/build.make CMakeFiles/chtl_custom_parser_test.dir/src/lexer/chtl_lexer.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_style_parser.dir/build.make CMakeFiles/debug_style_parser.dir/src/lexer/chtl_lexer.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_template_parser.dir/build.make CMakeFiles/debug_template_parser.dir/src/lexer/chtl_lexer.cpp.o
 .PHONY : src/lexer/chtl_lexer.cpp.o
@@ -1203,6 +1220,7 @@ src/lexer/chtl_lexer.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_parser.dir/build.make CMakeFiles/debug_parser.dir/src/lexer/chtl_lexer.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_style_parser_test.dir/build.make CMakeFiles/chtl_style_parser_test.dir/src/lexer/chtl_lexer.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_template_parser_test.dir/build.make CMakeFiles/chtl_template_parser_test.dir/src/lexer/chtl_lexer.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_custom_parser_test.dir/build.make CMakeFiles/chtl_custom_parser_test.dir/src/lexer/chtl_lexer.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_style_parser.dir/build.make CMakeFiles/debug_style_parser.dir/src/lexer/chtl_lexer.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_template_parser.dir/build.make CMakeFiles/debug_template_parser.dir/src/lexer/chtl_lexer.cpp.i
 .PHONY : src/lexer/chtl_lexer.cpp.i
@@ -1226,6 +1244,7 @@ src/lexer/chtl_lexer.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_parser.dir/build.make CMakeFiles/debug_parser.dir/src/lexer/chtl_lexer.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_style_parser_test.dir/build.make CMakeFiles/chtl_style_parser_test.dir/src/lexer/chtl_lexer.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_template_parser_test.dir/build.make CMakeFiles/chtl_template_parser_test.dir/src/lexer/chtl_lexer.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_custom_parser_test.dir/build.make CMakeFiles/chtl_custom_parser_test.dir/src/lexer/chtl_lexer.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_style_parser.dir/build.make CMakeFiles/debug_style_parser.dir/src/lexer/chtl_lexer.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_template_parser.dir/build.make CMakeFiles/debug_template_parser.dir/src/lexer/chtl_lexer.cpp.s
 .PHONY : src/lexer/chtl_lexer.cpp.s
@@ -1543,6 +1562,7 @@ src/parsers/chtl_basic_parser.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_parser.dir/build.make CMakeFiles/debug_parser.dir/src/parsers/chtl_basic_parser.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_style_parser_test.dir/build.make CMakeFiles/chtl_style_parser_test.dir/src/parsers/chtl_basic_parser.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_template_parser_test.dir/build.make CMakeFiles/chtl_template_parser_test.dir/src/parsers/chtl_basic_parser.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_custom_parser_test.dir/build.make CMakeFiles/chtl_custom_parser_test.dir/src/parsers/chtl_basic_parser.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_style_parser.dir/build.make CMakeFiles/debug_style_parser.dir/src/parsers/chtl_basic_parser.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_template_parser.dir/build.make CMakeFiles/debug_template_parser.dir/src/parsers/chtl_basic_parser.cpp.o
 .PHONY : src/parsers/chtl_basic_parser.cpp.o
@@ -1566,6 +1586,7 @@ src/parsers/chtl_basic_parser.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_parser.dir/build.make CMakeFiles/debug_parser.dir/src/parsers/chtl_basic_parser.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_style_parser_test.dir/build.make CMakeFiles/chtl_style_parser_test.dir/src/parsers/chtl_basic_parser.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_template_parser_test.dir/build.make CMakeFiles/chtl_template_parser_test.dir/src/parsers/chtl_basic_parser.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_custom_parser_test.dir/build.make CMakeFiles/chtl_custom_parser_test.dir/src/parsers/chtl_basic_parser.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_style_parser.dir/build.make CMakeFiles/debug_style_parser.dir/src/parsers/chtl_basic_parser.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_template_parser.dir/build.make CMakeFiles/debug_template_parser.dir/src/parsers/chtl_basic_parser.cpp.i
 .PHONY : src/parsers/chtl_basic_parser.cpp.i
@@ -1589,9 +1610,64 @@ src/parsers/chtl_basic_parser.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_parser.dir/build.make CMakeFiles/debug_parser.dir/src/parsers/chtl_basic_parser.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_style_parser_test.dir/build.make CMakeFiles/chtl_style_parser_test.dir/src/parsers/chtl_basic_parser.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_template_parser_test.dir/build.make CMakeFiles/chtl_template_parser_test.dir/src/parsers/chtl_basic_parser.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_custom_parser_test.dir/build.make CMakeFiles/chtl_custom_parser_test.dir/src/parsers/chtl_basic_parser.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_style_parser.dir/build.make CMakeFiles/debug_style_parser.dir/src/parsers/chtl_basic_parser.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_template_parser.dir/build.make CMakeFiles/debug_template_parser.dir/src/parsers/chtl_basic_parser.cpp.s
 .PHONY : src/parsers/chtl_basic_parser.cpp.s
+
+src/parsers/chtl_custom_parser.o: src/parsers/chtl_custom_parser.cpp.o
+.PHONY : src/parsers/chtl_custom_parser.o
+
+# target to build an object file
+src/parsers/chtl_custom_parser.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/parsers/chtl_custom_parser.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/parsers/chtl_custom_parser.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/parsers/chtl_custom_parser.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/parsers/chtl_custom_parser.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/parsers/chtl_custom_parser.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_custom_parser.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/parsers/chtl_custom_parser.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/parsers/chtl_custom_parser.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/parsers/chtl_custom_parser.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/parsers/chtl_custom_parser.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_custom_parser_test.dir/build.make CMakeFiles/chtl_custom_parser_test.dir/src/parsers/chtl_custom_parser.cpp.o
+.PHONY : src/parsers/chtl_custom_parser.cpp.o
+
+src/parsers/chtl_custom_parser.i: src/parsers/chtl_custom_parser.cpp.i
+.PHONY : src/parsers/chtl_custom_parser.i
+
+# target to preprocess a source file
+src/parsers/chtl_custom_parser.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/parsers/chtl_custom_parser.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/parsers/chtl_custom_parser.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/parsers/chtl_custom_parser.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/parsers/chtl_custom_parser.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/parsers/chtl_custom_parser.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_custom_parser.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/parsers/chtl_custom_parser.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/parsers/chtl_custom_parser.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/parsers/chtl_custom_parser.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/parsers/chtl_custom_parser.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_custom_parser_test.dir/build.make CMakeFiles/chtl_custom_parser_test.dir/src/parsers/chtl_custom_parser.cpp.i
+.PHONY : src/parsers/chtl_custom_parser.cpp.i
+
+src/parsers/chtl_custom_parser.s: src/parsers/chtl_custom_parser.cpp.s
+.PHONY : src/parsers/chtl_custom_parser.s
+
+# target to generate assembly for a file
+src/parsers/chtl_custom_parser.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/parsers/chtl_custom_parser.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/src/parsers/chtl_custom_parser.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/slice_scanner_tests.dir/build.make CMakeFiles/slice_scanner_tests.dir/src/parsers/chtl_custom_parser.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/token_tests.dir/build.make CMakeFiles/token_tests.dir/src/parsers/chtl_custom_parser.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_lexer_tests.dir/build.make CMakeFiles/comprehensive_lexer_tests.dir/src/parsers/chtl_custom_parser.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_validation_tests.dir/build.make CMakeFiles/chtl_syntax_validation_tests.dir/src/parsers/chtl_custom_parser.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_grammar_conformance_tests.dir/build.make CMakeFiles/chtl_grammar_conformance_tests.dir/src/parsers/chtl_custom_parser.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_ast_conformance_tests.dir/build.make CMakeFiles/chtl_ast_conformance_tests.dir/src/parsers/chtl_custom_parser.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/parsers/chtl_custom_parser.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/parsers/chtl_custom_parser.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_custom_parser_test.dir/build.make CMakeFiles/chtl_custom_parser_test.dir/src/parsers/chtl_custom_parser.cpp.s
+.PHONY : src/parsers/chtl_custom_parser.cpp.s
 
 src/parsers/chtl_parser.o: src/parsers/chtl_parser.cpp.o
 .PHONY : src/parsers/chtl_parser.o
@@ -1663,6 +1739,7 @@ src/parsers/chtl_style_parser.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_parser.dir/build.make CMakeFiles/debug_parser.dir/src/parsers/chtl_style_parser.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_style_parser_test.dir/build.make CMakeFiles/chtl_style_parser_test.dir/src/parsers/chtl_style_parser.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_template_parser_test.dir/build.make CMakeFiles/chtl_template_parser_test.dir/src/parsers/chtl_style_parser.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_custom_parser_test.dir/build.make CMakeFiles/chtl_custom_parser_test.dir/src/parsers/chtl_style_parser.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_style_parser.dir/build.make CMakeFiles/debug_style_parser.dir/src/parsers/chtl_style_parser.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_template_parser.dir/build.make CMakeFiles/debug_template_parser.dir/src/parsers/chtl_style_parser.cpp.o
 .PHONY : src/parsers/chtl_style_parser.cpp.o
@@ -1686,6 +1763,7 @@ src/parsers/chtl_style_parser.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_parser.dir/build.make CMakeFiles/debug_parser.dir/src/parsers/chtl_style_parser.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_style_parser_test.dir/build.make CMakeFiles/chtl_style_parser_test.dir/src/parsers/chtl_style_parser.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_template_parser_test.dir/build.make CMakeFiles/chtl_template_parser_test.dir/src/parsers/chtl_style_parser.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_custom_parser_test.dir/build.make CMakeFiles/chtl_custom_parser_test.dir/src/parsers/chtl_style_parser.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_style_parser.dir/build.make CMakeFiles/debug_style_parser.dir/src/parsers/chtl_style_parser.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_template_parser.dir/build.make CMakeFiles/debug_template_parser.dir/src/parsers/chtl_style_parser.cpp.i
 .PHONY : src/parsers/chtl_style_parser.cpp.i
@@ -1709,6 +1787,7 @@ src/parsers/chtl_style_parser.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_parser.dir/build.make CMakeFiles/debug_parser.dir/src/parsers/chtl_style_parser.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_style_parser_test.dir/build.make CMakeFiles/chtl_style_parser_test.dir/src/parsers/chtl_style_parser.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_template_parser_test.dir/build.make CMakeFiles/chtl_template_parser_test.dir/src/parsers/chtl_style_parser.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_custom_parser_test.dir/build.make CMakeFiles/chtl_custom_parser_test.dir/src/parsers/chtl_style_parser.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_style_parser.dir/build.make CMakeFiles/debug_style_parser.dir/src/parsers/chtl_style_parser.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_template_parser.dir/build.make CMakeFiles/debug_template_parser.dir/src/parsers/chtl_style_parser.cpp.s
 .PHONY : src/parsers/chtl_style_parser.cpp.s
@@ -1729,6 +1808,7 @@ src/parsers/chtl_template_parser.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/parsers/chtl_template_parser.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/parsers/chtl_template_parser.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_template_parser_test.dir/build.make CMakeFiles/chtl_template_parser_test.dir/src/parsers/chtl_template_parser.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_custom_parser_test.dir/build.make CMakeFiles/chtl_custom_parser_test.dir/src/parsers/chtl_template_parser.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_template_parser.dir/build.make CMakeFiles/debug_template_parser.dir/src/parsers/chtl_template_parser.cpp.o
 .PHONY : src/parsers/chtl_template_parser.cpp.o
 
@@ -1748,6 +1828,7 @@ src/parsers/chtl_template_parser.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/parsers/chtl_template_parser.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/parsers/chtl_template_parser.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_template_parser_test.dir/build.make CMakeFiles/chtl_template_parser_test.dir/src/parsers/chtl_template_parser.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_custom_parser_test.dir/build.make CMakeFiles/chtl_custom_parser_test.dir/src/parsers/chtl_template_parser.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_template_parser.dir/build.make CMakeFiles/debug_template_parser.dir/src/parsers/chtl_template_parser.cpp.i
 .PHONY : src/parsers/chtl_template_parser.cpp.i
 
@@ -1767,6 +1848,7 @@ src/parsers/chtl_template_parser.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/parser_generator_integration_tests.dir/build.make CMakeFiles/parser_generator_integration_tests.dir/src/parsers/chtl_template_parser.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/raii_state_management_integration_tests.dir/build.make CMakeFiles/raii_state_management_integration_tests.dir/src/parsers/chtl_template_parser.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_template_parser_test.dir/build.make CMakeFiles/chtl_template_parser_test.dir/src/parsers/chtl_template_parser.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_custom_parser_test.dir/build.make CMakeFiles/chtl_custom_parser_test.dir/src/parsers/chtl_template_parser.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_template_parser.dir/build.make CMakeFiles/debug_template_parser.dir/src/parsers/chtl_template_parser.cpp.s
 .PHONY : src/parsers/chtl_template_parser.cpp.s
 
@@ -2057,6 +2139,33 @@ tests/chtl_basic_parser_test.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/chtl_basic_parser_test.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_basic_parser_test.dir/build.make CMakeFiles/chtl_basic_parser_test.dir/tests/chtl_basic_parser_test.cpp.s
 .PHONY : tests/chtl_basic_parser_test.cpp.s
+
+tests/chtl_custom_parser_test.o: tests/chtl_custom_parser_test.cpp.o
+.PHONY : tests/chtl_custom_parser_test.o
+
+# target to build an object file
+tests/chtl_custom_parser_test.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/chtl_custom_parser_test.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_custom_parser_test.dir/build.make CMakeFiles/chtl_custom_parser_test.dir/tests/chtl_custom_parser_test.cpp.o
+.PHONY : tests/chtl_custom_parser_test.cpp.o
+
+tests/chtl_custom_parser_test.i: tests/chtl_custom_parser_test.cpp.i
+.PHONY : tests/chtl_custom_parser_test.i
+
+# target to preprocess a source file
+tests/chtl_custom_parser_test.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/chtl_custom_parser_test.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_custom_parser_test.dir/build.make CMakeFiles/chtl_custom_parser_test.dir/tests/chtl_custom_parser_test.cpp.i
+.PHONY : tests/chtl_custom_parser_test.cpp.i
+
+tests/chtl_custom_parser_test.s: tests/chtl_custom_parser_test.cpp.s
+.PHONY : tests/chtl_custom_parser_test.s
+
+# target to generate assembly for a file
+tests/chtl_custom_parser_test.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_tests.dir/build.make CMakeFiles/chtl_tests.dir/tests/chtl_custom_parser_test.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_custom_parser_test.dir/build.make CMakeFiles/chtl_custom_parser_test.dir/tests/chtl_custom_parser_test.cpp.s
+.PHONY : tests/chtl_custom_parser_test.cpp.s
 
 tests/chtl_grammar_conformance_test.o: tests/chtl_grammar_conformance_test.cpp.o
 .PHONY : tests/chtl_grammar_conformance_test.o
@@ -2612,6 +2721,7 @@ help:
 	@echo "... chtl_ast_conformance_tests"
 	@echo "... chtl_basic_parser_test"
 	@echo "... chtl_compiler"
+	@echo "... chtl_custom_parser_test"
 	@echo "... chtl_grammar_conformance_tests"
 	@echo "... chtl_style_parser_test"
 	@echo "... chtl_syntax_validation_tests"
@@ -2692,6 +2802,9 @@ help:
 	@echo "... src/parsers/chtl_basic_parser.o"
 	@echo "... src/parsers/chtl_basic_parser.i"
 	@echo "... src/parsers/chtl_basic_parser.s"
+	@echo "... src/parsers/chtl_custom_parser.o"
+	@echo "... src/parsers/chtl_custom_parser.i"
+	@echo "... src/parsers/chtl_custom_parser.s"
 	@echo "... src/parsers/chtl_parser.o"
 	@echo "... src/parsers/chtl_parser.i"
 	@echo "... src/parsers/chtl_parser.s"
@@ -2722,6 +2835,9 @@ help:
 	@echo "... tests/chtl_basic_parser_test.o"
 	@echo "... tests/chtl_basic_parser_test.i"
 	@echo "... tests/chtl_basic_parser_test.s"
+	@echo "... tests/chtl_custom_parser_test.o"
+	@echo "... tests/chtl_custom_parser_test.i"
+	@echo "... tests/chtl_custom_parser_test.s"
 	@echo "... tests/chtl_grammar_conformance_test.o"
 	@echo "... tests/chtl_grammar_conformance_test.i"
 	@echo "... tests/chtl_grammar_conformance_test.s"

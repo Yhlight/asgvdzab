@@ -38,6 +38,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/chtl_grammar_conformance_tests.dir/src/namespace/enhanced_namespace_manager.cpp.o.d"
   "CMakeFiles/chtl_grammar_conformance_tests.dir/src/parsers/chtl_basic_parser.cpp.o"
   "CMakeFiles/chtl_grammar_conformance_tests.dir/src/parsers/chtl_basic_parser.cpp.o.d"
+  "CMakeFiles/chtl_grammar_conformance_tests.dir/src/parsers/chtl_custom_parser.cpp.o"
+  "CMakeFiles/chtl_grammar_conformance_tests.dir/src/parsers/chtl_custom_parser.cpp.o.d"
   "CMakeFiles/chtl_grammar_conformance_tests.dir/src/parsers/chtl_parser.cpp.o"
   "CMakeFiles/chtl_grammar_conformance_tests.dir/src/parsers/chtl_parser.cpp.o.d"
   "CMakeFiles/chtl_grammar_conformance_tests.dir/src/parsers/chtl_style_parser.cpp.o"
