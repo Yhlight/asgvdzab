@@ -1,0 +1,14 @@
+#!/bin/bash
+# ANTLR4 预编译版本启动脚本
+# 版本: 4.13.1
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ANTLR_JAR="$SCRIPT_DIR/antlr4.jar"
+
+if [ ! -f "$ANTLR_JAR" ]; then
+    echo "错误: 未找到ANTLR4工具: $ANTLR_JAR"
+    exit 1
+fi
+
+# 运行ANTLR4工具
+java -jar "$ANTLR_JAR" "$@"
