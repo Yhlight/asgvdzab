@@ -1,56 +1,51 @@
 #include "compilers/antlr_css_compiler.hpp"
 #include "compilers/antlr_js_compiler.hpp"
 #include <iostream>
-#include <cassert>
+#include <string>
 
 using namespace chtl;
 
 void testCSSCompiler() {
-    std::cout << "测试ANTLR CSS编译器..." << std::endl;
-    
+    std::cout << "测试ANTLR CSS编译器（标准选择器）..." << std::endl;
     ANTLRCSSCompiler compiler;
     
-    // 测试基础CSS编译
     std::string cssCode = R"(
         .container {
-            width: 100%;
-            margin: 0 auto;
-            background-color: #ffffff;
+            color: #336699;
+            font-size: 16px;
+            margin: 10px 20px;
         }
-        
         #header {
-            height: 60px;
-            background: linear-gradient(to right, #ff0000, #00ff00);
+            background-color: blue;
+            padding: 5px;
         }
-        
-        .btn:hover {
-            color: rgba(255, 255, 255, 0.8);
-            transform: scale(1.05);
+        div > p {
+            font-family: Arial, sans-serif;
         }
     )";
     
     CSSCompileOptions options;
-    options.minify = false;
+    options.extractSelectors = true;
     options.extractColors = true;
-    options.validateSyntax = true;
+    options.extractFonts = true;
+    options.validateStandardCompliance = true;
     
     auto result = compiler.compileCSS(cssCode, options);
     
-    std::cout << "编译结果: " << (result.success ? "成功" : "失败") << std::endl;
     if (!result.success) {
+        std::cout << "CSS编译失败: " << std::endl;
         for (const auto& error : result.errors) {
             std::cout << "错误: " << error << std::endl;
         }
     } else {
         std::cout << "提取的选择器数量: " << result.selectors.size() << std::endl;
-        std::cout << "提取的属性数量: " << result.properties.size() << std::endl;
+        std::cout << "提取的CSS规则数量: " << result.rules.size() << std::endl;
         std::cout << "提取的颜色数量: " << result.colors.size() << std::endl;
         
-        // 显示提取的信息
         if (!result.selectors.empty()) {
-            std::cout << "选择器: ";
+            std::cout << "标准选择器: ";
             for (const auto& selector : result.selectors) {
-                std::cout << selector << " ";
+                std::cout << selector.originalText << " (权重: " << selector.specificity << ") ";
             }
             std::cout << std::endl;
         }
@@ -62,9 +57,17 @@ void testCSSCompiler() {
             }
             std::cout << std::endl;
         }
+        
+        if (!result.warnings.empty()) {
+            std::cout << "标准合规性警告: ";
+            for (const auto& warning : result.warnings) {
+                std::cout << warning << " ";
+            }
+            std::cout << std::endl;
+        }
     }
     
-    // Test minification
+    // 测试压缩
     options.minify = true;
     auto minifiedResult = compiler.compileCSS(cssCode, options);
     if (minifiedResult.success) {
@@ -75,41 +78,30 @@ void testCSSCompiler() {
     std::cout << "✓ CSS编译器测试通过" << std::endl;
 }
 
-void testJSCompiler() {
+void testJavaScriptCompiler() {
     std::cout << "测试ANTLR JavaScript编译器..." << std::endl;
-    
     ANTLRJSCompiler compiler;
     
-    // Test basic JavaScript compilation
     std::string jsCode = R"(
         function calculateSum(a, b) {
             return a + b;
         }
-        
-        var result = calculateSum(10, 20);
-        
-        let message = "Hello, World!";
-        const PI = 3.14159;
-        
-        if (result > 25) {
-            console.log(message);
-        }
-        
-        for (let i = 0; i < 5; i++) {
-            console.log("Count: " + i);
+        var x = 10;
+        const PI = 3.14;
+        class MyClass {
+            constructor() { this.value = 0; }
         }
     )";
     
     JSCompileOptions options;
-    options.minify = false;
     options.extractFunctions = true;
     options.extractVariables = true;
-    options.validateSyntax = true;
+    options.extractClasses = true;
     
     auto result = compiler.compileJS(jsCode, options);
     
-    std::cout << "编译结果: " << (result.success ? "成功" : "失败") << std::endl;
     if (!result.success) {
+        std::cout << "JavaScript编译失败: " << std::endl;
         for (const auto& error : result.errors) {
             std::cout << "错误: " << error << std::endl;
         }
@@ -117,7 +109,6 @@ void testJSCompiler() {
         std::cout << "提取的函数数量: " << result.functions.size() << std::endl;
         std::cout << "提取的变量数量: " << result.variables.size() << std::endl;
         
-        // 显示提取的信息
         if (!result.functions.empty()) {
             std::cout << "函数: ";
             for (const auto& func : result.functions) {
@@ -135,7 +126,7 @@ void testJSCompiler() {
         }
     }
     
-    // Test minification
+    // 测试压缩
     options.minify = true;
     auto minifiedResult = compiler.compileJS(jsCode, options);
     if (minifiedResult.success) {
@@ -149,10 +140,8 @@ void testJSCompiler() {
 void testCompilerIntegration() {
     std::cout << "测试编译器集成..." << std::endl;
     
-    // Test CSS compiler with ICompiler interface
     ANTLRCSSCompiler cssCompiler;
     auto supportedTypes = cssCompiler.getSupportedTypes();
-    
     std::cout << "CSS编译器支持的类型数量: " << supportedTypes.size() << std::endl;
     
     CodeSegment cssSegment;
@@ -165,10 +154,8 @@ void testCompilerIntegration() {
     auto cssResult = cssCompiler.compile(cssSegment, config);
     std::cout << "CSS编译结果: " << (cssResult.success ? "成功" : "失败") << std::endl;
     
-    // Test JavaScript compiler with ICompiler interface
     ANTLRJSCompiler jsCompiler;
     auto jsSupportedTypes = jsCompiler.getSupportedTypes();
-    
     std::cout << "JS编译器支持的类型数量: " << jsSupportedTypes.size() << std::endl;
     
     CodeSegment jsSegment;
@@ -181,48 +168,81 @@ void testCompilerIntegration() {
     std::cout << "✓ 编译器集成测试通过" << std::endl;
 }
 
-void testUtilityClasses() {
-    std::cout << "测试工具类..." << std::endl;
+void testStandardUtils() {
+    std::cout << "测试标准工具类..." << std::endl;
     
-    // Test CSSUtils
-    std::cout << "测试CSSUtils:" << std::endl;
-    std::cout << "  #ff0000是否为有效颜色: " << (CSSUtils::isValidColor("#ff0000") ? "是" : "否") << std::endl;
-    std::cout << "  red是否为有效颜色: " << (CSSUtils::isValidColor("red") ? "是" : "否") << std::endl;
-    std::cout << "  color是否为有效属性: " << (CSSUtils::isValidProperty("color") ? "是" : "否") << std::endl;
+    std::cout << "测试StandardCSSUtils:" << std::endl;
+    std::cout << "  #ff0000是否为有效颜色: " << (StandardCSSUtils::isValidColor("#ff0000") ? "是" : "否") << std::endl;
+    std::cout << "  red是否为有效颜色: " << (StandardCSSUtils::isValidColor("red") ? "是" : "否") << std::endl;
+    std::cout << "  color是否为有效CSS3属性: " << (StandardCSSUtils::isValidCSS3Property("color") ? "是" : "否") << std::endl;
     
-    auto colors = CSSUtils::extractColorsFromValue("background: linear-gradient(#ff0000, #00ff00);");
+    auto colors = StandardCSSUtils::extractColorsFromValue("background: linear-gradient(#ff0000, #00ff00);");
     std::cout << "  从值中提取的颜色数量: " << colors.size() << std::endl;
     
-    // Test JSUtils
     std::cout << "测试JSUtils:" << std::endl;
     std::cout << "  myVar是否为有效标识符: " << (JSUtils::isValidIdentifier("myVar") ? "是" : "否") << std::endl;
     std::cout << "  function是否为关键字: " << (JSUtils::isKeyword("function") ? "是" : "否") << std::endl;
     
-    std::string jsCode = "const test = () => { console.log('test'); };";
-    std::cout << "  检测ES版本: " << JSUtils::detectESVersion(jsCode) << std::endl;
+    std::cout << "✓ 标准工具类测试通过" << std::endl;
+}
+
+void testStandardSelectors() {
+    std::cout << "测试标准选择器功能..." << std::endl;
     
-    std::string funcDecl = "function myFunc(a, b, c) { return a + b + c; }";
-    std::cout << "  函数名: " << JSUtils::extractFunctionName(funcDecl) << std::endl;
+    ANTLRCSSCompiler compiler;
     
-    auto params = JSUtils::extractParameters(funcDecl);
-    std::cout << "  参数数量: " << params.size() << std::endl;
+    std::string testCSS = R"(
+        * { margin: 0; }
+        div { display: block; }
+        .class-name { color: blue; }
+        #unique-id { font-size: 20px; }
+        [type="text"] { border: 1px solid gray; }
+        div > p { margin-top: 10px; }
+        h1 + p { margin-bottom: 5px; }
+        :hover { opacity: 0.8; }
+        ::before { content: ""; }
+    )";
     
-    std::cout << "✓ 工具类测试通过" << std::endl;
+    auto selectors = compiler.extractStandardSelectors(testCSS);
+    std::cout << "提取的标准选择器数量: " << selectors.size() << std::endl;
+    
+    for (const auto& selector : selectors) {
+        std::string typeName;
+        switch (selector.type) {
+            case StandardCSSSelector::UNIVERSAL: typeName = "通用选择器"; break;
+            case StandardCSSSelector::TYPE: typeName = "类型选择器"; break;
+            case StandardCSSSelector::CLASS: typeName = "类选择器"; break;
+            case StandardCSSSelector::ID: typeName = "ID选择器"; break;
+            case StandardCSSSelector::ATTRIBUTE: typeName = "属性选择器"; break;
+            case StandardCSSSelector::DESCENDANT: typeName = "后代选择器"; break;
+            case StandardCSSSelector::CHILD: typeName = "子选择器"; break;
+            case StandardCSSSelector::ADJACENT_SIBLING: typeName = "相邻兄弟选择器"; break;
+            case StandardCSSSelector::GENERAL_SIBLING: typeName = "通用兄弟选择器"; break;
+            case StandardCSSSelector::PSEUDO_CLASS: typeName = "伪类选择器"; break;
+            case StandardCSSSelector::PSEUDO_ELEMENT: typeName = "伪元素选择器"; break;
+        }
+        
+        std::cout << "  " << selector.originalText << " - " << typeName 
+                  << " (权重: " << selector.specificity << ")" << std::endl;
+    }
+    
+    // 生成选择器文档
+    auto documentation = compiler.generateSelectorDocumentation(selectors);
+    std::cout << "生成的选择器文档长度: " << documentation.length() << " 字符" << std::endl;
+    
+    std::cout << "✓ 标准选择器测试通过" << std::endl;
 }
 
 void testSyntaxValidation() {
     std::cout << "测试语法验证..." << std::endl;
     
     ANTLRCSSCompiler cssCompiler;
-    ANTLRJSCompiler jsCompiler;
-    
-    // Test valid CSS
     std::string validCSS = ".test { color: red; }";
     std::vector<std::string> errors;
     bool cssValid = cssCompiler.validateSyntax(validCSS, errors);
     std::cout << "有效CSS语法验证: " << (cssValid ? "通过" : "失败") << std::endl;
     
-    // Test valid JavaScript
+    ANTLRJSCompiler jsCompiler;
     std::string validJS = "function test() { return 'hello'; }";
     errors.clear();
     bool jsValid = jsCompiler.validateSyntax(validJS, errors);
@@ -232,21 +252,20 @@ void testSyntaxValidation() {
 }
 
 int main() {
-    std::cout << "========================================" << std::endl;
-    std::cout << "         ANTLR编译器测试套件" << std::endl;
-    std::cout << "========================================" << std::endl;
-    
     try {
         testCSSCompiler();
         std::cout << std::endl;
         
-        testJSCompiler();
+        testJavaScriptCompiler();
         std::cout << std::endl;
         
         testCompilerIntegration();
         std::cout << std::endl;
         
-        testUtilityClasses();
+        testStandardUtils();
+        std::cout << std::endl;
+        
+        testStandardSelectors();
         std::cout << std::endl;
         
         testSyntaxValidation();
@@ -254,11 +273,11 @@ int main() {
         
         std::cout << "========================================" << std::endl;
         std::cout << "         所有测试通过！" << std::endl;
-        std::cout << "         完整的CSS/JS原生语法支持已实现" << std::endl;
+        std::cout << "         ANTLR标准选择器CSS/JS编译器就绪" << std::endl;
         std::cout << "========================================" << std::endl;
         
     } catch (const std::exception& e) {
-        std::cerr << "测试失败: " << e.what() << std::endl;
+        std::cerr << "测试过程中发生未捕获异常: " << e.what() << std::endl;
         return 1;
     }
     

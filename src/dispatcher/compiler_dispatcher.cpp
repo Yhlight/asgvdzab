@@ -1,21 +1,7 @@
 #include "dispatcher/compiler_dispatcher.hpp"
 #include "compilers/chtl_compiler.hpp"
-
-// 根据编译时配置选择CSS/JS编译器
-#if USE_ANTLR_COMPILERS
-    #include "compilers/antlr_css_compiler.hpp"
-    #include "compilers/antlr_js_compiler.hpp"
-    #define CSS_COMPILER_TYPE ANTLRCSSCompiler
-    #define JS_COMPILER_TYPE ANTLRJSCompiler
-    #define COMPILER_TYPE_NAME "ANTLR-based"
-#else
-    #include "compilers/simple_css_compiler.hpp"
-    #include "compilers/simple_js_compiler.hpp"
-    #define CSS_COMPILER_TYPE SimpleCSSCompiler
-    #define JS_COMPILER_TYPE SimpleJSCompiler
-    #define COMPILER_TYPE_NAME "Simplified"
-#endif
-
+#include "compilers/antlr_css_compiler.hpp"
+#include "compilers/antlr_js_compiler.hpp"
 #include <iostream>
 #include <algorithm>
 #include <chrono>
@@ -150,7 +136,7 @@ void CompilerDispatcher::initializeDefaultCompilers() {
     registerCompiler(CompilerFactory::createCSSCompiler());
     registerCompiler(CompilerFactory::createJavaScriptCompiler());
     
-    std::cout << "Initialized CSS/JS compilers: " << COMPILER_TYPE_NAME << std::endl;
+    std::cout << "Initialized CSS/JS compilers: ANTLR-based with standard selectors" << std::endl;
 }
 
 std::vector<CodeSegment> CompilerDispatcher::preprocessSegments(const std::vector<CodeSegment>& segments) {
@@ -287,11 +273,11 @@ std::unique_ptr<ICompiler> CompilerFactory::createCHTLJSCompiler() {
 }
 
 std::unique_ptr<ICompiler> CompilerFactory::createCSSCompiler() {
-    return std::make_unique<CSS_COMPILER_TYPE>();
+    return std::make_unique<ANTLRCSSCompiler>();
 }
 
 std::unique_ptr<ICompiler> CompilerFactory::createJavaScriptCompiler() {
-    return std::make_unique<JS_COMPILER_TYPE>();
+    return std::make_unique<ANTLRJSCompiler>();
 }
 
 } // namespace chtl

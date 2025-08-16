@@ -2,14 +2,20 @@ chtl_compiler: \
   /lib/x86_64-linux-gnu/Scrt1.o \
   /lib/x86_64-linux-gnu/crti.o \
   /usr/lib/gcc/x86_64-linux-gnu/14/crtbeginS.o \
+  CMakeFiles/chtl_compiler.dir/generated/antlr/css/CSS3BaseListener.cpp.o \
+  CMakeFiles/chtl_compiler.dir/generated/antlr/css/CSS3Lexer.cpp.o \
+  CMakeFiles/chtl_compiler.dir/generated/antlr/css/CSS3Listener.cpp.o \
+  CMakeFiles/chtl_compiler.dir/generated/antlr/css/CSS3Parser.cpp.o \
+  CMakeFiles/chtl_compiler.dir/generated/antlr/js/JavaScriptBaseListener.cpp.o \
+  CMakeFiles/chtl_compiler.dir/generated/antlr/js/JavaScriptLexer.cpp.o \
+  CMakeFiles/chtl_compiler.dir/generated/antlr/js/JavaScriptListener.cpp.o \
+  CMakeFiles/chtl_compiler.dir/generated/antlr/js/JavaScriptParser.cpp.o \
   CMakeFiles/chtl_compiler.dir/src/ast/chtl_ast.cpp.o \
   CMakeFiles/chtl_compiler.dir/src/ast/chtl_js_ast.cpp.o \
   CMakeFiles/chtl_compiler.dir/src/common/types.cpp.o \
   CMakeFiles/chtl_compiler.dir/src/compilers/antlr_css_compiler.cpp.o \
   CMakeFiles/chtl_compiler.dir/src/compilers/antlr_js_compiler.cpp.o \
   CMakeFiles/chtl_compiler.dir/src/compilers/chtl_compiler.cpp.o \
-  CMakeFiles/chtl_compiler.dir/src/compilers/simple_css_compiler.cpp.o \
-  CMakeFiles/chtl_compiler.dir/src/compilers/simple_js_compiler.cpp.o \
   CMakeFiles/chtl_compiler.dir/src/dispatcher/compiler_dispatcher.cpp.o \
   CMakeFiles/chtl_compiler.dir/src/generators/chtl_generator.cpp.o \
   CMakeFiles/chtl_compiler.dir/src/lexer/chtl_js_tokens.cpp.o \
@@ -65,6 +71,22 @@ chtl_compiler: \
 
 /usr/lib/gcc/x86_64-linux-gnu/14/crtbeginS.o:
 
+CMakeFiles/chtl_compiler.dir/generated/antlr/css/CSS3BaseListener.cpp.o:
+
+CMakeFiles/chtl_compiler.dir/generated/antlr/css/CSS3Lexer.cpp.o:
+
+CMakeFiles/chtl_compiler.dir/generated/antlr/css/CSS3Listener.cpp.o:
+
+CMakeFiles/chtl_compiler.dir/generated/antlr/css/CSS3Parser.cpp.o:
+
+CMakeFiles/chtl_compiler.dir/generated/antlr/js/JavaScriptBaseListener.cpp.o:
+
+CMakeFiles/chtl_compiler.dir/generated/antlr/js/JavaScriptLexer.cpp.o:
+
+CMakeFiles/chtl_compiler.dir/generated/antlr/js/JavaScriptListener.cpp.o:
+
+CMakeFiles/chtl_compiler.dir/generated/antlr/js/JavaScriptParser.cpp.o:
+
 CMakeFiles/chtl_compiler.dir/src/ast/chtl_ast.cpp.o:
 
 CMakeFiles/chtl_compiler.dir/src/ast/chtl_js_ast.cpp.o:
@@ -76,10 +98,6 @@ CMakeFiles/chtl_compiler.dir/src/compilers/antlr_css_compiler.cpp.o:
 CMakeFiles/chtl_compiler.dir/src/compilers/antlr_js_compiler.cpp.o:
 
 CMakeFiles/chtl_compiler.dir/src/compilers/chtl_compiler.cpp.o:
-
-CMakeFiles/chtl_compiler.dir/src/compilers/simple_css_compiler.cpp.o:
-
-CMakeFiles/chtl_compiler.dir/src/compilers/simple_js_compiler.cpp.o:
 
 CMakeFiles/chtl_compiler.dir/src/dispatcher/compiler_dispatcher.cpp.o:
 

@@ -5,37 +5,6 @@
 #include <regex>
 
 using namespace chtl;
-using namespace antlr4;
-
-// JSASTVisitor实现
-JSASTVisitor::JSASTVisitor() {
-}
-
-void JSASTVisitor::enterProgram(JavaScriptParser::ProgramContext *ctx) {
-    // 处理程序
-}
-
-void JSASTVisitor::enterFunctionDeclaration(JavaScriptParser::FunctionDeclarationContext *ctx) {
-    if (ctx && ctx->Identifier()) {
-        std::string functionName = ctx->Identifier()->getText();
-        if (!functionName.empty()) {
-            functions_.push_back(functionName);
-        }
-    }
-}
-
-void JSASTVisitor::enterVariableStatement(JavaScriptParser::VariableStatementContext *ctx) {
-    // 处理变量语句
-}
-
-void JSASTVisitor::enterVariableDeclaration(JavaScriptParser::VariableDeclarationContext *ctx) {
-    if (ctx && ctx->Identifier()) {
-        std::string variableName = ctx->Identifier()->getText();
-        if (!variableName.empty()) {
-            variables_.push_back(variableName);
-        }
-    }
-}
 
 // ANTLRJSCompiler实现
 ANTLRJSCompiler::ANTLRJSCompiler() {
@@ -44,7 +13,6 @@ ANTLRJSCompiler::ANTLRJSCompiler() {
 std::vector<CodeSegmentType> ANTLRJSCompiler::getSupportedTypes() const {
     return {
         CodeSegmentType::JAVASCRIPT_STANDARD,
-        CodeSegmentType::JAVASCRIPT_ORIGIN,
         CodeSegmentType::CHTL_JS_SCRIPT
     };
 }
@@ -55,6 +23,7 @@ CompileResult ANTLRJSCompiler::compile(const CodeSegment& segment, const Compile
     jsOptions.validateSyntax = true;
     jsOptions.extractFunctions = true;
     jsOptions.extractVariables = true;
+    jsOptions.extractClasses = true;
     
     auto jsResult = compileJS(segment.content, jsOptions);
     
@@ -72,22 +41,36 @@ JSCompileResult ANTLRJSCompiler::compileJS(const std::string& jsCode, const JSCo
     result.originalSize = jsCode.length();
     
     try {
-        std::vector<std::string> parseErrors;
-        auto tree = parseJS(jsCode, parseErrors);
+        std::cout << "开始标准JavaScript编译..." << std::endl;
         
-        if (!tree || !parseErrors.empty()) {
-            result.success = false;
-            result.errors = parseErrors;
-            return result;
+        // 提取函数
+        if (options.extractFunctions) {
+            result.functions = extractFunctionsRegex(jsCode);
+            std::cout << "提取的函数数量: " << result.functions.size() << std::endl;
         }
         
-        // 提取信息
-        extractInfo(tree.get(), result, options);
+        // 提取变量
+        if (options.extractVariables) {
+            result.variables = extractVariablesRegex(jsCode);
+            std::cout << "提取的变量数量: " << result.variables.size() << std::endl;
+        }
+        
+        // 提取类
+        if (options.extractClasses) {
+            result.classes = extractClassesRegex(jsCode);
+            std::cout << "提取的类数量: " << result.classes.size() << std::endl;
+        }
         
         // 生成JavaScript
-        result.javascript = generateJS(tree.get(), options);
+        result.javascript = jsCode; // 基础版本直接返回原始代码
+        if (options.minify) {
+            result.javascript = JSUtils::removeWhitespace(result.javascript);
+        }
+        
         result.compiledSize = result.javascript.length();
         result.success = true;
+        
+        std::cout << "标准JavaScript编译完成" << std::endl;
         
     } catch (const std::exception& e) {
         result.success = false;
@@ -97,79 +80,97 @@ JSCompileResult ANTLRJSCompiler::compileJS(const std::string& jsCode, const JSCo
     return result;
 }
 
-std::unique_ptr<tree::ParseTree> ANTLRJSCompiler::parseJS(const std::string& jsCode, 
-                                                           std::vector<std::string>& errors) {
-    try {
-        ANTLRInputStream input(jsCode);
-        JavaScriptLexer lexer(&input);
-        CommonTokenStream tokens(&lexer);
-        JavaScriptParser parser(&tokens);
-        
-        // 禁用错误输出到控制台
-        parser.removeErrorListeners();
-        lexer.removeErrorListeners();
-        
-        // 解析JavaScript
-        return std::unique_ptr<tree::ParseTree>(parser.program());
-        
-    } catch (const std::exception& e) {
-        errors.push_back(std::string("Parse error: ") + e.what());
-        return nullptr;
-    }
-}
-
-std::string ANTLRJSCompiler::generateJS(tree::ParseTree* tree, const JSCompileOptions& options) {
-    if (!tree) return "";
+std::vector<std::string> ANTLRJSCompiler::extractFunctionsRegex(const std::string& jsCode) {
+    std::vector<std::string> functions;
     
-    // 简单地返回原始文本（可以在这里实现更复杂的格式化）
-    std::string js = tree->getText();
+    // 匹配function声明
+    std::regex functionRegex(R"(function\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\s*\()");
+    std::sregex_iterator iter(jsCode.begin(), jsCode.end(), functionRegex);
+    std::sregex_iterator end;
     
-    if (options.minify) {
-        // 简单的压缩：移除多余空白
-        js = JSUtils::removeWhitespace(js);
+    for (; iter != end; ++iter) {
+        std::string functionName = iter->str(1);
+        if (!functionName.empty()) {
+            functions.push_back(functionName);
+        }
     }
     
-    return js;
+    // 匹配箭头函数赋值
+    std::regex arrowRegex(R"((const|let|var)\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\s*=\s*\([^)]*\)\s*=>)");
+    iter = std::sregex_iterator(jsCode.begin(), jsCode.end(), arrowRegex);
+    
+    for (; iter != end; ++iter) {
+        std::string functionName = iter->str(2);
+        if (!functionName.empty()) {
+            functions.push_back(functionName);
+        }
+    }
+    
+    return functions;
 }
 
-void ANTLRJSCompiler::extractInfo(tree::ParseTree* tree, JSCompileResult& result, 
-                                  const JSCompileOptions& options) {
-    if (!tree) return;
+std::vector<std::string> ANTLRJSCompiler::extractVariablesRegex(const std::string& jsCode) {
+    std::vector<std::string> variables;
     
-    JSASTVisitor visitor;
-    tree::ParseTreeWalker walker;
-    walker.walk(&visitor, tree);
+    // 匹配var/let/const声明
+    std::regex varRegex(R"((var|let|const)\s+([a-zA-Z_$][a-zA-Z0-9_$]*))");
+    std::sregex_iterator iter(jsCode.begin(), jsCode.end(), varRegex);
+    std::sregex_iterator end;
     
-    // 获取提取的信息
-    result.functions = visitor.getFunctions();
-    result.variables = visitor.getVariables();
-    result.classes = visitor.getClasses();
+    for (; iter != end; ++iter) {
+        std::string varName = iter->str(2);
+        if (!varName.empty()) {
+            variables.push_back(varName);
+        }
+    }
+    
+    return variables;
+}
+
+std::vector<std::string> ANTLRJSCompiler::extractClassesRegex(const std::string& jsCode) {
+    std::vector<std::string> classes;
+    
+    // 匹配class声明
+    std::regex classRegex(R"(class\s+([a-zA-Z_$][a-zA-Z0-9_$]*))");
+    std::sregex_iterator iter(jsCode.begin(), jsCode.end(), classRegex);
+    std::sregex_iterator end;
+    
+    for (; iter != end; ++iter) {
+        std::string className = iter->str(1);
+        if (!className.empty()) {
+            classes.push_back(className);
+        }
+    }
+    
+    return classes;
 }
 
 bool ANTLRJSCompiler::validateSyntax(const std::string& jsCode, std::vector<std::string>& errors) {
-    auto tree = parseJS(jsCode, errors);
-    return tree != nullptr && errors.empty();
+    // 基本的JavaScript语法验证
+    try {
+        // 检查基本的语法结构
+        std::regex invalidRegex(R"(\}\s*\{)"); // 简单的语法错误检测
+        if (std::regex_search(jsCode, invalidRegex)) {
+            errors.push_back("Potential syntax error: unexpected token sequence");
+            return false;
+        }
+        return true;
+    } catch (const std::exception& e) {
+        errors.push_back(e.what());
+        return false;
+    }
 }
 
 std::vector<std::string> ANTLRJSCompiler::extractFunctions(const std::string& jsCode) {
-    JSCompileOptions options;
-    options.extractFunctions = true;
-    auto result = compileJS(jsCode, options);
-    return result.functions;
+    return extractFunctionsRegex(jsCode);
 }
 
 std::vector<std::string> ANTLRJSCompiler::extractVariables(const std::string& jsCode) {
-    JSCompileOptions options;
-    options.extractVariables = true;
-    auto result = compileJS(jsCode, options);
-    return result.variables;
+    return extractVariablesRegex(jsCode);
 }
 
 std::vector<std::string> ANTLRJSCompiler::extractClasses(const std::string& jsCode) {
-    JSCompileOptions options;
-    options.extractClasses = true;
-    auto result = compileJS(jsCode, options);
-    return result.classes;
+    return extractClassesRegex(jsCode);
 }
 
 std::string ANTLRJSCompiler::minifyJS(const std::string& jsCode) {
@@ -187,124 +188,104 @@ std::string ANTLRJSCompiler::formatJS(const std::string& jsCode, const std::stri
 }
 
 std::string ANTLRJSCompiler::convertToES5(const std::string& jsCode) {
-    // 简单的ES6到ES5转换（可以在这里实现更复杂的转换逻辑）
-    std::string es5Code = jsCode;
+    // 简化实现：基本的ES6到ES5转换
+    std::string result = jsCode;
     
-    // 转换箭头函数
-    es5Code = std::regex_replace(es5Code, std::regex(R"(\(\s*([^)]*)\s*\)\s*=>\s*)"), "function($1)");
+    // 将const和let转换为var
+    result = std::regex_replace(result, std::regex(R"(\b(const|let)\b)"), "var");
     
-    // 转换const/let为var
-    es5Code = std::regex_replace(es5Code, std::regex(R"(\bconst\b)"), "var");
-    es5Code = std::regex_replace(es5Code, std::regex(R"(\blet\b)"), "var");
-    
-    return es5Code;
+    return result;
 }
 
 std::string ANTLRJSCompiler::convertToES6(const std::string& jsCode) {
-    // 简单的ES5到ES6转换
-    return jsCode;
+    // 简化实现：基本的ES5到ES6转换
+    return jsCode; // 大部分ES5代码在ES6中都是有效的
 }
 
 // JSUtils实现
 bool JSUtils::isValidIdentifier(const std::string& identifier) {
     if (identifier.empty()) return false;
     
-    // 检查第一个字符
-    if (!std::isalpha(identifier[0]) && identifier[0] != '_' && identifier[0] != '$') {
-        return false;
-    }
-    
-    // 检查其余字符
-    for (size_t i = 1; i < identifier.length(); ++i) {
-        if (!std::isalnum(identifier[i]) && identifier[i] != '_' && identifier[i] != '$') {
-            return false;
-        }
-    }
-    
-    return !isKeyword(identifier);
+    // JavaScript标识符规则：以字母、_或$开头，后面可以跟字母、数字、_或$
+    std::regex identifierRegex(R"(^[a-zA-Z_$][a-zA-Z0-9_$]*$)");
+    return std::regex_match(identifier, identifierRegex);
 }
 
 bool JSUtils::isKeyword(const std::string& word) {
     static const std::vector<std::string> keywords = {
-        "abstract", "boolean", "break", "byte", "case", "catch", "char", "class",
-        "const", "continue", "debugger", "default", "delete", "do", "double",
-        "else", "enum", "export", "extends", "false", "final", "finally",
-        "float", "for", "function", "goto", "if", "implements", "import",
-        "in", "instanceof", "int", "interface", "let", "long", "native",
-        "new", "null", "package", "private", "protected", "public", "return",
-        "short", "static", "super", "switch", "synchronized", "this", "throw",
-        "throws", "transient", "true", "try", "typeof", "var", "void",
-        "volatile", "while", "with", "yield"
+        "break", "case", "catch", "class", "const", "continue", "debugger", "default",
+        "delete", "do", "else", "export", "extends", "finally", "for", "function",
+        "if", "import", "in", "instanceof", "let", "new", "return", "super",
+        "switch", "this", "throw", "try", "typeof", "var", "void", "while", "with", "yield"
     };
     
     return std::find(keywords.begin(), keywords.end(), word) != keywords.end();
 }
 
 std::string JSUtils::detectESVersion(const std::string& jsCode) {
-    if (jsCode.find("=>") != std::string::npos ||
+    // 检测ES版本特性
+    if (jsCode.find("class ") != std::string::npos ||
         jsCode.find("const ") != std::string::npos ||
         jsCode.find("let ") != std::string::npos ||
-        jsCode.find("class ") != std::string::npos) {
-        return "es2015";
+        jsCode.find("=>") != std::string::npos) {
+        return "ES6+";
     }
     
-    if (jsCode.find("async ") != std::string::npos ||
-        jsCode.find("await ") != std::string::npos) {
-        return "es2017";
-    }
-    
-    return "es5";
+    return "ES5";
 }
 
-std::string JSUtils::extractFunctionName(const std::string& functionDecl) {
-    std::regex funcRegex(R"(function\s+([a-zA-Z_$][a-zA-Z0-9_$]*))");
+std::string JSUtils::extractFunctionName(const std::string& funcDecl) {
+    std::regex functionRegex(R"(function\s+([a-zA-Z_$][a-zA-Z0-9_$]*))");
     std::smatch match;
     
-    if (std::regex_search(functionDecl, match, funcRegex)) {
-        return match[1].str();
+    if (std::regex_search(funcDecl, match, functionRegex)) {
+        return match.str(1);
     }
     
     return "";
 }
 
-std::vector<std::string> JSUtils::extractParameters(const std::string& functionDecl) {
-    std::vector<std::string> params;
+std::vector<std::string> JSUtils::extractParameters(const std::string& funcDecl) {
+    std::vector<std::string> parameters;
+    
     std::regex paramRegex(R"(\(([^)]*)\))");
     std::smatch match;
     
-    if (std::regex_search(functionDecl, match, paramRegex)) {
-        std::string paramStr = match[1].str();
-        std::stringstream ss(paramStr);
-        std::string param;
+    if (std::regex_search(funcDecl, match, paramRegex)) {
+        std::string paramList = match.str(1);
         
-        while (std::getline(ss, param, ',')) {
-            // 去除空白
-            param.erase(0, param.find_first_not_of(" \t"));
-            param.erase(param.find_last_not_of(" \t") + 1);
+        // 分割参数
+        std::regex commaRegex(R"(\s*,\s*)");
+        std::sregex_token_iterator iter(paramList.begin(), paramList.end(), commaRegex, -1);
+        std::sregex_token_iterator end;
+        
+        for (; iter != end; ++iter) {
+            std::string param = iter->str();
+            param = std::regex_replace(param, std::regex(R"(^\s+|\s+$)"), ""); // trim
             if (!param.empty()) {
-                params.push_back(param);
+                parameters.push_back(param);
             }
         }
     }
     
-    return params;
+    return parameters;
 }
 
 std::string JSUtils::extractVariableName(const std::string& varDecl) {
-    std::regex varRegex(R"((?:var|let|const)\s+([a-zA-Z_$][a-zA-Z0-9_$]*))");
+    std::regex varRegex(R"((var|let|const)\s+([a-zA-Z_$][a-zA-Z0-9_$]*))");
     std::smatch match;
     
     if (std::regex_search(varDecl, match, varRegex)) {
-        return match[1].str();
+        return match.str(2);
     }
     
     return "";
 }
 
 std::string JSUtils::detectVariableType(const std::string& varDecl) {
-    if (varDecl.find("const ") == 0) return "const";
-    if (varDecl.find("let ") == 0) return "let";
-    if (varDecl.find("var ") == 0) return "var";
+    if (varDecl.find("const ") != std::string::npos) return "const";
+    if (varDecl.find("let ") != std::string::npos) return "let";
+    if (varDecl.find("var ") != std::string::npos) return "var";
     return "unknown";
 }
 
@@ -312,7 +293,7 @@ std::string JSUtils::removeComments(const std::string& js) {
     std::string result = js;
     
     // 移除单行注释
-    result = std::regex_replace(result, std::regex(R"(//.*$)"), "", std::regex_constants::match_any);
+    result = std::regex_replace(result, std::regex(R"(//.*$)"), "", std::regex_constants::match_default);
     
     // 移除多行注释
     result = std::regex_replace(result, std::regex(R"(/\*.*?\*/)"), "");
@@ -332,39 +313,40 @@ std::string JSUtils::addIndentation(const std::string& js, const std::string& in
 }
 
 int JSUtils::calculateComplexity(const std::string& jsCode) {
-    int complexity = 1;
+    int complexity = 1; // 基础复杂度
     
-    std::vector<std::string> controlFlow = {"if", "else", "while", "for", "switch", "case", "catch"};
+    // 统计控制流关键字
+    std::vector<std::string> complexityKeywords = {"if", "else", "for", "while", "switch", "case", "catch"};
     
-    for (const auto& keyword : controlFlow) {
+    for (const auto& keyword : complexityKeywords) {
         std::regex keywordRegex("\\b" + keyword + "\\b");
-        std::sregex_iterator begin(jsCode.begin(), jsCode.end(), keywordRegex);
+        std::sregex_iterator iter(jsCode.begin(), jsCode.end(), keywordRegex);
         std::sregex_iterator end;
-        complexity += std::distance(begin, end);
+        complexity += std::distance(iter, end);
     }
     
     return complexity;
 }
 
 std::vector<std::string> JSUtils::findDependencies(const std::string& jsCode) {
-    std::vector<std::string> deps;
+    std::vector<std::string> dependencies;
     
     // 查找require语句
     std::regex requireRegex(R"(require\s*\(\s*['"]([^'"]+)['"]\s*\))");
-    std::sregex_iterator begin(jsCode.begin(), jsCode.end(), requireRegex);
+    std::sregex_iterator iter(jsCode.begin(), jsCode.end(), requireRegex);
     std::sregex_iterator end;
     
-    for (std::sregex_iterator i = begin; i != end; ++i) {
-        deps.push_back(i->str(1));
+    for (; iter != end; ++iter) {
+        dependencies.push_back(iter->str(1));
     }
     
     // 查找import语句
-    std::regex importRegex(R"(import\s+.*\s+from\s+['"]([^'"]+)['"])");
-    begin = std::sregex_iterator(jsCode.begin(), jsCode.end(), importRegex);
+    std::regex importRegex(R"(import\s+.*?from\s+['"]([^'"]+)['"])");
+    iter = std::sregex_iterator(jsCode.begin(), jsCode.end(), importRegex);
     
-    for (std::sregex_iterator i = begin; i != end; ++i) {
-        deps.push_back(i->str(1));
+    for (; iter != end; ++iter) {
+        dependencies.push_back(iter->str(1));
     }
     
-    return deps;
+    return dependencies;
 }

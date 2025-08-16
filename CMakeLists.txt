@@ -137,7 +137,7 @@ else()
 endif()
 
 
-# 收集所有源文件（移除ANTLR生成的文件）
+# 收集所有源文件，包括ANTLR生成的文件
 file(GLOB_RECURSE SOURCES 
     "src/ast/*.cpp"
     "src/lexer/*.cpp"
@@ -148,6 +148,8 @@ file(GLOB_RECURSE SOURCES
     "src/compilers/*.cpp"
     "src/scanner/*.cpp"
     "src/tools/*.cpp"
+    "generated/antlr/css/*.cpp"
+    "generated/antlr/js/*.cpp"
 )
 
 # 移除有main函数的文件，避免冲突
@@ -156,7 +158,7 @@ list(REMOVE_ITEM SOURCES "${CMAKE_SOURCE_DIR}/src/tools/chtl_cmod_tool.cpp")
 list(REMOVE_ITEM SOURCES "${CMAKE_SOURCE_DIR}/src/tools/chtl_cjmod_tool.cpp")
 
 # ========================================
-# ANTLR4 跨平台集成方案
+# ANTLR4 集成配置
 # ========================================
 
 # 查找ANTLR4库文件（支持多种命名约定）
@@ -189,8 +191,8 @@ function(find_antlr4_library)
         endif()
     endforeach()
     
-    # 如果没找到，设置为空
-    set(ANTLR4_LIB "" PARENT_SCOPE)
+    # 如果没找到，报错
+    message(FATAL_ERROR "ANTLR4 library not found. Please install ANTLR4 development files or place them in third_party/antlr4/lib/")
 endfunction()
 
 # 查找ANTLR4头文件
@@ -210,59 +212,40 @@ function(find_antlr4_headers)
         endif()
     endforeach()
     
-    # 如果没找到，使用默认路径
-    set(ANTLR4_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/third_party/antlr4/include" PARENT_SCOPE)
+    # 如果没找到，报错
+    message(FATAL_ERROR "ANTLR4 headers not found. Please install ANTLR4 development files or place them in third_party/antlr4/include/")
 endfunction()
 
 # 执行查找
 find_antlr4_library()
 find_antlr4_headers()
 
-# 设置编译器选择策略
-if(ANTLR4_LIB AND EXISTS "${ANTLR4_INCLUDE_DIR}")
-    set(USE_ANTLR_COMPILERS ON)
-    message(STATUS "✓ ANTLR4 integration enabled - Full CSS/JS syntax support")
-    message(STATUS "  Library: ${ANTLR4_LIB}")
-    message(STATUS "  Headers: ${ANTLR4_INCLUDE_DIR}")
-else()
-    set(USE_ANTLR_COMPILERS OFF)
-    message(STATUS "⚠ ANTLR4 not found - Using simplified compilers")
-    message(STATUS "  This provides basic CSS/JS support")
-    message(STATUS "  For full syntax support, install ANTLR4 development files")
-endif()
+# ANTLR4集成状态
+message(STATUS "✓ ANTLR4 integration enabled - Full CSS/JS syntax support with standard selectors")
+message(STATUS "  Library: ${ANTLR4_LIB}")
+message(STATUS "  Headers: ${ANTLR4_INCLUDE_DIR}")
 
-# 根据ANTLR4可用性选择编译器源文件
-if(USE_ANTLR_COMPILERS)
-    # 包含ANTLR生成的源文件
-    file(GLOB_RECURSE ANTLR_GENERATED_SRC
-        "generated/antlr/css/*.cpp"
-        "generated/antlr/js/*.cpp"
-    )
-    
-    set(CSS_JS_COMPILER_SOURCES
-        src/compilers/antlr_css_compiler.cpp
-        src/compilers/antlr_js_compiler.cpp
-        ${ANTLR_GENERATED_SRC}
-    )
-    
-    set(CSS_JS_INCLUDE_DIRS
-        ${CMAKE_SOURCE_DIR}/generated/antlr/css
-        ${CMAKE_SOURCE_DIR}/generated/antlr/js
-        ${ANTLR4_INCLUDE_DIR}
-    )
-    
-    add_definitions(-DUSE_ANTLR_COMPILERS=1)
-else()
-    # 使用简化编译器
-    set(CSS_JS_COMPILER_SOURCES
-        src/compilers/simple_css_compiler.cpp
-        src/compilers/simple_js_compiler.cpp
-    )
-    
-    set(CSS_JS_INCLUDE_DIRS "")
-    
-    add_definitions(-DUSE_ANTLR_COMPILERS=0)
-endif()
+# 包含ANTLR生成的源文件
+file(GLOB_RECURSE ANTLR_GENERATED_SRC
+    "generated/antlr/css/*.cpp"
+    "generated/antlr/js/*.cpp"
+)
+
+# 设置CSS/JS编译器源文件和包含目录
+set(CSS_JS_COMPILER_SOURCES
+    src/compilers/antlr_css_compiler.cpp
+    src/compilers/antlr_js_compiler.cpp
+    ${ANTLR_GENERATED_SRC}
+)
+
+set(CSS_JS_INCLUDE_DIRS
+    ${CMAKE_SOURCE_DIR}/generated/antlr/css
+    ${CMAKE_SOURCE_DIR}/generated/antlr/js
+    ${ANTLR4_INCLUDE_DIR}
+)
+
+# 添加编译器定义
+add_definitions(-DUSE_ANTLR_COMPILERS=1)
 
 # 创建CHTL编译器可执行文件
 add_executable(chtl_compiler ${SOURCES} src/main.cpp)
@@ -273,12 +256,10 @@ target_include_directories(chtl_compiler PRIVATE
     ${CSS_JS_INCLUDE_DIRS}
 )
 
-# 链接库
-if(USE_ANTLR_COMPILERS)
-    target_link_libraries(chtl_compiler ${ANTLR4_LIB})
-endif()
+# 链接ANTLR4库
+target_link_libraries(chtl_compiler ${ANTLR4_LIB})
 
-# 为测试程序收集源文件（移除ANTLR生成的文件）
+# 为测试程序收集源文件，包括ANTLR生成的文件
 file(GLOB_RECURSE TEST_LIB_SOURCES 
     "src/ast/*.cpp"
     "src/lexer/*.cpp"
@@ -287,6 +268,8 @@ file(GLOB_RECURSE TEST_LIB_SOURCES
     "src/dispatcher/*.cpp"
     "src/compilers/*.cpp"
     "src/scanner/*.cpp"
+    "generated/antlr/css/*.cpp"
+    "generated/antlr/js/*.cpp"
 )
 
 # 移除有main函数的文件
@@ -303,56 +286,25 @@ target_include_directories(chtl_test_lib PRIVATE
 )
 
 # 链接ANTLR4库到测试库
-if(USE_ANTLR_COMPILERS)
-    target_link_libraries(chtl_test_lib ${ANTLR4_LIB})
-endif()
+target_link_libraries(chtl_test_lib ${ANTLR4_LIB})
 
-# CSS/JS编译器测试程序
-if(USE_ANTLR_COMPILERS)
-    add_executable(antlr_compilers_test tests/antlr_compilers_test.cpp)
-    target_link_libraries(antlr_compilers_test chtl_test_lib)
-    target_include_directories(antlr_compilers_test PRIVATE
-        ${CMAKE_SOURCE_DIR}/include
-        ${CSS_JS_INCLUDE_DIRS}
-    )
-    message(STATUS "✓ ANTLR compilers test enabled")
-else()
-    add_executable(simple_compilers_test tests/simple_compilers_test.cpp)
-    target_link_libraries(simple_compilers_test chtl_test_lib)
-    target_include_directories(simple_compilers_test PRIVATE
-        ${CMAKE_SOURCE_DIR}/include
-    )
-    message(STATUS "✓ Simple compilers test enabled")
-endif()
+# ANTLR编译器测试
+add_executable(antlr_compilers_test tests/antlr_compilers_test.cpp)
+target_link_libraries(antlr_compilers_test chtl_test_lib)
+target_include_directories(antlr_compilers_test PRIVATE
+    ${CMAKE_SOURCE_DIR}/include
+    ${CSS_JS_INCLUDE_DIRS}
+)
 
-# 可选：如果检测到ANTLR4库，添加ANTLR编译器测试
-# find_library(ANTLR4_LIB antlr4-runtime-static 
-#     PATHS ${CMAKE_SOURCE_DIR}/third_party/antlr4/lib 
-#     NO_DEFAULT_PATH)
+# ANTLR简化测试
+add_executable(antlr_simple_test tests/antlr_simple_test.cpp)
+target_link_libraries(antlr_simple_test chtl_test_lib)
+target_include_directories(antlr_simple_test PRIVATE
+    ${CMAKE_SOURCE_DIR}/include
+    ${CSS_JS_INCLUDE_DIRS}
+)
 
-# if(ANTLR4_LIB)
-#     message(STATUS "Found ANTLR4 library: ${ANTLR4_LIB}")
-#     message(STATUS "ANTLR4 support will be available in future versions")
-    
-#     # 为将来的ANTLR集成做准备
-#     target_include_directories(chtl_compiler PRIVATE
-#         ${CMAKE_SOURCE_DIR}/generated/antlr/css
-#         ${CMAKE_SOURCE_DIR}/generated/antlr/js
-#         ${CMAKE_SOURCE_DIR}/third_party/antlr4/include
-#     )
-    
-#     # 可选：编译ANTLR编译器测试（如果需要）
-#     # add_executable(antlr_compilers_test tests/antlr_compilers_test.cpp)
-#     # target_link_libraries(antlr_compilers_test chtl_test_lib ${ANTLR4_LIB})
-#     # target_include_directories(antlr_compilers_test PRIVATE
-#     #     ${CMAKE_SOURCE_DIR}/include
-#     #     ${CMAKE_SOURCE_DIR}/generated/antlr/css
-#     #     ${CMAKE_SOURCE_DIR}/generated/antlr/js
-#     #     ${CMAKE_SOURCE_DIR}/third_party/antlr4/include
-#     # )
-# else()
-#     message(STATUS "ANTLR4 library not found, using simplified compilers")
-# endif()
+message(STATUS "✓ ANTLR compilers test enabled")
 
 
 add_subdirectory(runtime)
