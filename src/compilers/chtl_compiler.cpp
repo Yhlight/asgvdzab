@@ -6,8 +6,8 @@
 
 namespace chtl {
 
-// AST节点实现
-std::string ElementNode::toString() const {
+// 编译器内部AST节点实现 (Legacy)
+std::string CompilerElementNode::toString() const {
     std::stringstream ss;
     ss << "<" << tagName;
     for (const auto& attr : attributes) {
@@ -25,15 +25,15 @@ std::string ElementNode::toString() const {
     return ss.str();
 }
 
-std::string TextNode::toString() const {
+std::string CompilerTextNode::toString() const {
     return content;
 }
 
-std::string TemplateNode::toString() const {
+std::string CompilerTemplateNode::toString() const {
     return "[Template] " + templateType + " " + name + " { " + content + " }";
 }
 
-std::string CustomNode::toString() const {
+std::string CompilerCustomNode::toString() const {
     return "[Custom] " + customType + " " + name + " { " + content + " }";
 }
 
@@ -142,7 +142,7 @@ std::unique_ptr<ASTNode> CHTLCompiler::parse(const std::string& source) {
     }
 }
 
-std::unique_ptr<ElementNode> CHTLCompiler::parseElement() {
+std::unique_ptr<CompilerElementNode> CHTLCompiler::parseElement() {
     skipWhitespace();
     
     // 读取元素名
@@ -152,7 +152,7 @@ std::unique_ptr<ElementNode> CHTLCompiler::parseElement() {
         return nullptr;
     }
     
-    auto element = std::make_unique<ElementNode>(tagName);
+    auto element = std::make_unique<CompilerElementNode>(tagName);
     
     skipWhitespace();
     
@@ -235,7 +235,7 @@ std::unique_ptr<ElementNode> CHTLCompiler::parseElement() {
     return element;
 }
 
-std::unique_ptr<TextNode> CHTLCompiler::parseText() {
+std::unique_ptr<CompilerTextNode> CHTLCompiler::parseText() {
     skipWhitespace();
     
     if (!expect('{')) {
@@ -262,10 +262,10 @@ std::unique_ptr<TextNode> CHTLCompiler::parseText() {
     content.erase(0, content.find_first_not_of(" \t\n\r"));
     content.erase(content.find_last_not_of(" \t\n\r") + 1);
     
-    return std::make_unique<TextNode>(content);
+    return std::make_unique<CompilerTextNode>(content);
 }
 
-std::unique_ptr<TemplateNode> CHTLCompiler::parseTemplate() {
+std::unique_ptr<CompilerTemplateNode> CHTLCompiler::parseTemplate() {
     skipWhitespace();
     
     std::string templateType = readIdentifier();
@@ -286,7 +286,7 @@ std::unique_ptr<TemplateNode> CHTLCompiler::parseTemplate() {
     
     std::string content = readBlock();
     
-    auto templateNode = std::make_unique<TemplateNode>(templateType, name);
+    auto templateNode = std::make_unique<CompilerTemplateNode>(templateType, name);
     templateNode->content = content;
     
     // 存储模板
@@ -295,7 +295,7 @@ std::unique_ptr<TemplateNode> CHTLCompiler::parseTemplate() {
     return templateNode;
 }
 
-std::unique_ptr<CustomNode> CHTLCompiler::parseCustom() {
+std::unique_ptr<CompilerCustomNode> CHTLCompiler::parseCustom() {
     skipWhitespace();
     
     std::string customType = readIdentifier();
@@ -316,7 +316,7 @@ std::unique_ptr<CustomNode> CHTLCompiler::parseCustom() {
     
     std::string content = readBlock();
     
-    auto customNode = std::make_unique<CustomNode>(customType, name);
+    auto customNode = std::make_unique<CompilerCustomNode>(customType, name);
     customNode->content = content;
     
     // 存储自定义
@@ -325,7 +325,7 @@ std::unique_ptr<CustomNode> CHTLCompiler::parseCustom() {
     return customNode;
 }
 
-void CHTLCompiler::parseLocalStyle(ElementNode* element) {
+void CHTLCompiler::parseLocalStyle(CompilerElementNode* element) {
     skipWhitespace();
     
     if (!expect('{')) {
@@ -354,7 +354,7 @@ void CHTLCompiler::parseLocalStyle(ElementNode* element) {
     element->localStyle = styleContent;
 }
 
-void CHTLCompiler::parseLocalScript(ElementNode* element) {
+void CHTLCompiler::parseLocalScript(CompilerElementNode* element) {
     skipWhitespace();
     
     if (!expect('{')) {
@@ -455,16 +455,16 @@ std::string CHTLCompiler::generateHTML(const ASTNode* node) {
         return "";
     }
     
-    if (auto element = dynamic_cast<const ElementNode*>(node)) {
+    if (auto element = dynamic_cast<const CompilerElementNode*>(node)) {
         return generateElementHTML(element);
-    } else if (auto text = dynamic_cast<const TextNode*>(node)) {
+    } else if (auto text = dynamic_cast<const CompilerTextNode*>(node)) {
         return generateTextHTML(text);
     }
     
     return "";
 }
 
-std::string CHTLCompiler::generateElementHTML(const ElementNode* element) {
+std::string CHTLCompiler::generateElementHTML(const CompilerElementNode* element) {
     std::stringstream ss;
     
     // 生成开始标签
@@ -520,7 +520,7 @@ std::string CHTLCompiler::generateElementHTML(const ElementNode* element) {
     return ss.str();
 }
 
-std::string CHTLCompiler::generateTextHTML(const TextNode* text) {
+std::string CHTLCompiler::generateTextHTML(const CompilerTextNode* text) {
     return text->content;
 }
 

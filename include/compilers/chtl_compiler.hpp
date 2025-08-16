@@ -18,9 +18,9 @@ public:
 };
 
 /**
- * 元素节点
+ * 编译器内部元素节点 (Legacy)
  */
-class ElementNode : public ASTNode {
+class CompilerElementNode : public ASTNode {
 public:
     std::string tagName;                                    // 标签名
     std::unordered_map<std::string, std::string> attributes; // 属性
@@ -28,45 +28,45 @@ public:
     std::string localStyle;                                 // 局部样式
     std::string localScript;                                // 局部脚本
 
-    ElementNode(const std::string& tag) : tagName(tag) {}
+    CompilerElementNode(const std::string& tag) : tagName(tag) {}
     std::string toString() const override;
 };
 
 /**
- * 文本节点
+ * 编译器内部文本节点 (Legacy)
  */
-class TextNode : public ASTNode {
+class CompilerTextNode : public ASTNode {
 public:
     std::string content;
 
-    TextNode(const std::string& text) : content(text) {}
+    CompilerTextNode(const std::string& text) : content(text) {}
     std::string toString() const override;
 };
 
 /**
- * 模板节点
+ * 编译器内部模板节点 (Legacy)
  */
-class TemplateNode : public ASTNode {
+class CompilerTemplateNode : public ASTNode {
 public:
     std::string templateType; // @Style, @Element, @Var
     std::string name;
     std::string content;
     
-    TemplateNode(const std::string& type, const std::string& templateName) 
+    CompilerTemplateNode(const std::string& type, const std::string& templateName) 
         : templateType(type), name(templateName) {}
     std::string toString() const override;
 };
 
 /**
- * 自定义节点
+ * 编译器内部自定义节点 (Legacy)
  */
-class CustomNode : public ASTNode {
+class CompilerCustomNode : public ASTNode {
 public:
     std::string customType; // @Style, @Element, @Var
     std::string name;
     std::string content;
     
-    CustomNode(const std::string& type, const std::string& customName) 
+    CompilerCustomNode(const std::string& type, const std::string& customName) 
         : customType(type), name(customName) {}
     std::string toString() const override;
 };
@@ -152,43 +152,43 @@ private:
      * 解析元素
      * @return 元素节点
      */
-    std::unique_ptr<ElementNode> parseElement();
+    std::unique_ptr<CompilerElementNode> parseElement();
 
     /**
      * 解析文本节点
      * @return 文本节点
      */
-    std::unique_ptr<TextNode> parseText();
+    std::unique_ptr<CompilerTextNode> parseText();
 
     /**
      * 解析模板
      * @return 模板节点
      */
-    std::unique_ptr<TemplateNode> parseTemplate();
+    std::unique_ptr<CompilerTemplateNode> parseTemplate();
 
     /**
      * 解析自定义
      * @return 自定义节点
      */
-    std::unique_ptr<CustomNode> parseCustom();
+    std::unique_ptr<CompilerCustomNode> parseCustom();
 
     /**
      * 解析属性
      * @param element 元素节点
      */
-    void parseAttributes(ElementNode* element);
+    void parseAttributes(CompilerElementNode* element);
 
     /**
      * 解析局部样式块
      * @param element 元素节点
      */
-    void parseLocalStyle(ElementNode* element);
+    void parseLocalStyle(CompilerElementNode* element);
 
     /**
      * 解析局部脚本块
      * @param element 元素节点
      */
-    void parseLocalScript(ElementNode* element);
+    void parseLocalScript(CompilerElementNode* element);
 
     /**
      * 处理局部样式
@@ -210,14 +210,14 @@ private:
      * @param element 元素节点
      * @return HTML字符串
      */
-    std::string generateElementHTML(const ElementNode* element);
+    std::string generateElementHTML(const CompilerElementNode* element);
 
     /**
      * 生成文本HTML
      * @param text 文本节点
      * @return HTML字符串
      */
-    std::string generateTextHTML(const TextNode* text);
+    std::string generateTextHTML(const CompilerTextNode* text);
 
     /**
      * 处理模板引用

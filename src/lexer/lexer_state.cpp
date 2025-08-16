@@ -608,28 +608,28 @@ CodeSegmentType StateUtils::getCodeSegmentType(LexerStateType state) {
         case LexerStateType::IN_TEXT_BLOCK:
         case LexerStateType::IN_ELEMENT_BODY:
         case LexerStateType::IN_ATTRIBUTE_LIST:
-            return CodeSegmentType::CHTL;
+            return CodeSegmentType::CHTL_CORE;
         case LexerStateType::IN_CHTL_JS_BLOCK:
         case LexerStateType::IN_SCRIPT_BLOCK:
         case LexerStateType::IN_ENHANCED_SELECTOR:
-            return CodeSegmentType::CHTL_JS;
+            return CodeSegmentType::CHTL_JS_SCRIPT;
         case LexerStateType::IN_CSS_BLOCK:
         case LexerStateType::IN_STYLE_BLOCK:
-            return CodeSegmentType::CSS;
+            return CodeSegmentType::CSS_LOCAL_STYLE;
         case LexerStateType::IN_JAVASCRIPT_BLOCK:
-            return CodeSegmentType::JAVASCRIPT;
+            return CodeSegmentType::JAVASCRIPT_STANDARD;
         case LexerStateType::IN_TEMPLATE_BLOCK:
-            return CodeSegmentType::TEMPLATE;
+            return CodeSegmentType::CHTL_TEMPLATE;
         case LexerStateType::IN_CUSTOM_BLOCK:
-            return CodeSegmentType::CUSTOM;
+            return CodeSegmentType::CHTL_CUSTOM;
         case LexerStateType::IN_ORIGIN_BLOCK:
-            return CodeSegmentType::ORIGIN;
+            return CodeSegmentType::ORIGIN_HTML;
         case LexerStateType::IN_IMPORT_BLOCK:
-            return CodeSegmentType::IMPORT;
+            return CodeSegmentType::CHTL_IMPORT;
         case LexerStateType::IN_NAMESPACE_BLOCK:
-            return CodeSegmentType::NAMESPACE;
+            return CodeSegmentType::CHTL_NAMESPACE;
         case LexerStateType::IN_CONFIGURATION_BLOCK:
-            return CodeSegmentType::CONFIGURATION;
+            return CodeSegmentType::CHTL_CONFIGURATION;
         default:
             return CodeSegmentType::UNKNOWN;
     }
@@ -637,25 +637,29 @@ CodeSegmentType StateUtils::getCodeSegmentType(LexerStateType state) {
 
 LexerStateType StateUtils::getStateFromCodeSegmentType(CodeSegmentType type) {
     switch (type) {
-        case CodeSegmentType::CHTL:
+        case CodeSegmentType::CHTL_CORE:
+        case CodeSegmentType::CHTL_TEXT:
             return LexerStateType::IN_CHTL_BLOCK;
-        case CodeSegmentType::CHTL_JS:
+        case CodeSegmentType::CHTL_JS_SCRIPT:
             return LexerStateType::IN_CHTL_JS_BLOCK;
-        case CodeSegmentType::CSS:
+        case CodeSegmentType::CSS_GLOBAL:
+        case CodeSegmentType::CSS_LOCAL_STYLE:
+        case CodeSegmentType::CSS_ORIGIN:
             return LexerStateType::IN_CSS_BLOCK;
-        case CodeSegmentType::JAVASCRIPT:
+        case CodeSegmentType::JAVASCRIPT_STANDARD:
+        case CodeSegmentType::JAVASCRIPT_ORIGIN:
             return LexerStateType::IN_JAVASCRIPT_BLOCK;
-        case CodeSegmentType::TEMPLATE:
+        case CodeSegmentType::CHTL_TEMPLATE:
             return LexerStateType::IN_TEMPLATE_BLOCK;
-        case CodeSegmentType::CUSTOM:
+        case CodeSegmentType::CHTL_CUSTOM:
             return LexerStateType::IN_CUSTOM_BLOCK;
-        case CodeSegmentType::ORIGIN:
+        case CodeSegmentType::ORIGIN_HTML:
             return LexerStateType::IN_ORIGIN_BLOCK;
-        case CodeSegmentType::IMPORT:
+        case CodeSegmentType::CHTL_IMPORT:
             return LexerStateType::IN_IMPORT_BLOCK;
-        case CodeSegmentType::NAMESPACE:
+        case CodeSegmentType::CHTL_NAMESPACE:
             return LexerStateType::IN_NAMESPACE_BLOCK;
-        case CodeSegmentType::CONFIGURATION:
+        case CodeSegmentType::CHTL_CONFIGURATION:
             return LexerStateType::IN_CONFIGURATION_BLOCK;
         default:
             return LexerStateType::INITIAL;

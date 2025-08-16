@@ -101,6 +101,7 @@ void ElementNode::setStyleBlock(CHTLASTNodePtr style) {
     if (style && style->type == CHTLASTNodeType::STYLE_BLOCK) {
         styleBlock = style;
         style->parent = this;
+        children.push_back(style);  // 同时添加到children中以便查找
     }
 }
 
@@ -108,6 +109,7 @@ void ElementNode::setScriptBlock(CHTLASTNodePtr script) {
     if (script && script->type == CHTLASTNodeType::SCRIPT_BLOCK) {
         scriptBlock = script;
         script->parent = this;
+        children.push_back(script);  // 同时添加到children中以便查找
     }
 }
 

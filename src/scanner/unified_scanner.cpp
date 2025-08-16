@@ -230,14 +230,14 @@ void CHTLUnifiedScanner::extractSegments() {
                 
                 Position endPos = getCurrentPosition();
                 
-                CodeSegment segment = createSegment(CodeSegmentType::CHTL, content, startPos, endPos, identifier);
+                CodeSegment segment = createSegment(CodeSegmentType::CHTL_CORE, content, startPos, endPos, identifier);
                 segment.attributes["element"] = identifier;
                 
                 result_.segments.push_back(segment);
             } else {
                 // 可能是属性或其他内容，暂时作为CHTL处理
                 Position endPos = getCurrentPosition();
-                CodeSegment segment = createSegment(CodeSegmentType::CHTL, identifier, startPos, endPos);
+                CodeSegment segment = createSegment(CodeSegmentType::CHTL_CORE, identifier, startPos, endPos);
                 result_.segments.push_back(segment);
             }
             continue;
@@ -280,30 +280,30 @@ std::string CHTLUnifiedScanner::checkKeywordAt(size_t position) {
 
 CodeSegmentType CHTLUnifiedScanner::analyzeBlockType(const std::string& keyword, const std::string& content) {
     if (keyword == "[Template]") {
-        return CodeSegmentType::TEMPLATE;
+        return CodeSegmentType::CHTL_TEMPLATE;
     } else if (keyword == "[Custom]") {
-        return CodeSegmentType::CUSTOM;
+        return CodeSegmentType::CHTL_CUSTOM;
     } else if (keyword == "[Origin]") {
-        return CodeSegmentType::ORIGIN;
+        return CodeSegmentType::ORIGIN_HTML;
     } else if (keyword == "[Import]") {
-        return CodeSegmentType::IMPORT;
+        return CodeSegmentType::CHTL_IMPORT;
     } else if (keyword == "[Configuration]") {
-        return CodeSegmentType::CONFIGURATION;
+        return CodeSegmentType::CHTL_CONFIGURATION;
     } else if (keyword == "[Namespace]") {
-        return CodeSegmentType::NAMESPACE;
+        return CodeSegmentType::CHTL_NAMESPACE;
     } else if (keyword == "style") {
-        return CodeSegmentType::LOCAL_STYLE;
+        return CodeSegmentType::CSS_LOCAL_STYLE;
     } else if (keyword == "script") {
         // 需要进一步分析script内容来判断是CHTL JS还是标准JS
         if (content.find("{{") != std::string::npos || content.find("->") != std::string::npos) {
-            return CodeSegmentType::CHTL_JS;
+            return CodeSegmentType::CHTL_JS_SCRIPT;
         } else {
-            return CodeSegmentType::JAVASCRIPT;
+            return CodeSegmentType::JAVASCRIPT_STANDARD;
         }
     } else if (keyword == "text") {
-        return CodeSegmentType::TEXT;
+        return CodeSegmentType::CHTL_TEXT;
     } else {
-        return CodeSegmentType::CHTL;
+        return CodeSegmentType::CHTL_CORE;
     }
 }
 

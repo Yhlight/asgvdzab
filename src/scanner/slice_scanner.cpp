@@ -32,8 +32,8 @@ ScanResult SliceScanner::scanWithSlices(const std::string& source, const std::st
         // 执行最小单元切割
         std::vector<CodeSlice> refinedSlices;
         for (const auto& slice : validatedSlices) {
-            if (slice.suggestedType == CodeSegmentType::CHTL || 
-                slice.suggestedType == CodeSegmentType::CHTL_JS) {
+            if (slice.suggestedType == CodeSegmentType::CHTL_CORE || 
+                slice.suggestedType == CodeSegmentType::CHTL_JS_SCRIPT) {
                 auto minimalSlices = performMinimalUnitSlicing(slice);
                 refinedSlices.insert(refinedSlices.end(), minimalSlices.begin(), minimalSlices.end());
             } else {
@@ -224,7 +224,7 @@ CodeSlice SliceScanner::expandSlice(const CodeSlice& slice, size_t availableLeng
 std::vector<CodeSlice> SliceScanner::performMinimalUnitSlicing(const CodeSlice& slice) {
     std::vector<CodeSlice> result;
     
-    if (slice.suggestedType == CodeSegmentType::CHTL_JS) {
+    if (slice.suggestedType == CodeSegmentType::CHTL_JS_SCRIPT) {
         // 标记化CHTL JS代码
         auto tokens = tokenizeCHTLJS(slice.content);
         
@@ -238,7 +238,7 @@ std::vector<CodeSlice> SliceScanner::performMinimalUnitSlicing(const CodeSlice& 
                 CodeSlice tokenSlice(tokenContent, tokenStart, tokenEnd);
                 tokenSlice.startPos = calculatePosition(tokenStart);
                 tokenSlice.endPos = calculatePosition(tokenEnd);
-                tokenSlice.suggestedType = CodeSegmentType::CHTL_JS;
+                tokenSlice.suggestedType = CodeSegmentType::CHTL_JS_SCRIPT;
                 
                 result.push_back(tokenSlice);
                 currentPos = tokenEnd;
@@ -276,8 +276,8 @@ std::vector<CodeSlice> SliceScanner::mergeContextualSlices(const std::vector<Cod
 
 bool SliceScanner::shouldMergeSlices(const CodeSlice& current, const CodeSlice& next) {
     // 合并连续的CHTL JS片段
-    if (current.suggestedType == CodeSegmentType::CHTL_JS && 
-        next.suggestedType == CodeSegmentType::CHTL_JS) {
+    if (current.suggestedType == CodeSegmentType::CHTL_JS_SCRIPT && 
+        next.suggestedType == CodeSegmentType::CHTL_JS_SCRIPT) {
         
         // 检查是否相邻
         if (next.startOffset <= current.endOffset + 10) { // 允许小间隙
@@ -286,8 +286,8 @@ bool SliceScanner::shouldMergeSlices(const CodeSlice& current, const CodeSlice& 
     }
     
     // 合并连续的CHTL片段（在同一个作用域内）
-    if (current.suggestedType == CodeSegmentType::CHTL && 
-        next.suggestedType == CodeSegmentType::CHTL) {
+    if (current.suggestedType == CodeSegmentType::CHTL_CORE && 
+        next.suggestedType == CodeSegmentType::CHTL_CORE) {
         
         // 简单的启发式：如果下一个片段很小，可能是被过度切割了
         if (next.content.length() < 50 && next.startOffset <= current.endOffset + 5) {
@@ -324,7 +324,7 @@ std::vector<CodeSegment> SliceScanner::convertSlicesToSegments(const std::vector
                            Range{slice.startPos, slice.endPos});
         
         // 提取上下文信息
-        if (slice.suggestedType == CodeSegmentType::CHTL) {
+        if (slice.suggestedType == CodeSegmentType::CHTL_CORE) {
             // 提取元素名称作为上下文
             std::string trimmed = slice.content;
             size_t start = trimmed.find_first_not_of(" \t\n\r");
@@ -353,22 +353,22 @@ std::vector<CodeSegment> SliceScanner::convertSlicesToSegments(const std::vector
 CodeSegmentType SliceScanner::detectCodeType(const std::string& content) {
     // 检查CHTL JS特征
     if (CHTLJSFeatureDetector::hasAnyCHTLJSFeature(content)) {
-        return CodeSegmentType::CHTL_JS;
+        return CodeSegmentType::CHTL_JS_SCRIPT;
     }
     
     // 检查CHTL语法
     if (isCHTLSyntaxStart(content)) {
-        return CodeSegmentType::CHTL;
+        return CodeSegmentType::CHTL_CORE;
     }
     
     // 检查CSS语法
     if (isCSSSyntax(content)) {
-        return CodeSegmentType::CSS;
+        return CodeSegmentType::CSS_LOCAL_STYLE;
     }
     
     // 检查JavaScript语法
     if (isJavaScriptSyntax(content)) {
-        return CodeSegmentType::JAVASCRIPT;
+        return CodeSegmentType::JAVASCRIPT_STANDARD;
     }
     
     return CodeSegmentType::UNKNOWN;

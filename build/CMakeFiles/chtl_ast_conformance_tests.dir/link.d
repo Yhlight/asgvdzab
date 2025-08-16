@@ -1,19 +1,19 @@
-bin/chtl_grammar_conformance_tests: \
+bin/chtl_ast_conformance_tests: \
   /lib/x86_64-linux-gnu/Scrt1.o \
   /lib/x86_64-linux-gnu/crti.o \
   /usr/lib/gcc/x86_64-linux-gnu/14/crtbeginS.o \
-  CMakeFiles/chtl_grammar_conformance_tests.dir/tests/chtl_grammar_conformance_test.cpp.o \
-  CMakeFiles/chtl_grammar_conformance_tests.dir/src/ast/chtl_ast.cpp.o \
-  CMakeFiles/chtl_grammar_conformance_tests.dir/src/ast/chtl_js_ast.cpp.o \
-  CMakeFiles/chtl_grammar_conformance_tests.dir/src/common/types.cpp.o \
-  CMakeFiles/chtl_grammar_conformance_tests.dir/src/compilers/chtl_compiler.cpp.o \
-  CMakeFiles/chtl_grammar_conformance_tests.dir/src/dispatcher/compiler_dispatcher.cpp.o \
-  CMakeFiles/chtl_grammar_conformance_tests.dir/src/lexer/chtl_js_tokens.cpp.o \
-  CMakeFiles/chtl_grammar_conformance_tests.dir/src/lexer/chtl_tokens.cpp.o \
-  CMakeFiles/chtl_grammar_conformance_tests.dir/src/lexer/global_map.cpp.o \
-  CMakeFiles/chtl_grammar_conformance_tests.dir/src/lexer/lexer_state.cpp.o \
-  CMakeFiles/chtl_grammar_conformance_tests.dir/src/scanner/slice_scanner.cpp.o \
-  CMakeFiles/chtl_grammar_conformance_tests.dir/src/scanner/unified_scanner.cpp.o \
+  CMakeFiles/chtl_ast_conformance_tests.dir/tests/chtl_ast_conformance_test.cpp.o \
+  CMakeFiles/chtl_ast_conformance_tests.dir/src/ast/chtl_ast.cpp.o \
+  CMakeFiles/chtl_ast_conformance_tests.dir/src/ast/chtl_js_ast.cpp.o \
+  CMakeFiles/chtl_ast_conformance_tests.dir/src/common/types.cpp.o \
+  CMakeFiles/chtl_ast_conformance_tests.dir/src/compilers/chtl_compiler.cpp.o \
+  CMakeFiles/chtl_ast_conformance_tests.dir/src/dispatcher/compiler_dispatcher.cpp.o \
+  CMakeFiles/chtl_ast_conformance_tests.dir/src/lexer/chtl_js_tokens.cpp.o \
+  CMakeFiles/chtl_ast_conformance_tests.dir/src/lexer/chtl_tokens.cpp.o \
+  CMakeFiles/chtl_ast_conformance_tests.dir/src/lexer/global_map.cpp.o \
+  CMakeFiles/chtl_ast_conformance_tests.dir/src/lexer/lexer_state.cpp.o \
+  CMakeFiles/chtl_ast_conformance_tests.dir/src/scanner/slice_scanner.cpp.o \
+  CMakeFiles/chtl_ast_conformance_tests.dir/src/scanner/unified_scanner.cpp.o \
   /usr/lib/gcc/x86_64-linux-gnu/14/libstdc++.so \
   /lib/x86_64-linux-gnu/libm.so \
   /lib/x86_64-linux-gnu/libm.so \
@@ -48,29 +48,29 @@ bin/chtl_grammar_conformance_tests: \
 
 /usr/lib/gcc/x86_64-linux-gnu/14/crtbeginS.o:
 
-CMakeFiles/chtl_grammar_conformance_tests.dir/tests/chtl_grammar_conformance_test.cpp.o:
+CMakeFiles/chtl_ast_conformance_tests.dir/tests/chtl_ast_conformance_test.cpp.o:
 
-CMakeFiles/chtl_grammar_conformance_tests.dir/src/ast/chtl_ast.cpp.o:
+CMakeFiles/chtl_ast_conformance_tests.dir/src/ast/chtl_ast.cpp.o:
 
-CMakeFiles/chtl_grammar_conformance_tests.dir/src/ast/chtl_js_ast.cpp.o:
+CMakeFiles/chtl_ast_conformance_tests.dir/src/ast/chtl_js_ast.cpp.o:
 
-CMakeFiles/chtl_grammar_conformance_tests.dir/src/common/types.cpp.o:
+CMakeFiles/chtl_ast_conformance_tests.dir/src/common/types.cpp.o:
 
-CMakeFiles/chtl_grammar_conformance_tests.dir/src/compilers/chtl_compiler.cpp.o:
+CMakeFiles/chtl_ast_conformance_tests.dir/src/compilers/chtl_compiler.cpp.o:
 
-CMakeFiles/chtl_grammar_conformance_tests.dir/src/dispatcher/compiler_dispatcher.cpp.o:
+CMakeFiles/chtl_ast_conformance_tests.dir/src/dispatcher/compiler_dispatcher.cpp.o:
 
-CMakeFiles/chtl_grammar_conformance_tests.dir/src/lexer/chtl_js_tokens.cpp.o:
+CMakeFiles/chtl_ast_conformance_tests.dir/src/lexer/chtl_js_tokens.cpp.o:
 
-CMakeFiles/chtl_grammar_conformance_tests.dir/src/lexer/chtl_tokens.cpp.o:
+CMakeFiles/chtl_ast_conformance_tests.dir/src/lexer/chtl_tokens.cpp.o:
 
-CMakeFiles/chtl_grammar_conformance_tests.dir/src/lexer/global_map.cpp.o:
+CMakeFiles/chtl_ast_conformance_tests.dir/src/lexer/global_map.cpp.o:
 
-CMakeFiles/chtl_grammar_conformance_tests.dir/src/lexer/lexer_state.cpp.o:
+CMakeFiles/chtl_ast_conformance_tests.dir/src/lexer/lexer_state.cpp.o:
 
-CMakeFiles/chtl_grammar_conformance_tests.dir/src/scanner/slice_scanner.cpp.o:
+CMakeFiles/chtl_ast_conformance_tests.dir/src/scanner/slice_scanner.cpp.o:
 
-CMakeFiles/chtl_grammar_conformance_tests.dir/src/scanner/unified_scanner.cpp.o:
+CMakeFiles/chtl_ast_conformance_tests.dir/src/scanner/unified_scanner.cpp.o:
 
 /usr/lib/gcc/x86_64-linux-gnu/14/libstdc++.so:
 
