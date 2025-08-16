@@ -1,0 +1,8 @@
+/workspace/antlr4-linux/build/CMakeFiles/antlr4-runtime-static.dir
+/workspace/antlr4-linux/build/CMakeFiles/antlr4-runtime-shared.dir
+/workspace/antlr4-linux/build/CMakeFiles/edit_cache.dir
+/workspace/antlr4-linux/build/CMakeFiles/rebuild_cache.dir
+/workspace/antlr4-linux/build/CMakeFiles/list_install_components.dir
+/workspace/antlr4-linux/build/CMakeFiles/install.dir
+/workspace/antlr4-linux/build/CMakeFiles/install/local.dir
+/workspace/antlr4-linux/build/CMakeFiles/install/strip.dir

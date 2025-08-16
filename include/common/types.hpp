@@ -2,8 +2,8 @@
 
 #include <string>
 #include <vector>
-#include <memory>
 #include <unordered_map>
+#include <memory>
 
 namespace chtl {
 
@@ -134,6 +134,16 @@ struct ScanResult {
 };
 
 /**
+ * 优化配置
+ */
+struct OptimizationConfig {
+    bool minify = false;          // 是否压缩代码
+    bool removeComments = false;  // 是否移除注释
+    bool removeWhitespace = false; // 是否移除多余空白
+    int optimizationLevel = 0;    // 优化级别 (0-3)
+};
+
+/**
  * 编译配置
  */
 struct CompileConfig {
@@ -146,6 +156,9 @@ struct CompileConfig {
     // Debug模式
     bool debugMode = false;
     
+    // 优化配置
+    OptimizationConfig optimization;
+    
     // 自定义关键字映射
     std::unordered_map<std::string, std::vector<std::string>> customKeywords;
     
@@ -153,40 +166,7 @@ struct CompileConfig {
     int optionCount = 3;
 
     CompileConfig() {
-        // 初始化默认关键字
-        customKeywords["CUSTOM_STYLE"] = {"@Style", "@style", "@CSS", "@Css", "@css"};
-        customKeywords["CUSTOM_ELEMENT"] = {"@Element"};
-        customKeywords["CUSTOM_VAR"] = {"@Var"};
-        customKeywords["TEMPLATE_STYLE"] = {"@Style"};
-        customKeywords["TEMPLATE_ELEMENT"] = {"@Element"};
-        customKeywords["TEMPLATE_VAR"] = {"@Var"};
-        customKeywords["ORIGIN_HTML"] = {"@Html"};
-        customKeywords["ORIGIN_STYLE"] = {"@Style"};
-        customKeywords["ORIGIN_JAVASCRIPT"] = {"@JavaScript"};
-        customKeywords["IMPORT_HTML"] = {"@Html"};
-        customKeywords["IMPORT_STYLE"] = {"@Style"};
-        customKeywords["IMPORT_JAVASCRIPT"] = {"@JavaScript"};
-        customKeywords["IMPORT_CHTL"] = {"@Chtl"};
-        customKeywords["IMPORT_CJMOD"] = {"@CJmod"};
-        customKeywords["KEYWORD_INHERIT"] = {"inherit"};
-        customKeywords["KEYWORD_DELETE"] = {"delete"};
-        customKeywords["KEYWORD_INSERT"] = {"insert"};
-        customKeywords["KEYWORD_AFTER"] = {"after"};
-        customKeywords["KEYWORD_BEFORE"] = {"before"};
-        customKeywords["KEYWORD_REPLACE"] = {"replace"};
-        customKeywords["KEYWORD_ATTOP"] = {"at top"};
-        customKeywords["KEYWORD_ATBOTTOM"] = {"at bottom"};
-        customKeywords["KEYWORD_FROM"] = {"from"};
-        customKeywords["KEYWORD_AS"] = {"as"};
-        customKeywords["KEYWORD_EXCEPT"] = {"except"};
-        customKeywords["KEYWORD_TEXT"] = {"text"};
-        customKeywords["KEYWORD_STYLE"] = {"style"};
-        customKeywords["KEYWORD_SCRIPT"] = {"script"};
-        customKeywords["KEYWORD_CUSTOM"] = {"[Custom]"};
-        customKeywords["KEYWORD_TEMPLATE"] = {"[Template]"};
-        customKeywords["KEYWORD_ORIGIN"] = {"[Origin]"};
-        customKeywords["KEYWORD_IMPORT"] = {"[Import]"};
-        customKeywords["KEYWORD_NAMESPACE"] = {"[Namespace]"};
+        customKeywords["default"] = {"if", "else", "for", "while", "switch", "case", "break", "continue", "return", "try", "catch", "throw"};
     }
 };
 

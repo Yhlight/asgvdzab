@@ -1,0 +1,1 @@
+/usr/bin/c++    -Wall -pedantic -W -O3 -DNDEBUG -O3 -DNDEBUG  -rdynamic -Xlinker --dependency-file=CMakeFiles/antlr_compilers_test.dir/link.d CMakeFiles/antlr_compilers_test.dir/tests/antlr_compilers_test.cpp.o -o antlr_compilers_test  -Wl,-rpath,/workspace/third_party/antlr4/lib libchtl_test_lib.a /workspace/third_party/antlr4/lib/libantlr4-runtime.so
