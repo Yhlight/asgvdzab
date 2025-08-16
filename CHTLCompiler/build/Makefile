@@ -606,6 +606,30 @@ src/parser/StyleBlockParser.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/parser/StyleBlockParser.cpp.s
 .PHONY : src/parser/StyleBlockParser.cpp.s
 
+src/parser/TemplateSystem.o: src/parser/TemplateSystem.cpp.o
+.PHONY : src/parser/TemplateSystem.o
+
+# target to build an object file
+src/parser/TemplateSystem.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/parser/TemplateSystem.cpp.o
+.PHONY : src/parser/TemplateSystem.cpp.o
+
+src/parser/TemplateSystem.i: src/parser/TemplateSystem.cpp.i
+.PHONY : src/parser/TemplateSystem.i
+
+# target to preprocess a source file
+src/parser/TemplateSystem.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/parser/TemplateSystem.cpp.i
+.PHONY : src/parser/TemplateSystem.cpp.i
+
+src/parser/TemplateSystem.s: src/parser/TemplateSystem.cpp.s
+.PHONY : src/parser/TemplateSystem.s
+
+# target to generate assembly for a file
+src/parser/TemplateSystem.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/parser/TemplateSystem.cpp.s
+.PHONY : src/parser/TemplateSystem.cpp.s
+
 src/scanner/CHTLUnifiedScanner.o: src/scanner/CHTLUnifiedScanner.cpp.o
 .PHONY : src/scanner/CHTLUnifiedScanner.o
 
@@ -697,6 +721,9 @@ help:
 	@echo "... src/parser/StyleBlockParser.o"
 	@echo "... src/parser/StyleBlockParser.i"
 	@echo "... src/parser/StyleBlockParser.s"
+	@echo "... src/parser/TemplateSystem.o"
+	@echo "... src/parser/TemplateSystem.i"
+	@echo "... src/parser/TemplateSystem.s"
 	@echo "... src/scanner/CHTLUnifiedScanner.o"
 	@echo "... src/scanner/CHTLUnifiedScanner.i"
 	@echo "... src/scanner/CHTLUnifiedScanner.s"

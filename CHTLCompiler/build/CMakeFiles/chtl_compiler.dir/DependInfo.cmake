@@ -26,6 +26,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/workspace/CHTLCompiler/src/parser/AttributeSystem.cpp" "CMakeFiles/chtl_compiler.dir/src/parser/AttributeSystem.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/parser/AttributeSystem.cpp.o.d"
   "/workspace/CHTLCompiler/src/parser/BasicSyntaxParser.cpp" "CMakeFiles/chtl_compiler.dir/src/parser/BasicSyntaxParser.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/parser/BasicSyntaxParser.cpp.o.d"
   "/workspace/CHTLCompiler/src/parser/StyleBlockParser.cpp" "CMakeFiles/chtl_compiler.dir/src/parser/StyleBlockParser.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/parser/StyleBlockParser.cpp.o.d"
+  "/workspace/CHTLCompiler/src/parser/TemplateSystem.cpp" "CMakeFiles/chtl_compiler.dir/src/parser/TemplateSystem.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/parser/TemplateSystem.cpp.o.d"
   "/workspace/CHTLCompiler/src/scanner/CHTLUnifiedScanner.cpp" "CMakeFiles/chtl_compiler.dir/src/scanner/CHTLUnifiedScanner.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/scanner/CHTLUnifiedScanner.cpp.o.d"
   "" "chtl_compiler" "gcc" "CMakeFiles/chtl_compiler.dir/link.d"
   )
