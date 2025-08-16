@@ -1,0 +1,29 @@
+
+# Consider dependencies only in project.
+set(CMAKE_DEPENDS_IN_PROJECT_ONLY OFF)
+
+# The set of languages for which implicit dependencies are needed:
+set(CMAKE_DEPENDS_LANGUAGES
+  )
+
+# The set of dependency files which are needed:
+set(CMAKE_DEPENDS_DEPENDENCY_FILES
+  "/workspace/chtl-compiler/src/compiler/base_compiler.cpp" "CMakeFiles/chtl_compiler_core.dir/src/compiler/base_compiler.cpp.o" "gcc" "CMakeFiles/chtl_compiler_core.dir/src/compiler/base_compiler.cpp.o.d"
+  "/workspace/chtl-compiler/src/compiler/chtl/chtl_ast.cpp" "CMakeFiles/chtl_compiler_core.dir/src/compiler/chtl/chtl_ast.cpp.o" "gcc" "CMakeFiles/chtl_compiler_core.dir/src/compiler/chtl/chtl_ast.cpp.o.d"
+  "/workspace/chtl-compiler/src/compiler/chtl/chtl_compiler.cpp" "CMakeFiles/chtl_compiler_core.dir/src/compiler/chtl/chtl_compiler.cpp.o" "gcc" "CMakeFiles/chtl_compiler_core.dir/src/compiler/chtl/chtl_compiler.cpp.o.d"
+  "/workspace/chtl-compiler/src/compiler/chtl/chtl_global_map.cpp" "CMakeFiles/chtl_compiler_core.dir/src/compiler/chtl/chtl_global_map.cpp.o" "gcc" "CMakeFiles/chtl_compiler_core.dir/src/compiler/chtl/chtl_global_map.cpp.o.d"
+  "/workspace/chtl-compiler/src/compiler/chtl/chtl_lexer.cpp" "CMakeFiles/chtl_compiler_core.dir/src/compiler/chtl/chtl_lexer.cpp.o" "gcc" "CMakeFiles/chtl_compiler_core.dir/src/compiler/chtl/chtl_lexer.cpp.o.d"
+  "/workspace/chtl-compiler/src/compiler/chtl/chtl_parser.cpp" "CMakeFiles/chtl_compiler_core.dir/src/compiler/chtl/chtl_parser.cpp.o" "gcc" "CMakeFiles/chtl_compiler_core.dir/src/compiler/chtl/chtl_parser.cpp.o.d"
+  "/workspace/chtl-compiler/src/compiler/compiler_factory.cpp" "CMakeFiles/chtl_compiler_core.dir/src/compiler/compiler_factory.cpp.o" "gcc" "CMakeFiles/chtl_compiler_core.dir/src/compiler/compiler_factory.cpp.o.d"
+  )
+
+# Targets to which this target links which contain Fortran sources.
+set(CMAKE_Fortran_TARGET_LINKED_INFO_FILES
+  )
+
+# Targets to which this target links which contain Fortran sources.
+set(CMAKE_Fortran_TARGET_FORWARD_LINKED_INFO_FILES
+  )
+
+# Fortran module output directory.
+set(CMAKE_Fortran_TARGET_MODULE_DIR "")

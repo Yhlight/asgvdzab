@@ -1,0 +1,7 @@
+[Origin] @Html
+{
+<div>
+    <h1>Hello from Raw HTML</h1>
+    <p>This is directly embedded HTML</p>
+</div>
+}
