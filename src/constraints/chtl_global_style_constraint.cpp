@@ -144,9 +144,10 @@ std::vector<GlobalStyleAllowedElement> CHtlGlobalStyleConstraint::checkAllowedEl
         allowedTypes.push_back(GlobalStyleAllowedElement::GENERATOR_COMMENT);
     }
     
-    // 检查原始嵌入
+    // 检查原始嵌入 (优先检查，避免与其他语法混淆)
     if (isRawEmbedding(element)) {
         allowedTypes.push_back(GlobalStyleAllowedElement::RAW_EMBEDDING);
+        return allowedTypes; // 原始嵌入是特殊存在，直接返回
     }
     
     // 检查变量引用
