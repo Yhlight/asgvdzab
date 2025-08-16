@@ -1,4 +1,10 @@
 package com.chtl.compiler;
+
+
+
+
+
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,10 +22,10 @@ import java.util.*;
 public class CompilerResult {
     private boolean success;
     private String output;
-    private List<CompilationError> errors = new ArrayList<>();
-    private List<CompilationWarning> warnings = new ArrayList<>();
+    private List<CompilationError> errors = new ArrayList<Object>();
+    private List<CompilationWarning> warnings = new ArrayList<Object>();
     private long compilationTime;
-    private Map<String, String> sourceMaps = new HashMap<>();
+    private Map<String, String> sourceMaps = new HashMap<Object, Object>();
     
     // 构造函数
     public CompilerResult() {

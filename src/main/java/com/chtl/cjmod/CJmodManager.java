@@ -1,4 +1,7 @@
 package com.chtl.cjmod;
+
+import com.chtl.compiler.cjmod.ModuleInfo;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -73,7 +76,7 @@ public class CJmodManager {
             this.sourcePath = sourcePath;
             this.loadTime = System.currentTimeMillis();
             this.state = ModuleState.LOADED;
-            this.metadata = new ConcurrentHashMap<>();
+            this.metadata = new ConcurrentHashMap<Object, Object>();
         }
         
         // Getters
@@ -133,11 +136,11 @@ public class CJmodManager {
     }
     
     private CJmodManager() {
-        this.loadedModules = new ConcurrentHashMap<>();
-        this.loaders = new CopyOnWriteArrayList<>();
-        this.modulePaths = new CopyOnWriteArrayList<>();
-        this.dependencyGraph = new ConcurrentHashMap<>();
-        this.moduleListeners = new CopyOnWriteArrayList<>();
+        this.loadedModules = new ConcurrentHashMap<Object, Object>();
+        this.loaders = new CopyOnWriteArrayList<Object>();
+        this.modulePaths = new CopyOnWriteArrayList<Object>();
+        this.dependencyGraph = new ConcurrentHashMap<Object, Object>();
+        this.moduleListeners = new CopyOnWriteArrayList<Object>();
         this.executorService = Executors.newCachedThreadPool(r -> {
             Thread t = new Thread(r, "CJmod-Executor");
             t.setDaemon(true);
@@ -276,11 +279,11 @@ public class CJmodManager {
                 CompletableFuture.allOf(depFutures.toArray(new CompletableFuture[0])).join();
                 
                 // 更新依赖图
-                dependencyGraph.put(module.getName(), new HashSet<>(dependencies));
+                dependencyGraph.put(module.getName(), new HashSet<Object>(dependencies));
             }
             
             // 初始化模块
-            Map<String, Object> config = new HashMap<>();
+            Map<String, Object> config = new HashMap<Object, Object>();
             config.put("moduleDir", module.getSourcePath().toString());
             config.put("globalStateManager", CJmodGlobalStateManager.getInstance());
             
@@ -478,7 +481,7 @@ public class CJmodManager {
      */
     public void shutdown() {
         // 卸载所有模块
-        List<String> moduleNames = new ArrayList<>(loadedModules.keySet());
+        List<String> moduleNames = new ArrayList<Object>(loadedModules.keySet());
         for (String moduleName : moduleNames) {
             try {
                 unloadModule(moduleName).get(10, TimeUnit.SECONDS);

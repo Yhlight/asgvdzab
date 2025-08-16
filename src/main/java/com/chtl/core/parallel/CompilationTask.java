@@ -1,4 +1,7 @@
-package com.chtl.core.parallel;import com.chtl.compiler.CompilerResult;
+package com.chtl.core.parallel;
+
+import com.chtl.model.CompilationResult;
+import com.chtl.compiler.CompilerResult;
 
 
 import java.util.concurrent.RecursiveTask;

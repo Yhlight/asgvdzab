@@ -25,8 +25,8 @@ public class ModulePackager {
         private boolean compress = true;
         private boolean sign = false;
         private String signingKey = null;
-        private Set<String> excludePatterns = new HashSet<>();
-        private Map<String, String> metadata = new HashMap<>();
+        private Set<String> excludePatterns = new HashSet<Object>();
+        private Map<String, String> metadata = new HashMap<Object, Object>();
         
         // Builder pattern
         public PackageOptions withSource(boolean include) {
@@ -74,7 +74,7 @@ public class ModulePackager {
             this.packagePath = packagePath;
             this.size = size;
             this.checksum = checksum;
-            this.metadata = new HashMap<>();
+            this.metadata = new HashMap<Object, Object>();
         }
         
         // Getters

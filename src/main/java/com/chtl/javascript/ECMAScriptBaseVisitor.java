@@ -1,5 +1,8 @@
 package com.chtl.javascript;
 
+import com.chtl.compiler.javascript.ECMAScriptParser;
+
+
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;

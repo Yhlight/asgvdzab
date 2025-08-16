@@ -10,8 +10,8 @@ public class Element {
 
     public Element(String tagName) {
         this.tagName = tagName;
-        this.attributes = new ArrayList<>();
-        this.children = new ArrayList<>();
+        this.attributes = new ArrayList<Object>();
+        this.children = new ArrayList<Object>();
     }
 
     public String getTagName() { return tagName; }

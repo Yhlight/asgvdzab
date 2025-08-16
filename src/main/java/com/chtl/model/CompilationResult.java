@@ -24,8 +24,8 @@ public class CompilationResult {
     public CompilationResult(FragmentType sourceType, String compiledContent, String error) {
         this.sourceType = sourceType;
         this.compiledContent = compiledContent;
-        this.errors = new ArrayList<>();
-        this.warnings = new ArrayList<>();
+        this.errors = new ArrayList<Object>();
+        this.warnings = new ArrayList<Object>();
         
         if (error != null && !error.isEmpty()) {
             this.errors.add(error);

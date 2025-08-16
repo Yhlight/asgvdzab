@@ -1,4 +1,8 @@
 package com.chtl.compiler.style;
+
+import com.chtl.context.ErrorType;
+import com.chtl.scanner.State;
+
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -55,9 +59,9 @@ public class StyleSystem {
      */
     private static class ElementContext {
         final ElementNode element;
-        final Set<String> classNames = new HashSet<>();
+        final Set<String> classNames = new HashSet<Object>();
         final String id;
-        final Map<String, String> inlineStyles = new LinkedHashMap<>();
+        final Map<String, String> inlineStyles = new LinkedHashMap<Object, Object>();
         
         ElementContext(ElementNode element, String id) {
             this.element = element;

@@ -1,4 +1,7 @@
 package com.chtl.compiler.debug;
+
+import com.chtl.context.ErrorType;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,8 +15,8 @@ import java.util.*;
 public class ErrorStatistics {
     private int totalErrors;
     private int totalWarnings;
-    private Map<CompilationError.ErrorType, Integer> errorCountsByType = new HashMap<>();
-    private Map<String, Integer> errorCountsByFile = new HashMap<>();
+    private Map<CompilationError.ErrorType, Integer> errorCountsByType = new HashMap<Object, Object>();
+    private Map<String, Integer> errorCountsByFile = new HashMap<Object, Object>();
     
     // Getters and setters
     public int getTotalErrors() {

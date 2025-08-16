@@ -78,7 +78,7 @@ public class StreamingFileProcessor {
             int numChunks = (int) Math.ceil((double) fileSize / CHUNK_SIZE);
             
             // 并行处理各个块
-            List<Future<ChunkResult>> futures = new ArrayList<>();
+            List<Future<ChunkResult>> futures = new ArrayList<Object>();
             
             for (int i = 0; i < numChunks; i++) {
                 long start = (long) i * CHUNK_SIZE;
@@ -89,7 +89,7 @@ public class StreamingFileProcessor {
             }
             
             // 收集结果
-            List<ChunkResult> chunkResults = new ArrayList<>();
+            List<ChunkResult> chunkResults = new ArrayList<Object>();
             for (Future<ChunkResult> future : futures) {
                 try {
                     chunkResults.add(future.get());
@@ -356,7 +356,7 @@ public class StreamingFileProcessor {
     
     private List<Fragment> scanContent(String content, String filePath, CompilationContext context) {
         // 简化实现
-        return new ArrayList<>();
+        return new ArrayList<Object>();
     }
     
     private void mergeChunkResults(List<ChunkResult> chunks, CompilationResult result) {
@@ -369,9 +369,9 @@ public class StreamingFileProcessor {
      * 编译结果
      */
     public static class CompilationResult {
-        public List<Fragment> fragments = new ArrayList<>();
-        public List<String> errors = new ArrayList<>();
-        public List<String> warnings = new ArrayList<>();
+        public List<Fragment> fragments = new ArrayList<Object>();
+        public List<String> errors = new ArrayList<Object>();
+        public List<String> warnings = new ArrayList<Object>();
     }
     
     /**

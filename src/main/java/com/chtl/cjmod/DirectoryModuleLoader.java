@@ -1,4 +1,8 @@
 package com.chtl.cjmod;
+
+import com.chtl.compiler.cjmod.CJmodLoader;
+import com.chtl.compiler.cjmod.CJmodManager;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -95,7 +99,7 @@ public class DirectoryModuleLoader implements CJmodManager.CJmodLoader {
      * 构建类路径
      */
     private List<URL> buildClasspath(Path moduleDir) throws Exception {
-        List<URL> classpath = new ArrayList<>();
+        List<URL> classpath = new ArrayList<Object>();
         
         // 添加build目录
         Path buildDir = moduleDir.resolve(BUILD_DIR);
@@ -185,7 +189,7 @@ public class DirectoryModuleLoader implements CJmodManager.CJmodLoader {
         Files.createDirectories(buildDir);
         
         // 收集所有Java文件
-        List<Path> javaFiles = new ArrayList<>();
+        List<Path> javaFiles = new ArrayList<Object>();
         try (Stream<Path> paths = Files.walk(srcDir)) {
             paths.filter(p -> p.toString().endsWith(".java"))
                  .forEach(javaFiles::add);
@@ -196,7 +200,7 @@ public class DirectoryModuleLoader implements CJmodManager.CJmodLoader {
         }
         
         // 构建编译命令
-        List<String> command = new ArrayList<>();
+        List<String> command = new ArrayList<Object>();
         command.add("javac");
         command.add("-d");
         command.add(buildDir.toString());
@@ -296,11 +300,11 @@ public class DirectoryModuleLoader implements CJmodManager.CJmodLoader {
         if (depsStr != null && !depsStr.isEmpty()) {
             descriptor.dependencies = Arrays.asList(depsStr.split(","));
         } else {
-            descriptor.dependencies = new ArrayList<>();
+            descriptor.dependencies = new ArrayList<Object>();
         }
         
         // 解析元数据
-        descriptor.metadata = new HashMap<>();
+        descriptor.metadata = new HashMap<Object, Object>();
         String metaStr = extractJsonField(json, "metadata");
         if (metaStr != null) {
             // 简单解析metadata对象

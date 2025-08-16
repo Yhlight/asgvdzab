@@ -63,8 +63,8 @@ public class CHTLGenerator implements CHTLASTVisitor {
     private Stack<ElementNode> elementStack;
     
     public CHTLGenerator() {
-        this.globalStyleRules = new ArrayList<>();
-        this.localScripts = new ArrayList<>();
+        this.globalStyleRules = new ArrayList<Object>();
+        this.localScripts = new ArrayList<Object>();
         this.elementStack = new Stack<>();
     }
     
@@ -381,7 +381,7 @@ public class CHTLGenerator implements CHTLASTVisitor {
     }
     
     private boolean isSelfClosingTag(String tagName) {
-        Set<String> selfClosingTags = new HashSet<>(Arrays.asList(
+        Set<String> selfClosingTags = new HashSet<Object>(Arrays.asList(
             "area", "base", "br", "col", "embed", "hr", "img", "input",
             "link", "meta", "param", "source", "track", "wbr"
         ));

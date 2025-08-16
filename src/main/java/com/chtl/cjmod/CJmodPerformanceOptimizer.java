@@ -35,7 +35,7 @@ public class CJmodPerformanceOptimizer {
         private final ScheduledExecutorService cleanupExecutor;
         
         public FunctionCache(int maxSize, long ttl) {
-            this.cache = new ConcurrentHashMap<>();
+            this.cache = new ConcurrentHashMap<Object, Object>();
             this.maxSize = maxSize;
             this.ttl = ttl;
             this.hits = new AtomicLong(0);
@@ -215,8 +215,8 @@ public class CJmodPerformanceOptimizer {
         private final ExecutorService optimizationExecutor;
         
         public JITOptimizer(int hotThreshold) {
-            this.profiles = new ConcurrentHashMap<>();
-            this.optimizedFunctions = new ConcurrentHashMap<>();
+            this.profiles = new ConcurrentHashMap<Object, Object>();
+            this.optimizedFunctions = new ConcurrentHashMap<Object, Object>();
             this.hotThreshold = hotThreshold;
             this.optimizationExecutor = Executors.newSingleThreadExecutor(r -> {
                 Thread t = new Thread(r, "CJmod-JIT-Optimizer");
@@ -238,7 +238,7 @@ public class CJmodPerformanceOptimizer {
                 this.functionId = functionId;
                 this.callCount = new AtomicInteger(0);
                 this.totalTime = new AtomicLong(0);
-                this.parameterPatterns = new ConcurrentHashMap<>();
+                this.parameterPatterns = new ConcurrentHashMap<Object, Object>();
             }
             
             public void recordCall(long executionTime, Map<String, Object> parameters) {
@@ -346,14 +346,14 @@ public class CJmodPerformanceOptimizer {
          * 获取优化统计
          */
         public Map<String, Object> getStats() {
-            Map<String, Object> stats = new HashMap<>();
+            Map<String, Object> stats = new HashMap<Object, Object>();
             stats.put("profiledFunctions", profiles.size());
             stats.put("optimizedFunctions", optimizedFunctions.size());
             
-            List<Map<String, Object>> hotFunctions = new ArrayList<>();
+            List<Map<String, Object>> hotFunctions = new ArrayList<Object>();
             profiles.forEach((id, profile) -> {
                 if (profile.isHot(hotThreshold)) {
-                    Map<String, Object> info = new HashMap<>();
+                    Map<String, Object> info = new HashMap<Object, Object>();
                     info.put("functionId", id);
                     info.put("callCount", profile.callCount.get());
                     info.put("averageTime", profile.getAverageTime());
@@ -382,8 +382,8 @@ public class CJmodPerformanceOptimizer {
         private final int maxPoolSize;
         
         public MemoryPoolManager(int maxPoolSize) {
-            this.objectPools = new ConcurrentHashMap<>();
-            this.bufferPools = new ConcurrentHashMap<>();
+            this.objectPools = new ConcurrentHashMap<Object, Object>();
+            this.bufferPools = new ConcurrentHashMap<Object, Object>();
             this.maxPoolSize = maxPoolSize;
         }
         
@@ -564,7 +564,7 @@ public class CJmodPerformanceOptimizer {
          * 获取池统计
          */
         public Map<String, PoolStats> getObjectPoolStats() {
-            Map<String, PoolStats> stats = new HashMap<>();
+            Map<String, PoolStats> stats = new HashMap<Object, Object>();
             objectPools.forEach((clazz, pool) -> {
                 stats.put(clazz.getSimpleName(), pool.getStats());
             });
@@ -628,7 +628,7 @@ public class CJmodPerformanceOptimizer {
      * 获取性能统计
      */
     public Map<String, Object> getPerformanceStats() {
-        Map<String, Object> stats = new HashMap<>();
+        Map<String, Object> stats = new HashMap<Object, Object>();
         
         stats.put("cache", functionCache.getStats());
         stats.put("jit", jitOptimizer.getStats());

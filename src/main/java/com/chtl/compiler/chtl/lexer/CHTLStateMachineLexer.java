@@ -1,5 +1,8 @@
 package com.chtl.compiler.chtl.lexer;
 
+import com.chtl.model.Element;
+
+
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.Token;
 
@@ -58,9 +61,9 @@ public class CHTLStateMachineLexer {
     private LexState currentState;
     
     // 关键字映射
-    private static final Map<String, CHTLTokenType> KEYWORDS = new HashMap<>();
-    private static final Map<String, CHTLTokenType> BRACKET_KEYWORDS = new HashMap<>();
-    private static final Map<String, CHTLTokenType> AT_KEYWORDS = new HashMap<>();
+    private static final Map<String, CHTLTokenType> KEYWORDS = new HashMap<Object, Object>();
+    private static final Map<String, CHTLTokenType> BRACKET_KEYWORDS = new HashMap<Object, Object>();
+    private static final Map<String, CHTLTokenType> AT_KEYWORDS = new HashMap<Object, Object>();
     
     static {
         // 初始化关键字
@@ -100,7 +103,7 @@ public class CHTLStateMachineLexer {
         this.position = 0;
         this.line = 1;
         this.column = 1;
-        this.tokens = new ArrayList<>();
+        this.tokens = new ArrayList<Object>();
         this.currentTokenValue = new StringBuilder();
         this.currentState = LexState.START;
     }

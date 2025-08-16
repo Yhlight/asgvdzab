@@ -1,5 +1,9 @@
 package com.chtl.core.error;
 
+import com.chtl.context.ErrorType;
+import com.chtl.context.WarningType;
+
+
 import com.chtl.model.SourceLocation;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,13 +28,13 @@ public class GlobalErrorHandler {
     private static GlobalErrorHandler instance;
     
     // 错误收集器
-    private final Map<String, List<CompilationError>> errorsByFile = new ConcurrentHashMap<>();
-    private final Map<String, List<CompilationWarning>> warningsByFile = new ConcurrentHashMap<>();
+    private final Map<String, List<CompilationError>> errorsByFile = new ConcurrentHashMap<Object, Object>();
+    private final Map<String, List<CompilationWarning>> warningsByFile = new ConcurrentHashMap<Object, Object>();
     
     // 错误统计
     private final AtomicInteger totalErrors = new AtomicInteger(0);
     private final AtomicInteger totalWarnings = new AtomicInteger(0);
-    private final Map<CompilationError.ErrorType, AtomicInteger> errorCountByType = new ConcurrentHashMap<>();
+    private final Map<CompilationError.ErrorType, AtomicInteger> errorCountByType = new ConcurrentHashMap<Object, Object>();
     
     // 错误处理策略
     private ErrorHandlingStrategy strategy = ErrorHandlingStrategy.COLLECT_ALL;
@@ -38,10 +42,10 @@ public class GlobalErrorHandler {
     private boolean failFast = false;
     
     // 错误监听器
-    private final List<ErrorListener> errorListeners = new ArrayList<>();
+    private final List<ErrorListener> errorListeners = new ArrayList<Object>();
     
     // 错误恢复策略
-    private final Map<CompilationError.ErrorType, ErrorRecoveryAction> recoveryActions = new HashMap<>();
+    private final Map<CompilationError.ErrorType, ErrorRecoveryAction> recoveryActions = new HashMap<Object, Object>();
     
     private GlobalErrorHandler() {
         initializeRecoveryActions();
@@ -63,7 +67,7 @@ public class GlobalErrorHandler {
         errorCountByType.computeIfAbsent(error.getType(), k -> new AtomicInteger(0)).incrementAndGet();
         
         // 收集错误
-        errorsByFile.computeIfAbsent(file, k -> Collections.synchronizedList(new ArrayList<>())).add(error);
+        errorsByFile.computeIfAbsent(file, k -> Collections.synchronizedList(new ArrayList<Object>())).add(error);
         
         // 通知监听器
         notifyErrorListeners(error);
@@ -82,7 +86,7 @@ public class GlobalErrorHandler {
      */
     public void reportWarning(String file, CompilationWarning warning) {
         totalWarnings.incrementAndGet();
-        warningsByFile.computeIfAbsent(file, k -> Collections.synchronizedList(new ArrayList<>())).add(warning);
+        warningsByFile.computeIfAbsent(file, k -> Collections.synchronizedList(new ArrayList<Object>())).add(warning);
         notifyWarningListeners(warning);
     }
     
@@ -184,8 +188,8 @@ public class GlobalErrorHandler {
         return new ErrorSummary(
             totalErrors.get(),
             totalWarnings.get(),
-            new HashMap<>(errorsByFile),
-            new HashMap<>(warningsByFile),
+            new HashMap<Object, Object>(errorsByFile),
+            new HashMap<Object, Object>(warningsByFile),
             getErrorTypeStats()
         );
     }
@@ -194,7 +198,7 @@ public class GlobalErrorHandler {
      * 获取错误类型统计
      */
     private Map<CompilationError.ErrorType, Integer> getErrorTypeStats() {
-        Map<CompilationError.ErrorType, Integer> stats = new HashMap<>();
+        Map<CompilationError.ErrorType, Integer> stats = new HashMap<Object, Object>();
         errorCountByType.forEach((type, count) -> stats.put(type, count.get()));
         return stats;
     }
@@ -433,7 +437,7 @@ public class GlobalErrorHandler {
      * 恢复点注册表
      */
     private static class RecoveryPoint {
-        private static final List<SourceLocation> recoveryPoints = new ArrayList<>();
+        private static final List<SourceLocation> recoveryPoints = new ArrayList<Object>();
         
         public static void save(SourceLocation location) {
             recoveryPoints.add(location);
@@ -444,7 +448,7 @@ public class GlobalErrorHandler {
      * 占位符注册表
      */
     private static class PlaceholderRegistry {
-        private static final Set<String> placeholders = new HashSet<>();
+        private static final Set<String> placeholders = new HashSet<Object>();
         
         public static void register(String name) {
             placeholders.add(name);

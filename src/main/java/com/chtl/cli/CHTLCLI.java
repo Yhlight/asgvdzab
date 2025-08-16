@@ -1,4 +1,7 @@
 package com.chtl.cli;
+
+import com.chtl.model.CompilationResult;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;

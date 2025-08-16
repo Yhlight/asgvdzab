@@ -31,9 +31,9 @@ public class HTMLMerger {
         logger.debug("开始合并编译结果，共 {} 个片段", results.size());
         
         // 分类结果
-        List<CompilationResult> htmlResults = new ArrayList<>();
-        List<CompilationResult> cssResults = new ArrayList<>();
-        List<CompilationResult> jsResults = new ArrayList<>();
+        List<CompilationResult> htmlResults = new ArrayList<Object>();
+        List<CompilationResult> cssResults = new ArrayList<Object>();
+        List<CompilationResult> jsResults = new ArrayList<Object>();
         StringBuilder additionalCSS = new StringBuilder();
         StringBuilder additionalJS = new StringBuilder();
         

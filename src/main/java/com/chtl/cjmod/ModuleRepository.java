@@ -52,8 +52,8 @@ public class ModuleRepository {
             this.name = name;
             this.version = version;
             this.path = path;
-            this.dependencies = new ArrayList<>();
-            this.metadata = new HashMap<>();
+            this.dependencies = new ArrayList<Object>();
+            this.metadata = new HashMap<Object, Object>();
             this.timestamp = System.currentTimeMillis();
         }
         
@@ -103,9 +103,9 @@ public class ModuleRepository {
         private final List<String> warnings;
         
         public DependencyResolution() {
-            this.resolvedModules = new LinkedHashMap<>();
-            this.errors = new ArrayList<>();
-            this.warnings = new ArrayList<>();
+            this.resolvedModules = new LinkedHashMap<Object, Object>();
+            this.errors = new ArrayList<Object>();
+            this.warnings = new ArrayList<Object>();
         }
         
         public void addModule(ModuleInfo module) {
@@ -136,8 +136,8 @@ public class ModuleRepository {
     
     public ModuleRepository(Path repositoryRoot) {
         this.repositoryRoot = repositoryRoot;
-        this.moduleIndex = new ConcurrentHashMap<>();
-        this.moduleCache = new ConcurrentHashMap<>();
+        this.moduleIndex = new ConcurrentHashMap<Object, Object>();
+        this.moduleCache = new ConcurrentHashMap<Object, Object>();
         this.executorService = Executors.newCachedThreadPool(r -> {
             Thread t = new Thread(r, "ModuleRepo-Worker");
             t.setDaemon(true);
@@ -287,7 +287,7 @@ public class ModuleRepository {
      */
     public DependencyResolution resolveDependencies(String moduleName, String versionRange) {
         DependencyResolution resolution = new DependencyResolution();
-        Set<String> visited = new HashSet<>();
+        Set<String> visited = new HashSet<Object>();
         
         ModuleInfo root = findModule(moduleName, new ModuleVersion.VersionRange(versionRange));
         if (root == null) {
@@ -404,7 +404,7 @@ public class ModuleRepository {
     }
     
     private void addToIndex(ModuleInfo info) {
-        moduleIndex.computeIfAbsent(info.getName(), k -> new CopyOnWriteArrayList<>())
+        moduleIndex.computeIfAbsent(info.getName(), k -> new CopyOnWriteArrayList<Object>())
             .add(info);
     }
     

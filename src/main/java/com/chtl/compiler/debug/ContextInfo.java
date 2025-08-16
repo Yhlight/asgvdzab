@@ -1,4 +1,7 @@
 package com.chtl.compiler.debug;
+
+import com.chtl.scanner.State;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,8 +16,8 @@ import java.util.*;
 public class ContextInfo {
     private CompilationContext.State compilationState;
     private String currentScope;
-    private List<String> activeConstraints = new ArrayList<>();
-    private List<String> importedModules = new ArrayList<>();
+    private List<String> activeConstraints = new ArrayList<Object>();
+    private List<String> importedModules = new ArrayList<Object>();
     
     public void print(PrintStream out) {
         if (compilationState != null) {

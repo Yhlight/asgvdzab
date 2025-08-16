@@ -5,7 +5,7 @@ import java.util.Map;
 import com.chtl.chtljs.ast.*;
 
 public class CHTLJSObject extends AbstractCHTLJSASTNode {
-    private Map<String, CHTLJSASTNode> properties = new HashMap<>();
+    private Map<String, CHTLJSASTNode> properties = new HashMap<Object, Object>();
 
     public CHTLJSObject() {
         super(CHTLJSASTNode.NodeType.OBJECT);

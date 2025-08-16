@@ -1,4 +1,7 @@
 package com.chtl.compiler.optimization.css;
+
+import com.chtl.compiler.optimization.CssOptions;
+import com.chtl.compiler.optimization.CssFile;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -6,8 +9,6 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import com.chtl.context.CompilationContext;
-import com.chtl.compiler.optimization.OptimizationOptions.CssOptions;
-import com.chtl.compiler.optimization.OutputOptimizer.CssFile;
 import java.util.*;
 
 /**
@@ -20,7 +21,7 @@ public class CssOptimizer {
     private final CssOptions options;
     
     // CSS规则缓存（用于合并相同选择器）
-    private final Map<String, List<String>> selectorRules = new LinkedHashMap<>();
+    private final Map<String, List<String>> selectorRules = new LinkedHashMap<Object, Object>();
     
     public CssOptimizer(CompilationContext context, CssOptions options) {
         this.context = context;
@@ -111,7 +112,7 @@ public class CssOptimizer {
             String selector = matcher.group(1).trim();
             String properties = matcher.group(2).trim();
             
-            selectorRules.computeIfAbsent(selector, k -> new ArrayList<>())
+            selectorRules.computeIfAbsent(selector, k -> new ArrayList<Object>())
                         .add(properties);
         }
         
@@ -124,7 +125,7 @@ public class CssOptimizer {
             optimized.append(selector).append("{");
             
             // 合并属性，后面的覆盖前面的
-            Map<String, String> mergedProps = new LinkedHashMap<>();
+            Map<String, String> mergedProps = new LinkedHashMap<Object, Object>();
             for (String props : propsList) {
                 String[] declarations = props.split(";");
                 for (String decl : declarations) {

@@ -136,7 +136,7 @@ public class CJmodPackager {
                                                 String moduleVersion, String description,
                                                 String author) throws IOException {
         
-        Map<String, String> moduleInfo = new HashMap<>();
+        Map<String, String> moduleInfo = new HashMap<Object, Object>();
         moduleInfo.put("name", moduleName);
         moduleInfo.put("version", moduleVersion);
         moduleInfo.put("description", description);

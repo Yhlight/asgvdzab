@@ -1,4 +1,9 @@
 package com.chtl.service;
+
+import com.chtl.model.CompilationResult;
+import com.chtl.core.cache.CacheStatistics;
+import com.chtl.core.error.ErrorSummary;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -194,7 +199,7 @@ public class CompilerService {
                 BatchCompileRequest request = parseBatchRequest(exchange);
                 
                 // 并行批量编译
-                List<CompletableFuture<CompileResult>> futures = new ArrayList<>();
+                List<CompletableFuture<CompileResult>> futures = new ArrayList<Object>();
                 
                 for (String filePath : request.files) {
                     futures.add(CompletableFuture.supplyAsync(() -> {
@@ -393,7 +398,7 @@ public class CompilerService {
         final List<String> warnings;
         
         CompileResponse(boolean success, String output) {
-            this(success, output, new ArrayList<>(), new ArrayList<>());
+            this(success, output, new ArrayList<Object>(), new ArrayList<Object>());
         }
         
         CompileResponse(boolean success, String output, List<String> errors, List<String> warnings) {
@@ -420,7 +425,7 @@ public class CompilerService {
     }
     
     private static class BatchCompileResponse {
-        List<CompileResult> results = new ArrayList<>();
+        List<CompileResult> results = new ArrayList<Object>();
     }
     
     private static class CompileResult {

@@ -12,7 +12,7 @@ public class CHTLJSObjectNode extends AbstractCHTLASTNode {
     private Map<String, CHTLASTNode> properties;
 
     public CHTLJSObjectNode() {
-        this.properties = new LinkedHashMap<>();
+        this.properties = new LinkedHashMap<Object, Object>();
     }
 
     public Map<String, CHTLASTNode> getProperties() { return properties; }

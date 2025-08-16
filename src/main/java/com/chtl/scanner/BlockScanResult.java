@@ -14,7 +14,7 @@ public class BlockScanResult {
 
     public BlockScanResult(List<CodeFragment> fragments) {
         this.fragments = fragments;
-        this.metadata = new HashMap<>();
+        this.metadata = new HashMap<Object, Object>();
     }
 
     public List<CodeFragment> getFragments() {

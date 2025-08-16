@@ -1,4 +1,7 @@
 package com.chtl.compiler.optimization;
+
+import com.chtl.scanner.State;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -233,9 +236,9 @@ public class OutputOptimizer {
      */
     public static class CompilationOutput {
         private String html;
-        private List<CssFile> cssFiles = new ArrayList<>();
-        private List<JsFile> jsFiles = new ArrayList<>();
-        private List<SourceFile> sourceFiles = new ArrayList<>();
+        private List<CssFile> cssFiles = new ArrayList<Object>();
+        private List<JsFile> jsFiles = new ArrayList<Object>();
+        private List<SourceFile> sourceFiles = new ArrayList<Object>();
         
         // Getters and setters
         public String getHtml() { return html; }

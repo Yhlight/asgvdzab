@@ -1,4 +1,7 @@
 package com.chtl.core.parallel;
+
+import com.chtl.model.Element;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -70,7 +73,7 @@ public class ParallelCompilationEngine {
             .collect(Collectors.groupingBy(Fragment::getType));
         
         // 创建处理任务
-        Map<FragmentType, CompletableFuture<List<ProcessedFragment>>> tasks = new HashMap<>();
+        Map<FragmentType, CompletableFuture<List<ProcessedFragment>>> tasks = new HashMap<Object, Object>();
         
         for (Map.Entry<FragmentType, List<Fragment>> entry : groupedFragments.entrySet()) {
             FragmentType type = entry.getKey();
@@ -89,12 +92,12 @@ public class ParallelCompilationEngine {
         // 组合所有结果
         return CompletableFuture.allOf(tasks.values().toArray(new CompletableFuture[0]))
             .thenApply(v -> {
-                Map<FragmentType, List<ProcessedFragment>> result = new HashMap<>();
+                Map<FragmentType, List<ProcessedFragment>> result = new HashMap<Object, Object>();
                 tasks.forEach((type, future) -> {
                     try {
                         result.put(type, future.get());
                     } catch (Exception e) {
-                        result.put(type, new ArrayList<>());
+                        result.put(type, new ArrayList<Object>());
                     }
                 });
                 return result;
@@ -147,7 +150,7 @@ public class ParallelCompilationEngine {
         // 合并结果
         return CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]))
             .thenApply(v -> {
-                List<CHTLToken> allTokens = new ArrayList<>();
+                List<CHTLToken> allTokens = new ArrayList<Object>();
                 for (CompletableFuture<List<CHTLToken>> future : futures) {
                     try {
                         allTokens.addAll(future.get());
@@ -238,7 +241,7 @@ public class ParallelCompilationEngine {
      * 分割内容为块
      */
     private List<ContentChunk> splitContent(String content) {
-        List<ContentChunk> chunks = new ArrayList<>();
+        List<ContentChunk> chunks = new ArrayList<Object>();
         int chunkSize = content.length() / parallelism;
         
         if (chunkSize < 1000) {
@@ -284,7 +287,7 @@ public class ParallelCompilationEngine {
      */
     private List<CHTLToken> lexChunk(ContentChunk chunk) {
         // 实际词法分析逻辑
-        List<CHTLToken> tokens = new ArrayList<>();
+        List<CHTLToken> tokens = new ArrayList<Object>();
         // ... 词法分析
         return tokens;
     }
@@ -320,7 +323,7 @@ public class ParallelCompilationEngine {
      */
     private List<TokenGroup> identifyTokenGroups(List<CHTLToken> tokens) {
         // 简化实现
-        List<TokenGroup> groups = new ArrayList<>();
+        List<TokenGroup> groups = new ArrayList<Object>();
         TokenGroup currentGroup = new TokenGroup();
         
         for (CHTLToken token : tokens) {
@@ -360,7 +363,7 @@ public class ParallelCompilationEngine {
      * 分解AST
      */
     private List<GenerationUnit> decomposeAST(CHTLASTNode ast) {
-        List<GenerationUnit> units = new ArrayList<>();
+        List<GenerationUnit> units = new ArrayList<Object>();
         decomposeNode(ast, units);
         return units;
     }
@@ -445,7 +448,7 @@ public class ParallelCompilationEngine {
         protected List<ProcessedFragment> compute() {
             if (end - start <= THRESHOLD) {
                 // 直接处理
-                List<ProcessedFragment> result = new ArrayList<>();
+                List<ProcessedFragment> result = new ArrayList<Object>();
                 for (int i = start; i < end; i++) {
                     result.add(processFragment(fragments.get(i), context));
                 }
@@ -462,7 +465,7 @@ public class ParallelCompilationEngine {
             List<ProcessedFragment> leftResult = leftTask.join();
             
             // 合并结果
-            List<ProcessedFragment> result = new ArrayList<>();
+            List<ProcessedFragment> result = new ArrayList<Object>();
             result.addAll(leftResult);
             result.addAll(rightResult);
             return result;
@@ -510,8 +513,8 @@ public class ParallelCompilationEngine {
     }
     
     private static class TokenGroup {
-        List<CHTLToken> tokens = new ArrayList<>();
-        Set<String> dependencies = new HashSet<>();
+        List<CHTLToken> tokens = new ArrayList<Object>();
+        Set<String> dependencies = new HashSet<Object>();
     }
     
     private static class ParseTask {
@@ -535,10 +538,10 @@ public class ParallelCompilationEngine {
      * 任务依赖管理器
      */
     private static class TaskDependencyManager {
-        private final Map<String, Set<String>> dependencies = new ConcurrentHashMap<>();
+        private final Map<String, Set<String>> dependencies = new ConcurrentHashMap<Object, Object>();
         
         public void addDependency(String task, String dependency) {
-            dependencies.computeIfAbsent(task, k -> new HashSet<>()).add(dependency);
+            dependencies.computeIfAbsent(task, k -> new HashSet<Object>()).add(dependency);
         }
         
         public Set<String> getDependencies(String task) {
@@ -550,12 +553,12 @@ public class ParallelCompilationEngine {
      * 任务图
      */
     private static class TaskGraph<T> {
-        private final Map<String, T> tasks = new HashMap<>();
-        private final Map<T, Set<T>> dependencies = new HashMap<>();
+        private final Map<String, T> tasks = new HashMap<Object, Object>();
+        private final Map<T, Set<T>> dependencies = new HashMap<Object, Object>();
         
         public void addTask(T task) {
             tasks.put(task.toString(), task);
-            dependencies.putIfAbsent(task, new HashSet<>());
+            dependencies.putIfAbsent(task, new HashSet<Object>());
         }
         
         public void addDependency(T task, T dependency) {
@@ -567,7 +570,7 @@ public class ParallelCompilationEngine {
         }
         
         public Set<T> getTasks() {
-            return new HashSet<>(tasks.values());
+            return new HashSet<Object>(tasks.values());
         }
         
         public Set<T> getDependencies(T task) {

@@ -1,10 +1,11 @@
 package com.chtl.compiler.optimization.sourcemap;
+
+import com.chtl.compiler.optimization.SourceFile;
+import com.chtl.compiler.optimization.JsFile;
+import com.chtl.compiler.optimization.CssFile;
 import java.util.List;
 import java.util.Map;
 import com.chtl.compiler.optimization.OutputOptimizer;
-import com.chtl.compiler.optimization.OutputOptimizer.CssFile;
-import com.chtl.compiler.optimization.OutputOptimizer.JsFile;
-import com.chtl.compiler.optimization.OutputOptimizer.SourceFile;
 import com.chtl.context.CompilationContext;
 import com.chtl.compiler.optimization.OutputOptimizer.*;
 

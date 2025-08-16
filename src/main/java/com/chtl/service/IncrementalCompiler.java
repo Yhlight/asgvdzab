@@ -1,4 +1,7 @@
 package com.chtl.service;
+
+import com.chtl.model.CompilationResult;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -37,7 +40,7 @@ public class IncrementalCompiler {
     private final FileWatcher fileWatcher;
     
     // 文件修改时间戳
-    private final Map<String, Long> fileTimestamps = new ConcurrentHashMap<>();
+    private final Map<String, Long> fileTimestamps = new ConcurrentHashMap<Object, Object>();
     
     // 并行执行器
     private final ExecutorService executorService;
@@ -55,8 +58,8 @@ public class IncrementalCompiler {
      */
     public CompilerService.IncrementalResult compile(CompilerService.IncrementalCompileRequest request) {
         CompilerService.IncrementalResult result = new CompilerService.IncrementalResult();
-        result.recompiledFiles = new ArrayList<>();
-        result.outputs = new HashMap<>();
+        result.recompiledFiles = new ArrayList<Object>();
+        result.outputs = new HashMap<Object, Object>();
         result.success = true;
         
         try {
@@ -64,7 +67,7 @@ public class IncrementalCompiler {
             Set<String> filesToCompile = identifyFilesToCompile(request.changedFiles);
             
             // 2. 并行编译这些文件
-            Map<String, CompletableFuture<CompilationResult>> futures = new HashMap<>();
+            Map<String, CompletableFuture<CompilationResult>> futures = new HashMap<Object, Object>();
             
             for (String file : filesToCompile) {
                 futures.put(file, CompletableFuture.supplyAsync(() -> {
@@ -124,7 +127,7 @@ public class IncrementalCompiler {
      * 识别需要重新编译的文件
      */
     private Set<String> identifyFilesToCompile(List<String> changedFiles) {
-        Set<String> filesToCompile = new HashSet<>(changedFiles);
+        Set<String> filesToCompile = new HashSet<Object>(changedFiles);
         
         // 添加所有依赖于修改文件的文件
         for (String changedFile : changedFiles) {
@@ -141,7 +144,7 @@ public class IncrementalCompiler {
      * 检查新的依赖关系
      */
     private Set<String> checkForNewDependencies(List<String> files) {
-        Set<String> newDependencies = new HashSet<>();
+        Set<String> newDependencies = new HashSet<Object>();
         
         for (String file : files) {
             try {
@@ -164,7 +167,7 @@ public class IncrementalCompiler {
      * 扫描import语句
      */
     private List<String> scanImports(String file) throws IOException {
-        List<String> imports = new ArrayList<>();
+        List<String> imports = new ArrayList<Object>();
         List<String> lines = Files.readAllLines(Paths.get(file));
         
         for (String line : lines) {
@@ -252,7 +255,7 @@ public class IncrementalCompiler {
             // 触发增量编译
             CompilerService.IncrementalCompileRequest request = new CompilerService.IncrementalCompileRequest();
             request.changedFiles = Arrays.asList(file.toString());
-            request.fileContents = new HashMap<>();
+            request.fileContents = new HashMap<Object, Object>();
             
             compile(request);
         }
@@ -263,9 +266,9 @@ public class IncrementalCompiler {
      */
     private static class DependencyGraph {
         // file -> 它依赖的文件
-        private final Map<String, Set<String>> dependencies = new ConcurrentHashMap<>();
+        private final Map<String, Set<String>> dependencies = new ConcurrentHashMap<Object, Object>();
         // file -> 依赖它的文件
-        private final Map<String, Set<String>> dependents = new ConcurrentHashMap<>();
+        private final Map<String, Set<String>> dependents = new ConcurrentHashMap<Object, Object>();
         
         public void updateDependencies(String file, Set<String> deps) {
             // 清除旧的依赖
@@ -277,9 +280,9 @@ public class IncrementalCompiler {
             }
             
             // 添加新的依赖
-            dependencies.put(file, new HashSet<>(deps));
+            dependencies.put(file, new HashSet<Object>(deps));
             for (String dep : deps) {
-                dependents.computeIfAbsent(dep, k -> new HashSet<>()).add(file);
+                dependents.computeIfAbsent(dep, k -> new HashSet<Object>()).add(file);
             }
         }
         
@@ -298,7 +301,7 @@ public class IncrementalCompiler {
      */
     private static class FileWatcher {
         private WatchService watchService;
-        private final Map<WatchKey, Path> watchKeys = new HashMap<>();
+        private final Map<WatchKey, Path> watchKeys = new HashMap<Object, Object>();
         private Thread watchThread;
         
         public void watch(Path directory, Consumer<Path> onChange) throws IOException {

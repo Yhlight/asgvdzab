@@ -1,5 +1,9 @@
 package com.chtl.compiler.debug;
 
+import com.chtl.context.ErrorType;
+import com.chtl.exception.CompilationException;
+
+
 import com.chtl.model.SourceLocation;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,8 +29,8 @@ public class ErrorHandler {
     private final ErrorRecoveryStrategy recoveryStrategy;
     
     // 错误收集
-    private final List<DetailedError> detailedErrors = new ArrayList<>();
-    private final List<DetailedWarning> detailedWarnings = new ArrayList<>();
+    private final List<DetailedError> detailedErrors = new ArrayList<Object>();
+    private final List<DetailedWarning> detailedWarnings = new ArrayList<Object>();
     
     // 错误限制
     private int maxErrors = 100;
@@ -130,13 +134,13 @@ public class ErrorHandler {
         // 活跃的约束
         if (context.getConstraintManager() != null) {
             // 简化实现
-            info.setActiveConstraints(new ArrayList<>());
+            info.setActiveConstraints(new ArrayList<Object>());
         }
         
         // 导入的模块
         if (context.getImportManager() != null) {
             // 简化实现
-            info.setImportedModules(new ArrayList<>());
+            info.setImportedModules(new ArrayList<Object>());
         }
         
         return info;
@@ -146,7 +150,7 @@ public class ErrorHandler {
      * 生成修复建议
      */
     private List<String> generateSuggestions(CompilationError error) {
-        List<String> suggestions = new ArrayList<>();
+        List<String> suggestions = new ArrayList<Object>();
         
         switch (error.getType()) {
             case SYNTAX_ERROR:
@@ -191,7 +195,7 @@ public class ErrorHandler {
      * 生成语法建议
      */
     private List<String> generateSyntaxSuggestions(CompilationError error) {
-        List<String> suggestions = new ArrayList<>();
+        List<String> suggestions = new ArrayList<Object>();
         String message = error.getMessage();
         
         if (message.contains("期望")) {
@@ -225,7 +229,7 @@ public class ErrorHandler {
      * 生成引用建议
      */
     private List<String> generateReferenceSuggestions(CompilationError error) {
-        List<String> suggestions = new ArrayList<>();
+        List<String> suggestions = new ArrayList<Object>();
         
         // 提取未定义的标识符
         String identifier = extractIdentifier(error.getMessage());
@@ -329,7 +333,7 @@ public class ErrorHandler {
         ErrorStatistics stats = new ErrorStatistics();
         
         // 按类型统计错误
-        Map<CompilationError.ErrorType, Integer> errorCounts = new HashMap<>();
+        Map<CompilationError.ErrorType, Integer> errorCounts = new HashMap<Object, Object>();
         for (DetailedError error : detailedErrors) {
             CompilationError.ErrorType type = error.getOriginalError().getType();
             errorCounts.put(type, errorCounts.getOrDefault(type, 0) + 1);
@@ -337,7 +341,7 @@ public class ErrorHandler {
         stats.setErrorCountsByType(errorCounts);
         
         // 按文件统计错误
-        Map<String, Integer> errorsByFile = new HashMap<>();
+        Map<String, Integer> errorsByFile = new HashMap<Object, Object>();
         for (DetailedError error : detailedErrors) {
             SourceLocation loc = error.getOriginalError().getLocation();
             if (loc != null) {
@@ -376,7 +380,7 @@ public class ErrorHandler {
     private List<String> findSimilarIdentifiers(String identifier) {
         // 查找相似的标识符
         // 简化实现
-        return new ArrayList<>();
+        return new ArrayList<Object>();
     }
     
     // Getters and setters

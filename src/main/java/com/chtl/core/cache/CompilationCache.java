@@ -27,7 +27,7 @@ public class CompilationCache {
     private static CompilationCache instance;
     
     // 内存缓存
-    private final Map<String, CacheEntry> memoryCache = new ConcurrentHashMap<>();
+    private final Map<String, CacheEntry> memoryCache = new ConcurrentHashMap<Object, Object>();
     
     // 磁盘缓存
     private final Path diskCacheDir;
@@ -42,7 +42,7 @@ public class CompilationCache {
     private long cacheExpirationTime = 24 * 60 * 60 * 1000; // 24小时
     
     // 锁管理
-    private final Map<String, ReadWriteLock> fileLocks = new ConcurrentHashMap<>();
+    private final Map<String, ReadWriteLock> fileLocks = new ConcurrentHashMap<Object, Object>();
     
     private CompilationCache() {
         this.diskCacheDir = Paths.get(System.getProperty("user.home"), ".chtl", "cache");
@@ -395,7 +395,7 @@ public class CompilationCache {
      */
     private void evictFromMemory() {
         // LRU驱逐策略
-        List<Map.Entry<String, CacheEntry>> entries = new ArrayList<>(memoryCache.entrySet());
+        List<Map.Entry<String, CacheEntry>> entries = new ArrayList<Object>(memoryCache.entrySet());
         entries.sort(Comparator.comparingLong(e -> e.getValue().lastAccessed));
         
         // 驱逐最旧的20%
@@ -441,7 +441,7 @@ public class CompilationCache {
         final List<CHTLToken> tokens;
         
         TokensCacheData(List<CHTLToken> tokens) {
-            this.tokens = new ArrayList<>(tokens);
+            this.tokens = new ArrayList<Object>(tokens);
         }
     }
     
@@ -477,7 +477,7 @@ public class CompilationCache {
         final Set<String> dependencies;
         
         DependenciesCacheData(Set<String> dependencies) {
-            this.dependencies = new HashSet<>(dependencies);
+            this.dependencies = new HashSet<Object>(dependencies);
         }
     }
     

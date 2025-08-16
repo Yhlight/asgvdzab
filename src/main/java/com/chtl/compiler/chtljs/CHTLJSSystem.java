@@ -1,4 +1,9 @@
 package com.chtl.compiler.chtljs;
+
+import com.chtl.context.ErrorType;
+import com.chtl.scanner.State;
+import com.chtl.model.Element;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -58,7 +63,7 @@ public class CHTLJSSystem {
         
         DelegationInfo(String parentSelector) {
             this.parentSelector = parentSelector;
-            this.eventTargets = new HashMap<>();
+            this.eventTargets = new HashMap<Object, Object>();
         }
     }
     
@@ -82,8 +87,8 @@ public class CHTLJSSystem {
         this.eventProcessor = new EventBindingProcessor(this);
         this.animationProcessor = new AnimationProcessor(this);
         this.generatedJS = new StringBuilder();
-        this.selectorCache = new HashMap<>();
-        this.delegationRegistry = new HashMap<>();
+        this.selectorCache = new HashMap<Object, Object>();
+        this.delegationRegistry = new HashMap<Object, Object>();
     }
     
     /**
@@ -371,7 +376,7 @@ public class CHTLJSSystem {
                 generatedJS.append("  ").append(parentVar).append(".delegate({\n");
                 
                 // 添加targets
-                Set<String> allTargets = new HashSet<>();
+                Set<String> allTargets = new HashSet<Object>();
                 for (List<DelegationTarget> targets : info.eventTargets.values()) {
                     for (DelegationTarget target : targets) {
                         allTargets.add(target.targetSelector);
@@ -434,7 +439,7 @@ public class CHTLJSSystem {
             parentSelector, k -> new DelegationInfo(parentSelector)
         );
         
-        info.eventTargets.computeIfAbsent(event, k -> new ArrayList<>())
+        info.eventTargets.computeIfAbsent(event, k -> new ArrayList<Object>())
             .add(new DelegationTarget(targetSelector, handler));
     }
 }

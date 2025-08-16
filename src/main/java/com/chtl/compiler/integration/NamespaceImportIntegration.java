@@ -1,4 +1,12 @@
 package com.chtl.compiler.integration;
+
+import com.chtl.compiler.namespace.NamespaceDefinition;
+import com.chtl.context.ErrorType;
+import com.chtl.compiler.namespace.DefinitionType;
+import com.chtl.scanner.State;
+import com.chtl.compiler.importer.ImportResult;
+import com.chtl.context.WarningType;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -285,7 +293,7 @@ public class NamespaceImportIntegration {
         private final Map<String, Map<String, ImportPriority>> priorities;
         
         ImportPriorityManager() {
-            this.priorities = new HashMap<>();
+            this.priorities = new HashMap<Object, Object>();
         }
         
         boolean hasConflict(String namespace, String name) {
@@ -298,7 +306,7 @@ public class NamespaceImportIntegration {
         }
         
         void register(String namespace, String name, ImportPriority priority) {
-            priorities.computeIfAbsent(namespace, k -> new HashMap<>())
+            priorities.computeIfAbsent(namespace, k -> new HashMap<Object, Object>())
                      .put(name, priority);
         }
     }
@@ -311,13 +319,13 @@ public class NamespaceImportIntegration {
         private final Set<String> visiting;
         
         CircularDependencyDetector() {
-            this.dependencies = new HashMap<>();
-            this.visiting = new HashSet<>();
+            this.dependencies = new HashMap<Object, Object>();
+            this.visiting = new HashSet<Object>();
         }
         
         boolean checkDependency(String from, String to) {
             // 记录依赖关系
-            dependencies.computeIfAbsent(from, k -> new HashSet<>()).add(to);
+            dependencies.computeIfAbsent(from, k -> new HashSet<Object>()).add(to);
             
             // 检查是否形成循环
             return !hasCycle(from, to);

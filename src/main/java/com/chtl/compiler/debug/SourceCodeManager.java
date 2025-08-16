@@ -14,7 +14,7 @@ import java.io.*;
  */
 public class SourceCodeManager {
     // 缓存已读取的文件
-    private final Map<String, List<String>> fileCache = new HashMap<>();
+    private final Map<String, List<String>> fileCache = new HashMap<Object, Object>();
     
     /**
      * 获取代码片段

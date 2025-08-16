@@ -1,4 +1,8 @@
 package com.chtl.compiler.debug;
+
+import com.chtl.context.ErrorType;
+import com.chtl.compiler.chtl.Token;
+import com.chtl.scanner.State;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -6,7 +10,6 @@ import com.chtl.ast.AbstractCHTLASTNode;
 import com.chtl.ast.CHTLASTNode;
 import com.chtl.ast.node.CustomDefinitionNode;
 import com.chtl.ast.node.TemplateDefinitionNode;
-import com.chtl.compiler.chtl.CHTLParser.Token;
 import com.chtl.context.CompilationContext;
 import com.chtl.context.CompilationError;
 import com.chtl.context.CompilationWarning;
@@ -177,7 +180,7 @@ public class DebugInfo {
         
         if (level.ordinal() >= DebugLevel.DETAILED.ordinal()) {
             // 按类型统计错误
-            Map<CompilationError.ErrorType, Integer> errorStats = new HashMap<>();
+            Map<CompilationError.ErrorType, Integer> errorStats = new HashMap<Object, Object>();
             for (CompilationError error : errors) {
                 errorStats.put(error.getType(), 
                     errorStats.getOrDefault(error.getType(), 0) + 1);

@@ -1,4 +1,8 @@
 package com.chtl.context;
+
+import com.chtl.compiler.constraint.ConstraintTarget;
+import com.chtl.model.TemplateType;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,8 +36,8 @@ public class ConstraintManager {
     private final Stack<List<ConstraintNode>> constraintStack;
     
     public ConstraintManager() {
-        this.globalConstraints = new ArrayList<>();
-        this.elementConstraints = new HashMap<>();
+        this.globalConstraints = new ArrayList<Object>();
+        this.elementConstraints = new HashMap<Object, Object>();
         this.constraintStack = new Stack<>();
     }
     
@@ -49,14 +53,14 @@ public class ConstraintManager {
      * 添加元素级约束
      */
     public void addElementConstraint(String elementPath, ConstraintNode constraint) {
-        elementConstraints.computeIfAbsent(elementPath, k -> new ArrayList<>()).add(constraint);
+        elementConstraints.computeIfAbsent(elementPath, k -> new ArrayList<Object>()).add(constraint);
     }
     
     /**
      * 进入新的约束作用域
      */
     public void pushConstraints(List<ConstraintNode> constraints) {
-        constraintStack.push(new ArrayList<>(constraints));
+        constraintStack.push(new ArrayList<Object>(constraints));
     }
     
     /**
@@ -89,7 +93,7 @@ public class ConstraintManager {
      * 获取当前适用的所有约束
      */
     private List<ConstraintNode> getApplicableConstraints(CompilationContext context) {
-        List<ConstraintNode> constraints = new ArrayList<>();
+        List<ConstraintNode> constraints = new ArrayList<Object>();
         
         // 添加全局约束
         constraints.addAll(globalConstraints);

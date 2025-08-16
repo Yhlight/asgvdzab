@@ -7,6 +7,8 @@ import org.slf4j.Logger;
 import com.chtl.javascript.ECMAScriptParser;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.slf4j.LoggerFactory;
+import com.chtl.javascript.FunctionDeclarationContext;
+import com.chtl.javascript.WithStatementContext;
 import com.chtl.javascript.ECMAScriptBaseVisitor;
 import java.util.function.BiPredicate;
 import com.chtl.javascript.ECMAScriptLexer;
@@ -18,6 +20,8 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import java.util.Map;
 import org.antlr.v4.runtime.CharStreams;
 import com.chtl.model.FragmentType;
+import com.chtl.javascript.VariableStatementContext;
+import com.chtl.javascript.ProgramContext;
 
 /**
  * JavaScript编译器 - 基于ANTLR实现
@@ -94,7 +98,7 @@ public class JavaScriptCompiler {
      * 检查语法错误
      */
     private List<String> checkSyntaxErrors(ECMAScriptParser parser) {
-        List<String> errors = new ArrayList<>();
+        List<String> errors = new ArrayList<Object>();
         
         parser.removeErrorListeners();
         parser.addErrorListener(new BaseErrorListener() {
@@ -190,7 +194,7 @@ public class JavaScriptCompiler {
      * JavaScript优化访问器
      */
     private static class JavaScriptOptimizingVisitor extends ECMAScriptBaseVisitor<String> {
-        private final List<String> warnings = new ArrayList<>();
+        private final List<String> warnings = new ArrayList<Object>();
         private final StringBuilder output = new StringBuilder();
         
         public List<String> getWarnings() {
@@ -269,7 +273,7 @@ public class JavaScriptCompiler {
 
 // 扩展ECMAScriptParser以支持预测
 class ECMAScriptParser extends ECMAScriptBaseParser {
-    private final Map<String, BiPredicate<RuleContext, String>> predicates = new HashMap<>();
+    private final Map<String, BiPredicate<RuleContext, String>> predicates = new HashMap<Object, Object>();
     
     public ECMAScriptParser(TokenStream input) {
         super(input);

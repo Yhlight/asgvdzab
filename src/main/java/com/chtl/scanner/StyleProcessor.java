@@ -120,7 +120,7 @@ public class StyleProcessor {
      * 查找所有CHTL语法
      */
     private TreeMap<Integer, SyntaxInfo> findCHTLSyntax(String content) {
-        TreeMap<Integer, SyntaxInfo> syntaxMap = new TreeMap<>();
+        TreeMap<Integer, SyntaxInfo> syntaxMap = new TreeMap<Object, Object>();
         
         // 首先找出所有CSS函数的位置，以便排除
         Set<Integer> cssFunctionPositions = findCSSFunctionPositions(content);
@@ -200,7 +200,7 @@ public class StyleProcessor {
      * 查找所有CSS函数的位置
      */
     private Set<Integer> findCSSFunctionPositions(String content) {
-        Set<Integer> positions = new HashSet<>();
+        Set<Integer> positions = new HashSet<Object>();
         
         Matcher cssMatcher = CSS_FUNCTION_PATTERN.matcher(content);
         while (cssMatcher.find()) {
@@ -334,7 +334,7 @@ public class StyleProcessor {
      * 根据语法位置切割片段
      */
     private List<CodeFragment> splitBySyntax(String content, TreeMap<Integer, SyntaxInfo> syntaxMap) {
-        List<CodeFragment> fragments = new ArrayList<>();
+        List<CodeFragment> fragments = new ArrayList<Object>();
         int lastPos = 0;
         
         // 添加开始的style标记

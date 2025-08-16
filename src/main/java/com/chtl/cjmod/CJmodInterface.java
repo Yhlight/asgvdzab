@@ -72,7 +72,7 @@ public interface CJmodInterface {
             this.parameters = parameters;
             this.returnType = returnType;
             this.description = description;
-            this.attributes = new HashMap<>();
+            this.attributes = new HashMap<Object, Object>();
         }
         
         public void setAttribute(String key, Object value) {
@@ -164,8 +164,8 @@ public interface CJmodInterface {
         public FunctionResult(Object value, String generatedCode) {
             this.value = value;
             this.generatedCode = generatedCode;
-            this.metadata = new HashMap<>();
-            this.warnings = new ArrayList<>();
+            this.metadata = new HashMap<Object, Object>();
+            this.warnings = new ArrayList<Object>();
         }
         
         public void addMetadata(String key, Object value) {
@@ -204,7 +204,7 @@ public interface CJmodInterface {
     
     // 验证参数
     default List<String> validateParameters(String functionName, Map<String, Object> parameters) {
-        List<String> errors = new ArrayList<>();
+        List<String> errors = new ArrayList<Object>();
         
         // 查找函数签名
         FunctionSignature signature = getExportedFunctions().stream()

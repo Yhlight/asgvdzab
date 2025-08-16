@@ -1,5 +1,8 @@
 package com.chtl.compiler.chtl.lexer;
 
+import com.chtl.model.Element;
+
+
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.Token;
@@ -23,9 +26,9 @@ public class CHTLLexer {
     private int column;
     
     // 关键字映射表
-    private static final Map<String, CHTLTokenType> KEYWORDS = new HashMap<>();
-    private static final Map<String, CHTLTokenType> AT_KEYWORDS = new HashMap<>();
-    private static final Map<String, CHTLTokenType> BRACKET_KEYWORDS = new HashMap<>();
+    private static final Map<String, CHTLTokenType> KEYWORDS = new HashMap<Object, Object>();
+    private static final Map<String, CHTLTokenType> AT_KEYWORDS = new HashMap<Object, Object>();
+    private static final Map<String, CHTLTokenType> BRACKET_KEYWORDS = new HashMap<Object, Object>();
     
     static {
         // 基础关键字
@@ -73,7 +76,7 @@ public class CHTLLexer {
      * 获取所有Token
      */
     public List<CHTLToken> tokenize() {
-        List<CHTLToken> tokens = new ArrayList<>();
+        List<CHTLToken> tokens = new ArrayList<Object>();
         
         while (!isAtEnd()) {
             // 跳过空白字符

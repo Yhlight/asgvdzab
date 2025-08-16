@@ -15,7 +15,7 @@ public class AnimationKeyframeNode extends AbstractCHTLJSASTNode {
     public AnimationKeyframeNode(double at) {
         super(NodeType.ANIMATION_KEYFRAME);
         this.at = at;
-        this.cssProperties = new HashMap<>();
+        this.cssProperties = new HashMap<Object, Object>();
     }
     
     public double getAt() {

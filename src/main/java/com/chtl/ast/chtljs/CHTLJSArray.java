@@ -5,7 +5,7 @@ import java.util.List;
 import com.chtl.chtljs.ast.*;
 
 public class CHTLJSArray extends AbstractCHTLJSASTNode {
-    private List<CHTLJSASTNode> elements = new ArrayList<>();
+    private List<CHTLJSASTNode> elements = new ArrayList<Object>();
 
     public CHTLJSArray() {
         super(CHTLJSASTNode.NodeType.ARRAY);

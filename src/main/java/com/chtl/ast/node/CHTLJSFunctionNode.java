@@ -14,7 +14,7 @@ public class CHTLJSFunctionNode extends AbstractCHTLASTNode {
 
     public CHTLJSFunctionNode(String name) {
         this.name = name;
-        this.parameters = new ArrayList<>();
+        this.parameters = new ArrayList<Object>();
     }
 
     public String getName() { return name; }

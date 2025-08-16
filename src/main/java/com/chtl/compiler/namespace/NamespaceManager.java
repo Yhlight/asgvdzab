@@ -1,4 +1,8 @@
 package com.chtl.compiler.namespace;
+
+import com.chtl.context.ErrorType;
+import com.chtl.context.WarningType;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -30,7 +34,7 @@ public class NamespaceManager {
     
     public NamespaceManager(CompilationContext context) {
         this.context = context;
-        this.namespaces = new HashMap<>();
+        this.namespaces = new HashMap<Object, Object>();
         this.currentNamespaceStack = new Stack<>();
     }
     
@@ -161,7 +165,7 @@ public class NamespaceManager {
         NamespaceNode mergedNode = new NamespaceNode(namespace.name);
         
         // 合并全局约束
-        Set<ConstraintNode> mergedConstraints = new HashSet<>();
+        Set<ConstraintNode> mergedConstraints = new HashSet<Object>();
         for (NamespaceNode node : namespace.nodes) {
             mergedConstraints.addAll(node.getGlobalConstraints());
         }
@@ -170,11 +174,11 @@ public class NamespaceManager {
         }
         
         // 合并子节点
-        Map<String, List<CHTLASTNode>> childrenByType = new HashMap<>();
+        Map<String, List<CHTLASTNode>> childrenByType = new HashMap<Object, Object>();
         for (NamespaceNode node : namespace.nodes) {
             for (CHTLASTNode child : node.getChildren()) {
                 String key = getChildKey(child);
-                childrenByType.computeIfAbsent(key, k -> new ArrayList<>()).add(child);
+                childrenByType.computeIfAbsent(key, k -> new ArrayList<Object>()).add(child);
             }
         }
         
@@ -201,11 +205,11 @@ public class NamespaceManager {
      */
     private void checkConflicts(MergedNamespace namespace) {
         // 检查定义冲突
-        Map<String, List<Definition>> definitionsByName = new HashMap<>();
+        Map<String, List<Definition>> definitionsByName = new HashMap<Object, Object>();
         
         for (Map.Entry<String, Definition> entry : namespace.definitions.entrySet()) {
             String name = entry.getValue().name;
-            definitionsByName.computeIfAbsent(name, k -> new ArrayList<>()).add(entry.getValue());
+            definitionsByName.computeIfAbsent(name, k -> new ArrayList<Object>()).add(entry.getValue());
         }
         
         for (Map.Entry<String, List<Definition>> entry : definitionsByName.entrySet()) {
@@ -263,8 +267,8 @@ public class NamespaceManager {
             }
             
             // 检查空属性列表是否相同
-            return new HashSet<>(c1.getEmptyProperties()).equals(
-                   new HashSet<>(c2.getEmptyProperties()));
+            return new HashSet<Object>(c1.getEmptyProperties()).equals(
+                   new HashSet<Object>(c2.getEmptyProperties()));
         }
         
         // 其他类型暂时认为不兼容
@@ -336,8 +340,8 @@ public class NamespaceManager {
         
         public MergedNamespace(String name) {
             this.name = name;
-            this.nodes = new ArrayList<>();
-            this.definitions = new HashMap<>();
+            this.nodes = new ArrayList<Object>();
+            this.definitions = new HashMap<Object, Object>();
         }
         
         public void addNamespaceNode(NamespaceNode node) {

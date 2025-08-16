@@ -75,7 +75,7 @@ public class BlockScanner {
         this.line = 1;
         this.column = 1;
         
-        List<RawBlock> blocks = new ArrayList<>();
+        List<RawBlock> blocks = new ArrayList<Object>();
         
         while (position < source.length()) {
             // 跳过空白

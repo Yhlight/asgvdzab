@@ -1,4 +1,7 @@
 package com.chtl.compiler.cmod;
+
+import com.chtl.model.TemplateType;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Serializable;
@@ -121,7 +124,7 @@ public class CmodPackager {
      * 收集源文件
      */
     private List<Path> collectSourceFiles() throws IOException {
-        List<Path> sourceFiles = new ArrayList<>();
+        List<Path> sourceFiles = new ArrayList<Object>();
         
         Files.walk(sourceDirectory)
             .filter(Files::isRegularFile)
@@ -135,7 +138,7 @@ public class CmodPackager {
      * 编译源文件
      */
     private List<CompiledModule> compileSourceFiles(List<Path> sourceFiles) throws IOException {
-        List<CompiledModule> compiledModules = new ArrayList<>();
+        List<CompiledModule> compiledModules = new ArrayList<Object>();
         
         for (Path sourceFile : sourceFiles) {
             String content = Files.readString(sourceFile);
@@ -266,7 +269,7 @@ public class CmodPackager {
         
         // 序列化符号表
         Path symbolsFile = compiledDir.resolve("symbols.dat");
-        List<SymbolTable> symbolTables = new ArrayList<>();
+        List<SymbolTable> symbolTables = new ArrayList<Object>();
         for (CompiledModule module : modules) {
             symbolTables.add(module.getSymbols());
         }
@@ -278,7 +281,7 @@ public class CmodPackager {
         
         // 序列化元数据
         Path metadataFile = compiledDir.resolve("metadata.dat");
-        Map<String, Object> metadata = new HashMap<>();
+        Map<String, Object> metadata = new HashMap<Object, Object>();
         metadata.put("moduleCount", modules.size());
         metadata.put("compileTime", LocalDateTime.now().toString());
         metadata.put("compilerVersion", CmodFormat.COMPILER_VERSION);
@@ -328,7 +331,7 @@ public class CmodPackager {
             LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
         
         // 收集导出的符号
-        List<String> exports = new ArrayList<>();
+        List<String> exports = new ArrayList<Object>();
         for (CompiledModule module : modules) {
             exports.addAll(module.getSymbols().getExportedSymbols());
         }
@@ -385,8 +388,8 @@ public class CmodPackager {
     public static class SymbolTable implements Serializable {
         private static final long serialVersionUID = 1L;
         
-        private final Map<String, SymbolInfo> symbols = new HashMap<>();
-        private final Set<String> namespaces = new HashSet<>();
+        private final Map<String, SymbolInfo> symbols = new HashMap<Object, Object>();
+        private final Set<String> namespaces = new HashSet<Object>();
         
         public void addTemplate(String name, TemplateDefinitionNode.TemplateType type) {
             symbols.put(name, new SymbolInfo(name, SymbolType.TEMPLATE, type.toString()));
@@ -405,7 +408,7 @@ public class CmodPackager {
         }
         
         public List<String> getExportedSymbols() {
-            List<String> exports = new ArrayList<>();
+            List<String> exports = new ArrayList<Object>();
             for (SymbolInfo symbol : symbols.values()) {
                 exports.add(symbol.name);
             }

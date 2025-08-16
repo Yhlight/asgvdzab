@@ -1,5 +1,8 @@
 package com.chtl.compiler.importer;
 
+import com.chtl.context.ErrorType;
+
+
 import com.chtl.model.CHTLNode;
 import com.chtl.model.CompilationResult;
 import com.chtl.exception.CHTLException;
@@ -52,8 +55,8 @@ public class ImportManager {
         this.context = context;
         this.currentDirectory = currentDirectory;
         this.officialModuleDirectory = getOfficialModuleDirectory();
-        this.importedPaths = new HashSet<>();
-        this.importCache = new HashMap<>();
+        this.importedPaths = new HashSet<Object>();
+        this.importCache = new HashMap<Object, Object>();
         this.importStack = new Stack<>();
     }
     
@@ -213,7 +216,7 @@ public class ImportManager {
         }
         
         // 导入找到的文件
-        List<CHTLASTNode> importedNodes = new ArrayList<>();
+        List<CHTLASTNode> importedNodes = new ArrayList<Object>();
         for (Path file : foundFiles) {
             ImportResult fileResult = importCHTLFile(file, importNode);
             if (fileResult.isSuccess() && fileResult.getNode() != null) {
@@ -243,7 +246,7 @@ public class ImportManager {
         }
         
         // 导入找到的文件
-        List<CHTLASTNode> importedNodes = new ArrayList<>();
+        List<CHTLASTNode> importedNodes = new ArrayList<Object>();
         for (Path file : foundFiles) {
             ImportResult fileResult = importCJModFile(file, importNode);
             if (fileResult.isSuccess() && fileResult.getNode() != null) {
@@ -305,7 +308,7 @@ public class ImportManager {
         }
         
         // 查找匹配的文件
-        List<Path> matchedFiles = new ArrayList<>();
+        List<Path> matchedFiles = new ArrayList<Object>();
         try {
             if (pattern.equals("*")) {
                 // 导入所有cmod和chtl文件
@@ -333,7 +336,7 @@ public class ImportManager {
         }
         
         // 导入所有匹配的文件
-        List<CHTLASTNode> importedNodes = new ArrayList<>();
+        List<CHTLASTNode> importedNodes = new ArrayList<Object>();
         for (Path file : matchedFiles) {
             ImportResult fileResult = importCHTLFile(file, importNode);
             if (fileResult.isSuccess() && fileResult.getNode() != null) {
@@ -348,7 +351,7 @@ public class ImportManager {
      * 查找资源文件
      */
     private List<Path> findResourceFiles(String fromPath, ImportStatementNode.ImportType type) {
-        List<Path> foundFiles = new ArrayList<>();
+        List<Path> foundFiles = new ArrayList<Object>();
         List<String> extensions = EXTENSION_MAP.get(type);
         
         // 检查是否带后缀名
@@ -377,7 +380,7 @@ public class ImportManager {
      * 查找CHTL文件
      */
     private List<Path> findCHTLFiles(String fromPath) {
-        List<Path> foundFiles = new ArrayList<>();
+        List<Path> foundFiles = new ArrayList<Object>();
         
         // 检查是否是具体路径
         if (fromPath.contains("/") || fromPath.contains("\\")) {
@@ -427,7 +430,7 @@ public class ImportManager {
      * 查找CJMod文件
      */
     private List<Path> findCJModFiles(String fromPath) {
-        List<Path> foundFiles = new ArrayList<>();
+        List<Path> foundFiles = new ArrayList<Object>();
         
         // 检查是否是具体路径
         if (fromPath.contains("/") || fromPath.contains("\\")) {
@@ -503,7 +506,7 @@ public class ImportManager {
      * 只在官方模块目录中查找
      */
     private List<Path> findOfficialCHTLFiles(String fromPath) {
-        List<Path> foundFiles = new ArrayList<>();
+        List<Path> foundFiles = new ArrayList<Object>();
         
         // 检查是否带后缀名
         boolean hasExtension = fromPath.endsWith(".cmod") || fromPath.endsWith(".chtl");
@@ -527,7 +530,7 @@ public class ImportManager {
      * 只在官方模块目录中查找
      */
     private List<Path> findOfficialCJModFiles(String fromPath) {
-        List<Path> foundFiles = new ArrayList<>();
+        List<Path> foundFiles = new ArrayList<Object>();
         
         // 检查是否带后缀名
         boolean hasExtension = fromPath.endsWith(".cjmod");

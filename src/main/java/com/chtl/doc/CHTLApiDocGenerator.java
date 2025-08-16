@@ -1,4 +1,6 @@
 package com.chtl.doc;
+
+import com.chtl.cjmod.Parameter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -8,7 +10,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import com.chtl.cjmod.CJmodInterface.Parameter;
 import java.io.*;
 
 /**
@@ -17,7 +18,7 @@ import java.io.*;
  */
 public class CHTLApiDocGenerator {
     private final Path outputDir;
-    private final List<ApiClass> apiClasses = new ArrayList<>();
+    private final List<ApiClass> apiClasses = new ArrayList<Object>();
     
     public CHTLApiDocGenerator(Path outputDir) throws IOException {
         this.outputDir = outputDir;
@@ -151,9 +152,9 @@ public class CHTLApiDocGenerator {
             writer.println("<p>CHTL (Custom HyperText Language) 编译器 API 参考文档</p>");
             
             // 按包分组
-            Map<String, List<ApiClass>> byPackage = new TreeMap<>();
+            Map<String, List<ApiClass>> byPackage = new TreeMap<Object, Object>();
             for (ApiClass apiClass : apiClasses) {
-                byPackage.computeIfAbsent(apiClass.packageName, k -> new ArrayList<>())
+                byPackage.computeIfAbsent(apiClass.packageName, k -> new ArrayList<Object>())
                     .add(apiClass);
             }
             
@@ -418,9 +419,9 @@ public class CHTLApiDocGenerator {
         String fullName;
         String packageName;
         String description;
-        List<ApiMember> constructors = new ArrayList<>();
-        List<ApiMember> methods = new ArrayList<>();
-        List<ApiMember> fields = new ArrayList<>();
+        List<ApiMember> constructors = new ArrayList<Object>();
+        List<ApiMember> methods = new ArrayList<Object>();
+        List<ApiMember> fields = new ArrayList<Object>();
     }
     
     /**
@@ -431,7 +432,7 @@ public class CHTLApiDocGenerator {
         String signature;
         String description;
         String returnType = "";
-        List<String> parameters = new ArrayList<>();
+        List<String> parameters = new ArrayList<Object>();
     }
     
     /**

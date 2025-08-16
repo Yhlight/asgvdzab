@@ -17,8 +17,8 @@ public class DelegateCallNode extends AbstractCHTLJSASTNode {
     
     public DelegateCallNode() {
         super(NodeType.DELEGATE_CALL);
-        this.targetElements = new ArrayList<>();
-        this.eventHandlers = new HashMap<>();
+        this.targetElements = new ArrayList<Object>();
+        this.eventHandlers = new HashMap<Object, Object>();
     }
     
     public CHTLJSASTNode getParentElement() {

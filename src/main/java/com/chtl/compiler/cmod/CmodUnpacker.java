@@ -132,7 +132,7 @@ public class CmodUnpacker {
      * 收集指定扩展名的文件
      */
     private List<Path> collectFiles(Path directory, String extension) throws IOException {
-        List<Path> files = new ArrayList<>();
+        List<Path> files = new ArrayList<Object>();
         
         Files.walk(directory)
             .filter(Files::isRegularFile)
@@ -146,7 +146,7 @@ public class CmodUnpacker {
      * 收集所有文件
      */
     private List<Path> collectAllFiles(Path directory) throws IOException {
-        List<Path> files = new ArrayList<>();
+        List<Path> files = new ArrayList<Object>();
         
         Files.walk(directory)
             .filter(Files::isRegularFile)
@@ -172,8 +172,8 @@ public class CmodUnpacker {
             this.moduleNamespace = moduleNamespace;
             this.version = version;
             this.compiledModules = compiledModules;
-            this.sourceFiles = new ArrayList<>();
-            this.resourceFiles = new ArrayList<>();
+            this.sourceFiles = new ArrayList<Object>();
+            this.resourceFiles = new ArrayList<Object>();
         }
         
         public String getModuleName() {
@@ -209,7 +209,7 @@ public class CmodUnpacker {
         }
         
         public List<RootNode> getASTNodes() {
-            List<RootNode> nodes = new ArrayList<>();
+            List<RootNode> nodes = new ArrayList<Object>();
             for (CompiledModule module : compiledModules) {
                 nodes.add(module.getAst());
             }

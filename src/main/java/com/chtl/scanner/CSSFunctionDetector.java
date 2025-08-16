@@ -16,7 +16,7 @@ import java.util.regex.Matcher;
 public class CSSFunctionDetector {
     
     // 完整的CSS函数列表
-    private static final Set<String> CSS_FUNCTIONS = new HashSet<>(Arrays.asList(
+    private static final Set<String> CSS_FUNCTIONS = new HashSet<Object>(Arrays.asList(
         // Transform functions
         "translate", "translateX", "translateY", "translateZ", "translate3d",
         "scale", "scaleX", "scaleY", "scaleZ", "scale3d",
@@ -58,7 +58,7 @@ public class CSSFunctionDetector {
     );
     
     // 缓存已检测的函数
-    private final Map<String, Boolean> cache = new HashMap<>();
+    private final Map<String, Boolean> cache = new HashMap<Object, Object>();
     
     /**
      * 检查是否是CSS函数
@@ -88,7 +88,7 @@ public class CSSFunctionDetector {
      * 在内容中查找所有CSS函数的位置
      */
     public Set<Integer> findCSSFunctionPositions(String content) {
-        Set<Integer> positions = new HashSet<>();
+        Set<Integer> positions = new HashSet<Object>();
         Matcher matcher = CSS_FUNC_PATTERN.matcher(content);
         
         while (matcher.find()) {

@@ -40,7 +40,7 @@ public class CHTLJSStateMachineLexer {
     }
     
     // 关键字映射
-    private static final Map<String, CHTLJSTokenType> KEYWORDS = new HashMap<>();
+    private static final Map<String, CHTLJSTokenType> KEYWORDS = new HashMap<Object, Object>();
     static {
         KEYWORDS.put("listen", CHTLJSTokenType.LISTEN);
         KEYWORDS.put("delegate", CHTLJSTokenType.DELEGATE);
@@ -71,7 +71,7 @@ public class CHTLJSStateMachineLexer {
         this.position = 0;
         this.line = 1;
         this.column = 1;
-        this.tokens = new ArrayList<>();
+        this.tokens = new ArrayList<Object>();
         this.currentState = LexState.START;
         this.currentTokenValue = new StringBuilder();
     }

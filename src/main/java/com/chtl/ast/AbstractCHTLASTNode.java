@@ -19,7 +19,7 @@ public abstract class AbstractCHTLASTNode implements CHTLASTNode, Serializable {
     
     public AbstractCHTLASTNode(NodeType nodeType) {
         this.nodeType = nodeType;
-        this.children = new ArrayList<>();
+        this.children = new ArrayList<Object>();
     }
     
     @Override

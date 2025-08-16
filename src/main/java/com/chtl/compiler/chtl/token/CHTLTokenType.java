@@ -1,5 +1,8 @@
 package com.chtl.compiler.chtl.token;
 
+import com.chtl.model.Element;
+
+
 /**
  * CHTL Token类型枚举
  * 严格根据CHTL语法文档定义

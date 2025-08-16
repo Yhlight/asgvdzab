@@ -7,6 +7,7 @@ import com.chtl.exception.CHTLException;
 import java.util.*;
 import java.io.*;
 import java.nio.file.*;
+import com.chtl.model.TemplateType;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -71,13 +72,13 @@ public class CompilationContext {
         this.stateStack = new Stack<>();
         this.scopeStack = new Stack<>();
         this.nodeStack = new Stack<>();
-        this.templateRegistry = new HashMap<>();
-        this.customRegistry = new HashMap<>();
-        this.varGroupRegistry = new HashMap<>();
+        this.templateRegistry = new HashMap<Object, Object>();
+        this.customRegistry = new HashMap<Object, Object>();
+        this.varGroupRegistry = new HashMap<Object, Object>();
         this.namespaceStack = new Stack<>();
         this.constraintManager = new ConstraintManager(this);
-        this.errors = new ArrayList<>();
-        this.warnings = new ArrayList<>();
+        this.errors = new ArrayList<Object>();
+        this.warnings = new ArrayList<Object>();
         
         // 初始状态
         pushState(State.ROOT);
@@ -140,7 +141,7 @@ public class CompilationContext {
         public Scope(ScopeType type, String name) {
             this.type = type;
             this.name = name;
-            this.symbols = new HashMap<>();
+            this.symbols = new HashMap<Object, Object>();
         }
         
         public ScopeType getType() {

@@ -1,4 +1,8 @@
 package com.chtl.test;
+
+import com.chtl.model.CompilationResult;
+import com.chtl.model.Element;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -21,7 +25,7 @@ import com.chtl.context.CompilationContext;
 public class PerformanceTest {
     private final CHTLCompiler compiler;
     private final Path testDir;
-    private final List<PerformanceResult> results = new ArrayList<>();
+    private final List<PerformanceResult> results = new ArrayList<Object>();
     
     public PerformanceTest() throws IOException {
         this.compiler = new CHTLCompiler(CompilerOptions.production());
@@ -289,7 +293,7 @@ public class PerformanceTest {
         System.out.println("测试并行编译性能...");
         
         // 创建多个文件
-        List<Path> files = new ArrayList<>();
+        List<Path> files = new ArrayList<Object>();
         for (int i = 0; i < 20; i++) {
             String code = String.format("""
                 div {
@@ -356,7 +360,7 @@ public class PerformanceTest {
         }
         
         // 正式测试
-        List<Long> times = new ArrayList<>();
+        List<Long> times = new ArrayList<Object>();
         for (int i = 0; i < iterations; i++) {
             // 清除缓存效果
             CompilationContext context = new CompilationContext();

@@ -12,7 +12,7 @@ public class CHTLJSAnimateNode extends AbstractCHTLASTNode {
     private Map<String, Object> properties;
 
     public CHTLJSAnimateNode() {
-        this.properties = new HashMap<>();
+        this.properties = new HashMap<Object, Object>();
     }
 
     public CHTLASTNode getTarget() { return target; }

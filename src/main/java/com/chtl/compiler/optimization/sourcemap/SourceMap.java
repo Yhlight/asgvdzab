@@ -13,14 +13,14 @@ public class SourceMap {
     private int version = 3;
     private String file;
     private String sourceRoot = "";
-    private List<String> sources = new ArrayList<>();
-    private List<String> sourcesContent = new ArrayList<>();
-    private List<String> names = new ArrayList<>();
+    private List<String> sources = new ArrayList<Object>();
+    private List<String> sourcesContent = new ArrayList<Object>();
+    private List<String> names = new ArrayList<Object>();
     private String mappings = "";
     private boolean includeSourceContent = true;
     
     // 映射数据
-    private List<Mapping> mappingList = new ArrayList<>();
+    private List<Mapping> mappingList = new ArrayList<Object>();
     
     public void addSource(String source) {
         sources.add(source);

@@ -1,6 +1,8 @@
-package com.chtl.compiler.dispatcher;import com.chtl.compiler.CHTLCompiler;
+package com.chtl.compiler.dispatcher;
+
+import com.chtl.model.CompilationResult;
+import com.chtl.compiler.CHTLCompiler;
 import com.chtl.compiler.CompilerResult;
-import com.chtl.compiler.chtl.CHTLCompiler;
 import com.chtl.compiler.chtljs.CHTLJSCompiler;
 import com.chtl.compiler.css.CSSCompiler;
 import com.chtl.compiler.javascript.JavaScriptCompiler;
@@ -50,7 +52,7 @@ public class CompilerDispatcher {
     public List<CompilationResult> dispatch(List<CodeFragment> fragments) {
         logger.info("开始调度编译任务，共 {} 个片段", fragments.size());
         
-        List<CompletableFuture<CompilationResult>> futures = new ArrayList<>();
+        List<CompletableFuture<CompilationResult>> futures = new ArrayList<Object>();
         
         for (CodeFragment fragment : fragments) {
             CompletableFuture<CompilationResult> future = CompletableFuture
@@ -59,7 +61,7 @@ public class CompilerDispatcher {
         }
         
         // 等待所有编译任务完成
-        List<CompilationResult> results = new ArrayList<>();
+        List<CompilationResult> results = new ArrayList<Object>();
         for (CompletableFuture<CompilationResult> future : futures) {
             try {
                 results.add(future.get());

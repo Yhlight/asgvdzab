@@ -1,8 +1,14 @@
-package com.chtl.compiler.css;import org.antlr.v4.runtime.CharStreams;
+package com.chtl.compiler.css;
+
+import com.chtl.model.CompilationResult;
+import com.chtl.css.DeclarationContext;
+import com.chtl.css.RulesetContext;
+import com.chtl.css.StylesheetContext;
+import com.chtl.css.MediaContext;
+import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import com.chtl.compiler.CompilerResult;
-import com.chtl.compiler.css.CSSCompiler.CSSOptimizingVisitor;
 import com.chtl.css.CSS3BaseVisitor;
 import com.chtl.css.CSS3Lexer;
 import com.chtl.css.CSS3Parser;
@@ -81,7 +87,7 @@ public class CSSCompiler {
      * 检查语法错误
      */
     private List<String> checkSyntaxErrors(CSS3Parser parser) {
-        List<String> errors = new ArrayList<>();
+        List<String> errors = new ArrayList<Object>();
         
         parser.removeErrorListeners();
         parser.addErrorListener(new BaseErrorListener() {
@@ -154,7 +160,7 @@ public class CSSCompiler {
      * CSS优化访问器
      */
     private static class CSSOptimizingVisitor extends CSS3BaseVisitor<String> {
-        private final List<String> warnings = new ArrayList<>();
+        private final List<String> warnings = new ArrayList<Object>();
         private final StringBuilder output = new StringBuilder();
         
         public List<String> getWarnings() {

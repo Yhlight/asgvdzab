@@ -102,8 +102,8 @@ public class ModuleSigner {
         public VerificationResult(boolean valid, SignatureInfo signatureInfo) {
             this.valid = valid;
             this.signatureInfo = signatureInfo;
-            this.errors = new ArrayList<>();
-            this.warnings = new ArrayList<>();
+            this.errors = new ArrayList<Object>();
+            this.warnings = new ArrayList<Object>();
         }
         
         public void addError(String error) { errors.add(error); }
@@ -140,7 +140,7 @@ public class ModuleSigner {
         
         // 设置文件权限（仅Unix/Linux）
         try {
-            Set<PosixFilePermission> perms = new HashSet<>();
+            Set<PosixFilePermission> perms = new HashSet<Object>();
             perms.add(PosixFilePermission.OWNER_READ);
             perms.add(PosixFilePermission.OWNER_WRITE);
             Files.setPosixFilePermissions(privateKeyPath, perms);
@@ -236,7 +236,7 @@ public class ModuleSigner {
         
         // 验证文件完整性
         Map<String, String> currentHashes = calculateFileHashes(modulePath);
-        List<String> modifiedFiles = new ArrayList<>();
+        List<String> modifiedFiles = new ArrayList<Object>();
         
         for (Map.Entry<String, String> entry : signatureInfo.getFileHashes().entrySet()) {
             String file = entry.getKey();
@@ -249,7 +249,7 @@ public class ModuleSigner {
         }
         
         // 检查新增文件
-        List<String> newFiles = new ArrayList<>();
+        List<String> newFiles = new ArrayList<Object>();
         for (String file : currentHashes.keySet()) {
             if (!signatureInfo.getFileHashes().containsKey(file) &&
                 !file.startsWith("META-INF/")) {
@@ -277,7 +277,7 @@ public class ModuleSigner {
      * 计算文件哈希
      */
     private Map<String, String> calculateFileHashes(Path modulePath) throws Exception {
-        Map<String, String> hashes = new HashMap<>();
+        Map<String, String> hashes = new HashMap<Object, Object>();
         
         Files.walk(modulePath)
             .filter(Files::isRegularFile)
@@ -333,7 +333,7 @@ public class ModuleSigner {
         data.append("PublicKeyFingerprint: ").append(info.getPublicKeyFingerprint()).append("\n");
         
         // 添加文件哈希（按文件名排序以确保一致性）
-        TreeMap<String, String> sortedHashes = new TreeMap<>(info.getFileHashes());
+        TreeMap<String, String> sortedHashes = new TreeMap<Object, Object>(info.getFileHashes());
         for (Map.Entry<String, String> entry : sortedHashes.entrySet()) {
             data.append("File: ").append(entry.getKey()).append(" = ").append(entry.getValue()).append("\n");
         }
@@ -358,7 +358,7 @@ public class ModuleSigner {
         data.append("Timestamp: ").append(info.getTimestamp().getTime()).append("\n");
         data.append("PublicKeyFingerprint: ").append(info.getPublicKeyFingerprint()).append("\n");
         
-        TreeMap<String, String> sortedHashes = new TreeMap<>(info.getFileHashes());
+        TreeMap<String, String> sortedHashes = new TreeMap<Object, Object>(info.getFileHashes());
         for (Map.Entry<String, String> entry : sortedHashes.entrySet()) {
             data.append("File: ").append(entry.getKey()).append(" = ").append(entry.getValue()).append("\n");
         }
@@ -420,7 +420,7 @@ public class ModuleSigner {
         String signature = props.getProperty("Signature");
         
         // 加载文件哈希
-        Map<String, String> fileHashes = new HashMap<>();
+        Map<String, String> fileHashes = new HashMap<Object, Object>();
         for (String key : props.stringPropertyNames()) {
             if (key.startsWith("FileHash.")) {
                 String file = key.substring("FileHash.".length());

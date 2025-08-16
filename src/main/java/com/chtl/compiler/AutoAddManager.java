@@ -29,10 +29,10 @@ public class AutoAddManager {
         
         public ElementScope(String elementName) {
             this.elementName = elementName;
-            this.explicitClasses = new HashSet<>();
-            this.explicitIds = new HashSet<>();
-            this.autoAddedClasses = new HashSet<>();
-            this.autoAddedIds = new HashSet<>();
+            this.explicitClasses = new HashSet<Object>();
+            this.explicitIds = new HashSet<Object>();
+            this.autoAddedClasses = new HashSet<Object>();
+            this.autoAddedIds = new HashSet<Object>();
         }
         
         public boolean hasClass(String className) {
@@ -214,15 +214,15 @@ public class AutoAddManager {
      * 获取当前元素的所有自动添加的属性
      */
     public Map<String, Set<String>> getAutoAddedAttributes() {
-        Map<String, Set<String>> attributes = new HashMap<>();
+        Map<String, Set<String>> attributes = new HashMap<Object, Object>();
         
         if (currentScope != null) {
             if (!currentScope.autoAddedClasses.isEmpty()) {
-                attributes.put("class", new HashSet<>(currentScope.autoAddedClasses));
+                attributes.put("class", new HashSet<Object>(currentScope.autoAddedClasses));
             }
             if (!currentScope.autoAddedIds.isEmpty()) {
                 // ID只能有一个，取第一个
-                Set<String> ids = new HashSet<>();
+                Set<String> ids = new HashSet<Object>();
                 if (!currentScope.autoAddedIds.isEmpty()) {
                     ids.add(currentScope.autoAddedIds.iterator().next());
                 }

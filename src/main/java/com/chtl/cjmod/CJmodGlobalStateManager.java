@@ -49,7 +49,7 @@ public class CJmodGlobalStateManager {
             this.value = value;
             this.timestamp = System.currentTimeMillis();
             this.owner = owner;
-            this.metadata = new ConcurrentHashMap<>();
+            this.metadata = new ConcurrentHashMap<Object, Object>();
             this.accessCount = 0;
         }
         
@@ -118,7 +118,7 @@ public class CJmodGlobalStateManager {
         
         public StateQuery withMetadata(String key, Object value) {
             if (metadataFilter == null) {
-                metadataFilter = new HashMap<>();
+                metadataFilter = new HashMap<Object, Object>();
             }
             metadataFilter.put(key, value);
             return this;
@@ -153,9 +153,9 @@ public class CJmodGlobalStateManager {
     }
     
     private CJmodGlobalStateManager() {
-        this.globalStates = new ConcurrentHashMap<>();
-        this.moduleStates = new ConcurrentHashMap<>();
-        this.listeners = new ConcurrentHashMap<>();
+        this.globalStates = new ConcurrentHashMap<Object, Object>();
+        this.moduleStates = new ConcurrentHashMap<Object, Object>();
+        this.listeners = new ConcurrentHashMap<Object, Object>();
         this.persistenceExecutor = Executors.newSingleThreadScheduledExecutor(r -> {
             Thread t = new Thread(r, "CJmod-State-Persistence");
             t.setDaemon(true);
@@ -222,7 +222,7 @@ public class CJmodGlobalStateManager {
      */
     public void setModuleState(String module, String key, Object value) {
         ConcurrentHashMap<String, StateEntry> moduleMap = moduleStates.computeIfAbsent(
-            module, k -> new ConcurrentHashMap<>()
+            module, k -> new ConcurrentHashMap<Object, Object>()
         );
         moduleMap.put(key, new StateEntry(value, module));
     }
@@ -243,7 +243,7 @@ public class CJmodGlobalStateManager {
      * 查询状态
      */
     public Map<String, Object> queryStates(StateQuery query) {
-        Map<String, Object> results = new HashMap<>();
+        Map<String, Object> results = new HashMap<Object, Object>();
         
         // 查询全局状态
         for (Map.Entry<String, StateEntry> entry : globalStates.entrySet()) {
@@ -259,7 +259,7 @@ public class CJmodGlobalStateManager {
      * 注册状态监听器
      */
     public void addStateChangeListener(String keyPattern, StateChangeListener listener) {
-        listeners.computeIfAbsent(keyPattern, k -> new CopyOnWriteArrayList<>()).add(listener);
+        listeners.computeIfAbsent(keyPattern, k -> new CopyOnWriteArrayList<Object>()).add(listener);
     }
     
     /**
@@ -286,7 +286,7 @@ public class CJmodGlobalStateManager {
      */
     public void transactional(Runnable operation) {
         // 简单的事务实现，可以扩展为更复杂的事务机制
-        Map<String, StateEntry> backup = new HashMap<>(globalStates);
+        Map<String, StateEntry> backup = new HashMap<Object, Object>(globalStates);
         try {
             operation.run();
         } catch (Exception e) {
@@ -322,9 +322,9 @@ public class CJmodGlobalStateManager {
         if (persistencePath == null) return;
         
         try {
-            Map<String, Object> toSave = new HashMap<>();
+            Map<String, Object> toSave = new HashMap<Object, Object>();
             for (Map.Entry<String, StateEntry> entry : globalStates.entrySet()) {
-                Map<String, Object> entryData = new HashMap<>();
+                Map<String, Object> entryData = new HashMap<Object, Object>();
                 entryData.put("value", entry.getValue().getValue());
                 entryData.put("owner", entry.getValue().getOwner());
                 entryData.put("timestamp", entry.getValue().getTimestamp());
@@ -412,7 +412,7 @@ public class CJmodGlobalStateManager {
     
     private Map<String, Object> deserializeFromJson(String json) {
         // 简单的JSON反序列化，实际使用时可以用Jackson或Gson
-        return new HashMap<>();
+        return new HashMap<Object, Object>();
     }
     
     /**

@@ -36,8 +36,8 @@ public abstract class AbstractCJmodModule implements CJmodInterface {
         this.moduleVersion = moduleVersion;
         this.description = description;
         this.author = author;
-        this.methods = new HashMap<>();
-        this.objects = new HashMap<>();
+        this.methods = new HashMap<Object, Object>();
+        this.objects = new HashMap<Object, Object>();
     }
     
     @Override

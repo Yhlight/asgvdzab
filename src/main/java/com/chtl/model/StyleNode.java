@@ -15,7 +15,7 @@ public class StyleNode extends CHTLNode {
     public StyleNode(boolean isLocal) {
         super("style");
         this.isLocal = isLocal;
-        this.rules = new ArrayList<>();
+        this.rules = new ArrayList<Object>();
     }
     
     public boolean isLocal() {
@@ -41,7 +41,7 @@ public class StyleNode extends CHTLNode {
         
         public StyleRule(String selector) {
             this.selector = selector;
-            this.properties = new ArrayList<>();
+            this.properties = new ArrayList<Object>();
         }
         
         public String getSelector() {

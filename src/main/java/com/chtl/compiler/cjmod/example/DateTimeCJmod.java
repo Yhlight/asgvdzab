@@ -1,4 +1,7 @@
 package com.chtl.compiler.cjmod.example;
+
+import com.chtl.compiler.cjmod.ObjectDescriptor;
+import com.chtl.compiler.cjmod.MethodDescriptor;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -7,8 +10,6 @@ import java.util.Map;
 import com.chtl.ast.chtljs.CHTLJSASTNode;
 import com.chtl.ast.chtljs.ExpressionNode;
 import com.chtl.compiler.cjmod.AbstractCJmodModule;
-import com.chtl.compiler.cjmod.CJmodInterface.MethodDescriptor;
-import com.chtl.compiler.cjmod.CJmodInterface.ObjectDescriptor;
 import com.chtl.compiler.cjmod.*;
 import com.chtl.context.CHTLJSContext;
 import java.time.format.DateTimeFormatter;
@@ -92,7 +93,7 @@ public class DateTimeCJmod extends AbstractCJmodModule {
     @Override
     protected void registerObjects() {
         // 注册DateRange对象
-        Map<String, MethodDescriptor> rangeMethods = new HashMap<>();
+        Map<String, MethodDescriptor> rangeMethods = new HashMap<Object, Object>();
         rangeMethods.put("contains", createMethod(
             "contains",
             "Check if a date is within the range",
@@ -109,7 +110,7 @@ public class DateTimeCJmod extends AbstractCJmodModule {
             "range.getDays()"
         ));
         
-        Map<String, String> rangeProperties = new HashMap<>();
+        Map<String, String> rangeProperties = new HashMap<Object, Object>();
         rangeProperties.put("start", "Start date of the range");
         rangeProperties.put("end", "End date of the range");
         rangeProperties.put("duration", "Duration in milliseconds");

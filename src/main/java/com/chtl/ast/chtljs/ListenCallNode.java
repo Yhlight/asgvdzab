@@ -14,7 +14,7 @@ public class ListenCallNode extends AbstractCHTLJSASTNode {
     
     public ListenCallNode() {
         super(NodeType.LISTEN_CALL);
-        this.eventHandlers = new HashMap<>();
+        this.eventHandlers = new HashMap<Object, Object>();
     }
     
     public CHTLJSASTNode getTarget() {

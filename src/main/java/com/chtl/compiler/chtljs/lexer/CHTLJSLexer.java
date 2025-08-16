@@ -23,11 +23,11 @@ public class CHTLJSLexer {
     private int column;
     
     // CHTL JS特殊方法
-    private static final Set<String> CHTL_JS_METHODS = new HashSet<>();
+    private static final Set<String> CHTL_JS_METHODS = new HashSet<Object>();
     // 动画关键字
-    private static final Set<String> ANIMATION_KEYWORDS = new HashSet<>();
+    private static final Set<String> ANIMATION_KEYWORDS = new HashSet<Object>();
     // JavaScript关键字
-    private static final Set<String> JS_KEYWORDS = new HashSet<>();
+    private static final Set<String> JS_KEYWORDS = new HashSet<Object>();
     
     static {
         // CHTL JS方法
@@ -71,7 +71,7 @@ public class CHTLJSLexer {
      * 获取所有Token
      */
     public List<CHTLJSToken> tokenize() {
-        List<CHTLJSToken> tokens = new ArrayList<>();
+        List<CHTLJSToken> tokens = new ArrayList<Object>();
         
         while (!isAtEnd()) {
             // 跳过空白字符

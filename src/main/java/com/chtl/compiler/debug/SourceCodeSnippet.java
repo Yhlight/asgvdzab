@@ -15,7 +15,7 @@ public class SourceCodeSnippet {
     private final String sourcePath;
     private final int errorLine;
     private final int errorColumn;
-    private final List<CodeLine> lines = new ArrayList<>();
+    private final List<CodeLine> lines = new ArrayList<Object>();
     
     public SourceCodeSnippet(String sourcePath, int errorLine, int errorColumn) {
         this.sourcePath = sourcePath;

@@ -1,4 +1,11 @@
 package com.chtl.compiler.chtl;
+
+import org.antlr.v4.runtime.ParserRuleContext;
+
+
+import com.chtl.model.CompilationResult;
+import com.chtl.model.FragmentType;
+
 import java.util.HashMap;
 import java.util.Map;
 import com.chtl.compiler.CHTLCompiler;
@@ -37,8 +44,8 @@ public class CHTLCompiler {
         this.parser = new CHTLParser();
         this.codeGenerator = new CHTLCodeGenerator();
         this.localStyleProcessor = new LocalStyleProcessor();
-        this.templates = new HashMap<>();
-        this.customs = new HashMap<>();
+        this.templates = new HashMap<Object, Object>();
+        this.customs = new HashMap<Object, Object>();
         
         logger.info("CHTL编译器初始化完成");
     }
@@ -160,43 +167,43 @@ public class CHTLCompiler {
     }
 
     @Override
-    public void visitTemplate() {
+    public void visitTemplate(ParserRuleContext ctx) {
         // TODO: Implement this method
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
     @Override
-    public void visitText() {
+    public void visitText(ParserRuleContext ctx) {
         // TODO: Implement this method
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
     @Override
-    public void visitElement() {
+    public void visitElement(ParserRuleContext ctx) {
         // TODO: Implement this method
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
     @Override
-    public void visitAttribute() {
+    public void visitAttribute(ParserRuleContext ctx) {
         // TODO: Implement this method
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
     @Override
-    public void visitScript() {
+    public void visitScript(ParserRuleContext ctx) {
         // TODO: Implement this method
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
     @Override
-    public void visitStyle() {
+    public void visitStyle(ParserRuleContext ctx) {
         // TODO: Implement this method
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
     @Override
-    public void visitCustom() {
+    public void visitCustom(ParserRuleContext ctx) {
         // TODO: Implement this method
         throw new UnsupportedOperationException("Not implemented yet");
     }

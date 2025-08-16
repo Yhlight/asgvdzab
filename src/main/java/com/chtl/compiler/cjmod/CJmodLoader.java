@@ -25,7 +25,7 @@ public class CJmodLoader {
     
     public CJmodLoader(ClassLoader parentClassLoader) {
         this.parentClassLoader = parentClassLoader;
-        this.loadedModules = new HashMap<>();
+        this.loadedModules = new HashMap<Object, Object>();
     }
     
     /**
@@ -87,7 +87,7 @@ public class CJmodLoader {
      * 从目录加载所有CJmod文件
      */
     public List<CJmodInterface> loadModulesFromDirectory(Path directory) throws IOException {
-        List<CJmodInterface> modules = new ArrayList<>();
+        List<CJmodInterface> modules = new ArrayList<Object>();
         
         if (!Files.isDirectory(directory)) {
             return modules;

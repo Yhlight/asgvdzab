@@ -1,4 +1,11 @@
-package com.chtl.compiler.chtl;import com.chtl.model.AttributeNode;
+package com.chtl.compiler.chtl;
+
+import org.antlr.v4.runtime.ParserRuleContext;
+
+
+import com.chtl.model.StyleProperty;
+import com.chtl.model.StyleRule;
+import com.chtl.model.AttributeNode;
 import com.chtl.model.CHTLNode;
 import com.chtl.model.CHTLNodeVisitor;
 import com.chtl.model.CustomNode;
@@ -287,43 +294,43 @@ public class CHTLCodeGenerator implements CHTLNodeVisitor {
     }
 
     @Override
-    public void visitTemplate() {
+    public void visitTemplate(ParserRuleContext ctx) {
         // TODO: Implement this method
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
     @Override
-    public void visitText() {
+    public void visitText(ParserRuleContext ctx) {
         // TODO: Implement this method
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
     @Override
-    public void visitElement() {
+    public void visitElement(ParserRuleContext ctx) {
         // TODO: Implement this method
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
     @Override
-    public void visitAttribute() {
+    public void visitAttribute(ParserRuleContext ctx) {
         // TODO: Implement this method
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
     @Override
-    public void visitScript() {
+    public void visitScript(ParserRuleContext ctx) {
         // TODO: Implement this method
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
     @Override
-    public void visitStyle() {
+    public void visitStyle(ParserRuleContext ctx) {
         // TODO: Implement this method
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
     @Override
-    public void visitCustom() {
+    public void visitCustom(ParserRuleContext ctx) {
         // TODO: Implement this method
         throw new UnsupportedOperationException("Not implemented yet");
     }

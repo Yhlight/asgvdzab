@@ -18,7 +18,7 @@ public class EventDelegationManager {
     private final Map<String, DelegationInfo> delegationRegistry;
     
     public EventDelegationManager() {
-        this.delegationRegistry = new HashMap<>();
+        this.delegationRegistry = new HashMap<Object, Object>();
     }
     
     /**
@@ -66,7 +66,7 @@ public class EventDelegationManager {
         public DelegationInfo(String parentSelector, String eventType) {
             this.parentSelector = parentSelector;
             this.eventType = eventType;
-            this.targets = new ArrayList<>();
+            this.targets = new ArrayList<Object>();
         }
         
         public void addTarget(String targetSelector, String handlerName) {

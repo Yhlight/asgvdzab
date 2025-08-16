@@ -13,7 +13,7 @@ public class DetailedError {
     private final CompilationError originalError;
     private SourceCodeSnippet codeSnippet;
     private ContextInfo contextInfo;
-    private List<String> suggestions = new ArrayList<>();
+    private List<String> suggestions = new ArrayList<Object>();
     
     public DetailedError(CompilationError originalError) {
         this.originalError = originalError;

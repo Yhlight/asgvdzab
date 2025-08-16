@@ -1,5 +1,6 @@
-package com.chtl.compiler.chtl.token;import com.chtl.compiler.chtl.CHTLParser.Token;
+package com.chtl.compiler.chtl.token;
 
+import com.chtl.compiler.chtl.Token;
 
 /**
  * CHTL Token类

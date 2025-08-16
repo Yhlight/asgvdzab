@@ -23,9 +23,9 @@ public class AnimationConfigNode extends AbstractCHTLJSASTNode {
     
     public AnimationConfigNode() {
         super(NodeType.ANIMATION_CONFIG);
-        this.beginState = new HashMap<>();
-        this.endState = new HashMap<>();
-        this.keyframes = new ArrayList<>();
+        this.beginState = new HashMap<Object, Object>();
+        this.endState = new HashMap<Object, Object>();
+        this.keyframes = new ArrayList<Object>();
     }
     
     public Integer getDuration() {

@@ -1,4 +1,8 @@
 package com.chtl.test;
+
+import com.chtl.model.Text;
+import com.chtl.model.Element;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -17,7 +21,7 @@ import com.chtl.compiler.optimization.OptimizationOptions;
 public class CHTLIntegrationTest {
     private final Path testDir;
     private final CHTLCompiler compiler;
-    private final List<TestCase> testCases = new ArrayList<>();
+    private final List<TestCase> testCases = new ArrayList<Object>();
     private final TestReport report = new TestReport();
     
     public CHTLIntegrationTest(Path testDir) throws IOException {

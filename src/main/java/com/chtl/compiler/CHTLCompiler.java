@@ -1,5 +1,9 @@
 package com.chtl.compiler;
 
+import com.chtl.model.CompilationResult;
+import com.chtl.context.ErrorType;
+
+
 import com.chtl.model.SourceLocation;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -170,10 +174,10 @@ public class CHTLCompiler {
         );
         
         // 分类片段
-        List<Fragment> chtlFragments = new ArrayList<>();
-        List<Fragment> chtlJsFragments = new ArrayList<>();
-        List<Fragment> cssFragments = new ArrayList<>();
-        List<Fragment> jsFragments = new ArrayList<>();
+        List<Fragment> chtlFragments = new ArrayList<Object>();
+        List<Fragment> chtlJsFragments = new ArrayList<Object>();
+        List<Fragment> cssFragments = new ArrayList<Object>();
+        List<Fragment> jsFragments = new ArrayList<Object>();
         
         for (Fragment fragment : fragments) {
             switch (fragment.getType()) {
@@ -185,7 +189,7 @@ public class CHTLCompiler {
         }
         
         // 并行编译
-        List<CompletableFuture<String>> futures = new ArrayList<>();
+        List<CompletableFuture<String>> futures = new ArrayList<Object>();
         
         // 编译CHTL片段
         if (!chtlFragments.isEmpty()) {
@@ -238,8 +242,8 @@ public class CHTLCompiler {
         
         // 提取HTML、CSS、JS
         String html = "";
-        List<String> cssFiles = new ArrayList<>();
-        List<String> jsFiles = new ArrayList<>();
+        List<String> cssFiles = new ArrayList<Object>();
+        List<String> jsFiles = new ArrayList<Object>();
         
         for (CompletableFuture<String> future : futures) {
             try {
@@ -520,8 +524,8 @@ public class CHTLCompiler {
      */
     public static class CompilationOutput {
         private String html = "";
-        private List<String> cssFiles = new ArrayList<>();
-        private List<String> jsFiles = new ArrayList<>();
+        private List<String> cssFiles = new ArrayList<Object>();
+        private List<String> jsFiles = new ArrayList<Object>();
         
         // Getters and setters
         public String getHtml() { return html; }

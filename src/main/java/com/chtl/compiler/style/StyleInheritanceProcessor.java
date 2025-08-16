@@ -1,4 +1,7 @@
 package com.chtl.compiler.style;
+
+import com.chtl.context.WarningType;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -158,7 +161,7 @@ public class StyleInheritanceProcessor {
             CustomDefinitionNode styleGroup,
             Map<String, String> providedValues) {
         
-        Map<String, String> result = new HashMap<>();
+        Map<String, String> result = new HashMap<Object, Object>();
         
         for (CHTLASTNode child : styleGroup.getChildren()) {
             if (child instanceof StylePropertyNode) {
@@ -191,16 +194,16 @@ public class StyleInheritanceProcessor {
      */
     public static class InheritanceResult {
         // 继承的样式组名称列表
-        public final List<String> inheritedGroups = new ArrayList<>();
+        public final List<String> inheritedGroups = new ArrayList<Object>();
         
         // 合并后的属性
-        public final Map<String, String> properties = new LinkedHashMap<>();
+        public final Map<String, String> properties = new LinkedHashMap<Object, Object>();
         
         // 被删除的属性
-        public final Set<String> deletedProperties = new HashSet<>();
+        public final Set<String> deletedProperties = new HashSet<Object>();
         
         // 被删除的继承
-        public final Set<String> deletedInheritances = new HashSet<>();
+        public final Set<String> deletedInheritances = new HashSet<Object>();
     }
     
     /**

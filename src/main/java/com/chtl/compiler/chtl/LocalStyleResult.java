@@ -18,8 +18,8 @@ public class LocalStyleResult {
     public LocalStyleResult() {
         this.inlineStyles = "";
         this.globalStyles = new StringBuilder();
-        this.autoClasses = new ArrayList<>();
-        this.contextSelectors = new HashMap<>();
+        this.autoClasses = new ArrayList<Object>();
+        this.contextSelectors = new HashMap<Object, Object>();
     }
     
     public String getInlineStyles() {

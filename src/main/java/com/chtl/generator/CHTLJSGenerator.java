@@ -1,4 +1,7 @@
 package com.chtl.generator;
+
+import com.chtl.model.Element;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,8 +36,8 @@ public class CHTLJSGenerator implements CHTLJSASTVisitor {
     private Map<String, List<DelegationInfo>> delegationMap;
     
     public CHTLJSGenerator() {
-        this.selectorCache = new HashMap<>();
-        this.delegationMap = new HashMap<>();
+        this.selectorCache = new HashMap<Object, Object>();
+        this.delegationMap = new HashMap<Object, Object>();
     }
     
     /**
@@ -96,7 +99,7 @@ public class CHTLJSGenerator implements CHTLJSASTVisitor {
         output.append(";\n");
         
         // 获取目标选择器
-        List<String> targetSelectors = new ArrayList<>();
+        List<String> targetSelectors = new ArrayList<Object>();
         for (CHTLJSASTNode target : node.getTargetElements()) {
             if (target instanceof EnhancedSelectorNode) {
                 EnhancedSelectorNode selectorNode = (EnhancedSelectorNode) target;
@@ -117,7 +120,7 @@ public class CHTLJSGenerator implements CHTLJSASTVisitor {
             info.eventName = eventName;
             info.handler = handler;
             
-            delegationMap.computeIfAbsent(parentId, k -> new ArrayList<>()).add(info);
+            delegationMap.computeIfAbsent(parentId, k -> new ArrayList<Object>()).add(info);
         }
     }
     
@@ -672,9 +675,9 @@ public class CHTLJSGenerator implements CHTLJSASTVisitor {
             List<DelegationInfo> delegations = entry.getValue();
             
             // 按事件类型分组
-            Map<String, List<DelegationInfo>> byEvent = new HashMap<>();
+            Map<String, List<DelegationInfo>> byEvent = new HashMap<Object, Object>();
             for (DelegationInfo info : delegations) {
-                byEvent.computeIfAbsent(info.eventName, k -> new ArrayList<>()).add(info);
+                byEvent.computeIfAbsent(info.eventName, k -> new ArrayList<Object>()).add(info);
             }
             
             // 为每个事件类型生成委托代码

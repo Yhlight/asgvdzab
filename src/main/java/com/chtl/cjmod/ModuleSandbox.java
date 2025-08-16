@@ -24,10 +24,10 @@ public class ModuleSandbox {
         private boolean allowSystemProperties = false;
         private boolean allowReflection = false;
         private boolean allowThreadCreation = false;
-        private Set<String> allowedPackages = new HashSet<>();
-        private Set<String> allowedClasses = new HashSet<>();
-        private Set<String> allowedFilePaths = new HashSet<>();
-        private Set<String> allowedHosts = new HashSet<>();
+        private Set<String> allowedPackages = new HashSet<Object>();
+        private Set<String> allowedClasses = new HashSet<Object>();
+        private Set<String> allowedFilePaths = new HashSet<Object>();
+        private Set<String> allowedHosts = new HashSet<Object>();
         private long maxMemory = 128 * 1024 * 1024; // 128MB
         private long maxCpuTime = 10000; // 10秒
         private int maxThreads = 10;
@@ -147,7 +147,7 @@ public class ModuleSandbox {
         private final Map<Thread, SandboxContext> contextMap;
         
         public SandboxSecurityManager() {
-            this.contextMap = new ConcurrentHashMap<>();
+            this.contextMap = new ConcurrentHashMap<Object, Object>();
         }
         
         public void registerContext(Thread thread, SandboxContext context) {
@@ -308,7 +308,7 @@ public class ModuleSandbox {
         public SandboxClassLoader(URL[] urls, ClassLoader parent, SandboxConfig config) {
             super(urls, parent);
             this.config = config;
-            this.loadedClasses = new HashSet<>();
+            this.loadedClasses = new HashSet<Object>();
         }
         
         @Override
@@ -344,7 +344,7 @@ public class ModuleSandbox {
         }
         
         public Set<String> getLoadedClasses() {
-            return new HashSet<>(loadedClasses);
+            return new HashSet<Object>(loadedClasses);
         }
     }
     

@@ -1,4 +1,7 @@
-package com.chtl.compiler.chtljs;import com.chtl.compiler.CompilerResult;
+package com.chtl.compiler.chtljs;
+
+import com.chtl.model.Element;
+import com.chtl.compiler.CompilerResult;
 
 
 import com.chtl.model.CodeFragment;
@@ -229,7 +232,7 @@ public class CHTLJSCompiler {
      * 解析delegate配置
      */
     private Map<String, String> parseDelegateConfig(String content) {
-        Map<String, String> config = new HashMap<>();
+        Map<String, String> config = new HashMap<Object, Object>();
         
         // 简化解析，实际应该更复杂
         String[] lines = content.split(",");

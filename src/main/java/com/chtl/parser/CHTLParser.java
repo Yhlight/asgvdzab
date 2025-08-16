@@ -1,5 +1,13 @@
 package com.chtl.parser;
 
+import com.chtl.compiler.constraint.ConstraintTarget;
+import com.chtl.model.TemplateType;
+import com.chtl.model.CustomType;
+import com.chtl.scanner.State;
+import com.chtl.context.ScopeType;
+import com.chtl.compiler.chtljs.selector.SelectorType;
+
+
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.Token;
@@ -55,7 +63,7 @@ public class CHTLParser {
     private com.chtl.context.CompilationContext context;
     
     public CHTLParser() {
-        this.errors = new ArrayList<>();
+        this.errors = new ArrayList<Object>();
         this.context = new com.chtl.context.CompilationContext();
     }
     
@@ -1140,7 +1148,7 @@ public class CHTLParser {
                 
                 // 检查是否是组选项
                 if (match(CHTLTokenType.LEFT_BRACKET)) {
-                    List<String> values = new ArrayList<>();
+                    List<String> values = new ArrayList<Object>();
                     while (!check(CHTLTokenType.RIGHT_BRACKET) && !isAtEnd()) {
                         if (checkTemplateOrCustomUsage() || check(CHTLTokenType.IDENTIFIER)) {
                             values.add(advance().getValue());

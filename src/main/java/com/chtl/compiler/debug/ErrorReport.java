@@ -10,8 +10,8 @@ import java.io.*;
  * 错误报告
  */
 public class ErrorReport {
-    private List<DetailedError> errors = new ArrayList<>();
-    private List<DetailedWarning> warnings = new ArrayList<>();
+    private List<DetailedError> errors = new ArrayList<Object>();
+    private List<DetailedWarning> warnings = new ArrayList<Object>();
     private ErrorStatistics statistics;
     
     /**

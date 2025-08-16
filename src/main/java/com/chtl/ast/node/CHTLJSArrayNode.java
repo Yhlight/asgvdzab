@@ -11,7 +11,7 @@ public class CHTLJSArrayNode extends AbstractCHTLASTNode {
     private List<CHTLASTNode> elements;
 
     public CHTLJSArrayNode() {
-        this.elements = new ArrayList<>();
+        this.elements = new ArrayList<Object>();
     }
 
     public List<CHTLASTNode> getElements() { return elements; }

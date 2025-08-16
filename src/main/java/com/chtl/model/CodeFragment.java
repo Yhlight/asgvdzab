@@ -21,7 +21,7 @@ public class CodeFragment {
         this.content = content;
         this.startPosition = startPosition;
         this.length = length;
-        this.metadata = new HashMap<>();
+        this.metadata = new HashMap<Object, Object>();
     }
     
     // Getters and Setters
@@ -82,7 +82,7 @@ public class CodeFragment {
     }
     
     public Map<String, Object> getAllMetadata() {
-        return new HashMap<>(metadata);
+        return new HashMap<Object, Object>(metadata);
     }
     
     @Override

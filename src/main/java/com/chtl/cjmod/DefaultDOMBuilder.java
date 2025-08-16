@@ -1,4 +1,7 @@
 package com.chtl.cjmod;
+
+import com.chtl.compiler.cjmod.CJmodInterface;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +20,7 @@ public class DefaultDOMBuilder implements CJmodInterface.DOMBuilder {
     
     public DefaultDOMBuilder() {
         this.jsCode = new StringBuilder();
-        this.children = new ArrayList<>();
+        this.children = new ArrayList<Object>();
     }
     
     @Override

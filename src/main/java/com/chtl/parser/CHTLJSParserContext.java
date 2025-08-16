@@ -60,16 +60,16 @@ public class CHTLJSParserContext {
     private static final Set<String> CSS_KEYWORDS;
     
     static {
-        UNQUOTED_LITERAL_PROPERTIES = new HashMap<>();
+        UNQUOTED_LITERAL_PROPERTIES = new HashMap<Object, Object>();
         
         // 动画配置中允许无修饰字面量的属性
-        Set<String> animateProperties = new HashSet<>();
+        Set<String> animateProperties = new HashSet<Object>();
         animateProperties.add("easing");
         animateProperties.add("direction");
         UNQUOTED_LITERAL_PROPERTIES.put("animate", animateProperties);
         
         // CSS属性中允许无修饰字面量
-        Set<String> cssProperties = new HashSet<>();
+        Set<String> cssProperties = new HashSet<Object>();
         cssProperties.add("display");
         cssProperties.add("position");
         cssProperties.add("overflow");
@@ -87,7 +87,7 @@ public class CHTLJSParserContext {
         UNQUOTED_LITERAL_PROPERTIES.put("css", cssProperties);
         
         // 缓动函数
-        EASING_FUNCTIONS = new HashSet<>();
+        EASING_FUNCTIONS = new HashSet<Object>();
         EASING_FUNCTIONS.add("linear");
         EASING_FUNCTIONS.add("ease");
         EASING_FUNCTIONS.add("ease-in");
@@ -97,14 +97,14 @@ public class CHTLJSParserContext {
         EASING_FUNCTIONS.add("step-end");
         
         // 动画方向
-        ANIMATION_DIRECTIONS = new HashSet<>();
+        ANIMATION_DIRECTIONS = new HashSet<Object>();
         ANIMATION_DIRECTIONS.add("normal");
         ANIMATION_DIRECTIONS.add("reverse");
         ANIMATION_DIRECTIONS.add("alternate");
         ANIMATION_DIRECTIONS.add("alternate-reverse");
         
         // CSS关键字
-        CSS_KEYWORDS = new HashSet<>();
+        CSS_KEYWORDS = new HashSet<Object>();
         CSS_KEYWORDS.add("none");
         CSS_KEYWORDS.add("auto");
         CSS_KEYWORDS.add("inherit");
@@ -289,7 +289,7 @@ public class CHTLJSParserContext {
      * 获取当前期望的无修饰字面量建议
      */
     public List<String> getUnquotedLiteralSuggestions() {
-        List<String> suggestions = new ArrayList<>();
+        List<String> suggestions = new ArrayList<Object>();
         
         switch (expectedValueType) {
             case EASING_FUNCTION:
@@ -315,7 +315,7 @@ public class CHTLJSParserContext {
      * 获取CSS属性的建议值
      */
     private List<String> getCssPropertySuggestions(String property) {
-        List<String> suggestions = new ArrayList<>();
+        List<String> suggestions = new ArrayList<Object>();
         
         switch (property) {
             case "display":

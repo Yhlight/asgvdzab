@@ -1,4 +1,12 @@
 package com.chtl.cli;
+
+import com.chtl.cjmod.PackageOptions;
+import com.chtl.cjmod.VerificationResult;
+import com.chtl.cjmod.PackageResult;
+import com.chtl.cjmod.KeyPairInfo;
+import com.chtl.compiler.cjmod.ModuleInfo;
+import com.chtl.cjmod.VersionRange;
+import com.chtl.cjmod.Dependency;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -142,6 +150,13 @@ public class CJmodCLI {
         String mainClassContent = String.format("""
             package %s;
             
+import com.chtl.cjmod.PackageOptions;
+import com.chtl.cjmod.VerificationResult;
+import com.chtl.cjmod.PackageResult;
+import com.chtl.cjmod.KeyPairInfo;
+import com.chtl.compiler.cjmod.ModuleInfo;
+import com.chtl.cjmod.VersionRange;
+import com.chtl.cjmod.Dependency;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;

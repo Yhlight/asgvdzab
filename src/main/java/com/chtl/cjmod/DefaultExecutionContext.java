@@ -1,4 +1,7 @@
 package com.chtl.cjmod;
+
+import com.chtl.compiler.cjmod.CJmodInterface;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -25,12 +28,12 @@ public class DefaultExecutionContext implements CJmodInterface.ExecutionContext 
     private int currentLine = 0;
     private int currentColumn = 0;
     private String currentScope = "global";
-    private Map<String, Object> scopeVariables = new HashMap<>();
+    private Map<String, Object> scopeVariables = new HashMap<Object, Object>();
     
     public DefaultExecutionContext(String moduleName, String functionName) {
         this.moduleName = moduleName;
         this.functionName = functionName;
-        this.configuration = new HashMap<>();
+        this.configuration = new HashMap<Object, Object>();
         this.stateManager = CJmodGlobalStateManager.getInstance();
         this.moduleManager = CJmodManager.getInstance();
     }
@@ -38,7 +41,7 @@ public class DefaultExecutionContext implements CJmodInterface.ExecutionContext 
     @Override
     public Object getCompilationContext() {
         // 返回当前编译上下文
-        Map<String, Object> context = new HashMap<>();
+        Map<String, Object> context = new HashMap<Object, Object>();
         context.put("module", moduleName);
         context.put("function", functionName);
         context.put("file", currentFile);
@@ -68,7 +71,7 @@ public class DefaultExecutionContext implements CJmodInterface.ExecutionContext 
     
     @Override
     public Map<String, Object> getScopeVariables() {
-        return new HashMap<>(scopeVariables);
+        return new HashMap<Object, Object>(scopeVariables);
     }
     
     @Override
@@ -158,7 +161,7 @@ public class DefaultExecutionContext implements CJmodInterface.ExecutionContext 
             
             if (targetModule != null && targetModule.getState() == CJmodManager.ModuleState.ACTIVE) {
                 // 准备参数
-                Map<String, Object> parameters = new HashMap<>();
+                Map<String, Object> parameters = new HashMap<Object, Object>();
                 if (args.length > 0) {
                     if (args[0] instanceof Map) {
                         parameters = (Map<String, Object>) args[0];
@@ -198,7 +201,7 @@ public class DefaultExecutionContext implements CJmodInterface.ExecutionContext 
     
     @Override
     public Map<String, Object> getConfiguration() {
-        return new HashMap<>(configuration);
+        return new HashMap<Object, Object>(configuration);
     }
     
     // Setters for context information
@@ -219,7 +222,7 @@ public class DefaultExecutionContext implements CJmodInterface.ExecutionContext 
     }
     
     public void setScopeVariables(Map<String, Object> variables) {
-        this.scopeVariables = new HashMap<>(variables);
+        this.scopeVariables = new HashMap<Object, Object>(variables);
     }
     
     public void setConfiguration(Map<String, Object> config) {

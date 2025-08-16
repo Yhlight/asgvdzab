@@ -11,7 +11,7 @@ import java.nio.file.Path;
  * 测试报告生成器
  */
 public class TestReport {
-    private final List<TestResult> results = new ArrayList<>();
+    private final List<TestResult> results = new ArrayList<Object>();
     private long totalTime;
     
     public void addResult(TestResult result) {

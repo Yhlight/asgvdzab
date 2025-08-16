@@ -1,5 +1,8 @@
 package com.chtl.parser;
 
+import com.chtl.ast.chtljs.HandlerType;
+
+
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.Token;
@@ -37,7 +40,7 @@ public class CHTLJSParser {
     private CHTLJSParserContext context;
     
     public CHTLJSParser() {
-        this.errors = new ArrayList<>();
+        this.errors = new ArrayList<Object>();
         this.context = new CHTLJSParserContext();
     }
     
@@ -50,7 +53,7 @@ public class CHTLJSParser {
         this.current = 0;
         this.errors.clear();
         
-        List<CHTLJSASTNode> statements = new ArrayList<>();
+        List<CHTLJSASTNode> statements = new ArrayList<Object>();
         
         while (!isAtEnd()) {
             CHTLJSASTNode statement = parseStatement();

@@ -1,4 +1,8 @@
 package com.chtl.compiler.style;
+
+import com.chtl.context.ErrorType;
+import com.chtl.context.WarningType;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -43,10 +47,10 @@ public class StyleGroupManager {
     
     public StyleGroupManager(CompilationContext context) {
         this.context = context;
-        this.styleTemplates = new HashMap<>();
-        this.customStyleGroups = new HashMap<>();
-        this.importedGroups = new HashMap<>();
-        this.dependencyGraph = new HashMap<>();
+        this.styleTemplates = new HashMap<Object, Object>();
+        this.customStyleGroups = new HashMap<Object, Object>();
+        this.importedGroups = new HashMap<Object, Object>();
+        this.dependencyGraph = new HashMap<Object, Object>();
     }
     
     /**
@@ -146,7 +150,7 @@ public class StyleGroupManager {
      */
     public ResolvedStyleGroup resolveStyleGroup(String name) {
         ResolvedStyleGroup resolved = new ResolvedStyleGroup(name);
-        Set<String> visited = new HashSet<>();
+        Set<String> visited = new HashSet<Object>();
         
         // 检测循环依赖
         if (hasCircularDependency(name)) {
@@ -167,7 +171,7 @@ public class StyleGroupManager {
      * 更新依赖图
      */
     private void updateDependencies(String name, CHTLASTNode node) {
-        Set<String> deps = new HashSet<>();
+        Set<String> deps = new HashSet<Object>();
         
         // 遍历节点查找依赖
         for (CHTLASTNode child : node.getChildren()) {
@@ -185,8 +189,8 @@ public class StyleGroupManager {
      * 检测循环依赖
      */
     private boolean hasCircularDependency(String start) {
-        Set<String> visited = new HashSet<>();
-        Set<String> recursionStack = new HashSet<>();
+        Set<String> visited = new HashSet<Object>();
+        Set<String> recursionStack = new HashSet<Object>();
         
         return detectCycle(start, visited, recursionStack);
     }
@@ -285,8 +289,8 @@ public class StyleGroupManager {
         
         public ResolvedStyleGroup(String name) {
             this.name = name;
-            this.properties = new LinkedHashMap<>();
-            this.inheritanceChain = new ArrayList<>();
+            this.properties = new LinkedHashMap<Object, Object>();
+            this.inheritanceChain = new ArrayList<Object>();
         }
     }
     

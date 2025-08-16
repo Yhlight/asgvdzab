@@ -84,7 +84,7 @@ public class CJmodErrorHandler {
             this.message = message;
             this.cause = cause;
             this.timestamp = LocalDateTime.now();
-            this.context = new HashMap<>();
+            this.context = new HashMap<Object, Object>();
             this.stackTrace = Thread.currentThread().getStackTrace();
         }
         
@@ -167,8 +167,8 @@ public class CJmodErrorHandler {
         
         public ErrorStatistics(String moduleId) {
             this.moduleId = moduleId;
-            this.levelCounts = new ConcurrentHashMap<>();
-            this.categoryCounts = new ConcurrentHashMap<>();
+            this.levelCounts = new ConcurrentHashMap<Object, Object>();
+            this.categoryCounts = new ConcurrentHashMap<Object, Object>();
             this.totalCount = new AtomicInteger(0);
             this.recoveredCount = new AtomicInteger(0);
             
@@ -199,13 +199,13 @@ public class CJmodErrorHandler {
         public LocalDateTime getLastErrorTime() { return lastErrorTime; }
         
         public Map<ErrorLevel, Integer> getLevelDistribution() {
-            Map<ErrorLevel, Integer> result = new HashMap<>();
+            Map<ErrorLevel, Integer> result = new HashMap<Object, Object>();
             levelCounts.forEach((k, v) -> result.put(k, v.get()));
             return result;
         }
         
         public Map<ErrorCategory, Integer> getCategoryDistribution() {
-            Map<ErrorCategory, Integer> result = new HashMap<>();
+            Map<ErrorCategory, Integer> result = new HashMap<Object, Object>();
             categoryCounts.forEach((k, v) -> result.put(k, v.get()));
             return result;
         }
@@ -213,9 +213,9 @@ public class CJmodErrorHandler {
     
     private CJmodErrorHandler() {
         this.errorLog = new LinkedBlockingQueue<>(maxErrorLogSize);
-        this.recoveryStrategies = new ConcurrentHashMap<>();
-        this.listeners = new CopyOnWriteArrayList<>();
-        this.moduleStatistics = new ConcurrentHashMap<>();
+        this.recoveryStrategies = new ConcurrentHashMap<Object, Object>();
+        this.listeners = new CopyOnWriteArrayList<Object>();
+        this.moduleStatistics = new ConcurrentHashMap<Object, Object>();
         this.totalErrors = new AtomicInteger(0);
         this.recoveredErrors = new AtomicInteger(0);
         
@@ -460,7 +460,7 @@ public class CJmodErrorHandler {
      * 注册恢复策略
      */
     public void registerRecoveryStrategy(ErrorCategory category, RecoveryStrategy strategy) {
-        recoveryStrategies.computeIfAbsent(category, k -> new CopyOnWriteArrayList<>())
+        recoveryStrategies.computeIfAbsent(category, k -> new CopyOnWriteArrayList<Object>())
             .add(strategy);
     }
     
@@ -489,7 +489,7 @@ public class CJmodErrorHandler {
      * 获取全局统计
      */
     public Map<String, Object> getGlobalStatistics() {
-        Map<String, Object> stats = new HashMap<>();
+        Map<String, Object> stats = new HashMap<Object, Object>();
         stats.put("totalErrors", totalErrors.get());
         stats.put("recoveredErrors", recoveredErrors.get());
         stats.put("recoveryRate", 
@@ -516,7 +516,7 @@ public class CJmodErrorHandler {
      * 获取最近的错误
      */
     public List<ErrorInfo> getRecentErrors(int count) {
-        List<ErrorInfo> recent = new ArrayList<>();
+        List<ErrorInfo> recent = new ArrayList<Object>();
         errorLog.drainTo(recent, count);
         // 将错误放回队列
         errorLog.addAll(recent);

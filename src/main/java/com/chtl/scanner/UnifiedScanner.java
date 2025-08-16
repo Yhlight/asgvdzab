@@ -36,7 +36,7 @@ public class UnifiedScanner {
         List<BlockScanner.RawBlock> blocks = blockScanner.scanBlocks(source);
         
         // 第二阶段：块处理
-        List<CodeFragment> fragments = new ArrayList<>();
+        List<CodeFragment> fragments = new ArrayList<Object>();
         for (BlockScanner.RawBlock block : blocks) {
             fragments.addAll(processBlock(block));
         }
@@ -49,7 +49,7 @@ public class UnifiedScanner {
      * 初始化块处理器
      */
     private Map<BlockScanner.BlockType, BlockProcessor> initializeProcessors() {
-        Map<BlockScanner.BlockType, BlockProcessor> map = new HashMap<>();
+        Map<BlockScanner.BlockType, BlockProcessor> map = new HashMap<Object, Object>();
         
         // Style块处理器
         map.put(BlockScanner.BlockType.STYLE_GLOBAL, new BlockProcessor() {
@@ -135,7 +135,7 @@ public class UnifiedScanner {
     private List<CodeFragment> processLocalScript(BlockScanner.RawBlock block) {
         // 局部script是特殊的，需要识别所有CHTL语法
         String content = block.getContent();
-        List<CodeFragment> fragments = new ArrayList<>();
+        List<CodeFragment> fragments = new ArrayList<Object>();
         
         // 提取script标签部分
         int scriptStart = content.indexOf('{');
@@ -181,7 +181,7 @@ public class UnifiedScanner {
      * 处理局部script内容（支持完整CHTL语法）
      */
     private List<CodeFragment> processLocalScriptContent(String content, int offset) {
-        List<CodeFragment> fragments = new ArrayList<>();
+        List<CodeFragment> fragments = new ArrayList<Object>();
         int pos = 0;
         
         while (pos < content.length()) {
@@ -289,7 +289,7 @@ public class UnifiedScanner {
      */
     private List<CodeFragment> processGlobalScript(BlockScanner.RawBlock block) {
         String content = block.getContent();
-        List<CodeFragment> fragments = new ArrayList<>();
+        List<CodeFragment> fragments = new ArrayList<Object>();
         
         // 检查是否包含原始嵌入
         if (content.contains("[Origin]")) {
@@ -304,7 +304,7 @@ public class UnifiedScanner {
      * 处理包含原始嵌入的script块
      */
     private List<CodeFragment> processScriptWithOrigin(BlockScanner.RawBlock block) {
-        List<CodeFragment> fragments = new ArrayList<>();
+        List<CodeFragment> fragments = new ArrayList<Object>();
         String content = block.getContent();
         int position = 0;
         
@@ -407,7 +407,7 @@ public class UnifiedScanner {
      */
     private List<CodeFragment> processCHTLJS(BlockScanner.RawBlock block) {
         String content = block.getContent();
-        List<CodeFragment> fragments = new ArrayList<>();
+        List<CodeFragment> fragments = new ArrayList<Object>();
         
         // 检查是否包含CHTL JS特殊语法
         boolean hasEnhancedSelector = content.contains("{{") && content.contains("}}");
@@ -433,7 +433,7 @@ public class UnifiedScanner {
      * 处理包含CHTL JS语法的script块
      */
     private List<CodeFragment> processCHTLJSWithSyntax(BlockScanner.RawBlock block) {
-        List<CodeFragment> fragments = new ArrayList<>();
+        List<CodeFragment> fragments = new ArrayList<Object>();
         String content = block.getContent();
         int position = 0;
         
@@ -474,7 +474,7 @@ public class UnifiedScanner {
      * 处理script内容中的CHTL JS语法 - 最小单元切割
      */
     private List<CodeFragment> processCHTLJSContent(String content, int offset) {
-        List<CodeFragment> fragments = new ArrayList<>();
+        List<CodeFragment> fragments = new ArrayList<Object>();
         int pos = 0;
         int lastPos = 0;
         
@@ -633,7 +633,7 @@ public class UnifiedScanner {
      * 处理可能包含原始嵌入的JS代码
      */
     private List<CodeFragment> processJSWithOrigin(String content, int offset) {
-        List<CodeFragment> fragments = new ArrayList<>();
+        List<CodeFragment> fragments = new ArrayList<Object>();
         int pos = 0;
         
         while (pos < content.length()) {
@@ -870,7 +870,7 @@ public class UnifiedScanner {
      * 处理CHTL JS增强选择器
      */
     private List<CodeFragment> processCHTLJSEnhancedSelectors(BlockScanner.RawBlock block) {
-        List<CodeFragment> fragments = new ArrayList<>();
+        List<CodeFragment> fragments = new ArrayList<Object>();
         String content = block.getContent();
         int lastPos = 0;
         int searchPos = 0;
@@ -925,7 +925,7 @@ public class UnifiedScanner {
             return fragments;
         }
         
-        List<CodeFragment> optimized = new ArrayList<>();
+        List<CodeFragment> optimized = new ArrayList<Object>();
         CodeFragment current = fragments.get(0);
         
         for (int i = 1; i < fragments.size(); i++) {

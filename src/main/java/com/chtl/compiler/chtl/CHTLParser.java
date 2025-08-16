@@ -1,5 +1,11 @@
 package com.chtl.compiler.chtl;
 
+import com.chtl.model.StyleProperty;
+import com.chtl.model.StyleRule;
+import com.chtl.model.TemplateType;
+import com.chtl.model.CustomType;
+
+
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.Token;
@@ -326,7 +332,7 @@ public class CHTLParser {
         
         // 词法分析
         lexer = new Lexer(input);
-        tokens = new ArrayList<>();
+        tokens = new ArrayList<Object>();
         Token token;
         while ((token = lexer.nextToken()).type != TokenType.EOF) {
             if (token.type != TokenType.COMMENT) { // 过滤注释

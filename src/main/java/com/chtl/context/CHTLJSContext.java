@@ -44,11 +44,11 @@ public class CHTLJSContext {
     
     public CHTLJSContext() {
         this.stateStack = new Stack<>();
-        this.selectorCache = new HashMap<>();
-        this.delegationRegistry = new HashMap<>();
+        this.selectorCache = new HashMap<Object, Object>();
+        this.delegationRegistry = new HashMap<Object, Object>();
         this.nodeStack = new Stack<>();
-        this.errors = new ArrayList<>();
-        this.warnings = new ArrayList<>();
+        this.errors = new ArrayList<Object>();
+        this.warnings = new ArrayList<Object>();
         this.tempVarCounter = 0;
         this.selectorIdCounter = 0;
         
@@ -85,7 +85,7 @@ public class CHTLJSContext {
     public DelegationInfo(String parentSelector, List<String> targetSelectors,
                               String eventName, EventHandlerNode handler) {
             this.parentSelector = parentSelector;
-            this.targetSelectors = new ArrayList<>(targetSelectors);
+            this.targetSelectors = new ArrayList<Object>(targetSelectors);
             this.eventName = eventName;
             this.handler = handler;
         }
@@ -204,7 +204,7 @@ public class CHTLJSContext {
     // 事件委托管理
     
     public void registerDelegation(DelegationInfo info) { 
-        delegationRegistry.computeIfAbsent(info.getParentSelector(), k -> new ArrayList<>()).add(info);
+        delegationRegistry.computeIfAbsent(info.getParentSelector(), k -> new ArrayList<Object>()).add(info);
     }
     
     public Map<String, List<DelegationInfo>> getDelegationRegistry() { 

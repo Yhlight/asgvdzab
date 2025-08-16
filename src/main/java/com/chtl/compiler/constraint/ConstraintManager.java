@@ -1,4 +1,8 @@
 package com.chtl.compiler.constraint;
+
+import com.chtl.context.ErrorType;
+import com.chtl.model.TemplateType;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -45,7 +49,7 @@ public class ConstraintManager {
         
         ConstraintScope(CHTLASTNode scopeNode, ConstraintScope parent) {
             this.scopeNode = scopeNode;
-            this.rules = new ArrayList<>();
+            this.rules = new ArrayList<Object>();
             this.parent = parent;
         }
         
@@ -67,7 +71,7 @@ public class ConstraintManager {
         
         ConstraintRule(ConstraintType type) {
             this.type = type;
-            this.targets = new ArrayList<>();
+            this.targets = new ArrayList<Object>();
         }
         
         void addTarget(ConstraintTarget target) {
@@ -115,7 +119,7 @@ public class ConstraintManager {
     public ConstraintManager(CompilationContext context) {
         this.context = context;
         this.stateMachine = new ScannerStateMachine(context);
-        this.constraintScopes = new HashMap<>();
+        this.constraintScopes = new HashMap<Object, Object>();
         this.scopeStack = new Stack<>();
     }
     
@@ -427,7 +431,7 @@ public class ConstraintManager {
             return Collections.emptyList();
         }
         
-        List<ConstraintRule> allRules = new ArrayList<>();
+        List<ConstraintRule> allRules = new ArrayList<Object>();
         ConstraintScope scope = scopeStack.peek();
         
         while (scope != null) {

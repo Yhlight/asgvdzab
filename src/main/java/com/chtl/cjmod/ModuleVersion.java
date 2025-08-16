@@ -230,7 +230,7 @@ public class ModuleVersion implements Comparable<ModuleVersion> {
          * - 1.2.x (通配符)
          */
         private List<RangeCondition> parseExpression(String expr) {
-            List<RangeCondition> result = new ArrayList<>();
+            List<RangeCondition> result = new ArrayList<Object>();
             
             // 处理复合条件（用空格或逗号分隔）
             String[] parts = expr.split("[\\s,]+");

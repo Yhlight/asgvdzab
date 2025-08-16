@@ -22,8 +22,8 @@ public class CJmodManager {
     
     public CJmodManager(CHTLJSContext context) {
         this.loader = new CJmodLoader();
-        this.modulesByName = new HashMap<>();
-        this.allModules = new ArrayList<>();
+        this.modulesByName = new HashMap<Object, Object>();
+        this.allModules = new ArrayList<Object>();
         this.context = context;
         this.runtimeCode = new StringBuilder();
     }
@@ -136,7 +136,7 @@ public class CJmodManager {
      * 获取所有模块信息
      */
     public List<ModuleInfo> getAllModuleInfo() {
-        List<ModuleInfo> infos = new ArrayList<>();
+        List<ModuleInfo> infos = new ArrayList<Object>();
         
         for (CJmodInterface module : allModules) {
             ModuleInfo info = new ModuleInfo(
@@ -144,8 +144,8 @@ public class CJmodManager {
                 module.getModuleVersion(),
                 module.getDescription(),
                 module.getAuthor(),
-                new ArrayList<>(module.getProvidedMethods().keySet()),
-                new ArrayList<>(module.getProvidedObjects().keySet())
+                new ArrayList<Object>(module.getProvidedMethods().keySet()),
+                new ArrayList<Object>(module.getProvidedObjects().keySet())
             );
             infos.add(info);
         }

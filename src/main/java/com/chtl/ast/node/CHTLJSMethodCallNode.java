@@ -13,7 +13,7 @@ public class CHTLJSMethodCallNode extends AbstractCHTLASTNode {
     
     public CHTLJSMethodCallNode(String methodName) {
         this.methodName = methodName;
-        this.arguments = new ArrayList<>();
+        this.arguments = new ArrayList<Object>();
     }
     
     public String getMethodName() {

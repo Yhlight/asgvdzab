@@ -1,4 +1,7 @@
 package com.chtl.compiler.optimization.js;
+
+import com.chtl.compiler.optimization.JsFile;
+import com.chtl.compiler.optimization.JsOptions;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -7,8 +10,6 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import com.chtl.context.CompilationContext;
-import com.chtl.compiler.optimization.OptimizationOptions.JsOptions;
-import com.chtl.compiler.optimization.OutputOptimizer.JsFile;
 import java.util.*;
 
 /**
@@ -170,7 +171,7 @@ public class JavaScriptOptimizer {
         Pattern constPattern = Pattern.compile("const\\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\\s*=\\s*([^;]+);");
         Matcher matcher = constPattern.matcher(js);
         
-        Map<String, String> constants = new HashMap<>();
+        Map<String, String> constants = new HashMap<Object, Object>();
         
         while (matcher.find()) {
             String name = matcher.group(1);
@@ -209,7 +210,7 @@ public class JavaScriptOptimizer {
         Pattern varPattern = Pattern.compile("\\b(var|let|const)\\s+([a-zA-Z_$][a-zA-Z0-9_$]*)");
         Matcher matcher = varPattern.matcher(js);
         
-        Map<String, String> varMap = new HashMap<>();
+        Map<String, String> varMap = new HashMap<Object, Object>();
         int counter = 0;
         
         while (matcher.find()) {
@@ -252,7 +253,7 @@ public class JavaScriptOptimizer {
      */
     private String removeWhitespace(String js) {
         // 保护字符串内容
-        List<String> strings = new ArrayList<>();
+        List<String> strings = new ArrayList<Object>();
         Pattern stringPattern = Pattern.compile("(['\"])(?:(?=(\\\\?))\\2.)*?\\1");
         Matcher stringMatcher = stringPattern.matcher(js);
         
