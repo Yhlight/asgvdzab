@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = -DCHTL_VERSION_MAJOR=1 -DCHTL_VERSION_MINOR=0 -DCHTL_VERSION_PATCH=0
 
-CXX_INCLUDES = -I/workspace/include
+CXX_INCLUDES = -I/workspace/include -I/workspace/generated/antlr/css -I/workspace/generated/antlr/js -I/usr/include/antlr4-runtime
 
 CXX_FLAGS = -std=c++17 -Wall -Wextra -Wpedantic
 

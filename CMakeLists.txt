@@ -21,13 +21,22 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 # 包含目录
 include_directories(${CMAKE_SOURCE_DIR}/include)
 
-# 源文件目录
+# 收集所有源文件
 file(GLOB_RECURSE SOURCES 
-    "src/*.cpp"
-    "src/*.hpp"
-    "include/*.hpp"
+    "src/ast/*.cpp"
+    "src/lexer/*.cpp"
+    "src/parsers/*.cpp"
+    "src/generators/*.cpp"
+    "src/common/*.cpp"
+    "src/dispatcher/*.cpp"
+    "src/compilers/*.cpp"
+    "src/scanner/*.cpp"
+    "src/tools/*.cpp"
+    "generated/antlr/css/*.cpp"
+    "generated/antlr/js/*.cpp"
 )
-# 移除有问题的文件
+
+# 移除有main函数的文件，避免冲突
 list(REMOVE_ITEM SOURCES "${CMAKE_SOURCE_DIR}/src/parsers/chtl_parser.cpp")
 list(REMOVE_ITEM SOURCES "${CMAKE_SOURCE_DIR}/src/tools/chtl_cmod_tool.cpp")
 list(REMOVE_ITEM SOURCES "${CMAKE_SOURCE_DIR}/src/tools/chtl_cjmod_tool.cpp")
@@ -41,9 +50,16 @@ set(TEST_SOURCES
 )
 # 收集测试需要的源文件（除了main.cpp）
 file(GLOB_RECURSE TEST_LIB_SOURCES 
-    "src/*.cpp"
+    "src/ast/*.cpp"
+    "src/lexer/*.cpp"
+    "src/generators/*.cpp"
+    "src/common/*.cpp"
+    "src/dispatcher/*.cpp"
+    "src/compilers/*.cpp"
+    "src/scanner/*.cpp"
+    "generated/antlr/css/*.cpp"
+    "generated/antlr/js/*.cpp"
 )
-list(REMOVE_ITEM TEST_LIB_SOURCES "${CMAKE_SOURCE_DIR}/src/main.cpp")
 list(REMOVE_ITEM TEST_LIB_SOURCES "${CMAKE_SOURCE_DIR}/src/parsers/chtl_parser.cpp")
 list(REMOVE_ITEM TEST_LIB_SOURCES "${CMAKE_SOURCE_DIR}/src/tools/chtl_cmod_tool.cpp")
 list(REMOVE_ITEM TEST_LIB_SOURCES "${CMAKE_SOURCE_DIR}/src/tools/chtl_cjmod_tool.cpp")
@@ -324,4 +340,58 @@ add_executable(raii_state_management_demo
 # 安装规则
 install(TARGETS chtl_compiler
     RUNTIME DESTINATION bin
+)
+
+# 包含ANTLR4运行时库
+target_include_directories(chtl_compiler PRIVATE
+    ${CMAKE_SOURCE_DIR}/include
+    ${CMAKE_SOURCE_DIR}/generated/antlr/css
+    ${CMAKE_SOURCE_DIR}/generated/antlr/js
+    /usr/include/antlr4-runtime
+)
+
+# 链接ANTLR4运行时库
+target_link_libraries(chtl_compiler antlr4-runtime)
+
+# 为测试程序也添加ANTLR支持
+file(GLOB_RECURSE TEST_LIB_SOURCES 
+    "src/ast/*.cpp"
+    "src/lexer/*.cpp"
+    "src/generators/*.cpp"
+    "src/common/*.cpp"
+    "src/dispatcher/*.cpp"
+    "src/compilers/*.cpp"
+    "src/scanner/*.cpp"
+    "generated/antlr/css/*.cpp"
+    "generated/antlr/js/*.cpp"
+)
+
+# 移除有main函数的文件
+list(REMOVE_ITEM TEST_LIB_SOURCES "${CMAKE_SOURCE_DIR}/src/parsers/chtl_parser.cpp")
+list(REMOVE_ITEM TEST_LIB_SOURCES "${CMAKE_SOURCE_DIR}/src/tools/chtl_cmod_tool.cpp")
+list(REMOVE_ITEM TEST_LIB_SOURCES "${CMAKE_SOURCE_DIR}/src/tools/chtl_cjmod_tool.cpp")
+
+# 创建测试库
+add_library(chtl_test_lib ${TEST_LIB_SOURCES})
+
+target_include_directories(chtl_test_lib PRIVATE
+    ${CMAKE_SOURCE_DIR}/include
+    ${CMAKE_SOURCE_DIR}/generated/antlr/css
+    ${CMAKE_SOURCE_DIR}/generated/antlr/js
+    /usr/include/antlr4-runtime
+)
+
+target_link_libraries(chtl_test_lib antlr4-runtime)
+
+# 测试程序链接测试库
+target_link_libraries(chtl_tests chtl_test_lib)
+
+# ANTLR编译器测试
+add_executable(antlr_compilers_test tests/antlr_compilers_test.cpp)
+target_link_libraries(antlr_compilers_test chtl_test_lib)
+target_include_directories(antlr_compilers_test PRIVATE
+    ${CMAKE_SOURCE_DIR}/include
+    ${CMAKE_SOURCE_DIR}/generated/antlr/css
+    ${CMAKE_SOURCE_DIR}/generated/antlr/js
+    /usr/include/antlr4-runtime
 )

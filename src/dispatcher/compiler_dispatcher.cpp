@@ -1,5 +1,7 @@
 #include "dispatcher/compiler_dispatcher.hpp"
 #include "compilers/chtl_compiler.hpp"
+#include "compilers/simple_css_compiler.hpp"
+#include "compilers/simple_js_compiler.hpp"
 #include <iostream>
 #include <algorithm>
 #include <chrono>
@@ -130,9 +132,9 @@ void CompilerDispatcher::resetStatistics() {
 
 void CompilerDispatcher::initializeDefaultCompilers() {
     registerCompiler(CompilerFactory::createCHTLCompiler());
-    // registerCompiler(CompilerFactory::createCHTLJSCompiler());
-    // registerCompiler(CompilerFactory::createCSSCompiler());
-    // registerCompiler(CompilerFactory::createJavaScriptCompiler());
+    registerCompiler(CompilerFactory::createCHTLJSCompiler());
+    registerCompiler(CompilerFactory::createCSSCompiler());
+    registerCompiler(CompilerFactory::createJavaScriptCompiler());
 }
 
 std::vector<CodeSegment> CompilerDispatcher::preprocessSegments(const std::vector<CodeSegment>& segments) {
@@ -269,11 +271,11 @@ std::unique_ptr<ICompiler> CompilerFactory::createCHTLJSCompiler() {
 }
 
 std::unique_ptr<ICompiler> CompilerFactory::createCSSCompiler() {
-    return nullptr; // 将在实现CSS编译器时完成
+    return std::make_unique<SimpleCSSCompiler>();
 }
 
 std::unique_ptr<ICompiler> CompilerFactory::createJavaScriptCompiler() {
-    return nullptr; // 将在实现JavaScript编译器时完成
+    return std::make_unique<SimpleJSCompiler>();
 }
 
 } // namespace chtl
