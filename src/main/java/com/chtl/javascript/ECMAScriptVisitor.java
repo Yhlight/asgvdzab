@@ -1,4 +1,8 @@
-package com.chtl.javascript;import org.antlr.v4.runtime.tree.ParseTreeVisitor;
+package com.chtl.javascript;
+
+import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.Parser;
+import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
 import org.antlr.v4.runtime.tree.*;
 

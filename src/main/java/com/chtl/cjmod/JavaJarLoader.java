@@ -168,4 +168,82 @@ public class JavaJarLoader implements CJmodManager.CJmodLoader {
         String author;
         List<String> dependencies;
     }
+
+    @Override
+    public void loadModuleFromPath() {
+        // TODO: Implement this method
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+    @Override
+    public void IllegalStateException() {
+        // TODO: Implement this method
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+    @Override
+    public void ModuleNotFoundException() {
+        // TODO: Implement this method
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+    @Override
+    public void DefaultExecutionContext() {
+        // TODO: Implement this method
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+    @Override
+    public void onModuleLoaded() {
+        // TODO: Implement this method
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+    @Override
+    public void onModuleInitialized() {
+        // TODO: Implement this method
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+    @Override
+    public void onModuleSuspended() {
+        // TODO: Implement this method
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+    @Override
+    public void Thread() {
+        // TODO: Implement this method
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+    @Override
+    public void onModuleUnloaded() {
+        // TODO: Implement this method
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+    @Override
+    public void RuntimeException() {
+        // TODO: Implement this method
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+    @Override
+    public void onModuleActivated() {
+        // TODO: Implement this method
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+    @Override
+    public void UnsupportedModuleException() {
+        // TODO: Implement this method
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+    @Override
+    public void onModuleError() {
+        // TODO: Implement this method
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
 }

@@ -285,4 +285,46 @@ public class CHTLCodeGenerator implements CHTLNodeVisitor {
                "param".equals(tagName) || "source".equals(tagName) || 
                "track".equals(tagName) || "wbr".equals(tagName);
     }
+
+    @Override
+    public void visitTemplate() {
+        // TODO: Implement this method
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+    @Override
+    public void visitText() {
+        // TODO: Implement this method
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+    @Override
+    public void visitElement() {
+        // TODO: Implement this method
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+    @Override
+    public void visitAttribute() {
+        // TODO: Implement this method
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+    @Override
+    public void visitScript() {
+        // TODO: Implement this method
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+    @Override
+    public void visitStyle() {
+        // TODO: Implement this method
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+    @Override
+    public void visitCustom() {
+        // TODO: Implement this method
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
 }

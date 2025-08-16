@@ -1,4 +1,9 @@
 package com.chtl.parser;
+
+import org.antlr.v4.runtime.Lexer;
+import org.antlr.v4.runtime.Parser;
+import org.antlr.v4.runtime.Token;
+
 import com.chtl.ast.CHTLASTNode;
 import com.chtl.context.CHTLJSContext;
 import com.chtl.exception.CompilationException;

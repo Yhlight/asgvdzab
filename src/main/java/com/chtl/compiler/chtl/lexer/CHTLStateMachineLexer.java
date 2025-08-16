@@ -1,4 +1,8 @@
 package com.chtl.compiler.chtl.lexer;
+
+import org.antlr.v4.runtime.Lexer;
+import org.antlr.v4.runtime.Token;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

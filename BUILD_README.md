@@ -2,33 +2,39 @@
 
 ## Current Build Status
 
-The CHTL compiler project has significant compilation issues due to circular dependencies, duplicate class definitions, and missing imports. However, we have created build scripts that can compile a subset of the classes successfully.
+The CHTL compiler project has significant compilation issues due to circular dependencies, duplicate class definitions, and missing imports. However, through a series of automated fixes and improved build scripts, we can now successfully compile 58 out of 224 classes (26% of the codebase).
 
 ## Build Scripts Available
 
-### 1. Windows Fixed Build (Recommended for Windows)
+### 1. Ultimate Build Scripts (Recommended)
+- **Linux/Mac**: `./build-ultimate.sh`
+- **Windows**: `build-ultimate.bat`
+
+These are the most comprehensive build scripts with all fixes applied. They successfully compile approximately 58 out of 224 classes.
+
+### 2. Windows Fixed Build
 - **Windows**: `build-windows-fixed.bat`
 
-This is the most reliable build script for Windows with improved JAR creation and error handling.
+This is a reliable build script for Windows with improved JAR creation and error handling.
 
-### 2. Best-Effort Build
+### 3. Best-Effort Build
 - **Linux/Mac**: `./build-best-effort.sh`
 - **Windows**: `build-best-effort.bat`
 
-This script attempts to compile each Java file individually and creates a JAR with whatever compiles successfully. Currently, it can compile approximately 49 out of 224 classes.
+These scripts attempt to compile each Java file individually and create a JAR with whatever compiles successfully.
 
-### 3. Minimal Build
+### 4. Minimal Build
 - **Windows**: `build-minimal.bat`
 
 A simplified build script that focuses on essential classes and uses alternative JAR creation methods.
 
-### 4. Standard Build Scripts
+### 5. Standard Build Scripts
 - **Linux/Mac**: `./build.sh`
 - **Windows**: `build-simple.bat`, `build-final.bat`, `build-universal.bat`
 
 These scripts attempt a full compilation but currently fail due to compilation errors.
 
-### 5. Diagnostic Scripts
+### 6. Diagnostic Scripts
 - **Windows**: `diagnose-build.bat` - Diagnoses build environment issues
 - **Windows**: `check-compiled-classes.bat` - Checks what classes were compiled
 
@@ -38,18 +44,13 @@ These scripts help diagnose build issues and verify compilation results.
 
 ### On Linux/Mac:
 ```bash
-chmod +x build-best-effort.sh
-./build-best-effort.sh
+chmod +x build-ultimate.sh
+./build-ultimate.sh
 ```
 
 ### On Windows:
 ```cmd
-build-windows-fixed.bat
-```
-
-If the above fails, try:
-```cmd
-build-minimal.bat
+build-ultimate.bat
 ```
 
 ## Build Output
@@ -70,10 +71,13 @@ Successful builds create:
 2. **Partial Functionality**: Due to compilation issues, only basic functionality may be available.
 
 3. **Fix Scripts**: Several fix scripts are included that attempt to resolve common issues:
-   - `FixCompilationErrors.java`
-   - `FixAllCompilationIssues.java`
-   - `FixFileNaming.java`
-   - `FixRemainingCompilationErrors.java`
+   - `FixCompilationErrors.java` - Fixes basic compilation errors
+   - `FixAllCompilationIssues.java` - Comprehensive fixes for duplicate classes and imports
+   - `FixFileNaming.java` - Fixes file naming issues
+   - `FixRemainingCompilationErrors.java` - Fixes remaining symbol and import issues
+   - `FixAdvancedCompilationIssues.java` - Fixes advanced issues including missing imports and annotations
+   - `FixANTLRAndParserIssues.java` - Fixes ANTLR-related parser and lexer issues
+   - `FixCHTLJSContextFinal.java` - Specific fixes for CHTLJSContext.java
 
 ## Dependencies
 

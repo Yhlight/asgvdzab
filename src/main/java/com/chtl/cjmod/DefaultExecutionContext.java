@@ -226,4 +226,58 @@ public class DefaultExecutionContext implements CJmodInterface.ExecutionContext 
         this.configuration.clear();
         this.configuration.putAll(config);
     }
+
+    @Override
+    public void executeMethod() {
+        // TODO: Implement this method
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+    @Override
+    public void getRuntimeCode() {
+        // TODO: Implement this method
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+    @Override
+    public void getAuthor() {
+        // TODO: Implement this method
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+    @Override
+    public void cleanup() {
+        // TODO: Implement this method
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+    @Override
+    public void processASTNode() {
+        // TODO: Implement this method
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+    @Override
+    public void initialize() {
+        // TODO: Implement this method
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+    @Override
+    public void getModuleName() {
+        // TODO: Implement this method
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+    @Override
+    public void getDescription() {
+        // TODO: Implement this method
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+    @Override
+    public void getModuleVersion() {
+        // TODO: Implement this method
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
 }

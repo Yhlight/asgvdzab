@@ -1,15 +1,14 @@
 package com.chtl.compiler.chtljs.lexer;
+
+import org.antlr.v4.runtime.Lexer;
+import org.antlr.v4.runtime.Parser;
+import org.antlr.v4.runtime.Token;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import com.chtl.compiler.chtl.CHTLParser.Token;
-
-
 import com.chtl.compiler.chtljs.token.CHTLJSToken;
 import com.chtl.compiler.chtljs.token.CHTLJSTokenType;
-
 import java.util.*;
 
 /**

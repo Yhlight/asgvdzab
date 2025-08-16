@@ -76,13 +76,13 @@ public class CHTLJSContext {
     /**
      * 事件委托信息
      */
-    // public static class DelegationInfo { // TODO: Fix DelegationInfo access
+    public static class DelegationInfo {
         private final String parentSelector;
         private final List<String> targetSelectors;
         private final String eventName;
         private final EventHandlerNode handler;
         
-    // public DelegationInfo(String parentSelector, List<String> targetSelectors, // TODO: Fix DelegationInfo access
+    public DelegationInfo(String parentSelector, List<String> targetSelectors,
                               String eventName, EventHandlerNode handler) {
             this.parentSelector = parentSelector;
             this.targetSelectors = new ArrayList<>(targetSelectors);
@@ -203,11 +203,11 @@ public class CHTLJSContext {
     
     // 事件委托管理
     
-    // public void registerDelegation(DelegationInfo info) { // TODO: Fix DelegationInfo access
+    public void registerDelegation(DelegationInfo info) { 
         delegationRegistry.computeIfAbsent(info.getParentSelector(), k -> new ArrayList<>()).add(info);
     }
     
-    // public Map<String, List<DelegationInfo>> getDelegationRegistry() { // TODO: Fix DelegationInfo access
+    public Map<String, List<DelegationInfo>> getDelegationRegistry() { 
         return Collections.unmodifiableMap(delegationRegistry);
     }
     

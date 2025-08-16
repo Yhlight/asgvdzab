@@ -1,4 +1,7 @@
-package com.chtl.lexer;import com.chtl.compiler.chtl.token.CHTLToken;
+package com.chtl.lexer;
+
+import org.antlr.v4.runtime.Token;
+import com.chtl.compiler.chtl.token.CHTLToken;
 
 
 public class CHTLToken {

@@ -158,4 +158,46 @@ public class CHTLCompiler {
             logger.debug("收集到自定义: {} - {}", node.getType(), node.getCustomName());
         }
     }
+
+    @Override
+    public void visitTemplate() {
+        // TODO: Implement this method
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+    @Override
+    public void visitText() {
+        // TODO: Implement this method
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+    @Override
+    public void visitElement() {
+        // TODO: Implement this method
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+    @Override
+    public void visitAttribute() {
+        // TODO: Implement this method
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+    @Override
+    public void visitScript() {
+        // TODO: Implement this method
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+    @Override
+    public void visitStyle() {
+        // TODO: Implement this method
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+    @Override
+    public void visitCustom() {
+        // TODO: Implement this method
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
 }

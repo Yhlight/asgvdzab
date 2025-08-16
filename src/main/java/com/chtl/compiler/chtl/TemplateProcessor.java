@@ -144,6 +144,7 @@ public class TemplateProcessor {
     /**
      * 克隆节点
      */
+    @Override
     private CHTLNode cloneNode(CHTLNode node) {
         if (node instanceof ElementNode) {
             ElementNode original = (ElementNode) node;

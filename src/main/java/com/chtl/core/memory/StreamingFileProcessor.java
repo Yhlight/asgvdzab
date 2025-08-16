@@ -249,7 +249,7 @@ public class StreamingFileProcessor {
         
         Optional<Fragment> processChar(char ch) {
             // 更新位置
-            if (ch == '\n') {
+            if (ch == 'n') {
                 currentLine++;
                 currentColumn = 1;
             } else {
@@ -335,6 +335,7 @@ public class StreamingFileProcessor {
                 buffer = Arrays.copyOf(buffer, newCapacity);
             }
         }
+    @Override
         
         public String toString() {
             return new String(buffer, 0, position);

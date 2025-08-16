@@ -73,6 +73,12 @@ fi
 if [ -f "FixRemainingCompilationErrors.java" ]; then
     javac FixRemainingCompilationErrors.java 2>/dev/null && java FixRemainingCompilationErrors >/dev/null 2>&1
 fi
+if [ -f "FixAdvancedCompilationIssues.java" ]; then
+    javac FixAdvancedCompilationIssues.java 2>/dev/null && java FixAdvancedCompilationIssues >/dev/null 2>&1
+fi
+if [ -f "FixANTLRAndParserIssues.java" ]; then
+    javac FixANTLRAndParserIssues.java 2>/dev/null && java FixANTLRAndParserIssues >/dev/null 2>&1
+fi
 
 # Clean previous build
 echo

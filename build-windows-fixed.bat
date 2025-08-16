@@ -41,8 +41,9 @@ if %MISSING%==1 (
 REM Run fix programs
 echo.
 echo Running fixes...
-for %%F in (FixFinalIssues.java FixCompilationErrors.java FixAllCompilationIssues.java FixFileNaming.java FixRemainingCompilationErrors.java) do (
+for %%F in (FixFinalIssues.java FixCompilationErrors.java FixAllCompilationIssues.java FixFileNaming.java FixRemainingCompilationErrors.java FixAdvancedCompilationIssues.java FixANTLRAndParserIssues.java) do (
     if exist %%F (
+        echo   Running %%~nF...
         javac %%F 2>nul && java %%~nF >nul 2>&1
     )
 )

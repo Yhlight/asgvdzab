@@ -1,4 +1,9 @@
 package com.chtl.parser;
+
+import org.antlr.v4.runtime.Lexer;
+import org.antlr.v4.runtime.Parser;
+import org.antlr.v4.runtime.Token;
+
 import com.chtl.exception.CompilationException;
 import com.chtl.model.SourceLocation;
 import java.util.Stack;

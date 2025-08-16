@@ -29,4 +29,10 @@ public abstract class AbstractCHTLJSASTNode implements CHTLJSASTNode {
     public void setLocation(SourceLocation location) {
         this.location = location;
     }
+
+    @Override
+    public void accept() {
+        // TODO: Implement this method
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
 }

@@ -23,4 +23,16 @@ public abstract class AbstractCHTLJSASTNode implements CHTLJSASTNode {
     public CHTLJSASTNode.NodeType getNodeType() {
         return nodeType;
     }
+
+    @Override
+    public void getLocation() {
+        // TODO: Implement this method
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+    @Override
+    public void setLocation() {
+        // TODO: Implement this method
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
 }
