@@ -1,0 +1,100 @@
+// 测试CHTL JS的智能切割功能
+// 这个文件专门用于验证扫描器能够正确识别和切割CHTL JS语法
+
+script
+{
+    // 测试1: 增强选择器切割
+    {{box}}->click();
+    
+    // 测试2: 方法链切割
+    {{.container}}->addEventListener('click', function() {
+        {{.modal}}->show();
+        {{.overlay}}->fadeIn();
+    });
+    
+    // 测试3: 事件监听器切割
+    {{button}}->listen({
+        click: function() {
+            console.log('Button clicked');
+            {{.content}}->slideDown();
+        },
+        mouseenter: function() {
+            {{.tooltip}}->show();
+        },
+        mouseleave: function() {
+            {{.tooltip}}->hide();
+        }
+    });
+    
+    // 测试4: 事件委托切割
+    {{.parent}}->delegate({
+        target: {{.child}},
+        click: function() {
+            {{.modal}}->open();
+        },
+        mouseenter: function() {
+            {{.highlight}}->add();
+        }
+    });
+    
+    // 测试5: 动画切割
+    animate({
+        duration: 1000,
+        easing: ease-in-out,
+        begin: {
+            opacity: 0,
+            transform: 'translateY(20px)'
+        },
+        when: [
+            {
+                at: 0.5,
+                opacity: 0.5,
+                transform: 'translateY(10px)'
+            }
+        ],
+        end: {
+            opacity: 1,
+            transform: 'translateY(0)'
+        }
+    });
+    
+    // 测试6: 复杂表达式切割
+    const result = {{.form}}->validate() && {{.submit}}->enable();
+    
+    // 测试7: 条件语句切割
+    if ({{.checkbox}}->isChecked()) {
+        {{.field}}->show();
+        {{.label}}->addClass('required');
+    } else {
+        {{.field}}->hide();
+        {{.label}}->removeClass('required');
+    }
+    
+    // 测试8: 循环语句切割
+    {{.items}}->forEach(function(item) {
+        {{item}}->highlight();
+        {{item}}->addClass('selected');
+    });
+    
+    // 测试9: 函数调用切割
+    {{.api}}->fetch('/data')
+        ->then(function(response) {
+            {{.loader}}->hide();
+            {{.content}}->update(response.data);
+        })
+        ->catch(function(error) {
+            {{.error}}->show(error.message);
+        });
+    
+    // 测试10: 对象方法切割
+    const handler = {
+        init: function() {
+            {{.container}}->setup();
+            {{.events}}->bind();
+        },
+        destroy: function() {
+            {{.events}}->unbind();
+            {{.container}}->cleanup();
+        }
+    };
+}
