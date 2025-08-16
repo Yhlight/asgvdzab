@@ -44,8 +44,13 @@ set(IMPORT_NAMESPACE_SOURCES
     src/import/ImportManager.cpp
 )
 
+# 确保模块源文件被包含
+set(MODULE_SOURCES
+    src/module/ModuleManager.cpp
+)
+
 # 创建可执行文件
-add_executable(chtl_compiler ${SOURCES} ${LEXER_SOURCES} ${AST_SOURCES} ${PARSER_SOURCES} ${STATEMACHINE_SOURCES} ${IMPORT_NAMESPACE_SOURCES})
+add_executable(chtl_compiler ${SOURCES} ${LEXER_SOURCES} ${AST_SOURCES} ${PARSER_SOURCES} ${STATEMACHINE_SOURCES} ${IMPORT_NAMESPACE_SOURCES} ${MODULE_SOURCES})
 
 # 安装规则
 install(TARGETS chtl_compiler DESTINATION bin)
