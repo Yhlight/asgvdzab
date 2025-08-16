@@ -8,18 +8,31 @@
 
 ### 1. 模板变量使用
 ```chtl
-/* 正确格式：VariableGroupName(variableName) */
+/* 支持两种格式 */
+
+/* 简写形式：VariableGroupName(variableName) */
 .container {
     color: ThemeColor(primaryColor);
     background: ThemeColor(tableColor);
+}
+
+/* 完整形式：@Var VariableGroupName(variableName) */
+.header {
+    font-size: @Var FontSize(large);
+    color: @Var ThemeColor(primaryColor);
 }
 ```
 
 ### 2. 自定义变量使用和特例化
 ```chtl
-/* 基本使用 */
+/* 基本使用 - 简写形式 */
 .text {
     color: CustomColor(userColor);
+}
+
+/* 基本使用 - 完整形式 */
+.text {
+    background: @Var CustomColor(userBg);
 }
 
 /* 特例化：指定具体值 */
@@ -83,6 +96,8 @@ inherit @Style BaseTheme;
 /* 避免命名冲突的完整限定名 */
 [Custom] @Style MyButton;
 [Template] @Element Box;
+[Custom] @Var UserSettings;
+[Template] @Var ThemeColor;
 ```
 
 ### 10. 原始嵌入
@@ -162,17 +177,19 @@ style {
 ```chtl
 /* ✅ 正确的CHTL全局样式语法 */
 .main-container {
-    color: ThemeColor(primaryColor);
-    background: CustomColor(userBg);
+    color: ThemeColor(primaryColor);        /* 简写形式 */
+    background: @Var CustomColor(userBg);   /* 完整形式 */
 }
 
 #header {
-    font-size: 24px;
+    font-size: @Var FontSize(large);
 }
 
 @Style DefaultButton;
 [Template] @Style BaseTheme;
 [Custom] @Style UserTheme;
+[Template] @Var ThemeColor;
+[Custom] @Var UserSettings;
 
 inherit @Style BaseTheme;
 delete border, margin;

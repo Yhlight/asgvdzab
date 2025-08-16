@@ -12,8 +12,8 @@ namespace chtl {
  * CHTL全局样式块允许的语法元素类型
  */
 enum class GlobalStyleAllowedElement {
-    TEMPLATE_VARIABLE,              // 模板变量: VariableGroupName(variableName)
-    CUSTOM_VARIABLE,                // 自定义变量: VariableGroupName(variableName)
+    TEMPLATE_VARIABLE,              // 模板变量: VariableGroupName(variableName) 或 @Var VariableGroupName(variableName)
+    CUSTOM_VARIABLE,                // 自定义变量: VariableGroupName(variableName) 或 @Var VariableGroupName(variableName)
     CUSTOM_VARIABLE_SPECIALIZATION, // 自定义变量特例化: VariableGroupName(variableName = value)
     TEMPLATE_STYLE_GROUP,           // 模板样式组: @Style StyleGroupName
     CUSTOM_STYLE_GROUP,             // 自定义样式组: @Style StyleGroupName
@@ -23,7 +23,7 @@ enum class GlobalStyleAllowedElement {
     DELETE_INHERITANCE,             // delete继承: delete @Style StyleGroupName
     INHERITANCE,                    // 继承: inherit @Style StyleGroupName 或 @Style BaseStyle
     GENERATOR_COMMENT,              // 生成器注释: --注释内容
-    FULL_QUALIFIED_NAME,            // 全缀名: [Custom] @Style StyleName 或 [Template] @Style StyleName
+    FULL_QUALIFIED_NAME,            // 全缀名: [Custom] @Var/@Style/@Element Name 或 [Template] @Var/@Style/@Element Name
     RAW_EMBEDDING,                  // 原始嵌入: [Origin] @Style { CSS代码 }
     FROM_NAMESPACE,                 // 从命名空间获取: ElementName from namespace.path
     CSS_SELECTOR,                   // CSS选择器 (基本CSS语法)

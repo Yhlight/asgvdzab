@@ -213,15 +213,19 @@ std::vector<GlobalStyleAllowedElement> CHtlGlobalStyleConstraint::checkAllowedEl
 }
 
 bool CHtlGlobalStyleConstraint::validateTemplateVariableReference(const std::string& varReference) {
-    // 模板变量格式: VariableGroupName(variableName) 
-    // 注意：CHTL中变量引用不需要@Var前缀，直接是VariableGroupName(variableName)
-    std::regex templateVarPattern(R"(([A-Za-z_][A-Za-z0-9_]*)\s*\(\s*([A-Za-z_][A-Za-z0-9_]*)\s*\))");
+    // 模板变量格式: 
+    // 1. VariableGroupName(variableName) - 简写形式
+    // 2. @Var VariableGroupName(variableName) - 完整形式
+    std::regex templateVarPattern(R"((?:@Var\s+)?([A-Za-z_][A-Za-z0-9_]*)\s*\(\s*([A-Za-z_][A-Za-z0-9_]*)\s*\))");
     return std::regex_search(varReference, templateVarPattern);
 }
 
 bool CHtlGlobalStyleConstraint::validateCustomVariableReference(const std::string& varReference) {
-    // 自定义变量格式: VariableGroupName(variableName) 或 VariableGroupName(variableName = value) (特例化)
-    std::regex customVarPattern(R"(([A-Za-z_][A-Za-z0-9_]*)\s*\(\s*([A-Za-z_][A-Za-z0-9_]*)\s*(?:=\s*([^)]+))?\s*\))");
+    // 自定义变量格式: 
+    // 1. VariableGroupName(variableName) - 简写形式
+    // 2. @Var VariableGroupName(variableName) - 完整形式
+    // 3. VariableGroupName(variableName = value) - 特例化
+    std::regex customVarPattern(R"((?:@Var\s+)?([A-Za-z_][A-Za-z0-9_]*)\s*\(\s*([A-Za-z_][A-Za-z0-9_]*)\s*(?:=\s*([^)]+))?\s*\))");
     return std::regex_search(varReference, customVarPattern);
 }
 
@@ -308,10 +312,12 @@ bool CHtlGlobalStyleConstraint::isCSSProperty(const std::string& statement) {
 }
 
 bool CHtlGlobalStyleConstraint::isVariableReference(const std::string& statement) {
-    // 变量引用模式: VariableGroup(variableName) 格式
-    // 在CHTL中，变量引用不需要@Var前缀
-    return (statement.find('(') != std::string::npos && statement.find(')') != std::string::npos &&
-            statement.find("function") == std::string::npos); // 排除函数定义
+    // 变量引用模式: 
+    // 1. VariableGroup(variableName) 格式 - 简写形式
+    // 2. @Var VariableGroup(variableName) 格式 - 完整形式
+    return (statement.find("@Var") != std::string::npos || 
+           (statement.find('(') != std::string::npos && statement.find(')') != std::string::npos &&
+            statement.find("function") == std::string::npos)); // 排除函数定义
 }
 
 bool CHtlGlobalStyleConstraint::isStyleGroupReference(const std::string& statement) {

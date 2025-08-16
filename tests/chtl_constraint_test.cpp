@@ -92,9 +92,12 @@ void testCHTLSyntaxCorrectness() {
     // 测试正确的CHTL语法元素
     std::cout << "\n单个语法元素验证:" << std::endl;
     
-    // 测试变量引用 (正确格式：不需要@Var前缀)
-    std::cout << "变量引用 'ThemeColor(primary)': " 
+    // 测试变量引用的多种格式
+    std::cout << "变量引用简写 'ThemeColor(primary)': " 
               << (constraint.validateTemplateVariableReference("color: ThemeColor(primary);") ? "✓" : "✗") << std::endl;
+    
+    std::cout << "变量引用完整 '@Var ThemeColor(primary)': " 
+              << (constraint.validateTemplateVariableReference("color: @Var ThemeColor(primary);") ? "✓" : "✗") << std::endl;
     
     // 测试变量特例化
     std::cout << "变量特例化 'ThemeColor(tableColor = rgb(255, 192, 203))': " 
@@ -104,9 +107,12 @@ void testCHTLSyntaxCorrectness() {
     std::cout << "样式组引用 '@Style DefaultButton;': " 
               << (constraint.validateStyleGroupReference("@Style DefaultButton;") ? "✓" : "✗") << std::endl;
     
-    // 测试全缀名
-    std::cout << "全缀名 '[Custom] @Style MyButton': " 
+    // 测试全缀名（包括@Var）
+    std::cout << "全缀名样式 '[Custom] @Style MyButton': " 
               << (constraint.validateFullQualifiedName("[Custom] @Style MyButton") ? "✓" : "✗") << std::endl;
+              
+    std::cout << "全缀名变量 '[Template] @Var ThemeColor': " 
+              << (constraint.validateFullQualifiedName("[Template] @Var ThemeColor") ? "✓" : "✗") << std::endl;
     
     // 测试继承
     std::cout << "继承语句 'inherit @Style BaseTheme': " 
@@ -146,12 +152,18 @@ void testSpecificConstraints() {
         /* 正确的CHTL全局样式语法 */
         .container {
             color: ThemeColor(primaryColor);
-            background: CustomColor(userBg);
+            background: @Var CustomColor(userBg);
+        }
+        
+        #header {
+            font-size: @Var FontSize(large);
         }
         
         @Style DefaultButton;
         [Template] @Style BaseTheme;
         [Custom] @Style UserTheme;
+        [Template] @Var ThemeColor;
+        [Custom] @Var UserSettings;
         
         inherit @Style BaseTheme;
         delete border, margin;
