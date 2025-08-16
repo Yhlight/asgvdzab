@@ -34,8 +34,13 @@ set(PARSER_SOURCES
     src/parser/CHTLParser.cpp
 )
 
+# 确保状态机源文件被包含
+set(STATEMACHINE_SOURCES
+    src/statemachine/CHTLStateMachine.cpp
+)
+
 # 创建可执行文件
-add_executable(chtl_compiler ${SOURCES} ${LEXER_SOURCES} ${AST_SOURCES} ${PARSER_SOURCES})
+add_executable(chtl_compiler ${SOURCES} ${LEXER_SOURCES} ${AST_SOURCES} ${PARSER_SOURCES} ${STATEMACHINE_SOURCES})
 
 # 安装规则
 install(TARGETS chtl_compiler DESTINATION bin)
