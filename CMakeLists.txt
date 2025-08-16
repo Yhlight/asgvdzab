@@ -235,6 +235,7 @@ file(GLOB_RECURSE ANTLR_GENERATED_SRC
 set(CSS_JS_COMPILER_SOURCES
     src/compilers/antlr_css_compiler.cpp
     src/compilers/antlr_js_compiler.cpp
+    src/compilers/modern_antlr_css_compiler.cpp
     ${ANTLR_GENERATED_SRC}
 )
 
@@ -300,6 +301,14 @@ target_include_directories(antlr_compilers_test PRIVATE
 add_executable(antlr_simple_test tests/antlr_simple_test.cpp)
 target_link_libraries(antlr_simple_test chtl_test_lib)
 target_include_directories(antlr_simple_test PRIVATE
+    ${CMAKE_SOURCE_DIR}/include
+    ${CSS_JS_INCLUDE_DIRS}
+)
+
+# 现代ANTLR测试
+add_executable(modern_antlr_test tests/modern_antlr_test.cpp)
+target_link_libraries(modern_antlr_test chtl_test_lib)
+target_include_directories(modern_antlr_test PRIVATE
     ${CMAKE_SOURCE_DIR}/include
     ${CSS_JS_INCLUDE_DIRS}
 )
