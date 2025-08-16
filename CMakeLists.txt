@@ -276,10 +276,30 @@ add_executable(chtl_namespace_parser_test
     src/ast/chtl_ast.cpp
 )
 
+# CHTL JS Parser test
+add_executable(chtl_js_parser_test
+    tests/chtl_js_parser_test.cpp
+    src/parsers/chtl_js_parser.cpp
+    src/parsers/chtl_basic_parser.cpp
+    src/parsers/chtl_style_parser.cpp
+    src/lexer/chtl_lexer.cpp
+    src/ast/chtl_ast.cpp
+)
+
 # Debug namespace parser
 add_executable(debug_namespace_parser
     tests/debug_namespace_parser.cpp
     src/parsers/chtl_namespace_parser.cpp
+    src/parsers/chtl_basic_parser.cpp
+    src/parsers/chtl_style_parser.cpp
+    src/lexer/chtl_lexer.cpp
+    src/ast/chtl_ast.cpp
+)
+
+# Debug JS parser
+add_executable(debug_js_parser
+    tests/debug_js_parser.cpp
+    src/parsers/chtl_js_parser.cpp
     src/parsers/chtl_basic_parser.cpp
     src/parsers/chtl_style_parser.cpp
     src/lexer/chtl_lexer.cpp

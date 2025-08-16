@@ -42,6 +42,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/chtl_ast_conformance_tests.dir/src/parsers/chtl_config_import_parser.cpp.o.d"
   "CMakeFiles/chtl_ast_conformance_tests.dir/src/parsers/chtl_custom_parser.cpp.o"
   "CMakeFiles/chtl_ast_conformance_tests.dir/src/parsers/chtl_custom_parser.cpp.o.d"
+  "CMakeFiles/chtl_ast_conformance_tests.dir/src/parsers/chtl_js_parser.cpp.o"
+  "CMakeFiles/chtl_ast_conformance_tests.dir/src/parsers/chtl_js_parser.cpp.o.d"
   "CMakeFiles/chtl_ast_conformance_tests.dir/src/parsers/chtl_namespace_parser.cpp.o"
   "CMakeFiles/chtl_ast_conformance_tests.dir/src/parsers/chtl_namespace_parser.cpp.o.d"
   "CMakeFiles/chtl_ast_conformance_tests.dir/src/parsers/chtl_origin_parser.cpp.o"

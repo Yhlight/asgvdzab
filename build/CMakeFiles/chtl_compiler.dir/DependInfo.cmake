@@ -30,6 +30,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/workspace/src/parsers/chtl_basic_parser.cpp" "CMakeFiles/chtl_compiler.dir/src/parsers/chtl_basic_parser.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/parsers/chtl_basic_parser.cpp.o.d"
   "/workspace/src/parsers/chtl_config_import_parser.cpp" "CMakeFiles/chtl_compiler.dir/src/parsers/chtl_config_import_parser.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/parsers/chtl_config_import_parser.cpp.o.d"
   "/workspace/src/parsers/chtl_custom_parser.cpp" "CMakeFiles/chtl_compiler.dir/src/parsers/chtl_custom_parser.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/parsers/chtl_custom_parser.cpp.o.d"
+  "/workspace/src/parsers/chtl_js_parser.cpp" "CMakeFiles/chtl_compiler.dir/src/parsers/chtl_js_parser.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/parsers/chtl_js_parser.cpp.o.d"
   "/workspace/src/parsers/chtl_namespace_parser.cpp" "CMakeFiles/chtl_compiler.dir/src/parsers/chtl_namespace_parser.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/parsers/chtl_namespace_parser.cpp.o.d"
   "/workspace/src/parsers/chtl_origin_parser.cpp" "CMakeFiles/chtl_compiler.dir/src/parsers/chtl_origin_parser.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/parsers/chtl_origin_parser.cpp.o.d"
   "/workspace/src/parsers/chtl_parser.cpp" "CMakeFiles/chtl_compiler.dir/src/parsers/chtl_parser.cpp.o" "gcc" "CMakeFiles/chtl_compiler.dir/src/parsers/chtl_parser.cpp.o.d"

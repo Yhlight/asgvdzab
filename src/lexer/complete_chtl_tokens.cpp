@@ -120,7 +120,6 @@ void CompleteCHTLToken::updateSemanticInfo() {
             
         // CHTL JS相关
         case CompleteCHTLTokenType::CHTL_JS_SELECTOR:
-        case CompleteCHTLTokenType::CHTL_JS_ARROW:
         case CompleteCHTLTokenType::CHTL_JS_LISTEN:
         case CompleteCHTLTokenType::CHTL_JS_DELEGATE:
         case CompleteCHTLTokenType::CHTL_JS_ANIMATE:

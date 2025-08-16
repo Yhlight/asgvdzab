@@ -27,7 +27,7 @@ void testBasicHTMLGeneration() {
     
     assert(scanResult.success);
     assert(scanResult.segments.size() == 1);
-    assert(scanResult.segments[0].type == CodeSegmentType::CHTL);
+    assert(scanResult.segments[0].type == CodeSegmentType::CHTL_CORE);
     
     CompilerDispatcher dispatcher;
     auto compileResult = dispatcher.compile(scanResult.segments);
@@ -130,7 +130,7 @@ void testTextNode() {
     auto scanResult = scanner.scan(chtlCode);
     
     assert(scanResult.success);
-    assert(scanResult.segments[0].type == CodeSegmentType::TEXT);
+    assert(scanResult.segments[0].type == CodeSegmentType::CHTL_TEXT);
     
     CompilerDispatcher dispatcher;
     auto compileResult = dispatcher.compile(scanResult.segments);
