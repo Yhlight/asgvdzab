@@ -33,6 +33,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/chtl_test_lib.dir/src/core/compiler_dispatcher.cpp.o.d"
   "CMakeFiles/chtl_test_lib.dir/src/core/constraint_validator.cpp.o"
   "CMakeFiles/chtl_test_lib.dir/src/core/constraint_validator.cpp.o.d"
+  "CMakeFiles/chtl_test_lib.dir/src/core/generator_comment_system.cpp.o"
+  "CMakeFiles/chtl_test_lib.dir/src/core/generator_comment_system.cpp.o.d"
   "CMakeFiles/chtl_test_lib.dir/src/core/integrated_compiler_system.cpp.o"
   "CMakeFiles/chtl_test_lib.dir/src/core/integrated_compiler_system.cpp.o.d"
   "CMakeFiles/chtl_test_lib.dir/src/generators/chtl_generator.cpp.o"
@@ -55,8 +57,6 @@ file(REMOVE_RECURSE
   "CMakeFiles/chtl_test_lib.dir/src/namespace/enhanced_namespace_manager.cpp.o.d"
   "CMakeFiles/chtl_test_lib.dir/src/scanner/slice_scanner.cpp.o"
   "CMakeFiles/chtl_test_lib.dir/src/scanner/slice_scanner.cpp.o.d"
-  "CMakeFiles/chtl_test_lib.dir/src/scanner/unified_scanner.cpp.o"
-  "CMakeFiles/chtl_test_lib.dir/src/scanner/unified_scanner.cpp.o.d"
   "lib/libchtl_test_lib.a"
   "lib/libchtl_test_lib.pdb"
 )

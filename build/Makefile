@@ -266,6 +266,19 @@ scanner_minimal_unit_test/fast:
 .PHONY : scanner_minimal_unit_test/fast
 
 #=============================================================================
+# Target rules for targets named generator_comment_test
+
+# Build rule for target.
+generator_comment_test: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 generator_comment_test
+.PHONY : generator_comment_test
+
+# fast build rule for target.
+generator_comment_test/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/generator_comment_test.dir/build.make CMakeFiles/generator_comment_test.dir/build
+.PHONY : generator_comment_test/fast
+
+#=============================================================================
 # Target rules for targets named chtl_syntax_test
 
 # Build rule for target.
@@ -1028,6 +1041,33 @@ src/core/constraint_validator.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_test_lib.dir/build.make CMakeFiles/chtl_test_lib.dir/src/core/constraint_validator.cpp.s
 .PHONY : src/core/constraint_validator.cpp.s
 
+src/core/generator_comment_system.o: src/core/generator_comment_system.cpp.o
+.PHONY : src/core/generator_comment_system.o
+
+# target to build an object file
+src/core/generator_comment_system.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_core.dir/build.make CMakeFiles/chtl_core.dir/src/core/generator_comment_system.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_test_lib.dir/build.make CMakeFiles/chtl_test_lib.dir/src/core/generator_comment_system.cpp.o
+.PHONY : src/core/generator_comment_system.cpp.o
+
+src/core/generator_comment_system.i: src/core/generator_comment_system.cpp.i
+.PHONY : src/core/generator_comment_system.i
+
+# target to preprocess a source file
+src/core/generator_comment_system.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_core.dir/build.make CMakeFiles/chtl_core.dir/src/core/generator_comment_system.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_test_lib.dir/build.make CMakeFiles/chtl_test_lib.dir/src/core/generator_comment_system.cpp.i
+.PHONY : src/core/generator_comment_system.cpp.i
+
+src/core/generator_comment_system.s: src/core/generator_comment_system.cpp.s
+.PHONY : src/core/generator_comment_system.s
+
+# target to generate assembly for a file
+src/core/generator_comment_system.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_core.dir/build.make CMakeFiles/chtl_core.dir/src/core/generator_comment_system.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_test_lib.dir/build.make CMakeFiles/chtl_test_lib.dir/src/core/generator_comment_system.cpp.s
+.PHONY : src/core/generator_comment_system.cpp.s
+
 src/core/integrated_compiler_system.o: src/core/integrated_compiler_system.cpp.o
 .PHONY : src/core/integrated_compiler_system.o
 
@@ -1349,33 +1389,6 @@ src/scanner/slice_scanner.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_test_lib.dir/build.make CMakeFiles/chtl_test_lib.dir/src/scanner/slice_scanner.cpp.s
 .PHONY : src/scanner/slice_scanner.cpp.s
 
-src/scanner/unified_scanner.o: src/scanner/unified_scanner.cpp.o
-.PHONY : src/scanner/unified_scanner.o
-
-# target to build an object file
-src/scanner/unified_scanner.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_core.dir/build.make CMakeFiles/chtl_core.dir/src/scanner/unified_scanner.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_test_lib.dir/build.make CMakeFiles/chtl_test_lib.dir/src/scanner/unified_scanner.cpp.o
-.PHONY : src/scanner/unified_scanner.cpp.o
-
-src/scanner/unified_scanner.i: src/scanner/unified_scanner.cpp.i
-.PHONY : src/scanner/unified_scanner.i
-
-# target to preprocess a source file
-src/scanner/unified_scanner.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_core.dir/build.make CMakeFiles/chtl_core.dir/src/scanner/unified_scanner.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_test_lib.dir/build.make CMakeFiles/chtl_test_lib.dir/src/scanner/unified_scanner.cpp.i
-.PHONY : src/scanner/unified_scanner.cpp.i
-
-src/scanner/unified_scanner.s: src/scanner/unified_scanner.cpp.s
-.PHONY : src/scanner/unified_scanner.s
-
-# target to generate assembly for a file
-src/scanner/unified_scanner.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_core.dir/build.make CMakeFiles/chtl_core.dir/src/scanner/unified_scanner.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_test_lib.dir/build.make CMakeFiles/chtl_test_lib.dir/src/scanner/unified_scanner.cpp.s
-.PHONY : src/scanner/unified_scanner.cpp.s
-
 tests/chtl_syntax_test.o: tests/chtl_syntax_test.cpp.o
 .PHONY : tests/chtl_syntax_test.o
 
@@ -1399,6 +1412,30 @@ tests/chtl_syntax_test.s: tests/chtl_syntax_test.cpp.s
 tests/chtl_syntax_test.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_syntax_test.dir/build.make CMakeFiles/chtl_syntax_test.dir/tests/chtl_syntax_test.cpp.s
 .PHONY : tests/chtl_syntax_test.cpp.s
+
+tests/generator_comment_test.o: tests/generator_comment_test.cpp.o
+.PHONY : tests/generator_comment_test.o
+
+# target to build an object file
+tests/generator_comment_test.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/generator_comment_test.dir/build.make CMakeFiles/generator_comment_test.dir/tests/generator_comment_test.cpp.o
+.PHONY : tests/generator_comment_test.cpp.o
+
+tests/generator_comment_test.i: tests/generator_comment_test.cpp.i
+.PHONY : tests/generator_comment_test.i
+
+# target to preprocess a source file
+tests/generator_comment_test.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/generator_comment_test.dir/build.make CMakeFiles/generator_comment_test.dir/tests/generator_comment_test.cpp.i
+.PHONY : tests/generator_comment_test.cpp.i
+
+tests/generator_comment_test.s: tests/generator_comment_test.cpp.s
+.PHONY : tests/generator_comment_test.s
+
+# target to generate assembly for a file
+tests/generator_comment_test.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/generator_comment_test.dir/build.make CMakeFiles/generator_comment_test.dir/tests/generator_comment_test.cpp.s
+.PHONY : tests/generator_comment_test.cpp.s
 
 tests/integrated_system_test.o: tests/integrated_system_test.cpp.o
 .PHONY : tests/integrated_system_test.o
@@ -1490,6 +1527,7 @@ help:
 	@echo "... chtl_core"
 	@echo "... chtl_syntax_test"
 	@echo "... chtl_test_lib"
+	@echo "... generator_comment_test"
 	@echo "... integrated_system_test"
 	@echo "... scanner_minimal_unit_test"
 	@echo "... unified_compiler_test"
@@ -1580,6 +1618,9 @@ help:
 	@echo "... src/core/constraint_validator.o"
 	@echo "... src/core/constraint_validator.i"
 	@echo "... src/core/constraint_validator.s"
+	@echo "... src/core/generator_comment_system.o"
+	@echo "... src/core/generator_comment_system.i"
+	@echo "... src/core/generator_comment_system.s"
 	@echo "... src/core/integrated_compiler_system.o"
 	@echo "... src/core/integrated_compiler_system.i"
 	@echo "... src/core/integrated_compiler_system.s"
@@ -1616,12 +1657,12 @@ help:
 	@echo "... src/scanner/slice_scanner.o"
 	@echo "... src/scanner/slice_scanner.i"
 	@echo "... src/scanner/slice_scanner.s"
-	@echo "... src/scanner/unified_scanner.o"
-	@echo "... src/scanner/unified_scanner.i"
-	@echo "... src/scanner/unified_scanner.s"
 	@echo "... tests/chtl_syntax_test.o"
 	@echo "... tests/chtl_syntax_test.i"
 	@echo "... tests/chtl_syntax_test.s"
+	@echo "... tests/generator_comment_test.o"
+	@echo "... tests/generator_comment_test.i"
+	@echo "... tests/generator_comment_test.s"
 	@echo "... tests/integrated_system_test.o"
 	@echo "... tests/integrated_system_test.i"
 	@echo "... tests/integrated_system_test.s"

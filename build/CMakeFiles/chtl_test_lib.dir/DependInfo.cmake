@@ -25,6 +25,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/workspace/src/core/chtl_unified_scanner.cpp" "CMakeFiles/chtl_test_lib.dir/src/core/chtl_unified_scanner.cpp.o" "gcc" "CMakeFiles/chtl_test_lib.dir/src/core/chtl_unified_scanner.cpp.o.d"
   "/workspace/src/core/compiler_dispatcher.cpp" "CMakeFiles/chtl_test_lib.dir/src/core/compiler_dispatcher.cpp.o" "gcc" "CMakeFiles/chtl_test_lib.dir/src/core/compiler_dispatcher.cpp.o.d"
   "/workspace/src/core/constraint_validator.cpp" "CMakeFiles/chtl_test_lib.dir/src/core/constraint_validator.cpp.o" "gcc" "CMakeFiles/chtl_test_lib.dir/src/core/constraint_validator.cpp.o.d"
+  "/workspace/src/core/generator_comment_system.cpp" "CMakeFiles/chtl_test_lib.dir/src/core/generator_comment_system.cpp.o" "gcc" "CMakeFiles/chtl_test_lib.dir/src/core/generator_comment_system.cpp.o.d"
   "/workspace/src/core/integrated_compiler_system.cpp" "CMakeFiles/chtl_test_lib.dir/src/core/integrated_compiler_system.cpp.o" "gcc" "CMakeFiles/chtl_test_lib.dir/src/core/integrated_compiler_system.cpp.o.d"
   "/workspace/src/generators/chtl_generator.cpp" "CMakeFiles/chtl_test_lib.dir/src/generators/chtl_generator.cpp.o" "gcc" "CMakeFiles/chtl_test_lib.dir/src/generators/chtl_generator.cpp.o.d"
   "/workspace/src/import/enhanced_import_manager.cpp" "CMakeFiles/chtl_test_lib.dir/src/import/enhanced_import_manager.cpp.o" "gcc" "CMakeFiles/chtl_test_lib.dir/src/import/enhanced_import_manager.cpp.o.d"
@@ -36,7 +37,6 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/workspace/src/lexer/lexer_state.cpp" "CMakeFiles/chtl_test_lib.dir/src/lexer/lexer_state.cpp.o" "gcc" "CMakeFiles/chtl_test_lib.dir/src/lexer/lexer_state.cpp.o.d"
   "/workspace/src/namespace/enhanced_namespace_manager.cpp" "CMakeFiles/chtl_test_lib.dir/src/namespace/enhanced_namespace_manager.cpp.o" "gcc" "CMakeFiles/chtl_test_lib.dir/src/namespace/enhanced_namespace_manager.cpp.o.d"
   "/workspace/src/scanner/slice_scanner.cpp" "CMakeFiles/chtl_test_lib.dir/src/scanner/slice_scanner.cpp.o" "gcc" "CMakeFiles/chtl_test_lib.dir/src/scanner/slice_scanner.cpp.o.d"
-  "/workspace/src/scanner/unified_scanner.cpp" "CMakeFiles/chtl_test_lib.dir/src/scanner/unified_scanner.cpp.o" "gcc" "CMakeFiles/chtl_test_lib.dir/src/scanner/unified_scanner.cpp.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.
