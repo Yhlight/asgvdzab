@@ -198,12 +198,44 @@ private:
     std::string compileComment(const std::string& code) {
         std::string trimmed = trimAndClean(code);
         if (trimmed.find("--") == 0) {
-            // 生成器注释：会被生成器识别，保留在HTML中
-            return "<!-- " + trimmed.substr(2) + " -->";
+            // 生成器注释：需要根据上下文生成不同语言的注释
+            std::string commentContent = trimmed.substr(2);
+            return compileGeneratorComment(commentContent);
         } else {
             // //和/**/注释：不会被生成器识别，不输出到HTML
             return "";
         }
+    }
+    
+    std::string compileGeneratorComment(const std::string& content) {
+        // 根据当前编译上下文生成不同语言的注释
+        // 这里需要实现上下文检测，暂时默认为HTML注释
+        // TODO: 实现上下文检测机制
+        
+        // 检测当前是否在CSS上下文中
+        if (isInCssContext()) {
+            return "/* " + content + " */";
+        }
+        
+        // 检测当前是否在JavaScript上下文中  
+        if (isInJavaScriptContext()) {
+            return "// " + content;
+        }
+        
+        // 默认为HTML注释
+        return "<!-- " + content + " -->";
+    }
+    
+    bool isInCssContext() {
+        // 简化实现：检测是否在样式相关上下文
+        // 实际应该维护编译上下文状态
+        return false; // 暂时返回false，需要实现上下文跟踪
+    }
+    
+    bool isInJavaScriptContext() {
+        // 简化实现：检测是否在脚本相关上下文
+        // 实际应该维护编译上下文状态
+        return false; // 暂时返回false，需要实现上下文跟踪
     }
     
     std::string compileTemplateDefinition(const std::string& code) {
