@@ -13,7 +13,10 @@ SOURCES = src/main.cpp \
           src/chtl/CHTLState.cpp \
           src/chtl/CHTLContext.cpp \
           src/chtl/CHTLLexer.cpp \
+          src/chtl/ast/CHTLASTNodes.cpp \
+          src/chtl/ast/DefaultASTVisitor.cpp \
           src/chtljs/CHTLJSCompiler.cpp \
+          src/chtljs/ast/CHTLJSASTNodes.cpp \
           src/css/CSSCompiler.cpp \
           src/javascript/JavaScriptCompiler.cpp
 
