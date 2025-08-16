@@ -2,16 +2,23 @@ chtl_compiler: \
   /lib/x86_64-linux-gnu/Scrt1.o \
   /lib/x86_64-linux-gnu/crti.o \
   /usr/lib/gcc/x86_64-linux-gnu/14/crtbeginS.o \
-  CMakeFiles/chtl_compiler.dir/src/ast/ASTNode.cpp.o \
+  CMakeFiles/chtl_compiler.dir/src/main.cpp.o \
   CMakeFiles/chtl_compiler.dir/src/compiler/CHTLCompiler.cpp.o \
   CMakeFiles/chtl_compiler.dir/src/compiler/CHTLJSCompiler.cpp.o \
   CMakeFiles/chtl_compiler.dir/src/compiler/CSSCompiler.cpp.o \
   CMakeFiles/chtl_compiler.dir/src/compiler/JavaScriptCompiler.cpp.o \
   CMakeFiles/chtl_compiler.dir/src/dispatcher/CompilerDispatcher.cpp.o \
+  CMakeFiles/chtl_compiler.dir/src/scanner/CHTLUnifiedScanner.cpp.o \
   CMakeFiles/chtl_compiler.dir/src/lexer/CHTLToken.cpp.o \
   CMakeFiles/chtl_compiler.dir/src/lexer/GlobalMap.cpp.o \
-  CMakeFiles/chtl_compiler.dir/src/main.cpp.o \
-  CMakeFiles/chtl_compiler.dir/src/scanner/CHTLUnifiedScanner.cpp.o \
+  CMakeFiles/chtl_compiler.dir/src/ast/ASTNode.cpp.o \
+  CMakeFiles/chtl_compiler.dir/src/ast/CommentNode.cpp.o \
+  CMakeFiles/chtl_compiler.dir/src/ast/TextNode.cpp.o \
+  CMakeFiles/chtl_compiler.dir/src/ast/LiteralNode.cpp.o \
+  CMakeFiles/chtl_compiler.dir/src/ast/HTMLElementNode.cpp.o \
+  CMakeFiles/chtl_compiler.dir/src/ast/AttributeNode.cpp.o \
+  CMakeFiles/chtl_compiler.dir/src/ast/DocumentNode.cpp.o \
+  CMakeFiles/chtl_compiler.dir/src/parser/BasicSyntaxParser.cpp.o \
   /usr/lib/gcc/x86_64-linux-gnu/14/libstdc++.so \
   /lib/x86_64-linux-gnu/libm.so \
   /lib/x86_64-linux-gnu/libm.so \
@@ -46,7 +53,7 @@ chtl_compiler: \
 
 /usr/lib/gcc/x86_64-linux-gnu/14/crtbeginS.o:
 
-CMakeFiles/chtl_compiler.dir/src/ast/ASTNode.cpp.o:
+CMakeFiles/chtl_compiler.dir/src/main.cpp.o:
 
 CMakeFiles/chtl_compiler.dir/src/compiler/CHTLCompiler.cpp.o:
 
@@ -58,13 +65,27 @@ CMakeFiles/chtl_compiler.dir/src/compiler/JavaScriptCompiler.cpp.o:
 
 CMakeFiles/chtl_compiler.dir/src/dispatcher/CompilerDispatcher.cpp.o:
 
+CMakeFiles/chtl_compiler.dir/src/scanner/CHTLUnifiedScanner.cpp.o:
+
 CMakeFiles/chtl_compiler.dir/src/lexer/CHTLToken.cpp.o:
 
 CMakeFiles/chtl_compiler.dir/src/lexer/GlobalMap.cpp.o:
 
-CMakeFiles/chtl_compiler.dir/src/main.cpp.o:
+CMakeFiles/chtl_compiler.dir/src/ast/ASTNode.cpp.o:
 
-CMakeFiles/chtl_compiler.dir/src/scanner/CHTLUnifiedScanner.cpp.o:
+CMakeFiles/chtl_compiler.dir/src/ast/CommentNode.cpp.o:
+
+CMakeFiles/chtl_compiler.dir/src/ast/TextNode.cpp.o:
+
+CMakeFiles/chtl_compiler.dir/src/ast/LiteralNode.cpp.o:
+
+CMakeFiles/chtl_compiler.dir/src/ast/HTMLElementNode.cpp.o:
+
+CMakeFiles/chtl_compiler.dir/src/ast/AttributeNode.cpp.o:
+
+CMakeFiles/chtl_compiler.dir/src/ast/DocumentNode.cpp.o:
+
+CMakeFiles/chtl_compiler.dir/src/parser/BasicSyntaxParser.cpp.o:
 
 /usr/lib/gcc/x86_64-linux-gnu/14/libstdc++.so:
 

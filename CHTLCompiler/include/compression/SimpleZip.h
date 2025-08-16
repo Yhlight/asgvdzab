@@ -97,7 +97,6 @@ public:
     bool extractFile(const std::string& internal_path, const std::string& output_path);
     std::vector<uint8_t> extractData(const std::string& internal_path);
     bool extractAll(const std::string& output_directory);
-    void closeZip();
     
     // 压缩和解压
     std::vector<uint8_t> compressData(const std::vector<uint8_t>& data, int level = 6);

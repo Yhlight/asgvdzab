@@ -6,5 +6,5 @@ CXX_DEFINES =
 
 CXX_INCLUDES = -I/workspace/CHTLCompiler/include -I/workspace/CHTLCompiler/third_party
 
-CXX_FLAGS =  -Wall -Wextra -O2 -O3 -DNDEBUG -std=gnu++17
+CXX_FLAGS =  -Wall -Wextra -O2 -std=gnu++17
 

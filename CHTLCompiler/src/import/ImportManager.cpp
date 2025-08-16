@@ -49,6 +49,9 @@ public:
     bool isDirectory(const std::string& path);
     bool isFile(const std::string& path);
     std::vector<std::string> listDirectory(const std::string& directory);
+    
+    // 命名空间路径处理
+    std::vector<std::string> splitNamespacePath(const std::string& path);
 };
 
 // ImportManager实现
@@ -63,13 +66,13 @@ bool ImportManager::addImport(const ImportInfo& import_info) {
     }
     
     // 检查重复导入
-    if (config.enable_duplicate_detection && pImpl->checkDuplicateImport(import_info)) {
+    if (pImpl->config.enable_duplicate_detection && pImpl->checkDuplicateImport(import_info)) {
         addError("重复导入: " + import_info.path);
         return false;
     }
     
     // 检查循环依赖
-    if (config.enable_circular_detection && pImpl->checkCircularDependency(import_info.path, import_info.source_file)) {
+    if (pImpl->config.enable_circular_detection && pImpl->checkCircularDependency(import_info.path, import_info.source_file)) {
         addError("循环依赖检测: " + import_info.path);
         return false;
     }
@@ -679,6 +682,8 @@ std::vector<std::string> ImportManager::Impl::resolveWildcardPath(const std::str
     if (isDirectory(directory)) {
         result = findFilesByPattern(directory, pattern);
     }
+    
+    (void)type; // 避免未使用参数警告
     
     return result;
 }

@@ -13,9 +13,14 @@ namespace chtl {
 enum class ASTNodeType {
     // 基础节点
     ROOT,                   // 根节点
-    COMMENT,                // 注释节点
+    DOCUMENT,               // 文档节点
+    COMMENT_SINGLE_LINE,    // 单行注释节点 //
+    COMMENT_MULTI_LINE,     // 多行注释节点 /* */
+    COMMENT_GENERATOR,      // 生成器注释节点 --
     TEXT_NODE,              // 文本节点
-    LITERAL,                // 字面量节点
+    LITERAL_UNQUOTED,       // 无修饰字面量节点
+    LITERAL_DOUBLE_QUOTE,   // 双引号字符串节点 ""
+    LITERAL_SINGLE_QUOTE,   // 单引号字符串节点 ''
     
     // 元素节点
     HTML_ELEMENT,           // HTML元素节点

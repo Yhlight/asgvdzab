@@ -311,9 +311,14 @@ std::string ASTNode::getNodeTypeName() const {
 std::string ASTNode::getNodeTypeName(ASTNodeType type) const {
     switch (type) {
         case ASTNodeType::ROOT: return "ROOT";
-        case ASTNodeType::COMMENT: return "COMMENT";
+        case ASTNodeType::DOCUMENT: return "DOCUMENT";
+        case ASTNodeType::COMMENT_SINGLE_LINE: return "COMMENT_SINGLE_LINE";
+        case ASTNodeType::COMMENT_MULTI_LINE: return "COMMENT_MULTI_LINE";
+        case ASTNodeType::COMMENT_GENERATOR: return "COMMENT_GENERATOR";
         case ASTNodeType::TEXT_NODE: return "TEXT_NODE";
-        case ASTNodeType::LITERAL: return "LITERAL";
+        case ASTNodeType::LITERAL_UNQUOTED: return "LITERAL_UNQUOTED";
+        case ASTNodeType::LITERAL_DOUBLE_QUOTE: return "LITERAL_DOUBLE_QUOTE";
+        case ASTNodeType::LITERAL_SINGLE_QUOTE: return "LITERAL_SINGLE_QUOTE";
         case ASTNodeType::HTML_ELEMENT: return "HTML_ELEMENT";
         case ASTNodeType::ATTRIBUTE: return "ATTRIBUTE";
         case ASTNodeType::ATTRIBUTE_LIST: return "ATTRIBUTE_LIST";
