@@ -11,6 +11,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/workspace/src/ast/chtl_ast.cpp" "CMakeFiles/debug_parser.dir/src/ast/chtl_ast.cpp.o" "gcc" "CMakeFiles/debug_parser.dir/src/ast/chtl_ast.cpp.o.d"
   "/workspace/src/lexer/chtl_lexer.cpp" "CMakeFiles/debug_parser.dir/src/lexer/chtl_lexer.cpp.o" "gcc" "CMakeFiles/debug_parser.dir/src/lexer/chtl_lexer.cpp.o.d"
   "/workspace/src/parsers/chtl_basic_parser.cpp" "CMakeFiles/debug_parser.dir/src/parsers/chtl_basic_parser.cpp.o" "gcc" "CMakeFiles/debug_parser.dir/src/parsers/chtl_basic_parser.cpp.o.d"
+  "/workspace/src/parsers/chtl_style_parser.cpp" "CMakeFiles/debug_parser.dir/src/parsers/chtl_style_parser.cpp.o" "gcc" "CMakeFiles/debug_parser.dir/src/parsers/chtl_style_parser.cpp.o.d"
   "/workspace/tests/debug_parser.cpp" "CMakeFiles/debug_parser.dir/tests/debug_parser.cpp.o" "gcc" "CMakeFiles/debug_parser.dir/tests/debug_parser.cpp.o.d"
   "" "bin/debug_parser" "gcc" "CMakeFiles/debug_parser.dir/link.d"
   )

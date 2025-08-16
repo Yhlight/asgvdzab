@@ -173,6 +173,7 @@ add_executable(chtl-cjmod
 add_executable(chtl_basic_parser_test
     tests/chtl_basic_parser_test.cpp
     src/parsers/chtl_basic_parser.cpp
+    src/parsers/chtl_style_parser.cpp
     src/lexer/chtl_lexer.cpp
     src/ast/chtl_ast.cpp
 )
@@ -181,6 +182,25 @@ add_executable(chtl_basic_parser_test
 add_executable(debug_parser
     tests/debug_parser.cpp
     src/parsers/chtl_basic_parser.cpp
+    src/parsers/chtl_style_parser.cpp
+    src/lexer/chtl_lexer.cpp
+    src/ast/chtl_ast.cpp
+)
+
+# CHTL Style Parser test
+add_executable(chtl_style_parser_test
+    tests/chtl_style_parser_test.cpp
+    src/parsers/chtl_basic_parser.cpp
+    src/parsers/chtl_style_parser.cpp
+    src/lexer/chtl_lexer.cpp
+    src/ast/chtl_ast.cpp
+)
+
+# Debug style parser
+add_executable(debug_style_parser
+    tests/debug_style_parser.cpp
+    src/parsers/chtl_basic_parser.cpp
+    src/parsers/chtl_style_parser.cpp
     src/lexer/chtl_lexer.cpp
     src/ast/chtl_ast.cpp
 )

@@ -210,6 +210,7 @@ CMakeFiles/debug_parser.dir/tests/debug_parser.cpp.o: \
   /workspace/include/lexer/chtl_lexer.hpp \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/unordered_set \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/unordered_set.h \
+  /workspace/include/parsers/chtl_style_parser.hpp \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/iostream \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/ostream \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/ios \

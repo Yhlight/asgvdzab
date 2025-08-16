@@ -124,6 +124,11 @@ CHTLASTNodePtr CHTLBasicParser::parseStatement() {
         return parseTextNode();
     }
 
+    // 样式块
+    if ((token.type == TokenType::IDENTIFIER || token.type == TokenType::KEYWORD) && token.value == "style") {
+        return parseStyleBlock("unknown");
+    }
+
     // 属性 (在元素内部) - 优先于元素节点
     if ((token.type == TokenType::IDENTIFIER && peekToken().type == TokenType::COLON) || 
         (token.type == TokenType::IDENTIFIER && peekToken().type == TokenType::ASSIGNMENT)) {
@@ -270,6 +275,64 @@ std::pair<std::string, LiteralType> CHTLBasicParser::parseTextContent() {
     return {content, LiteralType::UNQUOTED};
 }
 
+// ===== 样式块解析 =====
+
+CHTLASTNodePtr CHTLBasicParser::parseStyleBlock(const std::string& elementTag) {
+    Position startPos = getCurrentPosition();
+
+    if (!expect("style")) {
+        return nullptr;
+    }
+
+    skipWhitespaceAndComments();
+
+    if (!expect(TokenType::LEFT_BRACE)) {
+        reportError("期望 '{' 在 style 关键字后", getCurrentPosition());
+        return nullptr;
+    }
+
+    // 收集样式内容直到遇到 }
+    std::string styleContent;
+    int braceCount = 1;
+    
+    while (!isEOF() && braceCount > 0) {
+        const auto& token = getCurrentToken();
+        
+        if (token.type == TokenType::LEFT_BRACE) {
+            braceCount++;
+        } else if (token.type == TokenType::RIGHT_BRACE) {
+            braceCount--;
+            if (braceCount == 0) {
+                break; // 不包含最后的 }
+            }
+        }
+        
+        styleContent += token.value;
+        if (token.type != TokenType::WHITESPACE && token.type != TokenType::NEWLINE) {
+            styleContent += " ";
+        }
+        getNextToken();
+    }
+
+    if (!expect(TokenType::RIGHT_BRACE)) {
+        reportError("期望 '}' 在样式内容后", getCurrentPosition());
+        return nullptr;
+    }
+
+    // 使用样式解析器解析样式内容
+    auto styleBlock = styleParser_.parseLocalStyleBlock(styleContent, elementTag);
+    
+    // 合并错误和警告
+    for (const auto& error : styleParser_.getErrors()) {
+        errors_.push_back(error);
+    }
+    for (const auto& warning : styleParser_.getWarnings()) {
+        warnings_.push_back(warning);
+    }
+
+    return styleBlock;
+}
+
 // ===== 字面量解析 =====
 
 CHTLASTNodePtr CHTLBasicParser::parseLiteral() {
@@ -349,7 +412,7 @@ CHTLASTNodePtr CHTLBasicParser::parseElementNode() {
     }
 
     auto element = std::make_shared<ElementNode>(tagName, startPos);
-    auto bodyNodes = parseElementBody();
+    auto bodyNodes = parseElementBody(tagName);
     
     for (auto& node : bodyNodes) {
         if (node) {
@@ -365,19 +428,36 @@ CHTLASTNodePtr CHTLBasicParser::parseElementNode() {
     return element;
 }
 
-std::vector<CHTLASTNodePtr> CHTLBasicParser::parseElementBody() {
+std::vector<CHTLASTNodePtr> CHTLBasicParser::parseElementBody(const std::string& elementTag) {
     std::vector<CHTLASTNodePtr> nodes;
 
     while (!isEOF() && getCurrentToken().type != TokenType::RIGHT_BRACE) {
-        skipWhitespaceAndComments();
+        // 只跳过空白，保留注释作为语句
+        while (!isEOF()) {
+            const auto& token = getCurrentToken();
+            if (token.type == TokenType::WHITESPACE || token.type == TokenType::NEWLINE) {
+                getNextToken();
+            } else {
+                break;
+            }
+        }
         
         if (isEOF() || getCurrentToken().type == TokenType::RIGHT_BRACE) {
             break;
         }
 
-        auto node = parseStatement();
-        if (node) {
-            nodes.push_back(node);
+        // 检查是否为样式块
+        const auto& token = getCurrentToken();
+        if ((token.type == TokenType::IDENTIFIER || token.type == TokenType::KEYWORD) && token.value == "style") {
+            auto styleNode = parseStyleBlock(elementTag);
+            if (styleNode) {
+                nodes.push_back(styleNode);
+            }
+        } else {
+            auto node = parseStatement();
+            if (node) {
+                nodes.push_back(node);
+            }
         }
     }
 

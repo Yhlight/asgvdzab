@@ -69,5 +69,7 @@ set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/chtl-cjmod.dir/DependInfo.cmake"
   "CMakeFiles/chtl_basic_parser_test.dir/DependInfo.cmake"
   "CMakeFiles/debug_parser.dir/DependInfo.cmake"
+  "CMakeFiles/chtl_style_parser_test.dir/DependInfo.cmake"
+  "CMakeFiles/debug_style_parser.dir/DependInfo.cmake"
   "CMakeFiles/raii_state_management_demo.dir/DependInfo.cmake"
   )

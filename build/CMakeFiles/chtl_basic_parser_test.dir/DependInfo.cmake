@@ -11,6 +11,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/workspace/src/ast/chtl_ast.cpp" "CMakeFiles/chtl_basic_parser_test.dir/src/ast/chtl_ast.cpp.o" "gcc" "CMakeFiles/chtl_basic_parser_test.dir/src/ast/chtl_ast.cpp.o.d"
   "/workspace/src/lexer/chtl_lexer.cpp" "CMakeFiles/chtl_basic_parser_test.dir/src/lexer/chtl_lexer.cpp.o" "gcc" "CMakeFiles/chtl_basic_parser_test.dir/src/lexer/chtl_lexer.cpp.o.d"
   "/workspace/src/parsers/chtl_basic_parser.cpp" "CMakeFiles/chtl_basic_parser_test.dir/src/parsers/chtl_basic_parser.cpp.o" "gcc" "CMakeFiles/chtl_basic_parser_test.dir/src/parsers/chtl_basic_parser.cpp.o.d"
+  "/workspace/src/parsers/chtl_style_parser.cpp" "CMakeFiles/chtl_basic_parser_test.dir/src/parsers/chtl_style_parser.cpp.o" "gcc" "CMakeFiles/chtl_basic_parser_test.dir/src/parsers/chtl_style_parser.cpp.o.d"
   "/workspace/tests/chtl_basic_parser_test.cpp" "CMakeFiles/chtl_basic_parser_test.dir/tests/chtl_basic_parser_test.cpp.o" "gcc" "CMakeFiles/chtl_basic_parser_test.dir/tests/chtl_basic_parser_test.cpp.o.d"
   "" "bin/chtl_basic_parser_test" "gcc" "CMakeFiles/chtl_basic_parser_test.dir/link.d"
   )

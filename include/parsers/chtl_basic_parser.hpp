@@ -2,6 +2,7 @@
 
 #include "ast/chtl_ast.hpp"
 #include "lexer/chtl_lexer.hpp"
+#include "parsers/chtl_style_parser.hpp"
 #include "common/types.hpp"
 #include <string>
 #include <vector>
@@ -48,6 +49,7 @@ public:
 
 private:
     CHTLLexer lexer_;
+    CHTLStyleParser styleParser_;
     std::vector<Token> tokens_;
     size_t currentTokenIndex_;
     bool strictMode_;
@@ -156,9 +158,10 @@ private:
 
     /**
      * 解析元素体 (元素内部的内容)
+     * @param elementTag 元素标签名
      * @return 子节点列表
      */
-    std::vector<CHTLASTNodePtr> parseElementBody();
+    std::vector<CHTLASTNodePtr> parseElementBody(const std::string& elementTag);
 
     /**
      * 验证HTML元素名是否有效
@@ -166,6 +169,15 @@ private:
      * @return 是否有效
      */
     bool isValidHtmlElement(const std::string& tagName) const;
+
+    // ===== 样式块解析 =====
+
+    /**
+     * 解析样式块 style { }
+     * @param elementTag 所属元素标签名
+     * @return 样式块节点
+     */
+    CHTLASTNodePtr parseStyleBlock(const std::string& elementTag);
 
     // ===== 属性解析 =====
 

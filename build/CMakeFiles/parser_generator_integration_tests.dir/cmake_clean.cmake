@@ -40,6 +40,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/parser_generator_integration_tests.dir/src/parsers/chtl_basic_parser.cpp.o.d"
   "CMakeFiles/parser_generator_integration_tests.dir/src/parsers/chtl_parser.cpp.o"
   "CMakeFiles/parser_generator_integration_tests.dir/src/parsers/chtl_parser.cpp.o.d"
+  "CMakeFiles/parser_generator_integration_tests.dir/src/parsers/chtl_style_parser.cpp.o"
+  "CMakeFiles/parser_generator_integration_tests.dir/src/parsers/chtl_style_parser.cpp.o.d"
   "CMakeFiles/parser_generator_integration_tests.dir/src/scanner/slice_scanner.cpp.o"
   "CMakeFiles/parser_generator_integration_tests.dir/src/scanner/slice_scanner.cpp.o.d"
   "CMakeFiles/parser_generator_integration_tests.dir/src/scanner/unified_scanner.cpp.o"

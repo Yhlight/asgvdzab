@@ -4,6 +4,7 @@ bin/chtl_basic_parser_test: \
   /usr/lib/gcc/x86_64-linux-gnu/14/crtbeginS.o \
   CMakeFiles/chtl_basic_parser_test.dir/tests/chtl_basic_parser_test.cpp.o \
   CMakeFiles/chtl_basic_parser_test.dir/src/parsers/chtl_basic_parser.cpp.o \
+  CMakeFiles/chtl_basic_parser_test.dir/src/parsers/chtl_style_parser.cpp.o \
   CMakeFiles/chtl_basic_parser_test.dir/src/lexer/chtl_lexer.cpp.o \
   CMakeFiles/chtl_basic_parser_test.dir/src/ast/chtl_ast.cpp.o \
   /usr/lib/gcc/x86_64-linux-gnu/14/libstdc++.so \
@@ -43,6 +44,8 @@ bin/chtl_basic_parser_test: \
 CMakeFiles/chtl_basic_parser_test.dir/tests/chtl_basic_parser_test.cpp.o:
 
 CMakeFiles/chtl_basic_parser_test.dir/src/parsers/chtl_basic_parser.cpp.o:
+
+CMakeFiles/chtl_basic_parser_test.dir/src/parsers/chtl_style_parser.cpp.o:
 
 CMakeFiles/chtl_basic_parser_test.dir/src/lexer/chtl_lexer.cpp.o:
 

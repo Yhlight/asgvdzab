@@ -4,6 +4,7 @@ bin/debug_parser: \
   /usr/lib/gcc/x86_64-linux-gnu/14/crtbeginS.o \
   CMakeFiles/debug_parser.dir/tests/debug_parser.cpp.o \
   CMakeFiles/debug_parser.dir/src/parsers/chtl_basic_parser.cpp.o \
+  CMakeFiles/debug_parser.dir/src/parsers/chtl_style_parser.cpp.o \
   CMakeFiles/debug_parser.dir/src/lexer/chtl_lexer.cpp.o \
   CMakeFiles/debug_parser.dir/src/ast/chtl_ast.cpp.o \
   /usr/lib/gcc/x86_64-linux-gnu/14/libstdc++.so \
@@ -43,6 +44,8 @@ bin/debug_parser: \
 CMakeFiles/debug_parser.dir/tests/debug_parser.cpp.o:
 
 CMakeFiles/debug_parser.dir/src/parsers/chtl_basic_parser.cpp.o:
+
+CMakeFiles/debug_parser.dir/src/parsers/chtl_style_parser.cpp.o:
 
 CMakeFiles/debug_parser.dir/src/lexer/chtl_lexer.cpp.o:
 
