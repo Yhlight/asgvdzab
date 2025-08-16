@@ -1,4 +1,5 @@
 #include "constraints/chtl_local_script_constraint.hpp"
+#include "constraints/raw_embedding_parser.hpp"
 #include <regex>
 #include <sstream>
 #include <iostream>
@@ -195,12 +196,13 @@ std::vector<LocalScriptAllowedElement> CHtlLocalScriptConstraint::checkAllowedEl
 std::vector<LocalScriptForbiddenElement> CHtlLocalScriptConstraint::checkForbiddenCHtlSyntax(const std::string& scriptContent) {
     std::vector<LocalScriptForbiddenElement> foundForbidden;
     
-    // 原始嵌入和生成器注释是特殊存在，内容应该被排除在检查之外
-    // 支持基本类型和自定义类型，支持带名原始嵌入
-    std::regex originPattern(R"(\[Origin\]\s+@[A-Za-z][A-Za-z0-9]*(?:\s+[A-Za-z_][A-Za-z0-9_]*)?\s*\{[^}]*\})");
+    // 使用状态机解析器正确移除原始嵌入块
+    RawEmbeddingParser parser;
+    std::string contentWithoutOrigin = parser.removeRawEmbeddingBlocks(scriptContent);
+    
+    // 移除生成器注释
     std::regex commentPattern(R"(--[^\r\n]*)");
-    std::string contentWithoutSpecial = std::regex_replace(scriptContent, originPattern, "");
-    contentWithoutSpecial = std::regex_replace(contentWithoutSpecial, commentPattern, "");
+    std::string contentWithoutSpecial = std::regex_replace(contentWithoutOrigin, commentPattern, "");
     
     // 检查禁止的样式相关语法
     if (isForbiddenStyleSyntax(contentWithoutSpecial)) {
@@ -282,14 +284,25 @@ bool CHtlLocalScriptConstraint::validateGeneratorComment(const std::string& comm
 }
 
 bool CHtlLocalScriptConstraint::validateRawEmbedding(const std::string& embedding) {
-    // 原始嵌入格式: 
-    // 1. 定义: [Origin] @Type [name] { 内容 }
-    // 2. 引用: [Origin] @Type [name];
-    // 支持基本类型和自定义类型，支持带名原始嵌入
-    std::regex rawEmbeddingDefPattern(R"(\[Origin\]\s+@[A-Za-z][A-Za-z0-9]*(?:\s+[A-Za-z_][A-Za-z0-9_]*)?\s*\{)");
-    std::regex rawEmbeddingRefPattern(R"(\[Origin\]\s+@[A-Za-z][A-Za-z0-9]*(?:\s+[A-Za-z_][A-Za-z0-9_]*)?\s*;)");
-    return std::regex_search(embedding, rawEmbeddingDefPattern) || 
-           std::regex_search(embedding, rawEmbeddingRefPattern);
+    // 使用状态机解析器验证原始嵌入
+    RawEmbeddingParser parser;
+    auto blocks = parser.parseRawEmbeddings(embedding);
+    
+    // 如果找到了原始嵌入块，并且这个语句主要是原始嵌入，则认为有效
+    if (!blocks.empty()) {
+        // 检查是否整个语句都被原始嵌入块覆盖（允许前后有少量空白）
+        std::string trimmed = embedding;
+        size_t start = trimmed.find_first_not_of(" \t\n\r");
+        size_t end = trimmed.find_last_not_of(" \t\n\r");
+        
+        if (start != std::string::npos && end != std::string::npos) {
+            // 检查第一个块是否覆盖了主要内容
+            const auto& block = blocks[0];
+            return block.startPos <= start && block.endPos >= end;
+        }
+    }
+    
+    return false;
 }
 
 bool CHtlLocalScriptConstraint::isJavaScriptTemplateSyntax(const std::string& text) {
@@ -301,11 +314,42 @@ bool CHtlLocalScriptConstraint::isJavaScriptTemplateSyntax(const std::string& te
 
 std::vector<std::string> CHtlLocalScriptConstraint::parseLocalScriptStatements(const std::string& content) {
     std::vector<std::string> statements;
-    std::istringstream stream(content);
+    
+    // 首先使用状态机解析器提取原始嵌入块
+    RawEmbeddingParser parser;
+    auto rawBlocks = parser.parseRawEmbeddings(content);
+    
+    // 创建一个标记原始嵌入位置的副本
+    std::string remaining = content;
+    std::vector<std::pair<size_t, size_t>> blockRanges;
+    
+    for (const auto& block : rawBlocks) {
+        blockRanges.push_back({block.startPos, block.endPos});
+        // 将原始嵌入块作为独立语句添加
+        statements.push_back(content.substr(block.startPos, block.endPos - block.startPos));
+    }
+    
+    // 移除已处理的原始嵌入块，按倒序避免位置偏移
+    std::sort(blockRanges.begin(), blockRanges.end(), 
+              [](const std::pair<size_t, size_t>& a, const std::pair<size_t, size_t>& b) {
+                  return a.first > b.first;
+              });
+    
+    for (const auto& range : blockRanges) {
+        remaining.erase(range.first, range.second - range.first);
+    }
+    
+    // 将剩余内容按行解析
+    std::istringstream stream(remaining);
     std::string line;
     
     while (std::getline(stream, line)) {
-        statements.push_back(line);
+        // 跳过空行和只有空白的行
+        std::string trimmed = line;
+        size_t start = trimmed.find_first_not_of(" \t");
+        if (start != std::string::npos) {
+            statements.push_back(line);
+        }
     }
     
     return statements;
@@ -332,10 +376,24 @@ bool CHtlLocalScriptConstraint::isGeneratorComment(const std::string& statement)
 }
 
 bool CHtlLocalScriptConstraint::isRawEmbedding(const std::string& statement) {
-    // 原始嵌入模式: [Origin] @Type [name]
-    // 支持基本类型和自定义类型，支持带名原始嵌入
-    std::regex rawEmbeddingPattern(R"(\[Origin\]\s+@[A-Za-z][A-Za-z0-9]*(?:\s+[A-Za-z_][A-Za-z0-9_]*)?)");
-    return std::regex_search(statement, rawEmbeddingPattern);
+    // 使用状态机解析器检测原始嵌入
+    RawEmbeddingParser parser;
+    auto blocks = parser.parseRawEmbeddings(statement);
+    
+    // 如果找到原始嵌入块，检查是否是这个语句的主要内容
+    if (!blocks.empty()) {
+        std::string trimmed = statement;
+        size_t start = trimmed.find_first_not_of(" \t\n\r");
+        size_t end = trimmed.find_last_not_of(" \t\n\r");
+        
+        if (start != std::string::npos && end != std::string::npos) {
+            // 检查原始嵌入是否从语句开始或接近开始
+            const auto& block = blocks[0];
+            return block.startPos <= start + 5; // 允许少量偏移
+        }
+    }
+    
+    return false;
 }
 
 bool CHtlLocalScriptConstraint::isTemplateVariableReference(const std::string& statement) {

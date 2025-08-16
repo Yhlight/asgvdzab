@@ -14,48 +14,48 @@ void testEnhancedRawEmbedding() {
     
     // 测试基本类型
     std::cout << "\n基本类型原始嵌入验证:" << std::endl;
-    std::cout << "HTML基本 '[Origin] @Html {': " 
-              << (scriptConstraint.validateRawEmbedding("[Origin] @Html {") ? "✓" : "✗") << std::endl;
-    std::cout << "CSS基本 '[Origin] @Style {': " 
-              << (scriptConstraint.validateRawEmbedding("[Origin] @Style {") ? "✓" : "✗") << std::endl;
-    std::cout << "JS基本 '[Origin] @JavaScript {': " 
-              << (scriptConstraint.validateRawEmbedding("[Origin] @JavaScript {") ? "✓" : "✗") << std::endl;
+    std::cout << "HTML基本 '[Origin] @Html {}': " 
+              << (scriptConstraint.validateRawEmbedding("[Origin] @Html {}") ? "✓" : "✗") << std::endl;
+    std::cout << "CSS基本 '[Origin] @Style {}': " 
+              << (scriptConstraint.validateRawEmbedding("[Origin] @Style {}") ? "✓" : "✗") << std::endl;
+    std::cout << "JS基本 '[Origin] @JavaScript {}': " 
+              << (scriptConstraint.validateRawEmbedding("[Origin] @JavaScript {}") ? "✓" : "✗") << std::endl;
     
     // 测试带名原始嵌入
     std::cout << "\n带名原始嵌入验证:" << std::endl;
-    std::cout << "HTML带名 '[Origin] @Html box {': " 
-              << (scriptConstraint.validateRawEmbedding("[Origin] @Html box {") ? "✓" : "✗") << std::endl;
-    std::cout << "CSS带名 '[Origin] @Style header {': " 
-              << (scriptConstraint.validateRawEmbedding("[Origin] @Style header {") ? "✓" : "✗") << std::endl;
-    std::cout << "JS带名 '[Origin] @JavaScript utils {': " 
-              << (scriptConstraint.validateRawEmbedding("[Origin] @JavaScript utils {") ? "✓" : "✗") << std::endl;
+    std::cout << "HTML带名 '[Origin] @Html box {}': " 
+              << (scriptConstraint.validateRawEmbedding("[Origin] @Html box {}") ? "✓" : "✗") << std::endl;
+    std::cout << "CSS带名 '[Origin] @Style header {}': " 
+              << (scriptConstraint.validateRawEmbedding("[Origin] @Style header {}") ? "✓" : "✗") << std::endl;
+    std::cout << "JS带名 '[Origin] @JavaScript utils {}': " 
+              << (scriptConstraint.validateRawEmbedding("[Origin] @JavaScript utils {}") ? "✓" : "✗") << std::endl;
     
     // 测试自定义类型
     std::cout << "\n自定义类型原始嵌入验证:" << std::endl;
-    std::cout << "Vue类型 '[Origin] @Vue {': " 
-              << (scriptConstraint.validateRawEmbedding("[Origin] @Vue {") ? "✓" : "✗") << std::endl;
-    std::cout << "Markdown类型 '[Origin] @Markdown {': " 
-              << (scriptConstraint.validateRawEmbedding("[Origin] @Markdown {") ? "✓" : "✗") << std::endl;
-    std::cout << "React类型 '[Origin] @React {': " 
-              << (scriptConstraint.validateRawEmbedding("[Origin] @React {") ? "✓" : "✗") << std::endl;
+    std::cout << "Vue类型 '[Origin] @Vue {}': " 
+              << (scriptConstraint.validateRawEmbedding("[Origin] @Vue {}") ? "✓" : "✗") << std::endl;
+    std::cout << "Markdown类型 '[Origin] @Markdown {}': " 
+              << (scriptConstraint.validateRawEmbedding("[Origin] @Markdown {}") ? "✓" : "✗") << std::endl;
+    std::cout << "React类型 '[Origin] @React {}': " 
+              << (scriptConstraint.validateRawEmbedding("[Origin] @React {}") ? "✓" : "✗") << std::endl;
     
     // 测试自定义类型带名
     std::cout << "\n自定义类型带名原始嵌入验证:" << std::endl;
-    std::cout << "Vue带名 '[Origin] @Vue component {': " 
-              << (scriptConstraint.validateRawEmbedding("[Origin] @Vue component {") ? "✓" : "✗") << std::endl;
-    std::cout << "Markdown带名 '[Origin] @Markdown docs {': " 
-              << (scriptConstraint.validateRawEmbedding("[Origin] @Markdown docs {") ? "✓" : "✗") << std::endl;
-    std::cout << "React带名 '[Origin] @React widgets {': " 
-              << (scriptConstraint.validateRawEmbedding("[Origin] @React widgets {") ? "✓" : "✗") << std::endl;
+    std::cout << "Vue带名 '[Origin] @Vue component {}': " 
+              << (scriptConstraint.validateRawEmbedding("[Origin] @Vue component {}") ? "✓" : "✗") << std::endl;
+    std::cout << "Markdown带名 '[Origin] @Markdown docs {}': " 
+              << (scriptConstraint.validateRawEmbedding("[Origin] @Markdown docs {}") ? "✓" : "✗") << std::endl;
+    std::cout << "React带名 '[Origin] @React widgets {}': " 
+              << (scriptConstraint.validateRawEmbedding("[Origin] @React widgets {}") ? "✓" : "✗") << std::endl;
     
     // 测试无效格式
     std::cout << "\n无效格式验证:" << std::endl;
-    std::cout << "缺少@前缀 '[Origin] Html {': " 
-              << (scriptConstraint.validateRawEmbedding("[Origin] Html {") ? "✗" : "✓") << std::endl;
-    std::cout << "无效类型名 '[Origin] @123 {': " 
-              << (scriptConstraint.validateRawEmbedding("[Origin] @123 {") ? "✗" : "✓") << std::endl;
-    std::cout << "缺少Origin '[Origin @Html {': " 
-              << (scriptConstraint.validateRawEmbedding("[Origin @Html {") ? "✗" : "✓") << std::endl;
+    std::cout << "缺少@前缀 '[Origin] Html {}': " 
+              << (scriptConstraint.validateRawEmbedding("[Origin] Html {}") ? "✗" : "✓") << std::endl;
+    std::cout << "无效类型名 '[Origin] @123 {}': " 
+              << (scriptConstraint.validateRawEmbedding("[Origin] @123 {}") ? "✗" : "✓") << std::endl;
+    std::cout << "缺少Origin '[Origin @Html {}': " 
+              << (scriptConstraint.validateRawEmbedding("[Origin @Html {}") ? "✗" : "✓") << std::endl;
 }
 
 void testEnhancedRawEmbeddingInBlocks() {
@@ -172,26 +172,28 @@ void testRawEmbeddingDetection() {
     
     // 测试各种原始嵌入检测
     std::vector<std::string> testCases = {
-        "[Origin] @Html",
-        "[Origin] @Style",
-        "[Origin] @JavaScript", 
-        "[Origin] @Vue",
-        "[Origin] @React",
-        "[Origin] @Markdown",
-        "[Origin] @Html box",
-        "[Origin] @Style header",
-        "[Origin] @JavaScript utils",
-        "[Origin] @Vue component",
-        "[Origin] @React dashboard",
-        "[Origin] @Svelte widget",
-        "[Origin] @CustomType myName",
-        "[Origin] @A1B2C3 test123",
+        "[Origin] @Html {}",
+        "[Origin] @Style {}",
+        "[Origin] @JavaScript {}", 
+        "[Origin] @Vue {}",
+        "[Origin] @React {}",
+        "[Origin] @Markdown {}",
+        "[Origin] @Html box {}",
+        "[Origin] @Style header {}",
+        "[Origin] @JavaScript utils {}",
+        "[Origin] @Vue component {}",
+        "[Origin] @React dashboard {}",
+        "[Origin] @Svelte widget {}",
+        "[Origin] @CustomType myName {}",
+        "[Origin] @A1B2C3 test123 {}",
+        "[Origin] @Html;",
+        "[Origin] @Vue component;",
         // 无效格式
-        "[Origin] Html",           // 缺少@
-        "[Origin] @123",           // 数字开头
-        "Origin @Html",            // 缺少方括号
+        "[Origin] Html {}",           // 缺少@
+        "[Origin] @123 {}",           // 数字开头
+        "Origin @Html {}",            // 缺少方括号
         "[Origin] @",              // 缺少类型名
-        "[Origin] @Html-box",      // 无效名称格式
+        "[Origin] @Html-box {}",      // 无效名称格式
     };
     
     std::cout << "\n原始嵌入检测结果:" << std::endl;
