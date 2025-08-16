@@ -2,7 +2,7 @@
 
 ## 🎯 约束器作用
 
-根据您的要求，CHTL Script块(非局部script)禁止使用任何CHTL语法，**特别允许**的存在是生成器注释(`--注释`)以及原始嵌入(任意类型)。
+根据您的要求，CHTL Script块(非局部script)禁止使用任何CHTL语法，**特别允许**的存在是生成器注释(`--注释`)以及原始嵌入(类型标识无用，内容原样输出)。
 
 ## ❌ 禁止的CHTL语法
 
@@ -70,15 +70,14 @@ delete @Style OldTheme;
 -- 执行时的特殊指令
 ```
 
-### 2. 原始嵌入(任意类型)
+### 2. 原始嵌入(类型无用)
 ```javascript
-// ✅ 允许：原始HTML嵌入
+// ✅ 允许：原始嵌入 - 类型标识无用，任何类型都可以
 [Origin] @Html {
     <div id="dynamic-content"></div>
     <span class="marker">Generated</span>
 }
 
-// ✅ 允许：原始CSS嵌入
 [Origin] @Style {
     .dynamic-style { 
         color: blue; 
@@ -86,18 +85,29 @@ delete @Style OldTheme;
     }
 }
 
-// ✅ 允许：原始JavaScript嵌入
 [Origin] @JavaScript {
     window.customConfig = { version: '1.0' };
     console.log('Embedded JS executed');
 }
 
-// ✅ 允许：原始CHTL嵌入
 [Origin] @Chtl {
     div { 
         text { "Dynamic CHTL content" }
         style { color: green; }
     }
+}
+
+// ✅ 原始嵌入的特殊性质：类型标识无用，内容原样输出
+[Origin] @CustomType {
+    任何内容都会原样输出，包括：
+    - CHTL语法: @Style Button; ThemeColor(primary);
+    - HTML标签: <div>content</div>
+    - 任何文本: 完全按原样传递
+}
+
+[Origin] @AnyName {
+    /* 类型名称完全无用，可以是任何名称 */
+    这里的内容不会被CHTL处理，直接原样输出
 }
 ```
 

@@ -37,9 +37,15 @@ void testValidScriptSyntax() {
             window.customConfig = { version: '1.0' };
         }
         
-        // 原始CHTL嵌入
+        // 原始CHTL嵌入 - 类型无用，内容原样输出
         [Origin] @Chtl {
             div { text { "Dynamic CHTL content" } }
+        }
+        
+        // 原始嵌入可以使用任何类型标识，内容都会原样输出
+        [Origin] @CustomType {
+            任何内容，包括CHTL语法也会原样输出
+            @Style Button; ThemeColor(primary);
         }
         
         // 更多纯JavaScript
@@ -141,7 +147,7 @@ void testSpecificScriptConstraints() {
     std::cout << "无效注释 '<!-- HTML注释 -->': " 
               << (constraint.validateGeneratorComment("<!-- HTML注释 -->") ? "✗" : "✓") << std::endl;
     
-    // 测试原始嵌入验证
+    // 测试原始嵌入验证 - 类型标识无用，任何类型都允许
     std::cout << "\n原始嵌入验证:" << std::endl;
     std::cout << "HTML嵌入 '[Origin] @Html {': " 
               << (constraint.validateRawEmbedding("[Origin] @Html {") ? "✓" : "✗") << std::endl;
@@ -151,6 +157,10 @@ void testSpecificScriptConstraints() {
               << (constraint.validateRawEmbedding("[Origin] @JavaScript {") ? "✓" : "✗") << std::endl;
     std::cout << "CHTL嵌入 '[Origin] @Chtl {': " 
               << (constraint.validateRawEmbedding("[Origin] @Chtl {") ? "✓" : "✗") << std::endl;
+    std::cout << "自定义类型嵌入 '[Origin] @CustomType {': " 
+              << (constraint.validateRawEmbedding("[Origin] @CustomType {") ? "✓" : "✗") << std::endl;
+    std::cout << "任意类型嵌入 '[Origin] @AnyName {': " 
+              << (constraint.validateRawEmbedding("[Origin] @AnyName {") ? "✓" : "✗") << std::endl;
     
     // 测试禁止的CHTL语法检测
     std::cout << "\n禁止语法检测:" << std::endl;

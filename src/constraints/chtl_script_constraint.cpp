@@ -104,10 +104,7 @@ CHtlScriptConstraintResult CHtlScriptConstraint::validateCHtlScriptBlock(const s
                         }
                         break;
                         
-                    case CHtlScriptAllowedElement::RAW_EMBEDDING_HTML:
-                    case CHtlScriptAllowedElement::RAW_EMBEDDING_CSS:
-                    case CHtlScriptAllowedElement::RAW_EMBEDDING_JS:
-                    case CHtlScriptAllowedElement::RAW_EMBEDDING_CHTL:
+                    case CHtlScriptAllowedElement::RAW_EMBEDDING:
                         if (validateRawEmbedding(trimmed)) {
                             result.foundRawEmbeddings.insert(trimmed);
                         } else {
@@ -139,17 +136,9 @@ std::vector<CHtlScriptAllowedElement> CHtlScriptConstraint::checkAllowedElement(
         allowedTypes.push_back(CHtlScriptAllowedElement::GENERATOR_COMMENT);
     }
     
-    // 检查原始嵌入
+    // 检查原始嵌入 - 类型无用，任何 [Origin] @AnyType 都允许
     if (isRawEmbedding(element)) {
-        if (element.find("@Html") != std::string::npos) {
-            allowedTypes.push_back(CHtlScriptAllowedElement::RAW_EMBEDDING_HTML);
-        } else if (element.find("@Style") != std::string::npos) {
-            allowedTypes.push_back(CHtlScriptAllowedElement::RAW_EMBEDDING_CSS);
-        } else if (element.find("@JavaScript") != std::string::npos) {
-            allowedTypes.push_back(CHtlScriptAllowedElement::RAW_EMBEDDING_JS);
-        } else if (element.find("@Chtl") != std::string::npos) {
-            allowedTypes.push_back(CHtlScriptAllowedElement::RAW_EMBEDDING_CHTL);
-        }
+        allowedTypes.push_back(CHtlScriptAllowedElement::RAW_EMBEDDING);
     }
     
     // 对于Script，默认认为是纯JavaScript代码（如果不是其他特殊类型）
@@ -163,7 +152,8 @@ std::vector<CHtlScriptAllowedElement> CHtlScriptConstraint::checkAllowedElement(
 std::vector<CHtlScriptForbiddenElement> CHtlScriptConstraint::checkForbiddenCHtlSyntax(const std::string& scriptContent) {
     std::vector<CHtlScriptForbiddenElement> foundForbidden;
     
-    // 首先检查是否在原始嵌入中，如果是则跳过检查
+    // 原始嵌入是特别的存在，可以在任何地方使用，内容原样输出，不做约束检查
+    // 移除所有原始嵌入块，只检查其他内容
     std::regex originPattern(R"(\[Origin\]\s+@\w+\s*\{[^}]*\})");
     std::string contentWithoutOrigin = std::regex_replace(scriptContent, originPattern, "");
     
@@ -216,8 +206,8 @@ bool CHtlScriptConstraint::validateGeneratorComment(const std::string& comment) 
 }
 
 bool CHtlScriptConstraint::validateRawEmbedding(const std::string& embedding) {
-    // 原始嵌入格式: [Origin] @Type { 内容 }
-    std::regex rawEmbeddingPattern(R"(\[Origin\]\s+@(Html|Style|JavaScript|Chtl)\s*\{)");
+    // 原始嵌入格式: [Origin] @AnyType { 内容 } - 类型标识无用，任何类型都允许
+    std::regex rawEmbeddingPattern(R"(\[Origin\]\s+@\w+\s*\{)");
     return std::regex_search(embedding, rawEmbeddingPattern);
 }
 
