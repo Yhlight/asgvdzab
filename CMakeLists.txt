@@ -38,6 +38,8 @@ set(CORE_SOURCES
     src/core/import_manager.cpp
     src/core/namespace_manager.cpp
     src/core/constraint_system.cpp
+    src/core/chtl_parser.cpp
+    src/core/style_block_parser.cpp
 )
 
 set(UTILS_SOURCES
