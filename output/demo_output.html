@@ -1,0 +1,174 @@
+html
+{
+    head
+    {
+        
+    }
+    
+    body
+    {
+        div
+        {
+            id: header;
+            class: main-header;
+            
+            style
+            {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                padding: 2rem;
+                text-align: center;
+                
+                .title
+                {
+                    font-size: 2.5rem;
+                    font-weight: bold;
+                    margin-bottom: 1rem;
+                }
+                
+                .subtitle
+                {
+                    font-size: 1.2rem;
+                    opacity: 0.9;
+                }
+            }
+            
+            script
+            {
+                {{.title}}.addEventListener('click', function() {
+                    console.log('CHTL标题被点击!');
+                    {{.title}}->style.transform = 'scale(1.05)';
+                    
+                    setTimeout(() => {
+                        {{.title}}->style.transform = 'scale(1)';
+                    }, 200);
+                });
+                
+                {{.subtitle}}->listen({
+                    mouseenter: () => {
+                        {{.subtitle}}->style.opacity = '1';
+                    },
+                    mouseleave: () => {
+                        {{.subtitle}}->style.opacity = '0.9';
+                    }
+                });
+            }
+            
+            div
+            {
+                class: title;
+                text { CHTL 编译器演示 }
+            }
+            
+            div
+            {
+                class: subtitle;
+                text { 基于C++17的现代化超文本语言编译器 }
+            }
+        }
+        
+        div
+        {
+            class: content;
+            
+            style
+            {
+                max-width: 800px;
+                margin: 3rem auto;
+                padding: 0 2rem;
+                
+                .feature-card
+                {
+                    background: white;
+                    border-radius: 10px;
+                    padding: 2rem;
+                    margin-bottom: 2rem;
+                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                    transition: transform 0.2s ease;
+                }
+                
+                .feature-card:hover
+                {
+                    transform: translateY(-5px);
+                }
+                
+                .feature-title
+                {
+                    color: #667eea;
+                    font-size: 1.5rem;
+                    font-weight: bold;
+                    margin-bottom: 1rem;
+                }
+                
+                .feature-desc
+                {
+                    color: #666;
+                    line-height: 1.6;
+                }
+            }
+            
+            div
+            {
+                class: feature-card;
+                
+                div
+                {
+                    class: feature-title;
+                    text { 🚀 精准代码切割 }
+                }
+                
+                div
+                {
+                    class: feature-desc;
+                    text { 
+                        CHTLUnifiedScanner实现了可变长度切片扫描，
+                        能够智能识别CHTL、CSS、JavaScript等不同类型的代码片段，
+                        确保编译过程的准确性和效率。
+                    }
+                }
+            }
+            
+            div
+            {
+                class: feature-card;
+                
+                div
+                {
+                    class: feature-title;
+                    text { ⚡ 并行编译调度 }
+                }
+                
+                div
+                {
+                    class: feature-desc;
+                    text {
+                        CompilerDispatcher支持多线程并行编译，
+                        内置结果缓存机制，大幅提升大型项目的编译速度，
+                        同时提供详细的统计信息和错误报告。
+                    }
+                }
+            }
+            
+            div
+            {
+                class: feature-card;
+                
+                div
+                {
+                    class: feature-title;
+                    text { 🎯 现代化架构 }
+                }
+                
+                div
+                {
+                    class: feature-desc;
+                    text {
+                        基于C++17标准构建，采用模块化设计，
+                        支持跨平台编译，具备完善的错误处理和状态管理系统，
+                        为后续功能扩展奠定了坚实的基础。
+                    }
+                }
+            }
+        }
+    }
+}

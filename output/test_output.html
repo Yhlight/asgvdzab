@@ -1,0 +1,43 @@
+
+html
+{
+    head
+    {
+        
+    }
+    
+    body
+    {
+        div
+        {
+            id: main-container;
+            class: container;
+            
+            style
+            {
+                width: 100%;
+                max-width: 1200px;
+                margin: 0 auto;
+                
+                .box
+                {
+                    background-color: #f0f0f0;
+                    padding: 20px;
+                    border-radius: 5px;
+                }
+            }
+            
+            script
+            {
+                {{.box}}.addEventListener('click', function() {
+                    console.log('Box clicked!');
+                });
+            }
+            
+            text
+            {
+                欢迎使用CHTL编译器！
+            }
+        }
+    }
+}
