@@ -1,0 +1,48 @@
+html {
+    head {
+        // 这是注释，不会出现在HTML中
+    }
+    
+    body {
+        div {
+            id: main-container;
+            class: container;
+            
+            style {
+                width: 100%;
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 20px;
+            }
+            
+            h1 {
+                text {
+                    Welcome to CHTL
+                }
+            }
+            
+            p {
+                text {
+                    This is a simple CHTL example demonstrating basic syntax.
+                }
+            }
+            
+            div {
+                class: box;
+                
+                style {
+                    .box {
+                        background-color: #f0f0f0;
+                        border: 1px solid #ddd;
+                        padding: 15px;
+                        border-radius: 5px;
+                    }
+                }
+                
+                text {
+                    This is a styled box
+                }
+            }
+        }
+    }
+}

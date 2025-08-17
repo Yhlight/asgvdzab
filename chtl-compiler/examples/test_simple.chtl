@@ -1,0 +1,16 @@
+html
+{
+    head
+    {
+        title { text { "Simple Test" } }
+    }
+    
+    body
+    {
+        div
+        {
+            id: main;
+            text { "Hello CHTL" }
+        }
+    }
+}

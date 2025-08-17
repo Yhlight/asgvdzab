@@ -1,0 +1,2 @@
+/usr/bin/ar qc libcss_compiler.a CMakeFiles/css_compiler.dir/src/compiler/css/css_compiler.cpp.o
+/usr/bin/ranlib libcss_compiler.a

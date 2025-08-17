@@ -1,0 +1,91 @@
+// 测试模板定义功能
+
+[Template] @Style ThemeColors
+{
+    primary-color: #007bff;
+    secondary-color: #6c757d;
+    background-color: #f8f9fa;
+    text-color: #212529;
+}
+
+[Template] @Element Card
+{
+    div
+    {
+        class: card;
+        style
+        {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 10px 0;
+        }
+        
+        h2
+        {
+            class: card-title;
+            text { "Card Title" }
+        }
+        
+        div
+        {
+            class: card-body;
+            text { "Card content goes here." }
+        }
+    }
+}
+
+[Template] @Var Constants
+{
+    site-name: "CHTL Website";
+    max-width: 1200px;
+    default-font: "Arial, sans-serif";
+}
+
+// 使用模板
+html
+{
+    head
+    {
+        title { text { @Var Constants.site-name } }
+        
+        style
+        {
+            @Style ThemeColors;
+            
+            body
+            {
+                background-color: var(--background-color);
+                color: var(--text-color);
+                font-family: @Var Constants.default-font;
+                max-width: @Var Constants.max-width;
+                margin: 0 auto;
+                padding: 20px;
+            }
+        }
+    }
+    
+    body
+    {
+        h1 { text { "Welcome to CHTL Templates" } }
+        
+        // 使用元素模板
+        @Element Card;
+        @Element Card;
+        
+        // 自定义使用模板
+        div
+        {
+            style
+            {
+                @Style ThemeColors;
+                background-color: var(--primary-color);
+                color: white;
+                padding: 10px;
+                border-radius: 4px;
+            }
+            
+            text { "This div uses the theme colors template" }
+        }
+    }
+}

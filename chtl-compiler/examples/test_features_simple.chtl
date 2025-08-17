@@ -1,0 +1,72 @@
+// 简单功能测试
+
+// 模板定义
+[Template] @Style Primary
+{
+    color: #007bff;
+    font-weight: bold;
+}
+
+[Template] @Element Title
+{
+    h1
+    {
+        style
+        {
+            @Style Primary;
+            font-size: 32px;
+        }
+        text { "Welcome" }
+    }
+}
+
+// 原始嵌入
+[Origin] @Html footer
+{
+<footer>© 2024 CHTL</footer>
+}
+
+html
+{
+    head
+    {
+        title { text { "Simple Test" } }
+    }
+    
+    body
+    {
+        // 使用元素模板
+        @Element Title;
+        
+        // 局部样式测试
+        div
+        {
+            class: box;
+            
+            style
+            {
+                padding: 20px;
+                background: #f0f0f0;
+                
+                .inner
+                {
+                    margin: 10px;
+                }
+                
+                &:hover
+                {
+                    background: #e0e0e0;
+                }
+            }
+            
+            div
+            {
+                class: inner;
+                text { "Hover over the box" }
+            }
+        }
+        
+        // 使用原始嵌入
+        @Html footer;
+    }
+}

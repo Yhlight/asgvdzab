@@ -1,0 +1,18 @@
+html
+{
+    body
+    {
+        div
+        {
+            class: container;
+            
+            style
+            {
+                width: 100%;
+                padding: 20px;
+            }
+            
+            text { "Hello with styles" }
+        }
+    }
+}

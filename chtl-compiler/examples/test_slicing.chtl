@@ -1,0 +1,44 @@
+html {
+    body {
+        div {
+            id: container;
+            
+            script {
+                // 测试CHTL JS增强语法的识别和切片
+                {{#myButton}}->addEventListener('click', () => {
+                    console.log("Button clicked!");
+                });
+                
+                listen({{.box}}, 'mouseenter', function() {
+                    this.style.backgroundColor = '#f0f0f0';
+                });
+                
+                vir utils = {
+                    formatDate: function(date) {
+                        return date.toLocaleDateString();
+                    }
+                };
+            }
+            
+            h1 { text { CHTL智能切片测试 } }
+            
+            button {
+                id: myButton;
+                text { 点击我 }
+            }
+            
+            div {
+                class: box;
+                style {
+                    .box {
+                        padding: 20px;
+                        border: 1px solid #ddd;
+                        transition: background-color 0.3s;
+                    }
+                }
+                
+                text { 鼠标悬停测试 }
+            }
+        }
+    }
+}

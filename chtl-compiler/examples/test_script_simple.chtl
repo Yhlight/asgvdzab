@@ -1,0 +1,10 @@
+div {
+    script {
+        {{#button}}->click();
+    }
+    
+    button {
+        id: button;
+        text { Click me }
+    }
+}

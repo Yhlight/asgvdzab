@@ -1,0 +1,41 @@
+/* Test CSS file for ANTLR parser */
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+-- This is a CHTL comment
+#header {
+    background-color: #333;
+    color: white;
+    padding: 20px;
+}
+
+/* CHTL features test */
+@Style ThemeColors {
+    primary-color: #007bff;
+    secondary-color: #6c757d;
+}
+
+.button {
+    @Style ThemeColors;
+    background-color: var(--primary-color);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+}
+
+/* Media query test */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 15px;
+    }
+}

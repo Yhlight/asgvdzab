@@ -1,0 +1,177 @@
+// 这是一个完整的CHTL测试文件，测试所有语法特性
+// 单行注释不会出现在生成的HTML中
+
+/*
+   多行注释
+   也不会出现在生成的HTML中
+*/
+
+-- 这是生成器识别的注释，会出现在HTML中
+
+// 配置组
+[Configuration]
+{
+    INDEX_INITIAL_COUNT = 0;
+    DEBUG_MODE = true;
+}
+
+// 命名空间定义
+[Namespace] test
+
+// 模板定义 - 样式组模板
+[Template] @Style DefaultText
+{
+    color: black;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+// 模板定义 - 元素模板
+[Template] @Element Card
+{
+    div
+    {
+        class: card;
+        
+        style
+        {
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin: 10px;
+            border-radius: 8px;
+        }
+        
+        h3
+        {
+            class: card-title;
+            text { "Card Title" }
+        }
+        
+        div
+        {
+            class: card-content;
+            text { "Card content goes here" }
+        }
+    }
+}
+
+// 模板定义 - 变量组模板
+[Template] @Var ThemeColors
+{
+    primary: "#007bff";
+    secondary: "#6c757d";
+    success: "#28a745";
+    danger: "#dc3545";
+}
+
+// 自定义定义 - 样式组
+[Custom] @Style ButtonStyle
+{
+    padding: 10px 20px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    font-size;  // 无值属性，使用时需要指定
+}
+
+// 自定义定义 - 元素
+[Custom] @Element Button
+{
+    button
+    {
+        style
+        {
+            @Style ButtonStyle
+            {
+                font-size: 14px;
+            }
+        }
+        
+        text { "Click Me" }
+    }
+}
+
+// 原始嵌入
+[Origin] @Style customStyles
+{
+    .special-class {
+        background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+    }
+}
+
+// 主文档
+html
+{
+    head
+    {
+        title { text { "CHTL Complete Test" } }
+        
+        // 使用原始嵌入
+        [Origin] @Style customStyles;
+    }
+    
+    body
+    {
+        // 使用模板
+        @Element Card;
+        
+        // 带局部样式的元素
+        div
+        {
+            id: main-container;
+            class: container;
+            
+            style
+            {
+                max-width: 1200px;
+                margin: 0 auto;
+                
+                // 自动类名
+                .content
+                {
+                    padding: 20px;
+                }
+                
+                // 使用&简化伪类
+                &:hover
+                {
+                    background-color: #f0f0f0;
+                }
+            }
+            
+            // 使用自定义元素
+            @Element Button;
+            
+            // 文本节点
+            text { "Welcome to CHTL!" }
+            
+            // 嵌套元素
+            div
+            {
+                class: section;
+                
+                h2
+                {
+                    text { "Features" }
+                }
+                
+                ul
+                {
+                    li { text { "Template System" } }
+                    li { text { "Custom Definitions" } }
+                    li { text { "Local Styles" } }
+                    li { text { "Namespace Support" } }
+                }
+            }
+        }
+        
+        // 局部脚本块
+        script
+        {
+            console.log("CHTL script block");
+            document.addEventListener('DOMContentLoaded', function() {
+                console.log("Page loaded!");
+            });
+        }
+    }
+}

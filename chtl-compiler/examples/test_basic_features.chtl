@@ -1,0 +1,43 @@
+// 测试基础CHTL特性
+
+html
+{
+    head
+    {
+        title
+        {
+            text { "Basic CHTL Test" }
+        }
+    }
+    
+    body
+    {
+        div
+        {
+            id: container;
+            class: main-content;
+            
+            // 局部样式
+            style
+            {
+                width: 100%;
+                max-width: 1200px;
+                margin: 0 auto;
+                
+                .content
+                {
+                    padding: 20px;
+                }
+            }
+            
+            // 文本节点
+            text { "Hello CHTL!" }
+            
+            // 嵌套元素
+            p
+            {
+                text { "This is a paragraph." }
+            }
+        }
+    }
+}

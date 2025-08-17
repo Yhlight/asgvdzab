@@ -1,0 +1,2 @@
+/usr/bin/ar qc libchtljs_compiler.a CMakeFiles/chtljs_compiler.dir/src/compiler/chtljs/chtljs_preprocessor.cpp.o CMakeFiles/chtljs_compiler.dir/src/compiler/chtljs/chtljs_lexer.cpp.o CMakeFiles/chtljs_compiler.dir/src/compiler/chtljs/chtljs_parser.cpp.o CMakeFiles/chtljs_compiler.dir/src/compiler/chtljs/chtljs_generator.cpp.o
+/usr/bin/ranlib libchtljs_compiler.a

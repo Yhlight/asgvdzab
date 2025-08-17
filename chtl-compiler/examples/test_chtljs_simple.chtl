@@ -1,0 +1,47 @@
+div {
+    id: container;
+    
+    button {
+        id: myButton;
+        text { 点击我 }
+    }
+    
+    script {
+        // 测试增强选择器
+        {{#myButton}}->addEventListener('click', () => {
+            console.log("按钮被点击了！");
+        });
+        
+        // 测试listen函数
+        listen({{.box}}, {
+            mouseenter: function() {
+                this->style->backgroundColor = '#f0f0f0';
+            },
+            mouseleave: () => {
+                this->style->backgroundColor = '';
+            }
+        });
+        
+        // 测试vir虚对象
+        vir utils = {
+            log: function(msg) {
+                console.log("[CHTL]", msg);
+            }
+        };
+        
+        utils->log("CHTL JS 测试");
+    }
+    
+    div {
+        class: box;
+        style {
+            .box {
+                padding: 20px;
+                border: 1px solid #ccc;
+                transition: background-color 0.3s;
+            }
+        }
+        
+        text { 鼠标悬停区域 }
+    }
+}

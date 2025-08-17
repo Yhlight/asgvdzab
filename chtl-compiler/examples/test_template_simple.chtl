@@ -1,0 +1,22 @@
+[Template] @Style Colors
+{
+    color: red;
+    background: blue;
+}
+
+html
+{
+    head
+    {
+        title { text { "Template Test" } }
+    }
+    
+    body
+    {
+        style
+        {
+            @Style Colors;
+        }
+        text { "Hello with template styles" }
+    }
+}

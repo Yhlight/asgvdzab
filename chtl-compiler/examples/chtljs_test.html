@@ -1,0 +1,14 @@
+<html>
+  <body>
+    <div class="container">
+      <button class="btn" id="myButton">
+        Click Me !
+      </button>
+      <div class="chtl_0 message-box">
+        Hello from CHTL JS !
+      </div>
+      <script>
+{ { myButton } } . addEventListener ( 'click', ( ) = > { console . log ( 'Button clicked!') ; { { . message-box } } . style . display = 'block'; } ) ; { { . btn } } -> listen ( { mouseenter : ( ) = > { console . log ( 'Mouse entered') ; } , mouseleave : ( ) = > { console . log ( 'Mouse left') ; } } ) ; vir buttonHandler = listen ( { click : ( ) = > { alert ( 'Virtual object method called!') ; } , hover : ( ) = > { console . log ( 'Hovering...') ; } } ) ; { { # myButton } } . addEventListener ( 'click', buttonHandler- > click ) ; const fadeIn = animate ( { target : { { . message-box } } , duration : 500 , easing : 'ease-in-out', begin : { opacity : 0 } , end : { opacity : 1 } } ) ;       </script>
+    </div>
+  </body>
+</html>
