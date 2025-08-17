@@ -1,0 +1,197 @@
+// CHTL测试文件
+// 展示CHTL编译器的各种功能
+
+[Template] @Style DefaultText
+{
+    color: black;
+    line-height: 1.6;
+    font-family: Arial, sans-serif;
+}
+
+[Template] @Element Card
+{
+    div
+    {
+        style
+        {
+            .card
+            {
+                background: white;
+                border-radius: 8px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                padding: 16px;
+                margin: 16px 0;
+            }
+        }
+        
+        h3
+        {
+            text
+            {
+                "卡片标题"
+            }
+        }
+        
+        p
+        {
+            text
+            {
+                "卡片内容描述"
+            }
+        }
+    }
+}
+
+[Custom] @Var ThemeColors
+{
+    primary: "#007bff";
+    secondary: "#6c757d";
+    success: "#28a745";
+    danger: "#dc3545";
+}
+
+html
+{
+    head
+    {
+        title
+        {
+            text
+            {
+                "CHTL编译器测试页面"
+            }
+        }
+    }
+    
+    body
+    {
+        style
+        {
+            @Style DefaultText;
+            
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        header
+        {
+            style
+            {
+                .header
+                {
+                    background: ThemeColors(primary);
+                    color: white;
+                    padding: 20px;
+                    text-align: center;
+                    border-radius: 8px;
+                    margin-bottom: 20px;
+                }
+            }
+            
+            h1
+            {
+                text
+                {
+                    "CHTL编译器演示"
+                }
+            }
+        }
+        
+        main
+        {
+            class: content;
+            
+            style
+            {
+                .content
+                {
+                    max-width: 800px;
+                    margin: 0 auto;
+                }
+            }
+            
+            @Element Card;
+            
+            div
+            {
+                id: interactive-demo;
+                
+                style
+                {
+                    .demo-box
+                    {
+                        background: ThemeColors(success);
+                        color: white;
+                        padding: 20px;
+                        border-radius: 8px;
+                        cursor: pointer;
+                        transition: all 0.3s ease;
+                    }
+                    
+                    &:hover
+                    {
+                        background: ThemeColors(danger);
+                        transform: scale(1.05);
+                    }
+                }
+                
+                script
+                {
+                    {{.demo-box}}->addEventListener('click', () => {
+                        console.log('演示框被点击了！');
+                        alert('CHTL JS增强选择器工作正常！');
+                    });
+                    
+                    vir demoEvents = listen({
+                        click: () => {
+                            console.log('虚对象事件触发');
+                        },
+                        mouseenter: function() {
+                            console.log('鼠标进入');
+                        },
+                        mouseleave: () => {
+                            console.log('鼠标离开');
+                        }
+                    });
+                    
+                    // 测试事件委托
+                    {{body}}->delegate({
+                        target: {{.demo-box}},
+                        click: function(e) {
+                            console.log('事件委托触发');
+                        }
+                    });
+                }
+                
+                text
+                {
+                    "点击这个框测试CHTL JS功能"
+                }
+            }
+        }
+        
+        footer
+        {
+            style
+            {
+                .footer
+                {
+                    text-align: center;
+                    padding: 20px;
+                    margin-top: 40px;
+                    border-top: 1px solid #dee2e6;
+                    color: ThemeColors(secondary);
+                }
+            }
+            
+            p
+            {
+                text
+                {
+                    "由CHTL编译器生成 - 展示局部style、script和模板系统"
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHTL Generated Page</title>
+    <style>
+    </style>
+</head>
+<body>
+    <html><body><div id="main" class="container"><h1>CHTL编译器成功运行！</h1><p>这证明了CHTL编译器的各个组件都工作正常：</p><ul><li>✅ CHTLUnifiedScanner - 精准代码切割器</li><li>✅ CompilerDispatcher - 编译器调度器</li><li>✅ CHTL手写编译器</li><li>✅ CHTL JS手写编译器</li><li>✅ CSS编译器</li><li>✅ JavaScript编译器</li><li>✅ ResultMerger - 编译结果合并器</li></ul></div></body></html>
+    <script>
+        // CHTL JS运行时支持
+(function() {
+  'use strict';
+  // CHTL增强选择器支持
+  window.CHTL = window.CHTL || {};
+  // 事件委托管理器
+  CHTL.delegationManager = {
+    delegates: {},
+    register: function(parent, child, event, handler) {
+      const key = parent + '::' + event;
+      if (!this.delegates[key]) {
+        this.delegates[key] = [];
+        document.addEventListener(event, (e) => {
+          const parentEl = e.target.closest(parent);
+          if (parentEl) {
+            this.delegates[key].forEach(delegate => {
+              if (e.target.matches(delegate.child)) {
+                delegate.handler(e);
+              }
+            });
+          }
+        });
+      }
+      this.delegates[key].push({ child, handler });
+    }
+  };
+  // 动画管理器
+  CHTL.animationManager = {
+    animations: [],
+    create: function(config) {
+      return new Promise((resolve) => {
+        // TODO: 实现完整的动画逻辑
+        resolve();
+      });
+    }
+  };
+})();
+    </script>
+</body>
+</html>
