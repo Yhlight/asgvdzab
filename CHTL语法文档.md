@@ -1123,6 +1123,24 @@ script
 }
 ```
 
+### 虚对象
+虚对象是CHTL JS重要的特征之一，在CHTL JS中，有一些功能不具有返回值，不是JS中存在的对象  
+没有明确的调用方式，就例如iNeverAway的作用就是创建一组函数，并没有实际的调用方法  
+虚对象能够直接访问CHTL JS语法中的键值为函数的键  
+从而拿到这一个函数  
+
+```
+vir test = listen({
+    click: () => {
+
+        }
+});
+
+test->click();  // 调用click键的函数
+```
+
+虚对象的原理是创建特殊命名的全局函数，然后解析成这个函数的引用  
+
 ## 开发者专题
 对于想要开发CHTL模块的开发者，可以查看此篇  
 
@@ -1274,3 +1292,27 @@ const str = printMylove({
     scale:  ,  // 缩放倍数，限定为等比缩放策略
 });
 ```
+
+##### iNeverAway
+iNeverAway是一个很特别的功能，从名称上面你完全是理解不到这个功能的实际作用的 iNeverAway用于创建一组标记函数  
+iNeverAway与其他CHTL JS功能不同，它允许开发者定义键，而不是使用键，并使用状态区分同名的键  
+iNeverAway需要与虚对象共用  
+
+```chtl
+vir Test = iNeverAway({
+    Void<A>: function(int, int) {
+
+    },
+
+    Void<B>: funtion(int, int) {  // 通过状态同名同参重载
+
+    },
+});
+
+Test->Void<A>();
+```
+Test是虚拟对象，是不存在的对象，这里并没有创建一个对象  
+
+实现原理：  
+iNeverAway  ->  创建一组JS全局函数，名称由CHTL编译器统一管理  
+vir对象本身不存在，最终转变成相对应的函数的引用  
