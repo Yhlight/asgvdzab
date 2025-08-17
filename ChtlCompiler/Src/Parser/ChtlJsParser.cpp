@@ -113,6 +113,9 @@ std::string ChtlJsParser::transform(const std::string& jsCode) {
     newResult += virProcessed.substr(lastPos);
     virProcessed = newResult;
     
+    // 收集需要生成的全局函数
+    std::string globalFunctions;
+    
     // 转换箭头语法 -> 为 .
     size_t pos = 0;
     while ((pos = virProcessed.find("->", pos)) != std::string::npos) {
@@ -126,11 +129,15 @@ std::string ChtlJsParser::transform(const std::string& jsCode) {
         auto& manager = ChtlJsFunctionRegistry::getInstance().getManager();
         if (manager.hasVirtualObject(objName)) {
             // 虚对象调用，需要转换为全局函数调用
-            size_t funcEnd = virProcessed.find('(', pos + 2);
-            if (funcEnd != std::string::npos) {
-                std::string funcCall = virProcessed.substr(pos + 2, funcEnd - pos - 2);
+            size_t funcEnd = pos + 2;
+            while (funcEnd < virProcessed.length() && 
+                   (std::isalnum(virProcessed[funcEnd]) || virProcessed[funcEnd] == '_')) {
+                funcEnd++;
+            }
+            
+            if (funcEnd < virProcessed.length() && virProcessed[funcEnd] == '(') {
+                std::string funcName = virProcessed.substr(pos + 2, funcEnd - pos - 2);
                 
-                std::string funcName = funcCall;
                 auto funcInfo = manager.findFunction(objName, funcName);
                 if (funcInfo) {
                     // 替换为生成的全局函数名
@@ -138,6 +145,12 @@ std::string ChtlJsParser::transform(const std::string& jsCode) {
                             funcInfo->generatedName + 
                             virProcessed.substr(funcEnd);
                     pos = nameStart + funcInfo->generatedName.length();
+                    
+                    // TODO: 生成全局函数（需要从原始listen参数中提取函数体）
+                    globalFunctions += "\nfunction " + funcInfo->generatedName + "() {\n";
+                    globalFunctions += "    // TODO: Extract function body from listen parameter\n";
+                    globalFunctions += "}\n";
+                    
                     continue;
                 }
             }
@@ -147,6 +160,11 @@ std::string ChtlJsParser::transform(const std::string& jsCode) {
         virProcessed[pos] = '.';
         virProcessed.erase(pos + 1, 1);
         pos++;
+    }
+    
+    // 在末尾添加生成的全局函数
+    if (!globalFunctions.empty()) {
+        virProcessed += "\n// Generated global functions for virtual objects" + globalFunctions;
     }
     
     return virProcessed;
@@ -477,13 +495,32 @@ std::string ChtlJsParser::processVirtualObjectDeclarations(const std::string& co
         // 检查表达式类型
         if (result.substr(exprStart, 6) == "listen") {
             manager.registerVirtualObject(varName, "listen");
-            // TODO: 解析listen的参数，提取函数键
+            
+            // 简单解析：查找 listen( 后的 { }
+            size_t braceStart = result.find('{', exprStart + 6);
+            if (braceStart != std::string::npos) {
+                // 查找函数键（简化：只支持 key: function 格式）
+                std::regex keyRegex(R"((\w+)\s*:\s*(?:function\s*\(|=>|\w+))");
+                std::string searchArea = result.substr(braceStart);
+                std::sregex_iterator it(searchArea.begin(), searchArea.end(), keyRegex);
+                std::sregex_iterator end;
+                
+                while (it != end) {
+                    std::string eventName = (*it)[1];
+                    ChtlJsFunctionManager::FunctionInfo funcInfo;
+                    funcInfo.originalName = eventName;
+                    funcInfo.virtualObject = varName;
+                    funcInfo.generatedName = "_chtl_" + varName + "_" + eventName;
+                    manager.addFunction(varName, funcInfo);
+                    ++it;
+                }
+            }
         } else if (result.substr(exprStart, 8) == "delegate") {
             manager.registerVirtualObject(varName, "delegate");
             // TODO: 解析delegate的参数
         } else if (result.substr(exprStart, 7) == "animate") {
             manager.registerVirtualObject(varName, "animate");
-            // TODO: 解析animate的参数
+            // animate 返回动画对象，处理方式可能不同
         }
         
         // 移除 "vir name = " 部分，保留后面的表达式

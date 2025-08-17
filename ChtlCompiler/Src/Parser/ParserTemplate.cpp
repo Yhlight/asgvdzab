@@ -33,12 +33,21 @@ ASTNodePtr Parser::parseScriptBlock() {
             scriptBlock->setHasChtlJsSyntax(true);
         }
         
-        content += token.value;
-        if (token.type != TokenType::EOF_TOKEN && 
-            token.type != TokenType::DOUBLE_LBRACE && 
-            token.type != TokenType::DOUBLE_RBRACE) {
+        // 根据token类型决定是否需要空格
+        if (!content.empty() && 
+            token.type != TokenType::LPAREN && 
+            token.type != TokenType::RPAREN &&
+            token.type != TokenType::SEMICOLON &&
+            token.type != TokenType::COMMA &&
+            token.type != TokenType::DOT &&
+            token.type != TokenType::ARROW &&
+            !content.empty() && content.back() != ' ' &&
+            content.back() != '(' && content.back() != '{' &&
+            content.back() != ';' && content.back() != ',') {
             content += " ";
         }
+        
+        content += token.value;
         advance();
     }
     

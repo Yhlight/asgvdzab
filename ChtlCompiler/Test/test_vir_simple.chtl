@@ -1,0 +1,6 @@
+html {
+    script {
+        vir test = listen({click: function() {}});
+        test->click();
+    }
+}
