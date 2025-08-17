@@ -1,11 +1,11 @@
 #pragma once
 
-#include "common/fragment_types.h"
+#include "Common/FragmentTypes.h"
 #include <string>
 #include <vector>
 #include <variant>
 
-namespace chtl {
+namespace Chtl {
 
 /**
  * Token类型枚举
@@ -105,48 +105,48 @@ class Token {
 public:
     Token(TokenType type, const std::string& text = "", 
           const SourceLocation& location = SourceLocation{})
-        : type_(type), text_(text), location_(location) {}
+        : Type_(type), Text_(text), Location_(location) {}
     
     Token(TokenType type, const TokenValue& value, const std::string& text,
           const SourceLocation& location = SourceLocation{})
-        : type_(type), value_(value), text_(text), location_(location) {}
+        : Type_(type), Value_(value), Text_(text), Location_(location) {}
     
     // 基础访问器
-    TokenType getType() const { return type_; }
-    const std::string& getText() const { return text_; }
-    const SourceLocation& getLocation() const { return location_; }
-    const TokenValue& getValue() const { return value_; }
+    TokenType GetType() const { return Type_; }
+    const std::string& GetText() const { return Text_; }
+    const SourceLocation& GetLocation() const { return Location_; }
+    const TokenValue& GetValue() const { return Value_; }
     
     // 类型检查
-    bool isKeyword() const;
-    bool isOperator() const;
-    bool isLiteral() const;
-    bool isDelimiter() const;
-    bool isComment() const;
-    bool isCHTLKeyword() const;
-    bool isCHTLJSKeyword() const;
-    bool isTemplateKeyword() const;
+    bool IsKeyword() const;
+    bool IsOperator() const;
+    bool IsLiteral() const;
+    bool IsDelimiter() const;
+    bool IsComment() const;
+    bool IsChtlKeyword() const;
+    bool IsChtlJsKeyword() const;
+    bool IsTemplateKeyword() const;
     
     // 值获取
-    std::string getStringValue() const;
-    int getIntValue() const;
-    double getDoubleValue() const;
-    bool getBoolValue() const;
+    std::string GetStringValue() const;
+    int GetIntValue() const;
+    double GetDoubleValue() const;
+    bool GetBoolValue() const;
     
     // 设置器
-    void setValue(const TokenValue& value) { value_ = value; }
-    void setText(const std::string& text) { text_ = text; }
-    void setLocation(const SourceLocation& location) { location_ = location; }
+    void SetValue(const TokenValue& value) { Value_ = value; }
+    void SetText(const std::string& text) { Text_ = text; }
+    void SetLocation(const SourceLocation& location) { Location_ = location; }
     
     // 工具函数
-    std::string toString() const;
-    bool equals(const Token& other) const;
+    std::string ToString() const;
+    bool Equals(const Token& other) const;
 
 private:
-    TokenType type_;
-    TokenValue value_;
-    std::string text_;
-    SourceLocation location_;
+    TokenType Type_;
+    TokenValue Value_;
+    std::string Text_;
+    SourceLocation Location_;
 };
 
 /**
@@ -154,59 +154,59 @@ private:
  */
 class TokenStream {
 public:
-    TokenStream() : current_index_(0) {}
+    TokenStream() : CurrentIndex_(0) {}
     explicit TokenStream(std::vector<Token> tokens) 
-        : tokens_(std::move(tokens)), current_index_(0) {}
+        : Tokens_(std::move(tokens)), CurrentIndex_(0) {}
     
     // 基础操作
-    void addToken(const Token& token) { tokens_.push_back(token); }
-    void addToken(Token&& token) { tokens_.push_back(std::move(token)); }
+    void AddToken(const Token& token) { Tokens_.push_back(token); }
+    void AddToken(Token&& token) { Tokens_.push_back(std::move(token)); }
     
     // 流操作
-    const Token& current() const;
-    const Token& peek(size_t offset = 1) const;
-    const Token& previous() const;
+    const Token& Current() const;
+    const Token& Peek(size_t offset = 1) const;
+    const Token& Previous() const;
     
-    Token& advance();
-    bool hasNext() const { return current_index_ < tokens_.size(); }
-    bool hasPrevious() const { return current_index_ > 0; }
+    Token& Advance();
+    bool HasNext() const { return CurrentIndex_ < Tokens_.size(); }
+    bool HasPrevious() const { return CurrentIndex_ > 0; }
     
     // 位置操作
-    void reset() { current_index_ = 0; }
-    void seek(size_t index) { current_index_ = std::min(index, tokens_.size()); }
-    size_t getCurrentIndex() const { return current_index_; }
-    size_t size() const { return tokens_.size(); }
+    void Reset() { CurrentIndex_ = 0; }
+    void Seek(size_t index) { CurrentIndex_ = std::min(index, Tokens_.size()); }
+    size_t GetCurrentIndex() const { return CurrentIndex_; }
+    size_t Size() const { return Tokens_.size(); }
     
     // 查找操作
-    bool match(TokenType type);
-    bool match(const std::vector<TokenType>& types);
-    bool check(TokenType type) const;
-    bool isAtEnd() const { return current_index_ >= tokens_.size(); }
+    bool Match(TokenType type);
+    bool Match(const std::vector<TokenType>& types);
+    bool Check(TokenType type) const;
+    bool IsAtEnd() const { return CurrentIndex_ >= Tokens_.size(); }
     
     // 消费操作
-    Token consume(TokenType type, const std::string& error_message = "");
-    void skipWhitespace();
-    void skipComments();
-    void skipWhitespaceAndComments();
+    Token Consume(TokenType type, const std::string& errorMessage = "");
+    void SkipWhitespace();
+    void SkipComments();
+    void SkipWhitespaceAndComments();
     
     // 容器操作
-    const std::vector<Token>& getTokens() const { return tokens_; }
-    std::vector<Token>& getTokens() { return tokens_; }
+    const std::vector<Token>& GetTokens() const { return Tokens_; }
+    std::vector<Token>& GetTokens() { return Tokens_; }
     
-    void clear() { 
-        tokens_.clear(); 
-        current_index_ = 0; 
+    void Clear() { 
+        Tokens_.clear(); 
+        CurrentIndex_ = 0; 
     }
     
     // 调试功能
-    std::string toString() const;
-    void printTokens() const;
+    std::string ToString() const;
+    void PrintTokens() const;
 
 private:
-    std::vector<Token> tokens_;
-    size_t current_index_;
+    std::vector<Token> Tokens_;
+    size_t CurrentIndex_;
     
-    static const Token EOF_TOKEN_;
+    static const Token EofToken_;
 };
 
 /**
@@ -214,21 +214,21 @@ private:
  */
 class TokenUtils {
 public:
-    static std::string tokenTypeToString(TokenType type);
-    static TokenType stringToTokenType(const std::string& str);
+    static std::string TokenTypeToString(TokenType type);
+    static TokenType StringToTokenType(const std::string& str);
     
-    static bool isKeyword(const std::string& text);
-    static bool isCHTLKeyword(const std::string& text);
-    static bool isCHTLJSKeyword(const std::string& text);
+    static bool IsKeyword(const std::string& text);
+    static bool IsChtlKeyword(const std::string& text);
+    static bool IsChtlJsKeyword(const std::string& text);
     
-    static TokenType getKeywordType(const std::string& text);
-    static bool isValidIdentifier(const std::string& text);
-    static bool isValidNumber(const std::string& text);
+    static TokenType GetKeywordType(const std::string& text);
+    static bool IsValidIdentifier(const std::string& text);
+    static bool IsValidNumber(const std::string& text);
     
     // 特殊Token识别
-    static bool isEnhancedSelector(const std::string& text);
-    static bool isCSSSelector(const std::string& text);
-    static std::string extractSelectorContent(const std::string& text);
+    static bool IsEnhancedSelector(const std::string& text);
+    static bool IsCssSelector(const std::string& text);
+    static std::string ExtractSelectorContent(const std::string& text);
 };
 
-} // namespace chtl
+} // namespace Chtl

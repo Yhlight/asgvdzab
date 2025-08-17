@@ -179,18 +179,18 @@ run_tests() {
 show_results() {
     print_message $BLUE "构建结果:"
     
-    if [ -f "bin/chtl_compiler" ]; then
-        local file_size=$(ls -lh bin/chtl_compiler | awk '{print $5}')
-        print_message $GREEN "  可执行文件: bin/chtl_compiler ($file_size)"
+    if [ -f "Bin/ChtlCompiler" ]; then
+        local file_size=$(ls -lh Bin/ChtlCompiler | awk '{print $5}')
+        print_message $GREEN "  可执行文件: Bin/ChtlCompiler ($file_size)"
     fi
     
-    if [ -f "lib/libchtl_core.a" ]; then
-        local lib_size=$(ls -lh lib/libchtl_core.a | awk '{print $5}')
-        print_message $GREEN "  静态库: lib/libchtl_core.a ($lib_size)"
+    if [ -f "Lib/libChtlCore.a" ]; then
+        local lib_size=$(ls -lh Lib/libChtlCore.a | awk '{print $5}')
+        print_message $GREEN "  静态库: Lib/libChtlCore.a ($lib_size)"
     fi
     
     print_message $BLUE "使用方法:"
-    print_message $YELLOW "  ./bin/chtl_compiler ../examples/example.chtl -o output.html"
+    print_message $YELLOW "  ./Bin/ChtlCompiler ../Examples/Example.chtl -o Output.html"
 }
 
 # 解析命令行参数

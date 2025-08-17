@@ -11,7 +11,7 @@ CHTL（C++ Hypertext Template Language）是一个基于C++17实现的超文本�
                               │
                               ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│                    CHTLUnifiedScanner                           │
+│                    ChtlUnifiedScanner                           │
 │                   (精准代码切割器)                               │
 └─────────────────────────────┬───────────────────────────────────┘
                               │
@@ -51,42 +51,44 @@ CHTL（C++ Hypertext Template Language）是一个基于C++17实现的超文本�
 ## 项目结构
 
 ```
-CHTL_Compiler/
+ChtlCompiler/
 ├── CMakeLists.txt              # 根CMake配置
 ├── README.md                   # 项目说明
 ├── CHTL语法文档.md            # CHTL语法文档
-├── include/                    # 头文件目录
-│   ├── common/                 # 公共头文件
-│   │   ├── fragment_types.h    # 代码片段类型定义
-│   │   └── compiler_interface.h # 编译器接口定义
-│   ├── scanner/                # 扫描器头文件
-│   │   ├── unified_scanner.h   # 统一扫描器
-│   │   └── token.h             # Token定义
-│   ├── dispatcher/             # 调度器头文件
-│   │   └── compiler_dispatcher.h # 编译器调度器
-│   ├── compilers/              # 编译器头文件
-│   │   ├── chtl/              # CHTL编译器
-│   │   ├── chtljs/            # CHTL JS编译器
-│   │   ├── css/               # CSS编译器
-│   │   └── js/                # JavaScript编译器
-│   ├── merger/                 # 结果合并器头文件
-│   │   └── result_merger.h     # 结果合并器
-│   └── utils/                  # 工具类头文件
-├── src/                        # 源文件目录
+├── Include/                    # 头文件目录
+│   ├── Common/                 # 公共头文件
+│   │   ├── FragmentTypes.h     # 代码片段类型定义
+│   │   └── CompilerInterface.h # 编译器接口定义
+│   ├── Scanner/                # 扫描器头文件
+│   │   ├── UnifiedScanner.h    # 统一扫描器
+│   │   └── Token.h             # Token定义
+│   ├── Dispatcher/             # 调度器头文件
+│   │   └── CompilerDispatcher.h # 编译器调度器
+│   ├── Compilers/              # 编译器头文件
+│   │   ├── Chtl/              # CHTL编译器
+│   │   ├── ChtlJs/            # CHTL JS编译器
+│   │   ├── Css/               # CSS编译器
+│   │   └── Js/                # JavaScript编译器
+│   ├── Merger/                 # 结果合并器头文件
+│   │   └── ResultMerger.h      # 结果合并器
+│   └── Utils/                  # 工具类头文件
+├── Src/                        # 源文件目录
 │   ├── CMakeLists.txt          # 源文件CMake配置
-│   ├── main.cpp                # 主程序入口
-│   ├── common/                 # 公共实现
-│   ├── scanner/                # 扫描器实现
-│   ├── dispatcher/             # 调度器实现
-│   ├── compilers/              # 编译器实现
-│   ├── merger/                 # 结果合并器实现
-│   └── utils/                  # 工具类实现
+│   ├── Main.cpp                # 主程序入口
+│   ├── Common/                 # 公共实现
+│   ├── Scanner/                # 扫描器实现
+│   ├── Dispatcher/             # 调度器实现
+│   ├── Compilers/              # 编译器实现
+│   ├── Merger/                 # 结果合并器实现
+│   └── Utils/                  # 工具类实现
+├── Examples/                   # 示例文件
+│   └── Example.chtl            # CHTL语法示例
 └── antlr-prebuilt/             # ANTLR预编译文件
 ```
 
 ## 核心组件
 
-### 1. CHTLUnifiedScanner (精准代码切割器)
+### 1. ChtlUnifiedScanner (精准代码切割器)
 负责将CHTL源代码精确切割成不同类型的代码片段：
 - CHTL片段
 - CHTL JS片段
@@ -118,7 +120,7 @@ CHTL_Compiler/
 
 ```bash
 # 1. 创建构建目录
-mkdir build && cd build
+mkdir Build && cd Build
 
 # 2. 配置项目
 cmake ..
@@ -127,14 +129,14 @@ cmake ..
 make -j4
 
 # 4. 运行编译器
-./bin/chtl_compiler input.chtl -o output.html
+./Bin/ChtlCompiler ../Examples/Example.chtl -o Output.html
 ```
 
 ## 使用方法
 
 ### 基本用法
 ```bash
-chtl_compiler input.chtl -o output.html
+ChtlCompiler Input.chtl -o Output.html
 ```
 
 ### 命令行选项
@@ -148,13 +150,13 @@ chtl_compiler input.chtl -o output.html
 ### 示例
 ```bash
 # 基本编译
-chtl_compiler example.chtl
+ChtlCompiler Example.chtl
 
 # 并行编译并压缩输出
-chtl_compiler example.chtl -p -m -o min.html
+ChtlCompiler Example.chtl -p -m -o Min.html
 
 # 调试模式
-chtl_compiler example.chtl --debug
+ChtlCompiler Example.chtl --debug
 ```
 
 ## 特性
@@ -184,6 +186,17 @@ chtl_compiler example.chtl --debug
 - 错误处理和报告
 - 性能统计
 
+## 命名规范
+
+项目采用大驼峰命名法 (PascalCase)：
+- **文件夹**: `Include/`, `Src/`, `Common/`, `Scanner/` 等
+- **头文件**: `FragmentTypes.h`, `CompilerInterface.h`, `UnifiedScanner.h` 等
+- **源文件**: `Main.cpp`, `FragmentTypes.cpp`, `CompilerDispatcher.cpp` 等
+- **类名**: `ChtlUnifiedScanner`, `CompilerDispatcher`, `FragmentContainer` 等
+- **方法名**: `GetType()`, `SetContent()`, `CreateScanner()` 等
+- **变量名**: `Type_`, `Content_`, `Location_` 等 (成员变量使用下划线后缀)
+- **命名空间**: `Chtl`
+
 ## 开发状态
 
 当前项目处于基础架构建立阶段，已完成：
@@ -192,6 +205,7 @@ chtl_compiler example.chtl --debug
 ✅ 核心接口定义  
 ✅ CMake构建系统配置  
 ✅ 主程序框架  
+✅ 大驼峰命名法规范化
 
 待完成：
 - [ ] 统一扫描器实现
