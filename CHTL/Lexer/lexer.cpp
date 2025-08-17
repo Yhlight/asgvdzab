@@ -1,9 +1,8 @@
-#include "ast/lexer.hpp"
+#include "CHTL/Lexer.hpp"
 #include <cctype>
 #include <unordered_set>
 
-namespace chtl {
-namespace ast {
+namespace CHTL {
 
 // 初始化关键字映射
 std::unordered_map<std::string, TokenType> Lexer::keywords_ = {

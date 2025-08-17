@@ -1,5 +1,5 @@
-#include "ast/ast_nodes.hpp"
-#include "ast/ast_visitor.hpp"
+#include "CHTL/ASTNodes.hpp"
+#include "CHTL/ASTVisitor.hpp"
 #include <sstream>
 #include <algorithm>
 

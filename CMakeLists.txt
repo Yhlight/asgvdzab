@@ -1,175 +1,194 @@
-cmake_minimum_required(VERSION 3.10)
-project(CHTL VERSION 1.0.0 LANGUAGES CXX)
+cmake_minimum_required(VERSION 3.15)
+project(CHTL-Compiler VERSION 1.0.0 LANGUAGES CXX)
 
 # 设置C++标准
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-# 配置输出目录
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-
-# 设置ANTLR4预编译包路径
-set(ANTLR4_ROOT "${CMAKE_SOURCE_DIR}/antlr-prebuilt")
-
-# 包含ANTLR4配置
-if(EXISTS "${ANTLR4_ROOT}/ANTLR4Config.cmake")
-    include("${ANTLR4_ROOT}/ANTLR4Config.cmake")
-    message(STATUS "✓ 使用ANTLR4预编译包: ${ANTLR4_ROOT}")
+# 设置编译选项
+if(MSVC)
+    add_compile_options(/W4)
 else()
-    message(FATAL_ERROR "未找到ANTLR4预编译包配置文件: ${ANTLR4_ROOT}/ANTLR4Config.cmake")
+    add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
-# 设置包含目录
-set(CHTL_INCLUDE_DIRS
-    ${CMAKE_SOURCE_DIR}/include
-    ${CMAKE_SOURCE_DIR}/generated/antlr/css
-    ${CMAKE_SOURCE_DIR}/generated/antlr/js
-    ${ANTLR4_INCLUDE_DIRS}
-)
-
-# 收集CHTL核心源文件
-file(GLOB_RECURSE CHTL_CORE_SOURCES
-    "src/ast/*.cpp"
-    "src/common/*.cpp"
-    "src/utils/*.cpp"
-    "src/lexer/*.cpp"
-    "src/generators/*.cpp"
-    "src/scanner/*.cpp"
-    "src/import/*.cpp"
-    "src/namespace/*.cpp"
-    "src/cmod/*.cpp"
-    "src/cjmod/*.cpp"
-    "src/network/*.cpp"
-    "src/compiler/*.cpp"
-    "src/core/*.cpp"
-    "src/constraints/*.cpp"
-    "src/compilers/*.cpp"
-)
-
-file(GLOB_RECURSE CHTL_COMPILER_SOURCES
-    "src/compilers/*.cpp"
-)
-
-# 收集ANTLR生成的源文件
-file(GLOB_RECURSE ANTLR_GENERATED_SRC
-    "generated/antlr/css/*.cpp"
-    "generated/antlr/js/*.cpp"
-)
-
-# 检查ANTLR生成的文件是否存在
-if(NOT ANTLR_GENERATED_SRC)
-    message(WARNING "未找到ANTLR生成的源文件，将稍后生成")
+# 设置构建类型
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Release)
 endif()
 
-# 创建核心库
-add_library(chtl_core ${CHTL_CORE_SOURCES})
-target_include_directories(chtl_core PUBLIC ${CHTL_INCLUDE_DIRS})
+# 包含目录
+include_directories(${CMAKE_SOURCE_DIR}/Include)
 
-# 创建编译器库
-add_library(chtl_compilers ${CHTL_COMPILER_SOURCES} ${ANTLR_GENERATED_SRC})
-target_include_directories(chtl_compilers PUBLIC 
-    ${CHTL_INCLUDE_DIRS}
-    ${CMAKE_SOURCE_DIR}/generated/antlr/css
-    ${CMAKE_SOURCE_DIR}/generated/antlr/js
-)
-target_link_libraries(chtl_compilers chtl_core ANTLR4::antlr4_runtime)
+# ===== CHTL编译器模块 =====
 
-# 创建主可执行文件
-add_executable(chtl src/main.cpp)
-target_include_directories(chtl PRIVATE ${CHTL_INCLUDE_DIRS})
-target_link_libraries(chtl chtl_core chtl_compilers)
-
-# 生成ANTLR解析器的自定义目标
-add_custom_target(generate_antlr_parsers
-    COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_SOURCE_DIR}/generated/antlr/css
-    COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_SOURCE_DIR}/generated/antlr/js
-    COMMAND java -jar ${ANTLR4_JAR_LOCATION} 
-        ${CMAKE_SOURCE_DIR}/grammars/CSS3.g4 
-        -Dlanguage=Cpp -listener -visitor 
-        -o ${CMAKE_SOURCE_DIR}/generated/antlr/css/
-    COMMAND java -jar ${ANTLR4_JAR_LOCATION} 
-        ${CMAKE_SOURCE_DIR}/grammars/JavaScript.g4 
-        -Dlanguage=Cpp -listener -visitor 
-        -o ${CMAKE_SOURCE_DIR}/generated/antlr/js/
-    COMMENT "生成ANTLR CSS和JavaScript解析器"
-    VERBATIM
+# CHTL Common模块
+set(CHTL_COMMON_SOURCES
+    # CHTL/Common/Common.cpp        # 待实现
+    # CHTL/Common/StringUtils.cpp   # 待实现
+    # CHTL/Common/FileUtils.cpp     # 待实现
+    # CHTL/Common/HtmlUtils.cpp     # 待实现
+    # CHTL/Common/CssUtils.cpp      # 待实现
+    # CHTL/Common/DebugUtils.cpp    # 待实现
 )
 
-# 创建测试可执行文件
-if(EXISTS "${CMAKE_SOURCE_DIR}/tests")
-    file(GLOB_RECURSE TEST_SOURCES "tests/*.cpp")
-    
-    # 创建测试库
-    add_library(chtl_test_lib ${CHTL_CORE_SOURCES} ${CHTL_COMPILER_SOURCES})
-    target_include_directories(chtl_test_lib PUBLIC ${CHTL_INCLUDE_DIRS})
-    target_link_libraries(chtl_test_lib ANTLR4::antlr4_runtime)
-    
-    # 现代ANTLR测试
-    if(EXISTS "${CMAKE_SOURCE_DIR}/tests/modern_antlr_test.cpp")
-        add_executable(modern_antlr_test tests/modern_antlr_test.cpp)
-        target_link_libraries(modern_antlr_test chtl_test_lib)
-        target_include_directories(modern_antlr_test PRIVATE ${CHTL_INCLUDE_DIRS})
-    endif()
-    
-    # CSS编译器测试
-    if(EXISTS "${CMAKE_SOURCE_DIR}/tests/css_compiler_test.cpp")
-        add_executable(css_compiler_test tests/css_compiler_test.cpp)
-        target_link_libraries(css_compiler_test chtl_test_lib)
-        target_include_directories(css_compiler_test PRIVATE ${CHTL_INCLUDE_DIRS})
-    endif()
-    
-    # JS编译器测试
-    if(EXISTS "${CMAKE_SOURCE_DIR}/tests/js_compiler_test.cpp")
-        add_executable(js_compiler_test tests/js_compiler_test.cpp)
-        target_link_libraries(js_compiler_test chtl_test_lib)
-        target_include_directories(js_compiler_test PRIVATE ${CHTL_INCLUDE_DIRS})
-    endif()
-    
-    # 统一编译器架构测试
-    if(EXISTS "${CMAKE_SOURCE_DIR}/tests/unified_compiler_test.cpp")
-        add_executable(unified_compiler_test tests/unified_compiler_test.cpp)
-        target_link_libraries(unified_compiler_test chtl_test_lib)
-        target_include_directories(unified_compiler_test PRIVATE ${CHTL_INCLUDE_DIRS})
-    endif()
-    
-    # 集成编译器系统测试
-    if(EXISTS "${CMAKE_SOURCE_DIR}/tests/integrated_system_test.cpp")
-        add_executable(integrated_system_test tests/integrated_system_test.cpp)
-        target_link_libraries(integrated_system_test chtl_test_lib)
-        target_include_directories(integrated_system_test PRIVATE ${CHTL_INCLUDE_DIRS})
-        
-        # 添加扫描器最小单元切割测试
-        add_executable(scanner_minimal_unit_test tests/scanner_minimal_unit_test.cpp)
-        target_link_libraries(scanner_minimal_unit_test chtl_test_lib)
-        target_include_directories(scanner_minimal_unit_test PRIVATE ${CHTL_INCLUDE_DIRS})
-        
-        # 生成器注释系统测试
-        add_executable(generator_comment_test tests/generator_comment_test.cpp)
-        target_link_libraries(generator_comment_test chtl_test_lib)
-        target_include_directories(generator_comment_test PRIVATE ${CHTL_INCLUDE_DIRS})
+# CHTL Lexer模块
+set(CHTL_LEXER_SOURCES
+    CHTL/Lexer/lexer.cpp
+    # CHTL/Lexer/Token.cpp          # 待实现
+    # CHTL/Lexer/LexerFactory.cpp   # 待实现
+    # CHTL/Lexer/TokenUtils.cpp     # 待实现
+)
 
-        # CHTL语法测试（如果有ANTLR）
-        if(ANTLR4_FOUND)
-            add_executable(chtl_syntax_test tests/chtl_syntax_test.cpp)
-            target_link_libraries(chtl_syntax_test chtl_test_lib)
-            target_include_directories(chtl_syntax_test PRIVATE ${CHTL_INCLUDE_DIRS})
-        endif()
+# CHTL Parser模块
+set(CHTL_PARSER_SOURCES
+    CHTL/Parser/ASTNodes.cpp
+    CHTL/Parser/chtl_ast.cpp
+    CHTL/Parser/chtl_js_ast.cpp
+    # CHTL/Parser/Parser.cpp         # 待实现
+    # CHTL/Parser/ASTVisitor.cpp     # 待实现
+    # CHTL/Parser/ParserFactory.cpp  # 待实现
+    # CHTL/Parser/SemanticAnalyzer.cpp # 待实现
+)
+
+# CHTL Generator模块
+set(CHTL_GENERATOR_SOURCES
+    # CHTL/Generator/HtmlGenerator.cpp    # 待实现
+    # CHTL/Generator/CssGenerator.cpp     # 待实现
+    # CHTL/Generator/JsGenerator.cpp      # 待实现
+    # CHTL/Generator/SourceMapGenerator.cpp # 待实现
+    # CHTL/Generator/CodeOptimizer.cpp    # 待实现
+)
+
+# CHTL Loader模块
+set(CHTL_LOADER_SOURCES
+    # CHTL/Loader/ModuleLoader.cpp     # 待实现
+    # CHTL/Loader/ImportResolver.cpp   # 待实现
+    # CHTL/Loader/NamespaceManager.cpp # 待实现
+    # CHTL/Loader/TemplateSystem.cpp   # 待实现
+    # CHTL/Loader/ConstraintSystem.cpp # 待实现
+)
+
+# 合并所有CHTL源文件
+set(CHTL_ALL_SOURCES
+    ${CHTL_COMMON_SOURCES}
+    ${CHTL_LEXER_SOURCES}
+    ${CHTL_PARSER_SOURCES}
+    ${CHTL_GENERATOR_SOURCES}
+    ${CHTL_LOADER_SOURCES}
+)
+
+# 过滤掉注释掉的文件（不存在的文件）
+set(CHTL_EXISTING_SOURCES)
+foreach(source ${CHTL_ALL_SOURCES})
+    if(EXISTS ${CMAKE_SOURCE_DIR}/${source})
+        list(APPEND CHTL_EXISTING_SOURCES ${source})
     endif()
+endforeach()
+
+# 创建CHTL静态库
+if(CHTL_EXISTING_SOURCES)
+    add_library(chtl-core STATIC ${CHTL_EXISTING_SOURCES})
+    target_include_directories(chtl-core PUBLIC ${CMAKE_SOURCE_DIR}/Include)
+    target_compile_features(chtl-core PUBLIC cxx_std_17)
+    
+    # 输出创建的库信息
+    list(LENGTH CHTL_EXISTING_SOURCES CHTL_SOURCE_COUNT)
+    message(STATUS "CHTL Core Library created with ${CHTL_SOURCE_COUNT} source files")
+else()
+    message(WARNING "No existing CHTL source files found")
 endif()
 
-# 安装配置
-install(TARGETS chtl DESTINATION bin)
-install(TARGETS chtl_core chtl_compilers DESTINATION lib)
-install(DIRECTORY include/ DESTINATION include/chtl)
+# ===== CHTL JS编译器模块 =====
+# TODO: 实现CHTL JS模块
 
-# 显示配置信息
-message(STATUS "=== CHTL项目配置 ===")
-message(STATUS "C++标准: ${CMAKE_CXX_STANDARD}")
-message(STATUS "ANTLR4路径: ${ANTLR4_ROOT}")
-message(STATUS "ANTLR4版本: ${ANTLR4_VERSION}")
-message(STATUS "包含目录: ${CHTL_INCLUDE_DIRS}")
-message(STATUS "构建类型: ${CMAKE_BUILD_TYPE}")
-message(STATUS "输出目录: ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
+# ===== 可执行程序 =====
+
+# 编译器主程序
+if(EXISTS ${CMAKE_SOURCE_DIR}/Tools/Compiler/Main.cpp)
+    add_executable(chtlc Tools/Compiler/Main.cpp)
+    if(TARGET chtl-core)
+        target_link_libraries(chtlc chtl-core)
+    endif()
+    target_include_directories(chtlc PRIVATE ${CMAKE_SOURCE_DIR}/Include)
+endif()
+
+# ===== 测试 =====
+
+# 启用测试
+enable_testing()
+
+# 查找测试文件并创建测试可执行程序
+file(GLOB_RECURSE TEST_SOURCES "Tests/*.cpp")
+foreach(test_source ${TEST_SOURCES})
+    get_filename_component(test_name ${test_source} NAME_WE)
+    get_filename_component(test_dir ${test_source} DIRECTORY)
+    get_filename_component(test_dir_name ${test_dir} NAME)
+    
+    set(test_executable test_${test_dir_name}_${test_name})
+    add_executable(${test_executable} ${test_source})
+    
+    if(TARGET chtl-core)
+        target_link_libraries(${test_executable} chtl-core)
+    endif()
+    target_include_directories(${test_executable} PRIVATE ${CMAKE_SOURCE_DIR}/Include)
+    
+    # 添加到测试
+    add_test(NAME ${test_executable} COMMAND ${test_executable})
+endforeach()
+
+# ===== 安装规则 =====
+
+# 安装头文件
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/Include/
+        DESTINATION include
+        FILES_MATCHING PATTERN "*.hpp")
+
+# 安装库
+if(TARGET chtl-core)
+    install(TARGETS chtl-core
+            ARCHIVE DESTINATION lib
+            LIBRARY DESTINATION lib)
+endif()
+
+# 安装可执行文件
+if(TARGET chtlc)
+    install(TARGETS chtlc
+            RUNTIME DESTINATION bin)
+endif()
+
+# ===== 开发信息 =====
+
+message(STATUS "====================================")
+message(STATUS "CHTL Compiler Build Configuration")
+message(STATUS "====================================")
+message(STATUS "Build Type: ${CMAKE_BUILD_TYPE}")
+message(STATUS "C++ Standard: ${CMAKE_CXX_STANDARD}")
+message(STATUS "Source Directory: ${CMAKE_SOURCE_DIR}")
+message(STATUS "Binary Directory: ${CMAKE_BINARY_DIR}")
+message(STATUS "====================================")
+
+# 显示找到的源文件
+if(CHTL_EXISTING_SOURCES)
+    message(STATUS "Found CHTL source files:")
+    foreach(source ${CHTL_EXISTING_SOURCES})
+        message(STATUS "  - ${source}")
+    endforeach()
+else()
+    message(STATUS "No CHTL source files found yet")
+endif()
+
+# 显示找到的测试文件
+if(TEST_SOURCES)
+    message(STATUS "Found test files:")
+    foreach(test ${TEST_SOURCES})
+        message(STATUS "  - ${test}")
+    endforeach()
+else()
+    message(STATUS "No test files found yet")
+endif()
+
+message(STATUS "====================================")
+message(STATUS "Ready to build CHTL Compiler!")
+message(STATUS "====================================")
