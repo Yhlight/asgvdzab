@@ -7,27 +7,9 @@
 #include <vector>
 #include <stack>
 #include "utils/common.h"
+#include "compiler/chtl/chtl_ast.h"
 
 namespace chtl {
-
-// 前向声明
-struct ASTNode;
-struct TemplateNode;
-struct CustomNode;
-
-// 模板类型
-enum class TemplateType {
-    STYLE,
-    ELEMENT,
-    VAR
-};
-
-// 自定义类型
-enum class CustomType {
-    STYLE,
-    ELEMENT,
-    VAR
-};
 
 // 模板定义
 struct TemplateDefinition {

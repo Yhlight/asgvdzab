@@ -1,5 +1,5 @@
 #include "compiler/compiler_interface.h"
-#include "compiler/chtl/chtl_compiler.h"
+#include "compiler/chtl/chtl_compiler_v2.h"
 #include "compiler/chtljs/chtljs_preprocessor.h"
 #include "compiler/css/css_compiler.h"
 #include "compiler/javascript/js_compiler.h"
@@ -9,7 +9,7 @@ namespace chtl {
 std::unique_ptr<ICompiler> CompilerFactory::createCompiler(CodeFragmentType type) {
     switch (type) {
         case CodeFragmentType::CHTL:
-            return std::make_unique<CHTLCompiler>();
+            return std::make_unique<CHTLCompilerV2>();
             
         case CodeFragmentType::CHTL_JS:
             return std::make_unique<CHTLJSPreprocessor>();

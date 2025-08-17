@@ -40,7 +40,14 @@ endif()
 # 收集源文件
 file(GLOB_RECURSE SCANNER_SOURCES "src/scanner/*.cpp")
 file(GLOB_RECURSE DISPATCHER_SOURCES "src/dispatcher/*.cpp")
-file(GLOB_RECURSE CHTL_COMPILER_SOURCES "src/compiler/chtl/*.cpp")
+# 暂时排除旧的编译器，只包含新的文件
+set(CHTL_COMPILER_SOURCES 
+    "src/compiler/chtl/chtl_state.cpp"
+    "src/compiler/chtl/chtl_lexer.cpp"
+    "src/compiler/chtl/chtl_parser.cpp"
+    "src/compiler/chtl/chtl_generator.cpp"
+    "src/compiler/chtl/chtl_compiler_v2.cpp"
+)
 file(GLOB_RECURSE CHTLJS_COMPILER_SOURCES "src/compiler/chtljs/*.cpp")
 file(GLOB_RECURSE CSS_COMPILER_SOURCES "src/compiler/css/*.cpp")
 file(GLOB_RECURSE JS_COMPILER_SOURCES "src/compiler/javascript/*.cpp")

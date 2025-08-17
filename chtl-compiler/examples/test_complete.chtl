@@ -1,7 +1,7 @@
 // 这是一个完整的CHTL测试文件，测试所有语法特性
 // 单行注释不会出现在生成的HTML中
 
-/* 
+/*
    多行注释
    也不会出现在生成的HTML中
 */
@@ -150,9 +150,9 @@ html
             {
                 class: section;
                 
-                h2 
-                { 
-                    text { "Features" } 
+                h2
+                {
+                    text { "Features" }
                 }
                 
                 ul

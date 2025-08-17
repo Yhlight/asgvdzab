@@ -3,6 +3,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <algorithm>
 #include "scanner/unified_scanner.h"
 #include "dispatcher/compiler_dispatcher.h"
 #include "merger/result_merger.h"
@@ -69,6 +70,17 @@ int main(int argc, char* argv[]) {
         std::cout << "Reading " << input_file << "...\n";
         std::string input_content = readFile(input_file);
         
+        // 临时方案：直接将整个文件作为一个CHTL片段
+        std::vector<CodeFragment> fragments;
+        CodeFragment fragment;
+        fragment.type = CodeFragmentType::CHTL;
+        fragment.content = input_content;
+        fragment.location.file_path = input_file;
+        fragment.location.start_line = 1;
+        fragment.location.end_line = std::count(input_content.begin(), input_content.end(), '\n') + 1;
+        fragments.push_back(fragment);
+        
+        /*
         // 创建扫描器
         // 创建扫描器
         ScannerConfig scan_config;
@@ -79,6 +91,7 @@ int main(int argc, char* argv[]) {
         // 扫描代码片段
         std::cout << "Scanning code fragments...\n";
         auto fragments = scanner.scan(input_content);
+        */
         
         if (fragments.empty()) {
             std::cerr << "No code fragments found!\n";

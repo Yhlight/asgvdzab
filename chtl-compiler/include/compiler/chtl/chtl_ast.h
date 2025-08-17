@@ -9,6 +9,20 @@
 
 namespace chtl {
 
+// 模板类型
+enum class TemplateType {
+    STYLE,
+    ELEMENT,
+    VAR
+};
+
+// 自定义类型
+enum class CustomType {
+    STYLE,
+    ELEMENT,
+    VAR
+};
+
 // AST节点类型枚举
 enum class ASTNodeType {
     // 基础节点
@@ -130,7 +144,8 @@ private:
 class ElementNode : public ASTNode {
 public:
     ElementNode(const std::string& tag_name, size_t line = 0, size_t column = 0)
-        : ASTNode(ASTNodeType::ELEMENT, line, column), tag_name_(tag_name) {}
+        : ASTNode(ASTNodeType::ELEMENT, line, column), tag_name_(tag_name),
+          has_local_style(false), has_local_script(false) {}
     
     const std::string& getTagName() const { return tag_name_; }
     
@@ -142,6 +157,11 @@ public:
     const std::vector<std::pair<std::string, std::string>>& getAttributes() const {
         return attributes_;
     }
+    
+    // 公开成员（为了兼容）
+    bool has_local_style;
+    bool has_local_script;
+    std::string generated_class_name;
     
 private:
     std::string tag_name_;

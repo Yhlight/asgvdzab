@@ -1,2 +1,2 @@
-/usr/bin/ar qc libchtl_compiler.a CMakeFiles/chtl_compiler.dir/src/compiler/chtl/chtl_compiler.cpp.o
+/usr/bin/ar qc libchtl_compiler.a CMakeFiles/chtl_compiler.dir/src/compiler/chtl/chtl_state.cpp.o CMakeFiles/chtl_compiler.dir/src/compiler/chtl/chtl_lexer.cpp.o CMakeFiles/chtl_compiler.dir/src/compiler/chtl/chtl_parser.cpp.o CMakeFiles/chtl_compiler.dir/src/compiler/chtl/chtl_generator.cpp.o CMakeFiles/chtl_compiler.dir/src/compiler/chtl/chtl_compiler_v2.cpp.o
 /usr/bin/ranlib libchtl_compiler.a

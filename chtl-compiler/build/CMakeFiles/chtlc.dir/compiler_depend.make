@@ -235,7 +235,8 @@ CMakeFiles/chtlc.dir/src/compiler/compiler_factory.cpp.o: /workspace/chtl-compil
   /usr/lib/llvm-20/lib/clang/20/include/stdarg.h \
   /usr/lib/llvm-20/lib/clang/20/include/stddef.h \
   /usr/lib/llvm-20/lib/clang/20/include/stdint.h \
-  /workspace/chtl-compiler/include/compiler/chtl/chtl_compiler.h \
+  /workspace/chtl-compiler/include/compiler/chtl/chtl_ast.h \
+  /workspace/chtl-compiler/include/compiler/chtl/chtl_compiler_v2.h \
   /workspace/chtl-compiler/include/compiler/chtl/chtl_state.h \
   /workspace/chtl-compiler/include/compiler/chtl/chtl_tokens.h \
   /workspace/chtl-compiler/include/compiler/chtljs/chtljs_preprocessor.h \
@@ -639,6 +640,8 @@ CMakeFiles/chtlc.dir/src/compiler/compiler_factory.cpp.o:
 
 /usr/include/c++/14/bits/sstream.tcc:
 
+/usr/include/c++/14/bits/locale_classes.tcc:
+
 /usr/include/c++/14/bits/char_traits.h:
 
 /usr/include/x86_64-linux-gnu/asm/posix_types.h:
@@ -706,8 +709,6 @@ CMakeFiles/chtlc.dir/src/compiler/compiler_factory.cpp.o:
 /usr/include/x86_64-linux-gnu/bits/types/struct_timeval.h:
 
 /usr/include/c++/14/bits/shared_ptr_atomic.h:
-
-/usr/include/c++/14/backward/auto_ptr.h:
 
 /usr/include/c++/14/bits/move.h:
 
@@ -812,8 +813,6 @@ CMakeFiles/chtlc.dir/src/compiler/compiler_factory.cpp.o:
 /workspace/chtl-compiler/include/utils/common.h:
 
 /usr/include/linux/posix_types.h:
-
-/usr/include/c++/14/bits/locale_classes.tcc:
 
 /usr/include/x86_64-linux-gnu/bits/types/__locale_t.h:
 
@@ -1173,7 +1172,11 @@ CMakeFiles/chtlc.dir/src/compiler/compiler_factory.cpp.o:
 
 /usr/lib/llvm-20/lib/clang/20/include/stddef.h:
 
-/workspace/chtl-compiler/include/compiler/chtl/chtl_compiler.h:
+/usr/include/c++/14/backward/auto_ptr.h:
+
+/workspace/chtl-compiler/include/compiler/chtl/chtl_ast.h:
+
+/workspace/chtl-compiler/include/compiler/chtl/chtl_compiler_v2.h:
 
 /workspace/chtl-compiler/include/compiler/javascript/js_compiler.h:
 

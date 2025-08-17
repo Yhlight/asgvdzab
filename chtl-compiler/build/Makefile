@@ -275,29 +275,125 @@ chtlc/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtlc.dir/build.make CMakeFiles/chtlc.dir/build
 .PHONY : chtlc/fast
 
-src/compiler/chtl/chtl_compiler.o: src/compiler/chtl/chtl_compiler.cpp.o
-.PHONY : src/compiler/chtl/chtl_compiler.o
+src/compiler/chtl/chtl_compiler_v2.o: src/compiler/chtl/chtl_compiler_v2.cpp.o
+.PHONY : src/compiler/chtl/chtl_compiler_v2.o
 
 # target to build an object file
-src/compiler/chtl/chtl_compiler.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/compiler/chtl/chtl_compiler.cpp.o
-.PHONY : src/compiler/chtl/chtl_compiler.cpp.o
+src/compiler/chtl/chtl_compiler_v2.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/compiler/chtl/chtl_compiler_v2.cpp.o
+.PHONY : src/compiler/chtl/chtl_compiler_v2.cpp.o
 
-src/compiler/chtl/chtl_compiler.i: src/compiler/chtl/chtl_compiler.cpp.i
-.PHONY : src/compiler/chtl/chtl_compiler.i
+src/compiler/chtl/chtl_compiler_v2.i: src/compiler/chtl/chtl_compiler_v2.cpp.i
+.PHONY : src/compiler/chtl/chtl_compiler_v2.i
 
 # target to preprocess a source file
-src/compiler/chtl/chtl_compiler.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/compiler/chtl/chtl_compiler.cpp.i
-.PHONY : src/compiler/chtl/chtl_compiler.cpp.i
+src/compiler/chtl/chtl_compiler_v2.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/compiler/chtl/chtl_compiler_v2.cpp.i
+.PHONY : src/compiler/chtl/chtl_compiler_v2.cpp.i
 
-src/compiler/chtl/chtl_compiler.s: src/compiler/chtl/chtl_compiler.cpp.s
-.PHONY : src/compiler/chtl/chtl_compiler.s
+src/compiler/chtl/chtl_compiler_v2.s: src/compiler/chtl/chtl_compiler_v2.cpp.s
+.PHONY : src/compiler/chtl/chtl_compiler_v2.s
 
 # target to generate assembly for a file
-src/compiler/chtl/chtl_compiler.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/compiler/chtl/chtl_compiler.cpp.s
-.PHONY : src/compiler/chtl/chtl_compiler.cpp.s
+src/compiler/chtl/chtl_compiler_v2.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/compiler/chtl/chtl_compiler_v2.cpp.s
+.PHONY : src/compiler/chtl/chtl_compiler_v2.cpp.s
+
+src/compiler/chtl/chtl_generator.o: src/compiler/chtl/chtl_generator.cpp.o
+.PHONY : src/compiler/chtl/chtl_generator.o
+
+# target to build an object file
+src/compiler/chtl/chtl_generator.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/compiler/chtl/chtl_generator.cpp.o
+.PHONY : src/compiler/chtl/chtl_generator.cpp.o
+
+src/compiler/chtl/chtl_generator.i: src/compiler/chtl/chtl_generator.cpp.i
+.PHONY : src/compiler/chtl/chtl_generator.i
+
+# target to preprocess a source file
+src/compiler/chtl/chtl_generator.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/compiler/chtl/chtl_generator.cpp.i
+.PHONY : src/compiler/chtl/chtl_generator.cpp.i
+
+src/compiler/chtl/chtl_generator.s: src/compiler/chtl/chtl_generator.cpp.s
+.PHONY : src/compiler/chtl/chtl_generator.s
+
+# target to generate assembly for a file
+src/compiler/chtl/chtl_generator.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/compiler/chtl/chtl_generator.cpp.s
+.PHONY : src/compiler/chtl/chtl_generator.cpp.s
+
+src/compiler/chtl/chtl_lexer.o: src/compiler/chtl/chtl_lexer.cpp.o
+.PHONY : src/compiler/chtl/chtl_lexer.o
+
+# target to build an object file
+src/compiler/chtl/chtl_lexer.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/compiler/chtl/chtl_lexer.cpp.o
+.PHONY : src/compiler/chtl/chtl_lexer.cpp.o
+
+src/compiler/chtl/chtl_lexer.i: src/compiler/chtl/chtl_lexer.cpp.i
+.PHONY : src/compiler/chtl/chtl_lexer.i
+
+# target to preprocess a source file
+src/compiler/chtl/chtl_lexer.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/compiler/chtl/chtl_lexer.cpp.i
+.PHONY : src/compiler/chtl/chtl_lexer.cpp.i
+
+src/compiler/chtl/chtl_lexer.s: src/compiler/chtl/chtl_lexer.cpp.s
+.PHONY : src/compiler/chtl/chtl_lexer.s
+
+# target to generate assembly for a file
+src/compiler/chtl/chtl_lexer.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/compiler/chtl/chtl_lexer.cpp.s
+.PHONY : src/compiler/chtl/chtl_lexer.cpp.s
+
+src/compiler/chtl/chtl_parser.o: src/compiler/chtl/chtl_parser.cpp.o
+.PHONY : src/compiler/chtl/chtl_parser.o
+
+# target to build an object file
+src/compiler/chtl/chtl_parser.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/compiler/chtl/chtl_parser.cpp.o
+.PHONY : src/compiler/chtl/chtl_parser.cpp.o
+
+src/compiler/chtl/chtl_parser.i: src/compiler/chtl/chtl_parser.cpp.i
+.PHONY : src/compiler/chtl/chtl_parser.i
+
+# target to preprocess a source file
+src/compiler/chtl/chtl_parser.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/compiler/chtl/chtl_parser.cpp.i
+.PHONY : src/compiler/chtl/chtl_parser.cpp.i
+
+src/compiler/chtl/chtl_parser.s: src/compiler/chtl/chtl_parser.cpp.s
+.PHONY : src/compiler/chtl/chtl_parser.s
+
+# target to generate assembly for a file
+src/compiler/chtl/chtl_parser.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/compiler/chtl/chtl_parser.cpp.s
+.PHONY : src/compiler/chtl/chtl_parser.cpp.s
+
+src/compiler/chtl/chtl_state.o: src/compiler/chtl/chtl_state.cpp.o
+.PHONY : src/compiler/chtl/chtl_state.o
+
+# target to build an object file
+src/compiler/chtl/chtl_state.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/compiler/chtl/chtl_state.cpp.o
+.PHONY : src/compiler/chtl/chtl_state.cpp.o
+
+src/compiler/chtl/chtl_state.i: src/compiler/chtl/chtl_state.cpp.i
+.PHONY : src/compiler/chtl/chtl_state.i
+
+# target to preprocess a source file
+src/compiler/chtl/chtl_state.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/compiler/chtl/chtl_state.cpp.i
+.PHONY : src/compiler/chtl/chtl_state.cpp.i
+
+src/compiler/chtl/chtl_state.s: src/compiler/chtl/chtl_state.cpp.s
+.PHONY : src/compiler/chtl/chtl_state.s
+
+# target to generate assembly for a file
+src/compiler/chtl/chtl_state.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/compiler/chtl/chtl_state.cpp.s
+.PHONY : src/compiler/chtl/chtl_state.cpp.s
 
 src/compiler/chtljs/chtljs_compiler.o: src/compiler/chtljs/chtljs_compiler.cpp.o
 .PHONY : src/compiler/chtljs/chtljs_compiler.o
@@ -536,9 +632,21 @@ help:
 	@echo "... chtljs_compiler"
 	@echo "... css_compiler"
 	@echo "... js_compiler"
-	@echo "... src/compiler/chtl/chtl_compiler.o"
-	@echo "... src/compiler/chtl/chtl_compiler.i"
-	@echo "... src/compiler/chtl/chtl_compiler.s"
+	@echo "... src/compiler/chtl/chtl_compiler_v2.o"
+	@echo "... src/compiler/chtl/chtl_compiler_v2.i"
+	@echo "... src/compiler/chtl/chtl_compiler_v2.s"
+	@echo "... src/compiler/chtl/chtl_generator.o"
+	@echo "... src/compiler/chtl/chtl_generator.i"
+	@echo "... src/compiler/chtl/chtl_generator.s"
+	@echo "... src/compiler/chtl/chtl_lexer.o"
+	@echo "... src/compiler/chtl/chtl_lexer.i"
+	@echo "... src/compiler/chtl/chtl_lexer.s"
+	@echo "... src/compiler/chtl/chtl_parser.o"
+	@echo "... src/compiler/chtl/chtl_parser.i"
+	@echo "... src/compiler/chtl/chtl_parser.s"
+	@echo "... src/compiler/chtl/chtl_state.o"
+	@echo "... src/compiler/chtl/chtl_state.i"
+	@echo "... src/compiler/chtl/chtl_state.s"
 	@echo "... src/compiler/chtljs/chtljs_compiler.o"
 	@echo "... src/compiler/chtljs/chtljs_compiler.i"
 	@echo "... src/compiler/chtljs/chtljs_compiler.s"

@@ -1,6 +1,6 @@
-CMakeFiles/chtlc.dir/src/compiler/compiler_factory.cpp.o: \
-  /workspace/chtl-compiler/src/compiler/compiler_factory.cpp \
-  /workspace/chtl-compiler/include/compiler/compiler_interface.h \
+CMakeFiles/chtl_compiler.dir/src/compiler/chtl/chtl_compiler_v2.cpp.o: \
+  /workspace/chtl-compiler/src/compiler/chtl/chtl_compiler_v2.cpp \
+  /workspace/chtl-compiler/include/compiler/chtl/chtl_compiler_v2.h \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/string \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/requires_hosted.h \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/x86_64-linux-gnu/c++/14/bits/c++config.h \
@@ -194,6 +194,7 @@ CMakeFiles/chtlc.dir/src/compiler/compiler_factory.cpp.o: \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/backward/auto_ptr.h \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/pstl/glue_memory_defs.h \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/pstl/execution_defs.h \
+  /workspace/chtl-compiler/include/compiler/compiler_interface.h \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/functional \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/std_function.h \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/unordered_map \
@@ -213,7 +214,6 @@ CMakeFiles/chtlc.dir/src/compiler/compiler_factory.cpp.o: \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/optional \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/variant \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/parse_numbers.h \
-  /workspace/chtl-compiler/include/compiler/chtl/chtl_compiler_v2.h \
   /workspace/chtl-compiler/include/compiler/chtl/chtl_state.h \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/stack \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/deque \
@@ -224,7 +224,31 @@ CMakeFiles/chtlc.dir/src/compiler/compiler_factory.cpp.o: \
   /workspace/chtl-compiler/include/compiler/chtl/chtl_tokens.h \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/unordered_set \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/unordered_set.h \
-  /workspace/chtl-compiler/include/compiler/chtljs/chtljs_preprocessor.h \
-  /workspace/chtl-compiler/include/compiler/chtljs/chtljs_tokens.h \
-  /workspace/chtl-compiler/include/compiler/css/css_compiler.h \
-  /workspace/chtl-compiler/include/compiler/javascript/js_compiler.h
+  /workspace/chtl-compiler/include/compiler/chtl/chtl_lexer.h \
+  /workspace/chtl-compiler/include/compiler/chtl/chtl_parser.h \
+  /workspace/chtl-compiler/include/compiler/chtl/chtl_generator.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/sstream \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/istream \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/ios \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/ios_base.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/locale_classes.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/locale_classes.tcc \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/system_error \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/x86_64-linux-gnu/c++/14/bits/error_constants.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/stdexcept \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/streambuf \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/streambuf.tcc \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/basic_ios.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/locale_facets.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/cwctype \
+  /usr/include/wctype.h \
+  /usr/include/x86_64-linux-gnu/bits/wctype-wchar.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/x86_64-linux-gnu/c++/14/bits/ctype_base.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/streambuf_iterator.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/x86_64-linux-gnu/c++/14/bits/ctype_inline.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/locale_facets.tcc \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/basic_ios.tcc \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/ostream \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/ostream.tcc \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/istream.tcc \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/sstream.tcc

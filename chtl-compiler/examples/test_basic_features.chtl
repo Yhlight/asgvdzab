@@ -4,9 +4,9 @@ html
 {
     head
     {
-        title 
-        { 
-            text { "Basic CHTL Test" } 
+        title
+        {
+            text { "Basic CHTL Test" }
         }
     }
     
