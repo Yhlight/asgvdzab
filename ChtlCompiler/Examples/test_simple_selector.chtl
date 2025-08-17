@@ -1,0 +1,15 @@
+[Name] Simple Selector Test
+
+html {
+    body {
+        div {
+            id: test;
+            text { "Test" }
+        }
+        
+        script {
+            var el = {{#test}};
+            console.log(el);
+        }
+    }
+}

@@ -1,0 +1,24 @@
+[Name] Virtual Object Test
+
+html {
+    body {
+        button {
+            id: myButton;
+            text { "Click Me" }
+        }
+        
+        script {
+            // 测试虚对象
+            vir btnHandler = listen({
+                click: function(e) {
+                    console.log('Virtual object click handler');
+                }
+            });
+            
+            // 使用虚对象
+            {{#myButton}}->addEventListener('click', function() {
+                btnHandler->click();
+            });
+        }
+    }
+}

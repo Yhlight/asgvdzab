@@ -1,0 +1,202 @@
+[Name] CHTL JS Demo
+
+html {
+    head {
+        title {
+            text { "CHTL JS 功能演示" }
+        }
+    }
+    
+    body {
+        // 增强选择器演示
+        div {
+            id: container;
+            class: main-content;
+            
+            h1 {
+                text { "CHTL JS 功能演示" }
+            }
+            
+            // 按钮组
+            div {
+                class: button-group;
+                
+                button {
+                    id: btn1;
+                    class: btn primary;
+                    text { "点击我" }
+                }
+                
+                button {
+                    class: btn secondary;
+                    text { "动画按钮" }
+                }
+                
+                button {
+                    class: btn danger;
+                    text { "委托事件" }
+                }
+            }
+            
+            // 动画目标
+            div {
+                id: box;
+                class: animate-box;
+                
+                style {
+                    width: 100px;
+                    height: 100px;
+                    background-color: #3498db;
+                    position: relative;
+                    margin: 20px;
+                }
+            }
+            
+            // 动态内容区域
+            div {
+                id: dynamic-content;
+                class: content-area;
+            }
+        }
+        
+        // 局部脚本块
+        script {
+            // 增强选择器示例
+            {{btn1}}->addEventListener('click', function() {
+                console.log('按钮1被点击');
+                {{box}}->style.backgroundColor = '#e74c3c';
+            });
+            
+            // 多个选择器
+            {{.btn}}->forEach(function(btn) {
+                btn->addEventListener('mouseenter', function() {
+                    this->style.opacity = '0.8';
+                });
+                
+                btn->addEventListener('mouseleave', function() {
+                    this->style.opacity = '1';
+                });
+            });
+            
+            // listen语法演示
+            vir btnEvents = listen({
+                click: function(e) {
+                    console.log('虚对象事件：', e.target.textContent);
+                },
+                
+                dblclick: function(e) {
+                    e.target->style.transform = 'scale(1.1)';
+                }
+            });
+            
+            // 使用虚对象
+            {{.secondary}}->addEventListener('click', function() {
+                btnEvents->click();
+            });
+            
+            // animate演示
+            {{.secondary}}->addEventListener('click', function() {
+                animate({
+                    target: {{#box}},
+                    duration: 2000,
+                    easing: 'easeInOut',
+                    properties: {
+                        left: [0, 200],
+                        top: [0, 100],
+                        opacity: [1, 0.5]
+                    },
+                    onComplete: function() {
+                        console.log('动画完成');
+                        {{#box}}->style.backgroundColor = '#2ecc71';
+                    }
+                });
+            });
+            
+            // delegate事件委托演示
+            {{#dynamic-content}}->delegate({
+                targets: [{{.dynamic-btn}}],
+                click: function(e) {
+                    console.log('委托事件触发：', e.target.textContent);
+                }
+            });
+            
+            // 动态添加内容
+            {{.danger}}->addEventListener('click', function() {
+                {{#dynamic-content}}->innerHTML += '<button class="dynamic-btn">动态按钮 ' + Date.now() + '</button>';
+            });
+            
+            // 虚对象的另一个例子 - delegate
+            vir contentEvents = delegate({
+                targets: [{{.dynamic-btn}}],
+                click: function(e) {
+                    console.log('通过虚对象触发的委托事件');
+                },
+                mouseenter: function(e) {
+                    e.target->style.backgroundColor = '#8e44ad';
+                }
+            });
+            
+            // 虚对象可以访问其内部的函数
+            {{.primary}}->addEventListener('click', function() {
+                // 直接调用虚对象中的函数
+                contentEvents->click({ target: this });
+            });
+        }
+        
+        // 全局样式
+        style {
+            .btn {
+                padding: 10px 20px;
+                margin: 5px;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
+            
+            .primary {
+                background-color: #3498db;
+                color: white;
+            }
+            
+            .secondary {
+                background-color: #95a5a6;
+                color: white;
+            }
+            
+            .danger {
+                background-color: #e74c3c;
+                color: white;
+            }
+            
+            .content-area {
+                margin: 20px 0;
+                padding: 10px;
+                border: 1px solid #ddd;
+                min-height: 100px;
+            }
+            
+            .dynamic-btn {
+                margin: 5px;
+                padding: 5px 10px;
+                background-color: #9b59b6;
+                color: white;
+                border: none;
+                border-radius: 3px;
+                cursor: pointer;
+            }
+            
+            .loading {
+                opacity: 0.6;
+            }
+            
+            .success {
+                border: 2px solid #2ecc71;
+            }
+            
+            .error {
+                border: 2px solid #e74c3c;
+            }
+        }
+    }
+}

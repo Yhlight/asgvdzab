@@ -1,0 +1,40 @@
+# 编译输出目录
+/ChtlCompiler/Build/
+/ChtlCompiler/Bin/
+/ChtlCompiler/Lib/
+
+# CMake生成的文件
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+CTestTestfile.cmake
+*.cmake
+
+# 编译生成的文件
+*.o
+*.a
+*.so
+*.dll
+*.exe
+*.out
+
+# 临时文件
+*.tmp
+*.temp
+*.swp
+*~
+
+# IDE文件
+.vscode/
+.idea/
+*.code-workspace
+
+# 调试文件
+*.log
+*.pdb
+*.ilk
+
+# 操作系统文件
+.DS_Store
+Thumbs.db

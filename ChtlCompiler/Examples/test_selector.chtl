@@ -1,0 +1,16 @@
+[Name] Selector Test
+
+html {
+    body {
+        button {
+            id: myButton;
+            text { "Click Me" }
+        }
+        
+        script {
+            {{#myButton}}->addEventListener('click', function() {
+                console.log('Button clicked');
+            });
+        }
+    }
+}
