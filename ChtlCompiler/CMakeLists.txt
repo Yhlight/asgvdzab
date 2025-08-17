@@ -17,13 +17,16 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/Include)
 # 收集源文件
 file(GLOB_RECURSE LEXER_SOURCES "Src/Lexer/*.cpp")
 file(GLOB_RECURSE COMMON_SOURCES "Src/Common/*.cpp")
+file(GLOB_RECURSE AST_SOURCES "Src/AST/*.cpp")
 
 # 创建静态库
 add_library(ChtlLexer STATIC ${LEXER_SOURCES})
 add_library(ChtlCommon STATIC ${COMMON_SOURCES})
+add_library(ChtlAST STATIC ${AST_SOURCES})
 
 # 链接依赖
 target_link_libraries(ChtlLexer PUBLIC ChtlCommon)
+target_link_libraries(ChtlAST PUBLIC ChtlCommon)
 
 # 创建主可执行文件
 add_executable(Chtlc Src/Main.cpp)
@@ -32,6 +35,7 @@ add_executable(Chtlc Src/Main.cpp)
 target_link_libraries(Chtlc 
     ChtlCommon
     ChtlLexer
+    ChtlAST
 )
 
 # 添加测试
