@@ -1,0 +1,20 @@
+<html>
+  <head>
+    <title>
+    &quot;Basic CHTL Test&quot;
+  </title>
+  <style>
+  <style>
+  width:100 %;max-width:1200 px;margin:0 auto;. content{padding:20 px;}
+</style>
+</style>
+</head>
+<body>
+  <div class="chtl_0 main-content" id="container">
+    &quot;Hello CHTL!&quot;
+    <p>
+    &quot;This is a paragraph.&quot;
+  </p>
+</div>
+</body>
+</html>

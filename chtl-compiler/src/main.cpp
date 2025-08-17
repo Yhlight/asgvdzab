@@ -35,6 +35,7 @@ void writeFile(const std::string& filename, const std::string& content) {
 // 打印使用说明
 void printUsage(const char* program) {
     std::cout << "Usage: " << program << " <input.chtl> [output.html]\n";
+    std::cout << "       " << program << " <input.chtl> -o <output.html>\n";
     std::cout << "  Compiles a CHTL file to HTML\n";
     std::cout << "  If output file is not specified, uses input filename with .html extension\n";
 }
@@ -48,7 +49,10 @@ int main(int argc, char* argv[]) {
     std::string input_file = argv[1];
     std::string output_file;
     
-    if (argc >= 3) {
+    // 检查是否有-o选项
+    if (argc >= 4 && std::string(argv[2]) == "-o") {
+        output_file = argv[3];
+    } else if (argc >= 3 && std::string(argv[2]) != "-o") {
         output_file = argv[2];
     } else {
         // 生成输出文件名
