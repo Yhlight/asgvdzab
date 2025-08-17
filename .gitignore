@@ -1,0 +1,72 @@
+# 构建目录
+build/
+bin/
+lib/
+*.o
+*.a
+*.so
+*.dylib
+*.dll
+
+# CMake生成的文件
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+*.cmake
+!CMakeLists.txt
+
+# IDE文件
+.vscode/
+.idea/
+*.suo
+*.user
+*.sln
+*.vcxproj*
+
+# 编译器生成的文件
+*.exe
+*.out
+a.out
+
+# 临时文件
+*.tmp
+*.temp
+*.log
+*.swp
+*.swo
+*~
+
+# 操作系统文件
+.DS_Store
+Thumbs.db
+
+# ANTLR生成的文件
+*.tokens
+*.interp
+*BaseListener.cpp
+*BaseListener.h
+*BaseVisitor.cpp
+*BaseVisitor.h
+*Lexer.cpp
+*Lexer.h
+*Parser.cpp
+*Parser.h
+*Listener.cpp
+*Listener.h
+*Visitor.cpp
+*Visitor.h
+
+# 测试输出
+test_output/
+*.html
+*.css
+*.js
+
+# 包管理文件
+node_modules/
+package-lock.json
+
+# 文档生成
+docs/html/
+docs/latex/
