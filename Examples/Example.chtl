@@ -1,0 +1,399 @@
+// CHTL示例文件 - 展示CHTL语法特性
+// 这个文件展示了CHTL的各种语法功能
+
+// 配置块
+[Configuration]
+{
+    INDEX_INITIAL_COUNT = 0;
+    DEBUG_MODE = true;
+}
+
+// 变量组模板
+[Template] @Var ThemeColors
+{
+    primaryColor: "#3498db";
+    secondaryColor: "#2ecc71";
+    backgroundColor: "#ecf0f1";
+    textColor: "#2c3e50";
+}
+
+// 样式组模板
+[Template] @Style CardStyle
+{
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 10px 0;
+}
+
+// 元素模板
+[Template] @Element NavigationBar
+{
+    nav
+    {
+        style
+        {
+            .navbar
+            {
+                background-color: ThemeColors(primaryColor);
+                padding: 1rem 2rem;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            
+            &:hover
+            {
+                background-color: ThemeColors(secondaryColor);
+            }
+        }
+        
+        div
+        {
+            class: nav-brand;
+            
+            text
+            {
+                CHTL 示例页面
+            }
+        }
+        
+        div
+        {
+            class: nav-links;
+            
+            style
+            {
+                display: flex;
+                gap: 1rem;
+            }
+        }
+    }
+}
+
+// HTML结构
+html
+{
+    head
+    {
+        title
+        {
+            text
+            {
+                CHTL 示例页面
+            }
+        }
+        
+        meta
+        {
+            charset: UTF-8;
+            name: viewport;
+            content: "width=device-width, initial-scale=1.0";
+        }
+        
+        // 全局样式
+        style
+        {
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            
+            body {
+                font-family: 'Arial', sans-serif;
+                line-height: 1.6;
+                color: #2c3e50;
+                background-color: #ecf0f1;
+            }
+        }
+    }
+    
+    body
+    {
+        // 使用导航栏模板
+        @Element NavigationBar;
+        
+        main
+        {
+            style
+            {
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 2rem;
+            }
+            
+            // 欢迎卡片
+            div
+            {
+                style
+                {
+                    @Style CardStyle;
+                    .welcome-card
+                    {
+                        background: linear-gradient(135deg, 
+                            ThemeColors(primaryColor), 
+                            ThemeColors(secondaryColor));
+                        color: white;
+                        text-align: center;
+                    }
+                }
+                
+                h1
+                {
+                    style
+                    {
+                        font-size: 2.5rem;
+                        margin-bottom: 1rem;
+                    }
+                    
+                    text
+                    {
+                        欢迎使用 CHTL
+                    }
+                }
+                
+                p
+                {
+                    style
+                    {
+                        font-size: 1.2rem;
+                        opacity: 0.9;
+                    }
+                    
+                    text
+                    {
+                        基于C++17的超文本语言编译器
+                    }
+                }
+            }
+            
+            // 功能展示区域
+            section
+            {
+                style
+                {
+                    margin-top: 2rem;
+                }
+                
+                h2
+                {
+                    style
+                    {
+                        .section-title
+                        {
+                            color: ThemeColors(textColor);
+                            border-bottom: 2px solid ThemeColors(primaryColor);
+                            padding-bottom: 0.5rem;
+                            margin-bottom: 1.5rem;
+                        }
+                    }
+                    
+                    text
+                    {
+                        CHTL 特性展示
+                    }
+                }
+                
+                // 特性卡片容器
+                div
+                {
+                    style
+                    {
+                        .features-grid
+                        {
+                            display: grid;
+                            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                            gap: 1.5rem;
+                        }
+                    }
+                    
+                    // 特性卡片1 - 模板系统
+                    div
+                    {
+                        style
+                        {
+                            @Style CardStyle;
+                            .feature-card
+                            {
+                                background: white;
+                                transition: transform 0.3s ease;
+                            }
+                            
+                            &:hover
+                            {
+                                transform: translateY(-5px);
+                            }
+                        }
+                        
+                        h3
+                        {
+                            style
+                            {
+                                color: ThemeColors(primaryColor);
+                                margin-bottom: 1rem;
+                            }
+                            
+                            text
+                            {
+                                模板系统
+                            }
+                        }
+                        
+                        p
+                        {
+                            text
+                            {
+                                支持样式组模板、元素模板和变量组模板，提高代码复用性。
+                            }
+                        }
+                        
+                        // 局部脚本演示
+                        script
+                        {
+                            // CHTL JS语法示例
+                            {{.feature-card}}->listen({
+                                mouseenter: function() {
+                                    this.style.backgroundColor = ThemeColors(backgroundColor);
+                                },
+                                mouseleave: function() {
+                                    this.style.backgroundColor = 'white';
+                                }
+                            });
+                        }
+                    }
+                    
+                    // 特性卡片2 - 增强语法
+                    div
+                    {
+                        style
+                        {
+                            @Style CardStyle;
+                            @Style .feature-card;
+                        }
+                        
+                        h3
+                        {
+                            style
+                            {
+                                color: ThemeColors(secondaryColor);
+                                margin-bottom: 1rem;
+                            }
+                            
+                            text
+                            {
+                                增强语法
+                            }
+                        }
+                        
+                        p
+                        {
+                            text
+                            {
+                                支持局部样式块、增强选择器、虚对象等现代化语法特性。
+                            }
+                        }
+                    }
+                    
+                    // 特性卡片3 - 编译器架构
+                    div
+                    {
+                        style
+                        {
+                            @Style CardStyle;
+                            @Style .feature-card;
+                        }
+                        
+                        h3
+                        {
+                            style
+                            {
+                                color: #e74c3c;
+                                margin-bottom: 1rem;
+                            }
+                            
+                            text
+                            {
+                                编译器架构
+                            }
+                        }
+                        
+                        p
+                        {
+                            text
+                            {
+                                精准代码切割、并行编译、多编译器协同工作。
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        footer
+        {
+            style
+            {
+                .footer
+                {
+                    background-color: ThemeColors(textColor);
+                    color: white;
+                    text-align: center;
+                    padding: 2rem;
+                    margin-top: 3rem;
+                }
+            }
+            
+            p
+            {
+                text
+                {
+                    © 2024 CHTL Team. 使用 MIT 开源协议.
+                }
+            }
+        }
+        
+        // 全局脚本
+        script
+        {
+            // CHTL JS增强功能演示
+            console.log('CHTL页面加载完成!');
+            
+            // 虚对象示例
+            vir pageController = {
+                init: function() {
+                    console.log('页面控制器初始化');
+                    this.setupAnimations();
+                },
+                
+                setupAnimations: function() {
+                    // 页面加载动画
+                    animate({
+                        target: {{.welcome-card}},
+                        duration: 1000,
+                        easing: 'ease-out',
+                        begin: {
+                            opacity: 0,
+                            transform: 'translateY(-50px)'
+                        },
+                        end: {
+                            opacity: 1,
+                            transform: 'translateY(0)'
+                        }
+                    });
+                }
+            };
+            
+            // 初始化页面
+            pageController->init();
+            
+            // 事件委托示例
+            {{body}}->delegate({
+                target: {{.feature-card}},
+                click: function(event) {
+                    console.log('特性卡片被点击:', event.target);
+                }
+            });
+        }
+    }
+}
