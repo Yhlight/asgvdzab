@@ -1,0 +1,77 @@
+html {
+    body {
+        div {
+            class: container;
+            
+            button {
+                id: myButton;
+                class: btn;
+                
+                text {
+                    Click Me!
+                }
+            }
+            
+            div {
+                class: message-box;
+                style {
+                    .message-box {
+                        padding: 20px;
+                        margin-top: 20px;
+                        background-color: #f0f0f0;
+                        border-radius: 5px;
+                        display: none;
+                    }
+                }
+                
+                text {
+                    Hello from CHTL JS!
+                }
+            }
+            
+            script {
+                // 测试增强选择器
+                {{myButton}}.addEventListener('click', () => {
+                    console.log('Button clicked!');
+                    {{.message-box}}.style.display = 'block';
+                });
+                
+                // 测试listen语法
+                {{.btn}}->listen({
+                    mouseenter: () => {
+                        console.log('Mouse entered');
+                    },
+                    mouseleave: () => {
+                        console.log('Mouse left');
+                    }
+                });
+                
+                // 测试vir虚对象
+                vir buttonHandler = listen({
+                    click: () => {
+                        alert('Virtual object method called!');
+                    },
+                    hover: () => {
+                        console.log('Hovering...');
+                    }
+                });
+                
+                // 使用虚对象方法
+                {{#myButton}}.addEventListener('click', buttonHandler->click);
+                
+                // 测试animate
+                const fadeIn = animate({
+                    target: {{.message-box}},
+                    duration: 500,
+                    easing: 'ease-in-out',
+                    begin: {
+                        opacity: 0
+                    },
+                    end: {
+                        opacity: 1
+                    }
+                });
+            }
+        }
+    }
+}

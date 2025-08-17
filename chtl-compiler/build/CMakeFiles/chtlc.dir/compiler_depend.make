@@ -169,6 +169,7 @@ CMakeFiles/chtlc.dir/src/compiler/compiler_factory.cpp.o: /workspace/chtl-compil
   /usr/include/c++/14/bits/stringfwd.h \
   /usr/include/c++/14/bits/unique_ptr.h \
   /usr/include/c++/14/bits/unordered_map.h \
+  /usr/include/c++/14/bits/unordered_set.h \
   /usr/include/c++/14/bits/uses_allocator.h \
   /usr/include/c++/14/bits/uses_allocator_args.h \
   /usr/include/c++/14/bits/utility.h \
@@ -210,6 +211,7 @@ CMakeFiles/chtlc.dir/src/compiler/compiler_factory.cpp.o: /workspace/chtl-compil
   /usr/include/c++/14/type_traits \
   /usr/include/c++/14/typeinfo \
   /usr/include/c++/14/unordered_map \
+  /usr/include/c++/14/unordered_set \
   /usr/include/c++/14/variant \
   /usr/include/c++/14/vector \
   /usr/include/x86_64-linux-gnu/c++/14/bits/atomic_word.h \
@@ -234,6 +236,7 @@ CMakeFiles/chtlc.dir/src/compiler/compiler_factory.cpp.o: /workspace/chtl-compil
   /usr/lib/llvm-20/lib/clang/20/include/stddef.h \
   /usr/lib/llvm-20/lib/clang/20/include/stdint.h \
   /workspace/chtl-compiler/include/compiler/chtl/chtl_compiler.h \
+  /workspace/chtl-compiler/include/compiler/chtljs/chtljs_compiler.h \
   /workspace/chtl-compiler/include/compiler/compiler_interface.h \
   /workspace/chtl-compiler/include/utils/common.h
 
@@ -597,8 +600,6 @@ CMakeFiles/chtlc.dir/src/compiler/compiler_factory.cpp.o:
 
 /usr/include/x86_64-linux-gnu/c++/14/bits/c++io.h:
 
-/usr/include/c++/14/unordered_set:
-
 /usr/include/c++/14/thread:
 
 /usr/include/c++/14/streambuf:
@@ -630,6 +631,8 @@ CMakeFiles/chtlc.dir/src/compiler/compiler_factory.cpp.o:
 /usr/include/c++/14/bits/streambuf_iterator.h:
 
 /usr/include/c++/14/bits/streambuf.tcc:
+
+/usr/include/c++/14/bits/stl_queue.h:
 
 /usr/include/c++/14/bits/char_traits.h:
 
@@ -1011,6 +1014,8 @@ CMakeFiles/chtlc.dir/src/compiler/compiler_factory.cpp.o:
 
 /usr/include/c++/14/bits/range_access.h:
 
+/workspace/chtl-compiler/include/compiler/chtljs/chtljs_compiler.h:
+
 /usr/include/c++/14/bits/atomic_futex.h:
 
 /usr/include/c++/14/bits/refwrap.h:
@@ -1042,8 +1047,6 @@ CMakeFiles/chtlc.dir/src/compiler/compiler_factory.cpp.o:
 /usr/include/c++/14/bits/uses_allocator.h:
 
 /usr/include/c++/14/bits/uses_allocator_args.h:
-
-/usr/include/c++/14/bits/stl_queue.h:
 
 /usr/include/c++/14/bits/vector.tcc:
 
@@ -1100,6 +1103,10 @@ CMakeFiles/chtlc.dir/src/compiler/compiler_factory.cpp.o:
 /usr/include/c++/14/typeinfo:
 
 /usr/include/c++/14/unordered_map:
+
+/usr/include/c++/14/unordered_set:
+
+/usr/include/c++/14/bits/istream.tcc:
 
 /usr/include/x86_64-linux-gnu/bits/floatn-common.h:
 
@@ -1174,8 +1181,6 @@ CMakeFiles/chtlc.dir/src/compiler/compiler_factory.cpp.o:
 libchtljs_compiler.a:
 
 /usr/include/c++/14/bits/ios_base.h:
-
-/usr/include/c++/14/bits/istream.tcc:
 
 /usr/include/c++/14/bits/sstream.tcc:
 

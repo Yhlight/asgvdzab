@@ -1,0 +1,14 @@
+html {
+    body {
+        button {
+            id: myBtn;
+            text { Click Me }
+        }
+        
+        script {
+            {{myBtn}}.addEventListener('click', function() {
+                alert('Hello CHTL JS!');
+            });
+        }
+    }
+}

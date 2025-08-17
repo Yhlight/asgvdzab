@@ -243,65 +243,54 @@ void CHTLUnifiedScanner::scanStyleBlock(ScanContext& ctx, std::vector<CodeFragme
 }
 
 void CHTLUnifiedScanner::scanScriptBlock(ScanContext& ctx, std::vector<CodeFragment>& fragments) {
+    // 先完成当前的CHTL片段
+    if (!ctx.current_content.empty()) {
+        // 保留到script标签位置的内容
+        finishFragment(ctx, fragments);
+    }
+    
     // script块内容作为CHTL JS处理
-    ctx.current_content += "\n";
     skipWhitespace(ctx);
     
     if (peek(ctx) != '{') {
         reportError(ctx, "Expected '{' after 'script'");
         ctx.state = ScannerState::NORMAL;
+        startNewFragment(ctx, CodeFragmentType::CHTL);
         return;
     }
     
-    ctx.current_content += peek(ctx);
     advance(ctx); // 消费 '{'
+    
+    // 开始新的CHTL JS片段
+    startNewFragment(ctx, CodeFragmentType::CHTL_JS);
     
     int local_brace_depth = 1;
     
     while (ctx.position < ctx.input.length() && local_brace_depth > 0) {
-        // 处理增强选择器 {{}}
-        if (matchSequence(ctx, "{{")) {
-            ctx.current_content += "{{";
-            advance(ctx, 2);
-            // 扫描到 }}
-            while (ctx.position < ctx.input.length() && !matchSequence(ctx, "}}")) {
-                if (peek(ctx) == '\n') {
-                    newLine(ctx);
-                }
-                ctx.current_content += peek(ctx);
-                advance(ctx);
-            }
-            if (matchSequence(ctx, "}}")) {
-                ctx.current_content += "}}";
-                advance(ctx, 2);
-            }
-            continue;
-        }
-        
         if (peek(ctx) == '{') {
             local_brace_depth++;
         } else if (peek(ctx) == '}') {
             local_brace_depth--;
             if (local_brace_depth == 0) {
-                ctx.current_content += peek(ctx);
-                advance(ctx);
                 break;
             }
         } else if (peek(ctx) == '\n') {
             newLine(ctx);
         }
         
-        // 处理字符串
-        if (peek(ctx) == '"' || peek(ctx) == '\'' || peek(ctx) == '`') {
-            ctx.current_content += scanString(ctx);
-            continue;
-        }
-        
         ctx.current_content += peek(ctx);
         advance(ctx);
     }
     
-    // 完成script片段，回到NORMAL状态
+    // 完成CHTL JS片段
+    finishFragment(ctx, fragments);
+    
+    if (peek(ctx) == '}') {
+        advance(ctx); // 消费 '}'
+    }
+    
+    // 开始新的CHTL片段
+    startNewFragment(ctx, CodeFragmentType::CHTL);
     ctx.state = ScannerState::NORMAL;
 }
 

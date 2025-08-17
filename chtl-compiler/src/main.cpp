@@ -130,55 +130,100 @@ int main(int argc, char* argv[]) {
         // std::string final_output = merger.merge(results);
         
         // 合并结果
-        std::string final_output;
+        std::string html_content;
+        std::vector<std::string> all_styles;
+        std::vector<std::string> all_scripts;
         
-        // 检查是否已经有完整的HTML结构
-        bool has_html_structure = false;
-        for (const auto& result : results) {
-            if (result.output.find("<html") != std::string::npos) {
-                has_html_structure = true;
-                break;
-            }
-        }
-        
-        if (has_html_structure) {
-            // 如果已经有HTML结构，直接使用第一个结果（假设只有一个CHTL文件）
-            if (!results.empty()) {
-                final_output = results[0].output;
-                
-                // 将全局样式插入到</head>之前
-                if (!results[0].global_styles.empty()) {
-                    size_t head_end = final_output.find("</head>");
-                    if (head_end != std::string::npos) {
-                        final_output.insert(head_end, results[0].global_styles + "\n");
+        // 根据片段类型处理结果
+        for (size_t i = 0; i < results.size(); ++i) {
+            const auto& result = results[i];
+            const auto& fragment = fragments[i];
+            
+            if (result.success) {
+                if (fragment.type == CodeFragmentType::CHTL) {
+                    // CHTL片段的输出是HTML内容
+                    html_content += result.output;
+                    // 收集样式
+                    if (!result.global_styles.empty()) {
+                        all_styles.push_back(result.global_styles);
+                    }
+                } else if (fragment.type == CodeFragmentType::CHTL_JS) {
+                    // CHTL JS片段的输出是JavaScript代码
+                    if (!result.output.empty()) {
+                        all_scripts.push_back(result.output);
+                    }
+                } else if (fragment.type == CodeFragmentType::CSS) {
+                    // CSS片段直接添加到样式
+                    if (!result.output.empty()) {
+                        all_styles.push_back(result.output);
+                    }
+                } else if (fragment.type == CodeFragmentType::JAVASCRIPT) {
+                    // JavaScript片段直接添加到脚本
+                    if (!result.output.empty()) {
+                        all_scripts.push_back(result.output);
                     }
                 }
             }
-        } else {
-            // 创建HTML结构
-            final_output = "<!DOCTYPE html>\n<html>\n<head>\n";
+        }
+        
+        // 构建最终输出
+        std::string final_output;
+        
+        // 检查HTML内容是否已经包含完整结构
+        bool has_html_structure = html_content.find("<html") != std::string::npos;
+        
+        if (has_html_structure) {
+            final_output = html_content;
             
-            // 收集所有全局样式
-            for (const auto& result : results) {
-                if (!result.global_styles.empty()) {
-                    final_output += result.global_styles;
+            // 插入样式到</head>之前
+            if (!all_styles.empty()) {
+                size_t head_end = final_output.find("</head>");
+                if (head_end != std::string::npos) {
+                    std::string style_block = "<style>\n";
+                    for (const auto& style : all_styles) {
+                        style_block += style + "\n";
+                    }
+                    style_block += "</style>\n";
+                    final_output.insert(head_end, style_block);
                 }
+            }
+            
+            // 插入脚本到</body>之前
+            if (!all_scripts.empty()) {
+                size_t body_end = final_output.find("</body>");
+                if (body_end != std::string::npos) {
+                    std::string script_block = "<script>\n";
+                    for (const auto& script : all_scripts) {
+                        script_block += script + "\n";
+                    }
+                    script_block += "</script>\n";
+                    final_output.insert(body_end, script_block);
+                }
+            }
+        } else {
+            // 创建完整的HTML结构
+            final_output = "<!DOCTYPE html>\n<html>\n<head>\n";
+            final_output += "<meta charset=\"UTF-8\">\n";
+            
+            // 添加样式
+            if (!all_styles.empty()) {
+                final_output += "<style>\n";
+                for (const auto& style : all_styles) {
+                    final_output += style + "\n";
+                }
+                final_output += "</style>\n";
             }
             
             final_output += "</head>\n<body>\n";
+            final_output += html_content;
             
-            // 收集所有主体内容
-            for (const auto& result : results) {
-                if (!result.output.empty()) {
-                    final_output += result.output;
+            // 添加脚本
+            if (!all_scripts.empty()) {
+                final_output += "<script>\n";
+                for (const auto& script : all_scripts) {
+                    final_output += script + "\n";
                 }
-            }
-            
-            // 收集所有全局脚本
-            for (const auto& result : results) {
-                if (!result.global_scripts.empty()) {
-                    final_output += result.global_scripts;
-                }
+                final_output += "</script>\n";
             }
             
             final_output += "</body>\n</html>\n";

@@ -1,10 +1,10 @@
 #include "compiler/compiler_interface.h"
 #include "compiler/chtl/chtl_compiler.h"
+#include "compiler/chtljs/chtljs_compiler.h"
 
 namespace chtl {
 
 // 前置声明
-class CHTLJSCompiler;
 class CSSCompiler;
 class JavaScriptCompiler;
 
@@ -14,9 +14,7 @@ std::unique_ptr<ICompiler> CompilerFactory::createCompiler(CodeFragmentType type
             return std::make_unique<CHTLCompiler>();
             
         case CodeFragmentType::CHTL_JS:
-            // TODO: 实现CHTLJSCompiler后取消注释
-            // return std::make_unique<CHTLJSCompiler>();
-            return nullptr;
+            return std::make_unique<CHTLJSCompiler>();
             
         case CodeFragmentType::CSS:
             // TODO: 实现CSSCompiler后取消注释

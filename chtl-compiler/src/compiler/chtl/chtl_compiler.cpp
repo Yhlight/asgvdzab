@@ -515,34 +515,8 @@ std::unique_ptr<ASTNode> CHTLCompiler::Parser::parseScript() {
     
     lexer_.consumeToken(); // 消费 'script'
     
-    if (!expect(Token::LBRACE)) {
-        return script;
-    }
-    
-    // 收集脚本内容直到 }
-    // 注意：这里收集的是CHTL JS代码，需要后续由CHTL JS编译器处理
-    std::string content;
-    int brace_depth = 1;
-    
-    while (!lexer_.isAtEnd() && brace_depth > 0) {
-        Token token = lexer_.nextToken();
-        
-        if (token.type == Token::LBRACE) {
-            brace_depth++;
-        } else if (token.type == Token::RBRACE) {
-            brace_depth--;
-            if (brace_depth == 0) {
-                break;
-            }
-        }
-        
-        content += token.value;
-        if (token.type != Token::STRING) {
-            content += " ";
-        }
-    }
-    
-    script->value = content;
+    // script块会被扫描器分割成单独的CHTL JS片段
+    // 所以这里我们不需要解析内容，只需要标记这是一个script节点
     return script;
 }
 
@@ -688,11 +662,7 @@ void CHTLCompiler::CodeGenerator::generateNode(const std::unique_ptr<ASTNode>& n
             break;
             
         case ASTNodeType::SCRIPT:
-            // 脚本内容需要由CHTL JS编译器处理
-            // 这里暂时保留原样
-            emitLine("<script>");
-            emit(node->value);
-            emitLine("</script>");
+            // script节点会在元素生成时处理，这里跳过
             break;
             
         default:
@@ -762,9 +732,9 @@ void CHTLCompiler::CodeGenerator::generateElement(const ElementNode* element) {
         }
     }
     
-    // 生成子元素（跳过style节点）
+    // 生成子元素（跳过style和script节点）
     for (const auto& child : element->children) {
-        if (child->type != ASTNodeType::STYLE) {
+        if (child->type != ASTNodeType::STYLE && child->type != ASTNodeType::SCRIPT) {
             generateNode(child);
         }
     }
