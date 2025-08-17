@@ -1,5 +1,6 @@
 #include "Parser/Parser.h"
 #include "AST/ChtlJsNodes.h"
+#include "Parser/ChtlJsParser.h"
 
 namespace Chtl {
 
@@ -42,6 +43,21 @@ ASTNodePtr Parser::parseScriptBlock() {
     // 已经通过StateManager管理状态
     
     consume(TokenType::RBRACE, "Expected '}' after script content");
+    
+    // 如果包含CHTL JS语法，解析并转换
+    if (scriptBlock->hasChtlJsSyntax()) {
+        ChtlJsParser jsParser;
+        
+        // 解析CHTL JS语法节点
+        auto jsNodes = jsParser.parse(content);
+        for (auto& node : jsNodes) {
+            scriptBlock->addChild(node);
+        }
+        
+        // 转换为标准JavaScript
+        std::string transformedJs = jsParser.transform(content);
+        scriptBlock->setTransformedContent(transformedJs);
+    }
     
     return scriptBlock;
 }

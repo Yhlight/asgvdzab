@@ -74,6 +74,9 @@ enum class ASTNodeType {
     LISTEN_CALL,                // listen 调用
     DELEGATE_CALL,              // delegate 调用
     ANIMATE_CALL,               // animate 调用
+    VIRTUAL_OBJECT,             // 虚对象声明
+    I_NEVER_AWAY,               // iNeverAway调用
+    VIRTUAL_CALL,               // 虚对象函数调用
     
     // 其他
     EXPRESSION,                 // 通用表达式节点

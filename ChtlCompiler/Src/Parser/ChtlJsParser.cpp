@@ -1,6 +1,7 @@
 #include "Parser/ChtlJsParser.h"
-#include <regex>
+#include "Parser/ChtlJsFunctionManager.h"
 #include <sstream>
+#include <regex>
 #include <algorithm>
 
 namespace Chtl {
@@ -15,193 +16,371 @@ bool ChtlJsParser::hasChtlJsSyntax(const std::string& jsCode) const {
     // 检查是否包含CHTL JS特殊语法
     return jsCode.find("{{") != std::string::npos ||
            jsCode.find("->") != std::string::npos ||
-           jsCode.find("listen") != std::string::npos ||
-           jsCode.find("delegate") != std::string::npos ||
-           jsCode.find("animate") != std::string::npos;
+           jsCode.find("listen(") != std::string::npos ||
+           jsCode.find("delegate(") != std::string::npos ||
+           jsCode.find("animate(") != std::string::npos ||
+           jsCode.find("vir ") != std::string::npos ||
+           jsCode.find("iNeverAway(") != std::string::npos;
+}
+
+std::vector<ASTNodePtr> ChtlJsParser::parse(const std::string& jsCode) {
+    std::vector<ASTNodePtr> nodes;
+    currentPos_ = 0;
+    
+    // 逐行解析
+    std::istringstream stream(jsCode);
+    std::string line;
+    size_t lineStart = 0;
+    
+    while (std::getline(stream, line)) {
+        // 解析每一行中的CHTL JS语法
+        size_t pos = 0;
+        while (pos < line.length()) {
+            // 检查虚对象声明
+            if (line.substr(pos).find("vir ") == 0) {
+                auto node = parseVirtualObject(line, pos);
+                if (node) nodes.push_back(node);
+            }
+            // 检查选择器表达式
+            else if (line.substr(pos).find("{{") == 0) {
+                auto node = parseSelectorExpression(line, pos);
+                if (node) nodes.push_back(node);
+            }
+            // 检查箭头访问
+            else if (line.find("->", pos) != std::string::npos) {
+                auto node = parseArrowAccess(line, pos);
+                if (node) nodes.push_back(node);
+            }
+            // 检查iNeverAway
+            else if (line.find("iNeverAway(", pos) != std::string::npos) {
+                auto node = parseINeverAway(line, pos);
+                if (node) nodes.push_back(node);
+            }
+            else {
+                pos++;
+            }
+        }
+        lineStart += line.length() + 1; // +1 for newline
+    }
+    
+    return nodes;
 }
 
 std::string ChtlJsParser::transform(const std::string& jsCode) {
-    if (!hasChtlJsSyntax(jsCode)) {
-        return jsCode; // 没有特殊语法，直接返回
-    }
-    
     std::string result = jsCode;
     
-    // 1. 转换 {{selector}} 语法
+    // 转换{{选择器}}语法
     std::regex selectorRegex(R"(\{\{([^}]+)\}\})");
-    std::smatch match;
-    std::string temp = result;
-    
-    while (std::regex_search(temp, match, selectorRegex)) {
+    result = std::regex_replace(result, selectorRegex, [this](const std::smatch& match) {
         std::string selector = trim(match[1].str());
-        std::string replacement = generateQuerySelector(selector);
-        
-        result = result.substr(0, match.position()) + 
-                replacement + 
-                result.substr(match.position() + match.length());
-        
-        temp = result.substr(match.position() + replacement.length());
-    }
-    
-    // 2. 转换 -> 为 .
-    result = replaceAll(result, "->", ".");
-    
-    // 3. 转换 listen 调用
-    std::regex listenRegex(R"((\w+)\.listen\s*\()");
-    result = std::regex_replace(result, listenRegex, "$1.addEventListener(");
-    
-    // 4. 转换 delegate 调用
-    if (result.find("delegate") != std::string::npos) {
-        // 生成委托辅助函数
-        std::string delegateHelper = R"(
-// CHTL JS delegate helper
-function _chtlDelegate(parent, config) {
-    const targets = Array.isArray(config.target) ? config.target : [config.target];
-    const handler = config.handler;
-    const event = config.event || 'click';
-    
-    parent.addEventListener(event, function(e) {
-        targets.forEach(target => {
-            const selector = typeof target === 'string' ? target : target.selector;
-            if (e.target.matches(selector)) {
-                handler.call(e.target, e);
-            }
-        });
+        return generateQuerySelector(selector);
     });
-}
-)";
-        
-        // 转换delegate调用
-        std::regex delegateRegex(R"((\w+)\.delegate\s*\(([^)]+)\))");
-        result = std::regex_replace(result, delegateRegex, "_chtlDelegate($1, $2)");
-        
-        // 在开头添加辅助函数
-        result = delegateHelper + "\n" + result;
-    }
     
-    // 5. 转换 animate 调用
-    if (result.find("animate") != std::string::npos) {
-        // 生成动画辅助函数
-        std::string animateHelper = R"(
-// CHTL JS animate helper
-function _chtlAnimate(config) {
-    const targets = Array.isArray(config.target) ? config.target : [config.target];
-    const duration = config.duration || 1000;
-    const easing = config.easing || 'linear';
-    const properties = config.properties || {};
-    const onComplete = config.onComplete;
-    const onUpdate = config.onUpdate;
-    
-    const startTime = performance.now();
-    
-    function easingFunctions(t) {
-        switch(easing) {
-            case 'linear': return t;
-            case 'easeIn': return t * t;
-            case 'easeOut': return t * (2 - t);
-            case 'easeInOut': return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
-            default: return t;
+    // 转换箭头语法 -> 为 .
+    size_t pos = 0;
+    while ((pos = result.find("->", pos)) != std::string::npos) {
+        // 检查是否是虚对象调用
+        size_t nameStart = pos;
+        while (nameStart > 0 && (std::isalnum(result[nameStart-1]) || result[nameStart-1] == '_')) {
+            nameStart--;
         }
-    }
-    
-    function animate(currentTime) {
-        const elapsed = currentTime - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-        const easedProgress = easingFunctions(progress);
+        std::string objName = result.substr(nameStart, pos - nameStart);
         
-        targets.forEach(target => {
-            Object.keys(properties).forEach(prop => {
-                const [from, to] = properties[prop];
-                const current = from + (to - from) * easedProgress;
-                target.style[prop] = current + 'px';
-            });
-        });
-        
-        if (onUpdate) onUpdate(progress);
-        
-        if (progress < 1) {
-            requestAnimationFrame(animate);
-        } else if (onComplete) {
-            onComplete();
+        auto& manager = ChtlJsFunctionRegistry::getInstance().getManager();
+        if (manager.hasVirtualObject(objName)) {
+            // 虚对象调用，需要转换为全局函数调用
+            size_t funcEnd = result.find('(', pos + 2);
+            if (funcEnd != std::string::npos) {
+                std::string funcCall = result.substr(pos + 2, funcEnd - pos - 2);
+                
+                // 检查是否有状态标记
+                std::string funcName = funcCall;
+                std::string state;
+                size_t stateStart = funcCall.find('<');
+                if (stateStart != std::string::npos) {
+                    size_t stateEnd = funcCall.find('>', stateStart);
+                    if (stateEnd != std::string::npos) {
+                        funcName = funcCall.substr(0, stateStart);
+                        state = funcCall.substr(stateStart + 1, stateEnd - stateStart - 1);
+                    }
+                }
+                
+                auto funcInfo = manager.findFunction(objName, funcName, state);
+                if (funcInfo) {
+                    // 替换为生成的全局函数名
+                    result = result.substr(0, nameStart) + 
+                            funcInfo->generatedName + 
+                            result.substr(funcEnd);
+                    pos = nameStart + funcInfo->generatedName.length();
+                    continue;
+                }
+            }
         }
-    }
-    
-    requestAnimationFrame(animate);
-    return { stop: () => { /* TODO: implement stop */ } };
-}
-)";
         
-        // 转换animate调用
-        std::regex animateRegex(R"(animate\s*\(([^)]+)\))");
-        result = std::regex_replace(result, animateRegex, "_chtlAnimate($1)");
-        
-        // 在开头添加辅助函数
-        result = animateHelper + "\n" + result;
+        // 普通箭头访问，替换为点
+        result[pos] = '.';
+        result.erase(pos + 1, 1);
+        pos++;
     }
     
     return result;
 }
 
-std::string ChtlJsParser::generateQuerySelector(const std::string& selector, bool multiple) {
-    std::string trimmedSelector = trim(selector);
-    std::string actualSelector;
-    int index = -1;
-    
-    // 检查是否有索引访问 [n]
-    std::regex indexRegex(R"((.+)\[(\d+)\]$)");
-    std::smatch match;
-    if (std::regex_match(trimmedSelector, match, indexRegex)) {
-        actualSelector = trim(match[1].str());
-        index = std::stoi(match[2].str());
-    } else {
-        actualSelector = trimmedSelector;
+ASTNodePtr ChtlJsParser::parseSelectorExpression(const std::string& code, size_t pos) {
+    if (code.substr(pos, 2) != "{{") {
+        return nullptr;
     }
     
-    // 确定选择器类型
-    std::string queryMethod;
-    std::string querySelectorString;
+    size_t start = pos + 2;
+    size_t end = code.find("}}", start);
+    if (end == std::string::npos) {
+        errors_.push_back("Unclosed selector expression");
+        return nullptr;
+    }
     
-    if (actualSelector.size() > 0 && actualSelector[0] == '.') {
-        // 类选择器
-        querySelectorString = actualSelector;
-        queryMethod = multiple ? "document.querySelectorAll" : "document.querySelector";
-    } else if (actualSelector.size() > 0 && actualSelector[0] == '#') {
-        // ID选择器
-        querySelectorString = actualSelector;
-        queryMethod = "document.querySelector";
-    } else if (actualSelector.find(" ") != std::string::npos || 
-               actualSelector.find(".") != std::string::npos ||
-               actualSelector.find(">") != std::string::npos) {
-        // 复合选择器
-        querySelectorString = actualSelector;
-        queryMethod = multiple ? "document.querySelectorAll" : "document.querySelector";
-    } else {
-        // 标签选择器 - 需要智能判断
-        // 首先尝试作为标签，如果没找到再尝试ID和类
-        std::string jsCode = "(function() {\n";
-        jsCode += "  let el = document.querySelector('" + actualSelector + "');\n";
-        jsCode += "  if (!el) el = document.getElementById('" + actualSelector + "');\n";
-        jsCode += "  if (!el) el = document.querySelector('." + actualSelector + "');\n";
+    std::string selector = trim(code.substr(start, end - start));
+    
+    Token token(TokenType::DOUBLE_LBRACE, "{{", "", 1, pos, pos);
+    auto node = std::make_shared<SelectorExpressionNode>(token);
+    
+    // 判断选择器类型并解析
+    if (selector.find('[') != std::string::npos && selector.find(']') != std::string::npos) {
+        // 索引选择器
+        size_t bracketPos = selector.find('[');
+        std::string baseSelector = selector.substr(0, bracketPos);
+        std::string indexStr = selector.substr(bracketPos + 1, selector.find(']') - bracketPos - 1);
         
-        if (index >= 0) {
-            jsCode += "  if (!el) {\n";
-            jsCode += "    const els = document.querySelectorAll('" + actualSelector + "');\n";
-            jsCode += "    el = els[" + std::to_string(index) + "];\n";
-            jsCode += "  }\n";
+        node->setSelector(baseSelector);
+        node->setSelectorType(SelectorExpressionNode::INDEX);
+        node->setIndex(std::stoi(indexStr));
+    } else {
+        node->setSelector(selector);
+        node->setSelectorType(determineSelectorType(selector));
+    }
+    
+    currentPos_ = end + 2;
+    return node;
+}
+
+ASTNodePtr ChtlJsParser::parseVirtualObject(const std::string& code, size_t pos) {
+    // 格式: vir name = expression
+    if (code.substr(pos, 4) != "vir ") {
+        return nullptr;
+    }
+    
+    pos += 4;
+    while (pos < code.length() && std::isspace(code[pos])) pos++;
+    
+    // 提取虚对象名称
+    size_t nameStart = pos;
+    while (pos < code.length() && (std::isalnum(code[pos]) || code[pos] == '_')) {
+        pos++;
+    }
+    std::string name = code.substr(nameStart, pos - nameStart);
+    
+    // 跳过空格和等号
+    while (pos < code.length() && std::isspace(code[pos])) pos++;
+    if (pos >= code.length() || code[pos] != '=') {
+        errors_.push_back("Expected '=' after virtual object name");
+        return nullptr;
+    }
+    pos++;
+    while (pos < code.length() && std::isspace(code[pos])) pos++;
+    
+    Token token(TokenType::VIR, "vir", "", 1, nameStart, nameStart);
+    auto node = std::make_shared<VirtualObjectNode>(token);
+    node->setName(name);
+    
+    // 解析初始化表达式
+    if (code.find("listen(", pos) == pos) {
+        auto listenNode = parseListenCall(code, pos);
+        node->setInitExpression(listenNode);
+        
+        // 注册虚对象
+        auto& manager = ChtlJsFunctionRegistry::getInstance().getManager();
+        manager.registerVirtualObject(name, "listen");
+        
+        // 注册listen中的函数
+        if (auto listen = std::dynamic_pointer_cast<ListenCallNode>(listenNode)) {
+            for (const auto& config : listen->getEventConfigs()) {
+                ChtlJsFunctionManager::FunctionInfo funcInfo;
+                funcInfo.originalName = config.eventName;
+                funcInfo.virtualObject = name;
+                funcInfo.generatedName = manager.generateUniqueFunctionName(config.eventName);
+                manager.addFunction(name, funcInfo);
+            }
         }
+    }
+    else if (code.find("iNeverAway(", pos) == pos) {
+        auto iNeverAwayNode = parseINeverAway(code, pos);
+        node->setInitExpression(iNeverAwayNode);
         
-        jsCode += "  return el;\n";
-        jsCode += "})()";
+        // 注册虚对象
+        auto& manager = ChtlJsFunctionRegistry::getInstance().getManager();
+        manager.registerVirtualObject(name, "iNeverAway");
         
-        return jsCode;
+        // 注册iNeverAway中的函数
+        if (auto ina = std::dynamic_pointer_cast<INeverAwayNode>(iNeverAwayNode)) {
+            for (auto& func : ina->getFunctions()) {
+                ChtlJsFunctionManager::FunctionInfo funcInfo;
+                funcInfo.originalName = func.name;
+                funcInfo.state = func.state;
+                funcInfo.virtualObject = name;
+                funcInfo.generatedName = manager.generateUniqueFunctionName(func.name + "_" + func.state);
+                funcInfo.paramTypes = func.params;
+                
+                // 更新AST节点中的生成名称
+                const_cast<INeverAwayNode::FunctionDef&>(func).generatedName = funcInfo.generatedName;
+                
+                manager.addFunction(name, funcInfo);
+            }
+        }
     }
     
-    // 生成查询代码
-    if (index >= 0) {
-        return queryMethod + "('" + querySelectorString + "')[" + std::to_string(index) + "]";
-    } else {
-        return queryMethod + "('" + querySelectorString + "')";
+    currentPos_ = pos;
+    return node;
+}
+
+ASTNodePtr ChtlJsParser::parseINeverAway(const std::string& code, size_t pos) {
+    if (code.substr(pos, 11) != "iNeverAway(") {
+        return nullptr;
     }
+    
+    Token token(TokenType::IDENTIFIER, "iNeverAway", "", 1, pos, pos);
+    auto node = std::make_shared<INeverAwayNode>(token);
+    
+    pos += 11; // Skip "iNeverAway("
+    
+    // 解析函数定义对象
+    // 简化处理：这里需要完整的JavaScript对象解析
+    // 实际实现中应该解析完整的对象字面量
+    
+    currentPos_ = pos;
+    return node;
+}
+
+ASTNodePtr ChtlJsParser::parseArrowAccess(const std::string& code, size_t pos) {
+    size_t arrowPos = code.find("->", pos);
+    if (arrowPos == std::string::npos) {
+        return nullptr;
+    }
+    
+    // 找到箭头前的表达式
+    size_t exprStart = arrowPos;
+    while (exprStart > 0 && (std::isalnum(code[exprStart-1]) || 
+           code[exprStart-1] == '_' || code[exprStart-1] == '}' || 
+           code[exprStart-1] == ')' || code[exprStart-1] == ']')) {
+        exprStart--;
+    }
+    
+    Token token(TokenType::ARROW, "->", "", 1, arrowPos, arrowPos);
+    auto node = std::make_shared<ArrowAccessNode>(token);
+    
+    // 解析右侧成员
+    size_t memberStart = arrowPos + 2;
+    size_t memberEnd = memberStart;
+    while (memberEnd < code.length() && (std::isalnum(code[memberEnd]) || code[memberEnd] == '_')) {
+        memberEnd++;
+    }
+    
+    std::string member = code.substr(memberStart, memberEnd - memberStart);
+    node->setMember(member);
+    
+    // 检查是否是方法调用
+    if (memberEnd < code.length() && code[memberEnd] == '(') {
+        node->setIsMethodCall(true);
+        // TODO: 解析参数
+    }
+    
+    currentPos_ = memberEnd;
+    return node;
+}
+
+ASTNodePtr ChtlJsParser::parseListenCall(const std::string& code, size_t pos) {
+    if (code.substr(pos, 7) != "listen(") {
+        return nullptr;
+    }
+    
+    Token token(TokenType::IDENTIFIER, "listen", "", 1, pos, pos);
+    auto node = std::make_shared<ListenCallNode>(token);
+    
+    // TODO: 完整解析listen参数
+    
+    return node;
+}
+
+ASTNodePtr ChtlJsParser::parseDelegateCall(const std::string& code, size_t pos) {
+    if (code.substr(pos, 9) != "delegate(") {
+        return nullptr;
+    }
+    
+    Token token(TokenType::IDENTIFIER, "delegate", "", 1, pos, pos);
+    auto node = std::make_shared<DelegateCallNode>(token);
+    
+    // TODO: 完整解析delegate参数
+    
+    return node;
+}
+
+ASTNodePtr ChtlJsParser::parseAnimateCall(const std::string& code, size_t pos) {
+    if (code.substr(pos, 8) != "animate(") {
+        return nullptr;
+    }
+    
+    Token token(TokenType::IDENTIFIER, "animate", "", 1, pos, pos);
+    auto node = std::make_shared<AnimateCallNode>(token);
+    
+    // TODO: 完整解析animate参数
+    
+    return node;
+}
+
+ASTNodePtr ChtlJsParser::parseVirtualCall(const std::string& code, size_t pos) {
+    // 格式: obj->func<state>(args)
+    size_t arrowPos = code.find("->", pos);
+    if (arrowPos == std::string::npos) {
+        return nullptr;
+    }
+    
+    // 提取对象名
+    size_t objStart = arrowPos;
+    while (objStart > 0 && (std::isalnum(code[objStart-1]) || code[objStart-1] == '_')) {
+        objStart--;
+    }
+    std::string objName = code.substr(objStart, arrowPos - objStart);
+    
+    // 检查是否是虚对象
+    auto& manager = ChtlJsFunctionRegistry::getInstance().getManager();
+    if (!manager.hasVirtualObject(objName)) {
+        return nullptr;
+    }
+    
+    Token token(TokenType::ARROW, "->", "", 1, arrowPos, arrowPos);
+    auto node = std::make_shared<VirtualCallNode>(token);
+    node->setObjectName(objName);
+    
+    // 解析函数名和状态
+    size_t funcStart = arrowPos + 2;
+    size_t funcEnd = funcStart;
+    while (funcEnd < code.length() && (std::isalnum(code[funcEnd]) || code[funcEnd] == '_')) {
+        funcEnd++;
+    }
+    
+    std::string funcName = code.substr(funcStart, funcEnd - funcStart);
+    node->setFunctionName(funcName);
+    
+    // 检查状态标记
+    if (funcEnd < code.length() && code[funcEnd] == '<') {
+        size_t stateEnd = code.find('>', funcEnd);
+        if (stateEnd != std::string::npos) {
+            std::string state = code.substr(funcEnd + 1, stateEnd - funcEnd - 1);
+            node->setState(state);
+            funcEnd = stateEnd + 1;
+        }
+    }
+    
+    currentPos_ = funcEnd;
+    return node;
 }
 
 SelectorExpressionNode::SelectorType ChtlJsParser::determineSelectorType(const std::string& selector) {
@@ -221,65 +400,76 @@ SelectorExpressionNode::SelectorType ChtlJsParser::determineSelectorType(const s
     }
 }
 
-std::string ChtlJsParser::trim(const std::string& str) {
-    size_t first = str.find_first_not_of(" \t\n\r");
-    if (first == std::string::npos) return "";
+std::string ChtlJsParser::generateQuerySelector(const std::string& selector, bool multiple) {
+    std::string actualSelector = trim(selector);
     
-    size_t last = str.find_last_not_of(" \t\n\r");
-    return str.substr(first, (last - first + 1));
-}
-
-bool ChtlJsParser::startsWith(const std::string& str, const std::string& prefix) {
-    return str.size() >= prefix.size() && 
-           str.compare(0, prefix.size(), prefix) == 0;
-}
-
-std::string ChtlJsParser::replaceAll(const std::string& str, 
-                                    const std::string& from, 
-                                    const std::string& to) {
-    std::string result = str;
-    size_t start_pos = 0;
+    // 处理索引访问
+    size_t bracketPos = actualSelector.find('[');
+    std::string index;
+    if (bracketPos != std::string::npos) {
+        size_t bracketEnd = actualSelector.find(']', bracketPos);
+        if (bracketEnd != std::string::npos) {
+            index = actualSelector.substr(bracketPos + 1, bracketEnd - bracketPos - 1);
+            actualSelector = actualSelector.substr(0, bracketPos);
+        }
+    }
     
-    while ((start_pos = result.find(from, start_pos)) != std::string::npos) {
-        result.replace(start_pos, from.length(), to);
-        start_pos += to.length();
+    std::string queryMethod;
+    std::string querySelectorString;
+    
+    if (actualSelector.size() > 0 && actualSelector[0] == '.') {
+        // 类选择器
+        querySelectorString = actualSelector;
+        queryMethod = multiple ? "document.querySelectorAll" : "document.querySelector";
+    } else if (actualSelector.size() > 0 && actualSelector[0] == '#') {
+        // ID选择器
+        querySelectorString = actualSelector;
+        queryMethod = "document.querySelector";
+    } else if (actualSelector.find(" ") != std::string::npos || 
+               actualSelector.find(">") != std::string::npos) {
+        // 复合选择器
+        querySelectorString = actualSelector;
+        queryMethod = multiple ? "document.querySelectorAll" : "document.querySelector";
+    } else {
+        // 标签选择器
+        // 先查找类名或ID为此名称的元素
+        querySelectorString = "." + actualSelector + ", #" + actualSelector + ", " + actualSelector;
+        queryMethod = multiple ? "document.querySelectorAll" : "document.querySelector";
+    }
+    
+    std::string result = queryMethod + "('" + querySelectorString + "')";
+    
+    // 如果有索引
+    if (!index.empty() && multiple) {
+        result = "(" + result + ")[" + index + "]";
     }
     
     return result;
 }
 
-// 解析方法的简单实现（主要用于AST构建，实际转换在transform中完成）
-std::vector<ASTNodePtr> ChtlJsParser::parse(const std::string& jsCode) {
-    std::vector<ASTNodePtr> nodes;
+std::string ChtlJsParser::generateListenCode(const ListenCallNode* node) {
+    std::stringstream ss;
     
-    // 这里只是简单标记包含CHTL JS语法的节点
-    // 实际的详细解析可以根据需要扩展
-    if (hasChtlJsSyntax(jsCode)) {
-        Token dummyToken(TokenType::SCRIPT, jsCode, "", 1, 1, 0);
-        auto jsNode = std::make_shared<ChtlJsExpressionNode>(dummyToken);
-        jsNode->setJavaScriptCode(transform(jsCode));
-        jsNode->setHasSpecialSyntax(true);
-        nodes.push_back(jsNode);
+    // 获取目标元素
+    if (auto selector = std::dynamic_pointer_cast<SelectorExpressionNode>(node->getTarget())) {
+        std::string target = generateQuerySelector(selector->getSelector());
+        
+        // 为每个事件生成addEventListener
+        for (const auto& config : node->getEventConfigs()) {
+            ss << target << ".addEventListener('" << config.eventName << "', ";
+            // TODO: 生成处理函数
+            ss << ");\n";
+        }
     }
     
-    return nodes;
+    return ss.str();
 }
 
-ASTNodePtr ChtlJsParser::parseSelectorExpression(const std::string& selector, size_t pos) {
-    Token token(TokenType::DOUBLE_LBRACE, selector, "", 1, 1, pos);
-    auto node = std::make_shared<SelectorExpressionNode>(token);
-    
-    node->setSelector(selector);
-    node->setSelectorType(determineSelectorType(selector));
-    
-    // 检查索引
-    std::regex indexRegex(R"((.+)\[(\d+)\]$)");
-    std::smatch match;
-    if (std::regex_match(selector, match, indexRegex)) {
-        node->setIndex(std::stoi(match[2].str()));
-    }
-    
-    return node;
+std::string ChtlJsParser::trim(const std::string& str) {
+    size_t first = str.find_first_not_of(" \t\n\r");
+    if (first == std::string::npos) return "";
+    size_t last = str.find_last_not_of(" \t\n\r");
+    return str.substr(first, (last - first + 1));
 }
 
 } // namespace Chtl

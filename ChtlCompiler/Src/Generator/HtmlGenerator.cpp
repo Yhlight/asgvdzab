@@ -2,7 +2,9 @@
 #include "AST/ChtlNodes.h"
 #include "AST/TemplateNodes.h"
 #include "AST/ConfigNodes.h"
+#include "AST/ChtlJsNodes.h"
 #include "Parser/ChtlJsParser.h"
+#include "Parser/ChtlJsFunctionManager.h"
 #include <algorithm>
 
 namespace Chtl {
@@ -466,6 +468,315 @@ void HtmlGenerator::visitElementTemplate(ElementTemplateNode* node) {
 
 void HtmlGenerator::visitVarTemplate(VarTemplateNode* node) {
     // 模板定义不生成输出
+}
+
+// CHTL JS 节点实现
+void HtmlGenerator::visitSelectorExpression(SelectorExpressionNode* node) {
+    switchToJs();
+    
+    // 生成查询选择器代码
+    std::string selector = node->getSelector();
+    bool isMultiple = (node->getSelectorType() == SelectorExpressionNode::TAG && 
+                      node->getIndex() < 0);
+    
+    ChtlJsParser parser;
+    std::string jsCode = parser.generateQuerySelector(selector, isMultiple);
+    
+    if (node->hasIndex()) {
+        jsCode = "(" + jsCode + ")[" + std::to_string(node->getIndex()) + "]";
+    }
+    
+    jsOutput_ << jsCode;
+}
+
+void HtmlGenerator::visitArrowAccess(ArrowAccessNode* node) {
+    switchToJs();
+    
+    // 处理左侧表达式
+    if (node->getLeft()) {
+        node->getLeft()->accept(this);
+    }
+    
+    // 生成成员访问
+    jsOutput_ << "." << node->getMember();
+    
+    // 如果是方法调用，处理参数
+    if (node->isMethodCall()) {
+        jsOutput_ << "(";
+        const auto& args = node->getArguments();
+        for (size_t i = 0; i < args.size(); ++i) {
+            if (i > 0) jsOutput_ << ", ";
+            args[i]->accept(this);
+        }
+        jsOutput_ << ")";
+    }
+}
+
+void HtmlGenerator::visitListenCall(ListenCallNode* node) {
+    switchToJs();
+    
+    // 获取目标元素
+    if (node->getTarget()) {
+        node->getTarget()->accept(this);
+    }
+    
+    // 生成addEventListener调用
+    for (const auto& config : node->getEventConfigs()) {
+        jsOutput_ << ".addEventListener('" << config.eventName << "', ";
+        
+        if (config.handler) {
+            config.handler->accept(this);
+        } else {
+            jsOutput_ << "function(e) {}";
+        }
+        
+        if (config.useCapture || config.once || config.passive) {
+            jsOutput_ << ", {";
+            if (config.useCapture) jsOutput_ << "capture: true";
+            if (config.once) {
+                if (config.useCapture) jsOutput_ << ", ";
+                jsOutput_ << "once: true";
+            }
+            if (config.passive) {
+                if (config.useCapture || config.once) jsOutput_ << ", ";
+                jsOutput_ << "passive: true";
+            }
+            jsOutput_ << "}";
+        }
+        
+        jsOutput_ << ");\n";
+    }
+}
+
+void HtmlGenerator::visitDelegateCall(DelegateCallNode* node) {
+    switchToJs();
+    
+    // 生成事件委托辅助函数（如果还没有）
+    static bool delegateHelperGenerated = false;
+    if (!delegateHelperGenerated) {
+        jsOutput_ << R"(
+// CHTL JS 事件委托辅助函数
+function _chtlDelegate(parent, config) {
+    const targets = Array.isArray(config.targets) ? config.targets : [config.targets];
+    const eventHandlers = {};
+    
+    // 收集所有事件处理器
+    Object.keys(config).forEach(key => {
+        if (key !== 'targets' && typeof config[key] === 'function') {
+            eventHandlers[key] = config[key];
+        }
+    });
+    
+    // 为每个事件类型添加委托监听器
+    Object.keys(eventHandlers).forEach(eventType => {
+        parent.addEventListener(eventType, function(e) {
+            targets.forEach(target => {
+                const selector = target.selector || target;
+                if (e.target.matches(selector)) {
+                    eventHandlers[eventType].call(e.target, e);
+                }
+            });
+        }, true);
+    });
+}
+)";
+        delegateHelperGenerated = true;
+    }
+    
+    // 生成委托调用
+    jsOutput_ << "_chtlDelegate(";
+    if (node->getParent()) {
+        node->getParent()->accept(this);
+    }
+    jsOutput_ << ", {\n";
+    
+    // 输出目标选择器
+    jsOutput_ << "    targets: [";
+    const auto& config = node->getDelegateConfig();
+    for (size_t i = 0; i < config.targets.size(); ++i) {
+        if (i > 0) jsOutput_ << ", ";
+        config.targets[i]->accept(this);
+    }
+    jsOutput_ << "],\n";
+    
+    // 输出事件处理器
+    jsOutput_ << "    " << config.eventName << ": ";
+    if (config.handler) {
+        config.handler->accept(this);
+    }
+    jsOutput_ << "\n});\n";
+}
+
+void HtmlGenerator::visitAnimateCall(AnimateCallNode* node) {
+    switchToJs();
+    
+    // 生成动画辅助函数（如果还没有）
+    static bool animateHelperGenerated = false;
+    if (!animateHelperGenerated) {
+        jsOutput_ << R"(
+// CHTL JS 动画辅助函数
+function _chtlAnimate(config) {
+    const targets = Array.isArray(config.target) ? config.target : [config.target];
+    const duration = config.duration || 1000;
+    const easing = config.easing || 'linear';
+    const startTime = performance.now();
+    
+    const easingFunctions = {
+        linear: t => t,
+        easeIn: t => t * t,
+        easeOut: t => t * (2 - t),
+        easeInOut: t => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t
+    };
+    
+    const easingFunc = easingFunctions[easing] || easingFunctions.linear;
+    
+    function animate(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const easedProgress = easingFunc(progress);
+        
+        // 应用动画属性
+        if (config.properties) {
+            targets.forEach(target => {
+                Object.keys(config.properties).forEach(prop => {
+                    const [from, to] = config.properties[prop];
+                    const current = from + (to - from) * easedProgress;
+                    target.style[prop] = current + (prop === 'opacity' ? '' : 'px');
+                });
+            });
+        }
+        
+        if (config.onUpdate) config.onUpdate(progress);
+        
+        if (progress < 1) {
+            requestAnimationFrame(animate);
+        } else if (config.onComplete) {
+            config.onComplete();
+        }
+    }
+    
+    requestAnimationFrame(animate);
+}
+)";
+        animateHelperGenerated = true;
+    }
+    
+    // 生成动画调用
+    const auto& config = node->getConfig();
+    jsOutput_ << "_chtlAnimate({\n";
+    jsOutput_ << "    target: ";
+    
+    // 输出目标
+    if (config.targets.size() == 1) {
+        config.targets[0]->accept(this);
+    } else {
+        jsOutput_ << "[";
+        for (size_t i = 0; i < config.targets.size(); ++i) {
+            if (i > 0) jsOutput_ << ", ";
+            config.targets[i]->accept(this);
+        }
+        jsOutput_ << "]";
+    }
+    jsOutput_ << ",\n";
+    
+    // 输出配置
+    jsOutput_ << "    duration: " << config.duration << ",\n";
+    jsOutput_ << "    easing: '" << config.easing << "',\n";
+    
+    // 输出属性动画
+    if (!config.properties.empty()) {
+        jsOutput_ << "    properties: {\n";
+        for (const auto& [prop, values] : config.properties) {
+            jsOutput_ << "        " << prop << ": [" 
+                      << values.first << ", " << values.second << "],\n";
+        }
+        jsOutput_ << "    },\n";
+    }
+    
+    // 回调函数
+    if (config.onComplete) {
+        jsOutput_ << "    onComplete: ";
+        config.onComplete->accept(this);
+        jsOutput_ << ",\n";
+    }
+    
+    if (config.onUpdate) {
+        jsOutput_ << "    onUpdate: ";
+        config.onUpdate->accept(this);
+        jsOutput_ << "\n";
+    }
+    
+    jsOutput_ << "});\n";
+}
+
+void HtmlGenerator::visitChtlJsExpression(ChtlJsExpressionNode* node) {
+    switchToJs();
+    jsOutput_ << node->getJavaScriptCode();
+}
+
+void HtmlGenerator::visitVirtualObject(VirtualObjectNode* node) {
+    // 虚对象不直接生成代码，而是注册到函数管理器
+    // 初始化表达式会生成对应的代码
+    if (node->getInitExpression()) {
+        node->getInitExpression()->accept(this);
+    }
+}
+
+void HtmlGenerator::visitINeverAway(INeverAwayNode* node) {
+    switchToJs();
+    
+    // 为每个函数生成全局函数
+    for (const auto& func : node->getFunctions()) {
+        jsOutput_ << "function " << func.generatedName << "(";
+        
+        // 参数列表
+        for (size_t i = 0; i < func.params.size(); ++i) {
+            if (i > 0) jsOutput_ << ", ";
+            jsOutput_ << "param" << i;
+        }
+        
+        jsOutput_ << ") {\n";
+        
+        // 函数体
+        if (func.body) {
+            func.body->accept(this);
+        }
+        
+        jsOutput_ << "\n}\n\n";
+    }
+}
+
+void HtmlGenerator::visitVirtualCall(VirtualCallNode* node) {
+    switchToJs();
+    
+    // 查找对应的全局函数
+    auto& manager = ChtlJsFunctionRegistry::getInstance().getManager();
+    auto funcInfo = manager.findFunction(node->getObjectName(), 
+                                       node->getFunctionName(), 
+                                       node->getState());
+    
+    if (funcInfo) {
+        // 生成全局函数调用
+        jsOutput_ << funcInfo->generatedName << "(";
+        
+        // 参数列表
+        const auto& args = node->getArguments();
+        for (size_t i = 0; i < args.size(); ++i) {
+            if (i > 0) jsOutput_ << ", ";
+            args[i]->accept(this);
+        }
+        
+        jsOutput_ << ")";
+    } else {
+        // 错误：找不到对应的函数
+        jsOutput_ << "/* ERROR: Virtual function not found: " 
+                  << node->getObjectName() << "->" 
+                  << node->getFunctionName();
+        if (!node->getState().empty()) {
+            jsOutput_ << "<" << node->getState() << ">";
+        }
+        jsOutput_ << " */";
+    }
 }
 
 } // namespace Chtl

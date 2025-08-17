@@ -42,6 +42,15 @@ private:
     // 解析animate调用
     ASTNodePtr parseAnimateCall(const std::string& code, size_t pos);
     
+    // 解析虚对象声明 vir name = expr
+    ASTNodePtr parseVirtualObject(const std::string& code, size_t pos);
+    
+    // 解析iNeverAway调用
+    ASTNodePtr parseINeverAway(const std::string& code, size_t pos);
+    
+    // 解析虚对象函数调用 obj->func<state>()
+    ASTNodePtr parseVirtualCall(const std::string& code, size_t pos);
+    
     // 辅助方法
     std::string extractSelector(const std::string& code, size_t& pos);
     std::string extractObjectLiteral(const std::string& code, size_t& pos);

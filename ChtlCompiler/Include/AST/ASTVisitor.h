@@ -51,6 +51,9 @@ class ListenCallNode;
 class DelegateCallNode;
 class AnimateCallNode;
 class ChtlJsExpressionNode;
+class VirtualObjectNode;
+class INeverAwayNode;
+class VirtualCallNode;
 
 // AST访问者接口
 class ASTVisitor {
@@ -104,6 +107,9 @@ public:
     virtual void visitDelegateCall(DelegateCallNode* node) = 0;
     virtual void visitAnimateCall(AnimateCallNode* node) = 0;
     virtual void visitChtlJsExpression(ChtlJsExpressionNode* node) = 0;
+    virtual void visitVirtualObject(VirtualObjectNode* node) = 0;
+    virtual void visitINeverAway(INeverAwayNode* node) = 0;
+    virtual void visitVirtualCall(VirtualCallNode* node) = 0;
 };
 
 // 默认访问者实现（可选的基类）
