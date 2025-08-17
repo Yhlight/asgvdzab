@@ -163,21 +163,20 @@ bool StateManager::isInStyleBlock() const {
 }
 
 bool StateManager::isInScriptBlock() const {
-    return state_->isInState(CompilerState::SCRIPT_BLOCK) ||
-           state_->isInState(CompilerState::LOCAL_SCRIPT_BLOCK);
+    return state_->isInState(CompilerState::IN_SCRIPT);
 }
 
 bool StateManager::isInTemplate() const {
-    return state_->isInState(CompilerState::TEMPLATE_DEFINITION);
+    return state_->isInState(CompilerState::IN_TEMPLATE);
 }
 
 bool StateManager::isInCustom() const {
-    return state_->isInState(CompilerState::CUSTOM_DEFINITION);
+    return state_->isInState(CompilerState::IN_CUSTOM);
 }
 
 bool StateManager::isInLocalContext() const {
-    return state_->isInState(CompilerState::LOCAL_STYLE_BLOCK) ||
-           state_->isInState(CompilerState::LOCAL_SCRIPT_BLOCK);
+    return state_->isInState(CompilerState::IN_STYLE) ||
+           state_->isInState(CompilerState::IN_SCRIPT);
 }
 
 std::string StateManager::getCurrentElementTag() const {
@@ -211,32 +210,32 @@ bool StateManager::validateStateTransition(CompilerState from, CompilerState to)
     switch (from) {
         case CompilerState::INITIAL:
             // 初始状态可以进入任何顶层状态
-            return to == CompilerState::ELEMENT ||
-                   to == CompilerState::TEMPLATE_DEFINITION ||
-                   to == CompilerState::CUSTOM_DEFINITION ||
-                   to == CompilerState::ORIGIN_BLOCK ||
-                   to == CompilerState::CONFIGURATION ||
-                   to == CompilerState::NAMESPACE_BLOCK ||
-                   to == CompilerState::IMPORT_STATEMENT;
+            return to == CompilerState::IN_ELEMENT ||
+                   to == CompilerState::IN_TEMPLATE ||
+                   to == CompilerState::IN_CUSTOM ||
+                   to == CompilerState::IN_ORIGIN ||
+                   to == CompilerState::IN_CONFIGURATION ||
+                   to == CompilerState::IN_NAMESPACE ||
+                   to == CompilerState::IN_IMPORT;
                    
-        case CompilerState::ELEMENT:
+        case CompilerState::IN_ELEMENT:
             // 元素内可以有子元素、文本、样式、脚本等
-            return to == CompilerState::ELEMENT ||
-                   to == CompilerState::TEXT_BLOCK ||
-                   to == CompilerState::LOCAL_STYLE_BLOCK ||
-                   to == CompilerState::LOCAL_SCRIPT_BLOCK ||
-                   to == CompilerState::ATTRIBUTE;
+            return to == CompilerState::IN_ELEMENT ||
+                   to == CompilerState::IN_TEXT ||
+                   to == CompilerState::IN_STYLE ||
+                   to == CompilerState::IN_SCRIPT ||
+                   to == CompilerState::IN_ATTRIBUTE;
                    
-        case CompilerState::LOCAL_STYLE_BLOCK:
+        case CompilerState::IN_STYLE:
             // 局部样式块内可以有CSS规则
-            return to == CompilerState::CSS_RULE ||
-                   to == CompilerState::STYLE_PROPERTY;
+            return to == CompilerState::IN_CSS_RULE ||
+                   to == CompilerState::IN_CSS_SELECTOR;
                    
-        case CompilerState::TEMPLATE_DEFINITION:
+        case CompilerState::IN_TEMPLATE:
             // 模板定义内部的状态
-            return to == CompilerState::ELEMENT ||
-                   to == CompilerState::STYLE_PROPERTY ||
-                   to == CompilerState::ATTRIBUTE;
+            return to == CompilerState::IN_ELEMENT ||
+                   to == CompilerState::IN_STYLE ||
+                   to == CompilerState::IN_ATTRIBUTE;
                    
         default:
             // 其他状态转换需要具体分析
@@ -248,9 +247,9 @@ void StateManager::recoverToStableState() {
     // 恢复到稳定状态
     while (state_->getCurrentState() != CompilerState::INITIAL) {
         CompilerState current = state_->getCurrentState();
-        if (current == CompilerState::ELEMENT ||
-            current == CompilerState::TEMPLATE_DEFINITION ||
-            current == CompilerState::CUSTOM_DEFINITION) {
+        if (current == CompilerState::IN_ELEMENT ||
+            current == CompilerState::IN_TEMPLATE ||
+            current == CompilerState::IN_CUSTOM) {
             // 这些是相对稳定的状态
             break;
         }
@@ -302,11 +301,11 @@ CompilerState StateManager::findStableState() const {
     CompilerState current = state_->getCurrentState();
     
     // 定义稳定状态列表
-    const std::vector<CompilerState> stableStates = {
+    const     std::vector<CompilerState> stableStates = {
         CompilerState::INITIAL,
-        CompilerState::ELEMENT,
-        CompilerState::TEMPLATE_DEFINITION,
-        CompilerState::CUSTOM_DEFINITION
+        CompilerState::IN_ELEMENT,
+        CompilerState::IN_TEMPLATE,
+        CompilerState::IN_CUSTOM
     };
     
     // 如果当前已经是稳定状态
@@ -324,13 +323,11 @@ ParseContextHelper::ParseContextHelper(StateManager* stateManager, Context* cont
 }
 
 StateGuard ParseContextHelper::enterTextBlock() {
-    return stateManager_->enterState(CompilerState::TEXT_BLOCK);
+    return stateManager_->enterState(CompilerState::IN_TEXT);
 }
 
 StateGuard ParseContextHelper::enterStyleBlock(bool isLocal) {
-    CompilerState state = isLocal ? 
-        CompilerState::LOCAL_STYLE_BLOCK : 
-        CompilerState::STYLE_BLOCK;
+    CompilerState state = CompilerState::IN_STYLE;
     
     auto guard = stateManager_->enterState(state);
     
@@ -344,9 +341,7 @@ StateGuard ParseContextHelper::enterStyleBlock(bool isLocal) {
 }
 
 StateGuard ParseContextHelper::enterScriptBlock(bool isLocal) {
-    CompilerState state = isLocal ? 
-        CompilerState::LOCAL_SCRIPT_BLOCK : 
-        CompilerState::SCRIPT_BLOCK;
+    CompilerState state = CompilerState::IN_SCRIPT;
     
     auto guard = stateManager_->enterState(state);
     
@@ -360,19 +355,19 @@ StateGuard ParseContextHelper::enterScriptBlock(bool isLocal) {
 }
 
 StateGuard ParseContextHelper::enterTemplate(const std::string& type) {
-    auto guard = stateManager_->enterState(CompilerState::TEMPLATE_DEFINITION);
+    auto guard = stateManager_->enterState(CompilerState::IN_TEMPLATE);
     context_->setTempData("template_type", type);
     return guard;
 }
 
 StateGuard ParseContextHelper::enterCustom(const std::string& type) {
-    auto guard = stateManager_->enterState(CompilerState::CUSTOM_DEFINITION);
+    auto guard = stateManager_->enterState(CompilerState::IN_CUSTOM);
     context_->setTempData("custom_type", type);
     return guard;
 }
 
 StateGuard ParseContextHelper::enterOriginBlock(const std::string& type) {
-    auto guard = stateManager_->enterState(CompilerState::ORIGIN_BLOCK);
+    auto guard = stateManager_->enterState(CompilerState::IN_ORIGIN);
     context_->setTempData("origin_type", type);
     return guard;
 }
@@ -448,17 +443,17 @@ void ParseContextHelper::registerCustom(const std::string& type, const std::stri
     if (type == "@Style") {
         StyleGroup style;
         style.name = name;
-        style.isCustom = true;
+        style.isTemplate = false;  // Custom, not template
         globalMap.addStyleGroup(style);
     } else if (type == "@Element") {
         ElementGroup element;
         element.name = name;
-        element.isCustom = true;
+        element.isTemplate = false;  // Custom, not template
         globalMap.addElementGroup(element);
     } else if (type == "@Var") {
         VarGroup var;
         var.name = name;
-        var.isCustom = true;
+        var.isTemplate = false;  // Custom, not template
         globalMap.addVarGroup(var);
     }
 }

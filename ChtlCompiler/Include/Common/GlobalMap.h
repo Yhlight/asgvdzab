@@ -9,6 +9,13 @@
 
 namespace Chtl {
 
+// 导入记录
+struct ImportRecord {
+    std::string type;      // @Html, @Style, @JavaScript, @Chtl, @CJmod
+    std::string path;      // 文件路径
+    std::string alias;     // as别名（可选）
+};
+
 // 样式组定义（用于@Style模板和自定义）
 struct StyleGroup {
     std::string name;
@@ -45,14 +52,11 @@ struct OriginBlock {
     std::string namespace_;                                   // 所属命名空间
 };
 
-// 模块导入信息
-struct ModuleImportInfo {
-    std::string type;                                         // @Html, @Style, @JavaScript, @Chtl, @CJmod
-    std::string path;                                         // 文件路径
-    std::string alias;                                        // as别名（可选）
-    std::string targetName;                                   // 导入的具体项名称（可选）
-    std::string targetType;                                   // [Custom]/@Style等（可选）
-};
+// 类型别名（为了兼容NamespaceManager）
+using ElementTemplate = ElementGroup;
+using CustomStyle = StyleGroup;
+using CustomElement = ElementGroup;
+
 
 // 配置信息
 struct Configuration {
@@ -97,8 +101,13 @@ public:
                                              const std::string& type = "") const;
     
     // 导入管理
-    void addImport(const ImportInfo& import);
-    std::vector<ImportInfo> getImports() const { return imports_; }
+    void addImport(const ImportRecord& import);
+    std::vector<ImportRecord> getImports() const { return imports_; }
+    
+    // 额外的兼容方法（为NamespaceManager）
+    bool addElementTemplate(const ElementTemplate& elem) { return addElementGroup(elem); }
+    bool addCustomStyle(const CustomStyle& style) { return addStyleGroup(style); }
+    bool addCustomElement(const CustomElement& elem) { return addElementGroup(elem); }
     
     // 命名空间管理
     void enterNamespace(const std::string& name);
@@ -128,7 +137,7 @@ private:
     std::unordered_map<std::string, OriginBlock> originBlocks_;
     
     // 导入列表
-    std::vector<ImportInfo> imports_;
+    std::vector<ImportRecord> imports_;
     
     // 当前命名空间栈
     std::vector<std::string> namespaceStack_;

@@ -5,6 +5,7 @@
 #include "Parser/Parser.h"
 #include "Generator/HtmlGenerator.h"
 #include "Module/CmodPackager.h"
+#include "Common/ImportResolver.h"
 
 using namespace Chtl;
 namespace fs = std::filesystem;
@@ -192,7 +193,10 @@ int main(int argc, char* argv[]) {
     
     std::string command = argv[1];
     
-    if (command == "pack") {
+    if (command == "--help" || command == "-h") {
+        printUsage(argv[0]);
+        return 0;
+    } else if (command == "pack") {
         return handlePack(argc, argv);
     } else if (command == "unpack") {
         return handleUnpack(argc, argv);

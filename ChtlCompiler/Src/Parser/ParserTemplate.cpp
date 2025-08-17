@@ -10,7 +10,7 @@ ASTNodePtr Parser::parseScriptBlock() {
     
     consume(TokenType::LBRACE, "Expected '{' after 'script'");
     
-    inScriptBlock_ = true;
+    // 已经通过StateManager管理状态
     std::string content;
     int braceCount = 1;
     
@@ -39,7 +39,7 @@ ASTNodePtr Parser::parseScriptBlock() {
     }
     
     scriptBlock->setContent(content);
-    inScriptBlock_ = false;
+    // 已经通过StateManager管理状态
     
     consume(TokenType::RBRACE, "Expected '}' after script content");
     

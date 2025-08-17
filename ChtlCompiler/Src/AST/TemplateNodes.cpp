@@ -1,4 +1,5 @@
 #include "AST/TemplateNodes.h"
+#include "AST/ASTVisitor.h"
 
 namespace Chtl {
 

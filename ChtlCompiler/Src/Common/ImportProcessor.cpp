@@ -268,7 +268,7 @@ bool ImportProcessor::isValidResourceFile(const std::string& path, ImportStateme
 void ImportProcessor::reportError(const std::string& message, const Token& token) {
     if (context_) {
         Diagnostic diag;
-        diag.level = DiagnosticLevel::ERROR;
+        diag.level = Diagnostic::ERROR;
         diag.message = message;
         diag.line = token.line;
         diag.column = token.column;

@@ -27,6 +27,9 @@ enum class CompilerState {
     IN_CSS_SELECTOR,            // 在CSS选择器内（style块中）
     IN_CSS_RULE,                // 在CSS规则内
     IN_JS_SELECTOR,             // 在CHTL JS {{}}选择器内
+    ATTRIBUTE,                  // 属性状态（向后兼容）
+    CSS_RULE,                   // CSS规则（向后兼容）
+    STYLE_PROPERTY,             // 样式属性（向后兼容）
     ERROR                       // 错误状态
 };
 

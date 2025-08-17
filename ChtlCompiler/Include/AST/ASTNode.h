@@ -61,6 +61,7 @@ enum class ASTNodeType {
     IMPORT_STATEMENT,           // [Import] 语句
     EXPORT_STATEMENT,           // [Export] 语句
     NAMESPACE_BLOCK,            // [Namespace] 块
+    INFO_BLOCK,                 // [Info] 块
     
     // 字面量
     STRING_LITERAL,             // 字符串字面量

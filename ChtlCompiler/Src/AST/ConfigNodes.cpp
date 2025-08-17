@@ -1,4 +1,5 @@
 #include "AST/ConfigNodes.h"
+#include "AST/ASTVisitor.h"
 
 namespace Chtl {
 

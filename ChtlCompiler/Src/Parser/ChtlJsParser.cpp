@@ -161,11 +161,11 @@ std::string ChtlJsParser::generateQuerySelector(const std::string& selector, boo
     std::string queryMethod;
     std::string querySelectorString;
     
-    if (actualSelector.starts_with(".")) {
+    if (actualSelector.size() > 0 && actualSelector[0] == '.') {
         // 类选择器
         querySelectorString = actualSelector;
         queryMethod = multiple ? "document.querySelectorAll" : "document.querySelector";
-    } else if (actualSelector.starts_with("#")) {
+    } else if (actualSelector.size() > 0 && actualSelector[0] == '#') {
         // ID选择器
         querySelectorString = actualSelector;
         queryMethod = "document.querySelector";
@@ -209,9 +209,9 @@ SelectorExpressionNode::SelectorType ChtlJsParser::determineSelectorType(const s
     
     if (trimmed.find("[") != std::string::npos && trimmed.find("]") != std::string::npos) {
         return SelectorExpressionNode::INDEX;
-    } else if (trimmed.starts_with(".")) {
+    } else if (trimmed.size() > 0 && trimmed[0] == '.') {
         return SelectorExpressionNode::CLASS;
-    } else if (trimmed.starts_with("#")) {
+    } else if (trimmed.size() > 0 && trimmed[0] == '#') {
         return SelectorExpressionNode::ID;
     } else if (trimmed.find(" ") != std::string::npos || 
                trimmed.find(">") != std::string::npos) {

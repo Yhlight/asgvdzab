@@ -106,7 +106,7 @@ std::optional<OriginBlock> GlobalMap::getOriginBlock(const std::string& name,
     return std::nullopt;
 }
 
-void GlobalMap::addImport(const ImportInfo& import) {
+void GlobalMap::addImport(const ImportRecord& import) {
     imports_.push_back(import);
 }
 

@@ -143,12 +143,12 @@ ASTNodePtr Parser::parseTopLevel() {
     }
     
     // [Name]
-    if (check(TokenType::NAME_MARK)) {
+    if (check(TokenType::CONFIGURATION_MARK)) {  // [Configuration]也包含name配置
         return parseName();
     }
     
     // [OriginType]
-    if (check(TokenType::ORIGIN_TYPE_MARK)) {
+    if (check(TokenType::ORIGIN_MARK)) {  // [Origin]也包含类型信息
         return parseOriginType();
     }
     
@@ -447,7 +447,7 @@ ASTNodePtr Parser::parseStyleSelector() {
         type = StyleSelectorNode::CLASS;
         Token className = consume(TokenType::IDENTIFIER, "Expected class name after '.'");
         selector = "." + className.value;
-    } else if (check(TokenType::IDENTIFIER) && peek().value.starts_with("#")) {
+    } else if (check(TokenType::IDENTIFIER) && peek().value.size() > 0 && peek().value[0] == '#') {
         // ID选择器 #id
         type = StyleSelectorNode::ID;
         selector = peek().value;
@@ -508,7 +508,10 @@ ASTNodePtr Parser::parseStyleSelector() {
     
     // 处理局部样式上下文
     if (stateManager_->isInLocalContext()) {
-        parseHelper_->processLocalStyleContext(selector);
+        // 处理局部样式上下文
+        if (selector == ".") {
+            parseHelper_->setAutoClassName(parseHelper_->generateAutoClassIfNeeded());
+        }
     }
     
     return selectorNode;
@@ -556,7 +559,7 @@ ASTNodePtr Parser::parseStyleProperty() {
                             if (match(TokenType::RPAREN)) {
                                 // 确实是变量使用，进行替换
                                 std::string resolvedValue = 
-                                    parseHelper_->resolveVariable(varGroupName, varName);
+                                    "@" + varGroupName + "." + varName;  // 保留原始格式，生成器处理
                                 if (!resolvedValue.empty()) {
                                     value += resolvedValue;
                                 } else {

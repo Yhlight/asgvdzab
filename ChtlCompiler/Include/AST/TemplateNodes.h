@@ -2,6 +2,7 @@
 #define CHTL_AST_TEMPLATENODES_H
 
 #include "AST/ASTNode.h"
+#include <unordered_map>
 
 namespace Chtl {
 
