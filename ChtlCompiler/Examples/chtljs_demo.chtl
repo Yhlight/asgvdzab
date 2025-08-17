@@ -125,34 +125,22 @@ html {
                 {{#dynamic-content}}->innerHTML += '<button class="dynamic-btn">动态按钮 ' + Date.now() + '</button>';
             });
             
-            // iNeverAway演示
-            vir stateFuncs = iNeverAway({
-                process<Loading>: function(data) {
-                    console.log('加载状态：', data);
-                    {{#container}}->classList.add('loading');
+            // 虚对象的另一个例子 - delegate
+            vir contentEvents = delegate({
+                targets: [{{.dynamic-btn}}],
+                click: function(e) {
+                    console.log('通过虚对象触发的委托事件');
                 },
-                
-                process<Success>: function(data) {
-                    console.log('成功状态：', data);
-                    {{#container}}->classList.remove('loading');
-                    {{#container}}->classList.add('success');
-                },
-                
-                process<Error>: function(data) {
-                    console.log('错误状态：', data);
-                    {{#container}}->classList.remove('loading');
-                    {{#container}}->classList.add('error');
+                mouseenter: function(e) {
+                    e.target->style.backgroundColor = '#8e44ad';
                 }
             });
             
-            // 使用带状态的函数
-            setTimeout(function() {
-                stateFuncs->process<Loading>({ message: '正在加载...' });
-                
-                setTimeout(function() {
-                    stateFuncs->process<Success>({ message: '加载成功！' });
-                }, 2000);
-            }, 1000);
+            // 虚对象可以访问其内部的函数
+            {{.primary}}->addEventListener('click', function() {
+                // 直接调用虚对象中的函数
+                contentEvents->click({ target: this });
+            });
         }
         
         // 全局样式

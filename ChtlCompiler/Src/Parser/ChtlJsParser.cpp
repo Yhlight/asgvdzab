@@ -19,8 +19,7 @@ bool ChtlJsParser::hasChtlJsSyntax(const std::string& jsCode) const {
            jsCode.find("listen(") != std::string::npos ||
            jsCode.find("delegate(") != std::string::npos ||
            jsCode.find("animate(") != std::string::npos ||
-           jsCode.find("vir ") != std::string::npos ||
-           jsCode.find("iNeverAway(") != std::string::npos;
+           jsCode.find("vir ") != std::string::npos;
 }
 
 std::vector<ASTNodePtr> ChtlJsParser::parse(const std::string& jsCode) {
@@ -51,11 +50,7 @@ std::vector<ASTNodePtr> ChtlJsParser::parse(const std::string& jsCode) {
                 auto node = parseArrowAccess(line, pos);
                 if (node) nodes.push_back(node);
             }
-            // 检查iNeverAway
-            else if (line.find("iNeverAway(", pos) != std::string::npos) {
-                auto node = parseINeverAway(line, pos);
-                if (node) nodes.push_back(node);
-            }
+
             else {
                 pos++;
             }
@@ -71,10 +66,20 @@ std::string ChtlJsParser::transform(const std::string& jsCode) {
     
     // 转换{{选择器}}语法
     std::regex selectorRegex(R"(\{\{([^}]+)\}\})");
-    result = std::regex_replace(result, selectorRegex, [this](const std::smatch& match) {
+    std::smatch match;
+    std::string temp = result;
+    
+    while (std::regex_search(temp, match, selectorRegex)) {
         std::string selector = trim(match[1].str());
-        return generateQuerySelector(selector);
-    });
+        std::string replacement = generateQuerySelector(selector);
+        
+        size_t pos = result.find(match[0].str());
+        if (pos != std::string::npos) {
+            result.replace(pos, match[0].length(), replacement);
+        }
+        
+        temp = match.suffix().str();
+    }
     
     // 转换箭头语法 -> 为 .
     size_t pos = 0;
@@ -93,19 +98,8 @@ std::string ChtlJsParser::transform(const std::string& jsCode) {
             if (funcEnd != std::string::npos) {
                 std::string funcCall = result.substr(pos + 2, funcEnd - pos - 2);
                 
-                // 检查是否有状态标记
                 std::string funcName = funcCall;
-                std::string state;
-                size_t stateStart = funcCall.find('<');
-                if (stateStart != std::string::npos) {
-                    size_t stateEnd = funcCall.find('>', stateStart);
-                    if (stateEnd != std::string::npos) {
-                        funcName = funcCall.substr(0, stateStart);
-                        state = funcCall.substr(stateStart + 1, stateEnd - stateStart - 1);
-                    }
-                }
-                
-                auto funcInfo = manager.findFunction(objName, funcName, state);
+                auto funcInfo = manager.findFunction(objName, funcName);
                 if (funcInfo) {
                     // 替换为生成的全局函数名
                     result = result.substr(0, nameStart) + 
@@ -211,53 +205,13 @@ ASTNodePtr ChtlJsParser::parseVirtualObject(const std::string& code, size_t pos)
             }
         }
     }
-    else if (code.find("iNeverAway(", pos) == pos) {
-        auto iNeverAwayNode = parseINeverAway(code, pos);
-        node->setInitExpression(iNeverAwayNode);
-        
-        // 注册虚对象
-        auto& manager = ChtlJsFunctionRegistry::getInstance().getManager();
-        manager.registerVirtualObject(name, "iNeverAway");
-        
-        // 注册iNeverAway中的函数
-        if (auto ina = std::dynamic_pointer_cast<INeverAwayNode>(iNeverAwayNode)) {
-            for (auto& func : ina->getFunctions()) {
-                ChtlJsFunctionManager::FunctionInfo funcInfo;
-                funcInfo.originalName = func.name;
-                funcInfo.state = func.state;
-                funcInfo.virtualObject = name;
-                funcInfo.generatedName = manager.generateUniqueFunctionName(func.name + "_" + func.state);
-                funcInfo.paramTypes = func.params;
-                
-                // 更新AST节点中的生成名称
-                const_cast<INeverAwayNode::FunctionDef&>(func).generatedName = funcInfo.generatedName;
-                
-                manager.addFunction(name, funcInfo);
-            }
-        }
-    }
+
     
     currentPos_ = pos;
     return node;
 }
 
-ASTNodePtr ChtlJsParser::parseINeverAway(const std::string& code, size_t pos) {
-    if (code.substr(pos, 11) != "iNeverAway(") {
-        return nullptr;
-    }
-    
-    Token token(TokenType::IDENTIFIER, "iNeverAway", "", 1, pos, pos);
-    auto node = std::make_shared<INeverAwayNode>(token);
-    
-    pos += 11; // Skip "iNeverAway("
-    
-    // 解析函数定义对象
-    // 简化处理：这里需要完整的JavaScript对象解析
-    // 实际实现中应该解析完整的对象字面量
-    
-    currentPos_ = pos;
-    return node;
-}
+
 
 ASTNodePtr ChtlJsParser::parseArrowAccess(const std::string& code, size_t pos) {
     size_t arrowPos = code.find("->", pos);
@@ -359,7 +313,7 @@ ASTNodePtr ChtlJsParser::parseVirtualCall(const std::string& code, size_t pos) {
     auto node = std::make_shared<VirtualCallNode>(token);
     node->setObjectName(objName);
     
-    // 解析函数名和状态
+    // 解析函数名
     size_t funcStart = arrowPos + 2;
     size_t funcEnd = funcStart;
     while (funcEnd < code.length() && (std::isalnum(code[funcEnd]) || code[funcEnd] == '_')) {
@@ -368,16 +322,6 @@ ASTNodePtr ChtlJsParser::parseVirtualCall(const std::string& code, size_t pos) {
     
     std::string funcName = code.substr(funcStart, funcEnd - funcStart);
     node->setFunctionName(funcName);
-    
-    // 检查状态标记
-    if (funcEnd < code.length() && code[funcEnd] == '<') {
-        size_t stateEnd = code.find('>', funcEnd);
-        if (stateEnd != std::string::npos) {
-            std::string state = code.substr(funcEnd + 1, stateEnd - funcEnd - 1);
-            node->setState(state);
-            funcEnd = stateEnd + 1;
-        }
-    }
     
     currentPos_ = funcEnd;
     return node;

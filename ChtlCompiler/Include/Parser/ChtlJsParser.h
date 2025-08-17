@@ -45,10 +45,7 @@ private:
     // 解析虚对象声明 vir name = expr
     ASTNodePtr parseVirtualObject(const std::string& code, size_t pos);
     
-    // 解析iNeverAway调用
-    ASTNodePtr parseINeverAway(const std::string& code, size_t pos);
-    
-    // 解析虚对象函数调用 obj->func<state>()
+    // 解析虚对象函数调用 obj->func()
     ASTNodePtr parseVirtualCall(const std::string& code, size_t pos);
     
     // 辅助方法

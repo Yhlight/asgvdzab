@@ -75,7 +75,6 @@ enum class ASTNodeType {
     DELEGATE_CALL,              // delegate 调用
     ANIMATE_CALL,               // animate 调用
     VIRTUAL_OBJECT,             // 虚对象声明
-    I_NEVER_AWAY,               // iNeverAway调用
     VIRTUAL_CALL,               // 虚对象函数调用
     
     // 其他

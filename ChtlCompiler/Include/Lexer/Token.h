@@ -76,8 +76,6 @@ enum class TokenType {
     DOUBLE_LBRACE,           // {{
     DOUBLE_RBRACE,           // }}
     VIR,                     // vir (虚对象关键字)
-    LESS_THAN,               // < (状态标记开始)
-    GREATER_THAN,            // > (状态标记结束)
     
     // 特殊
     NEWLINE,                 // 换行符

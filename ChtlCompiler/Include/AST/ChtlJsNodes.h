@@ -187,28 +187,7 @@ private:
     ASTNodePtr initExpression_;
 };
 
-// iNeverAway调用节点
-class INeverAwayNode : public ASTNode {
-public:
-    INeverAwayNode(const Token& token);
-    
-    // 函数定义结构
-    struct FunctionDef {
-        std::string name;           // 函数名（不含状态）
-        std::string state;          // 状态标识（<>中的内容）
-        std::vector<std::string> params;  // 参数类型列表
-        ASTNodePtr body;            // 函数体
-        std::string generatedName;  // 生成的全局函数名
-    };
-    
-    void addFunctionDef(const FunctionDef& def) { functions_.push_back(def); }
-    const std::vector<FunctionDef>& getFunctions() const { return functions_; }
-    
-    void accept(class ASTVisitor* visitor) override;
 
-private:
-    std::vector<FunctionDef> functions_;
-};
 
 // 虚对象函数调用节点
 class VirtualCallNode : public ASTNode {
@@ -219,13 +198,9 @@ public:
     const std::string& getObjectName() const { return objectName_; }
     void setObjectName(const std::string& name) { objectName_ = name; }
     
-    // 函数名（包含状态）
+    // 函数名
     const std::string& getFunctionName() const { return functionName_; }
     void setFunctionName(const std::string& name) { functionName_ = name; }
-    
-    // 状态标识
-    const std::string& getState() const { return state_; }
-    void setState(const std::string& state) { state_ = state; }
     
     // 参数列表
     void addArgument(ASTNodePtr arg) { arguments_.push_back(arg); }
@@ -236,7 +211,6 @@ public:
 private:
     std::string objectName_;
     std::string functionName_;
-    std::string state_;
     std::vector<ASTNodePtr> arguments_;
 };
 

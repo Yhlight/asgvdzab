@@ -52,7 +52,6 @@ class DelegateCallNode;
 class AnimateCallNode;
 class ChtlJsExpressionNode;
 class VirtualObjectNode;
-class INeverAwayNode;
 class VirtualCallNode;
 
 // AST访问者接口
@@ -108,7 +107,6 @@ public:
     virtual void visitAnimateCall(AnimateCallNode* node) = 0;
     virtual void visitChtlJsExpression(ChtlJsExpressionNode* node) = 0;
     virtual void visitVirtualObject(VirtualObjectNode* node) = 0;
-    virtual void visitINeverAway(INeverAwayNode* node) = 0;
     virtual void visitVirtualCall(VirtualCallNode* node) = 0;
 };
 

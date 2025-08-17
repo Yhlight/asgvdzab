@@ -147,8 +147,13 @@ public:
     
     void accept(class ASTVisitor* visitor) override;
 
+    // 转换后的内容（如果包含CHTL JS）
+    const std::string& getTransformedContent() const { return transformedContent_; }
+    void setTransformedContent(const std::string& content) { transformedContent_ = content; }
+
 private:
     std::string content_;
+    std::string transformedContent_;
     bool hasChtlJsSyntax_ = false;
 };
 

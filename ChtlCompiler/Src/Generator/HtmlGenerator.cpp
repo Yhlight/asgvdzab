@@ -722,29 +722,7 @@ void HtmlGenerator::visitVirtualObject(VirtualObjectNode* node) {
     }
 }
 
-void HtmlGenerator::visitINeverAway(INeverAwayNode* node) {
-    switchToJs();
-    
-    // 为每个函数生成全局函数
-    for (const auto& func : node->getFunctions()) {
-        jsOutput_ << "function " << func.generatedName << "(";
-        
-        // 参数列表
-        for (size_t i = 0; i < func.params.size(); ++i) {
-            if (i > 0) jsOutput_ << ", ";
-            jsOutput_ << "param" << i;
-        }
-        
-        jsOutput_ << ") {\n";
-        
-        // 函数体
-        if (func.body) {
-            func.body->accept(this);
-        }
-        
-        jsOutput_ << "\n}\n\n";
-    }
-}
+
 
 void HtmlGenerator::visitVirtualCall(VirtualCallNode* node) {
     switchToJs();
@@ -752,8 +730,7 @@ void HtmlGenerator::visitVirtualCall(VirtualCallNode* node) {
     // 查找对应的全局函数
     auto& manager = ChtlJsFunctionRegistry::getInstance().getManager();
     auto funcInfo = manager.findFunction(node->getObjectName(), 
-                                       node->getFunctionName(), 
-                                       node->getState());
+                                       node->getFunctionName());
     
     if (funcInfo) {
         // 生成全局函数调用
@@ -771,11 +748,8 @@ void HtmlGenerator::visitVirtualCall(VirtualCallNode* node) {
         // 错误：找不到对应的函数
         jsOutput_ << "/* ERROR: Virtual function not found: " 
                   << node->getObjectName() << "->" 
-                  << node->getFunctionName();
-        if (!node->getState().empty()) {
-            jsOutput_ << "<" << node->getState() << ">";
-        }
-        jsOutput_ << " */";
+                  << node->getFunctionName()
+                  << " */";
     }
 }
 

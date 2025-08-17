@@ -67,15 +67,6 @@ void VirtualObjectNode::accept(ASTVisitor* visitor) {
     visitor->visitVirtualObject(this);
 }
 
-// INeverAwayNode 实现
-INeverAwayNode::INeverAwayNode(const Token& token)
-    : ASTNode(ASTNodeType::I_NEVER_AWAY, token) {
-}
-
-void INeverAwayNode::accept(ASTVisitor* visitor) {
-    visitor->visitINeverAway(this);
-}
-
 // VirtualCallNode 实现
 VirtualCallNode::VirtualCallNode(const Token& token)
     : ASTNode(ASTNodeType::VIRTUAL_CALL, token) {

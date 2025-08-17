@@ -22,12 +22,7 @@ void ChtlJsFunctionManager::addFunction(const std::string& virtualObject,
                                        const FunctionInfo& funcInfo) {
     auto it = virtualObjects_.find(virtualObject);
     if (it != virtualObjects_.end()) {
-        // 构建函数键名：函数名<状态>
-        std::string key = funcInfo.originalName;
-        if (!funcInfo.state.empty()) {
-            key += "<" + funcInfo.state + ">";
-        }
-        it->second.functions[key] = funcInfo;
+        it->second.functions[funcInfo.originalName] = funcInfo;
     }
 }
 
@@ -39,20 +34,13 @@ std::string ChtlJsFunctionManager::generateUniqueFunctionName(const std::string&
 
 const ChtlJsFunctionManager::FunctionInfo* 
 ChtlJsFunctionManager::findFunction(const std::string& virtualObject,
-                                   const std::string& functionName,
-                                   const std::string& state) const {
+                                   const std::string& functionName) const {
     auto objIt = virtualObjects_.find(virtualObject);
     if (objIt == virtualObjects_.end()) {
         return nullptr;
     }
     
-    // 构建查找键
-    std::string key = functionName;
-    if (!state.empty()) {
-        key += "<" + state + ">";
-    }
-    
-    auto funcIt = objIt->second.functions.find(key);
+    auto funcIt = objIt->second.functions.find(functionName);
     if (funcIt != objIt->second.functions.end()) {
         return &funcIt->second;
     }

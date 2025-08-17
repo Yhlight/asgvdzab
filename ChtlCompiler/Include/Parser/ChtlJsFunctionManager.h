@@ -14,11 +14,9 @@ class ChtlJsFunctionManager {
 public:
     // 函数信息
     struct FunctionInfo {
-        std::string originalName;      // 原始函数名（如 Void）
-        std::string state;            // 状态标识（如 A、B）
+        std::string originalName;      // 原始函数名（如 click、mouseenter）
         std::string generatedName;    // 生成的全局函数名
         std::string virtualObject;    // 所属虚对象名
-        std::vector<std::string> paramTypes;  // 参数类型列表
     };
     
     // 虚对象信息
@@ -42,8 +40,7 @@ public:
     
     // 查找函数
     const FunctionInfo* findFunction(const std::string& virtualObject, 
-                                   const std::string& functionName,
-                                   const std::string& state = "") const;
+                                   const std::string& functionName) const;
     
     // 获取虚对象信息
     const VirtualObjectInfo* getVirtualObject(const std::string& name) const;
