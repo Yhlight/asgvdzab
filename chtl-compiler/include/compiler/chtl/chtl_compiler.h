@@ -7,6 +7,8 @@
 #include <stack>
 #include <memory>
 #include "compiler/compiler_interface.h"
+#include "compiler/chtl/chtl_tokens.h"
+#include "compiler/chtl/chtl_state.h"
 
 namespace chtl {
 
@@ -101,21 +103,6 @@ public:
     }
     
 private:
-    // 词法分析
-    struct Token {
-        enum Type {
-            IDENTIFIER, KEYWORD, STRING, NUMBER,
-            LBRACE, RBRACE, LPAREN, RPAREN, LBRACKET, RBRACKET,
-            COLON, SEMICOLON, COMMA, DOT, AT, AMPERSAND,
-            EQUALS, ARROW, EXCLAMATION,
-            COMMENT, WHITESPACE, NEWLINE, EOF_TOKEN
-        };
-        
-        Type type;
-        std::string value;
-        size_t line;
-        size_t column;
-    };
     
     class Lexer {
     public:
@@ -165,8 +152,8 @@ private:
         std::unique_ptr<ASTNode> parseAttribute();
         
         // 辅助方法
-        bool expect(Token::Type type);
-        bool match(Token::Type type);
+        bool expect(TokenType type);
+        bool match(TokenType type);
         bool matchKeyword(const std::string& keyword);
         void synchronize(); // 错误恢复
         

@@ -195,12 +195,16 @@ std::vector<SliceInfo> CHTLUnifiedScanner::subdivideSlice(const ScanContext& ctx
         
         // 根据类型查找单元结束位置
         if (type == CodeFragmentType::CHTL) {
-            if (config_.enable_intelligent_slicing) {
-                std::cout << "[Debug] Checking for special blocks at pos " << pos << "\n";
-                std::cout << "[Debug] lookAhead(script) = " << lookAhead(ctx.content, pos, "script") << "\n";
-            }
-            // 检查特殊块
-            if (lookAhead(ctx.content, pos, "script") && pos + 6 < slice.end) {
+            // 检查是否是HTML元素开始
+            size_t element_end = findCHTLUnitEnd(ctx.content, pos);
+            
+            // 在元素内部查找特殊块
+            size_t search_pos = pos;
+            while (search_pos < element_end) {
+                search_pos = skipWhitespace(ctx.content, search_pos);
+                
+                if (lookAhead(ctx.content, search_pos, "script") && 
+                    search_pos + 6 < element_end) {
                 if (config_.enable_intelligent_slicing) {
                     std::cout << "[Debug] Found 'script' at position " << pos << "\n";
                 }

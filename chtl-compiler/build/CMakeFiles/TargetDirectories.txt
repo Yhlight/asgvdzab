@@ -13,9 +13,6 @@
 /workspace/chtl-compiler/build/CMakeFiles/install.dir
 /workspace/chtl-compiler/build/CMakeFiles/install/local.dir
 /workspace/chtl-compiler/build/CMakeFiles/install/strip.dir
-/workspace/chtl-compiler/build/tests/CMakeFiles/test_chtljs.dir
-/workspace/chtl-compiler/build/tests/CMakeFiles/test_chtljs_debug.dir
-/workspace/chtl-compiler/build/tests/CMakeFiles/test_minimal.dir
 /workspace/chtl-compiler/build/tests/CMakeFiles/test.dir
 /workspace/chtl-compiler/build/tests/CMakeFiles/edit_cache.dir
 /workspace/chtl-compiler/build/tests/CMakeFiles/rebuild_cache.dir

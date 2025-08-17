@@ -7,23 +7,7 @@
 
 namespace chtl {
 
-// 关键字集合
-static const std::unordered_set<std::string> CHTL_KEYWORDS = {
-    "style", "script", "text", "inherit", "delete", "insert",
-    "after", "before", "replace", "at", "top", "bottom",
-    "from", "as", "except", "vir"
-};
-
-// HTML标签集合
-static const std::unordered_set<std::string> HTML_TAGS = {
-    "html", "head", "body", "div", "span", "p", "a", "img",
-    "ul", "ol", "li", "table", "tr", "td", "th", "form",
-    "input", "button", "select", "option", "textarea",
-    "h1", "h2", "h3", "h4", "h5", "h6", "header", "footer",
-    "nav", "section", "article", "aside", "main", "figure",
-    "figcaption", "video", "audio", "canvas", "svg", "iframe",
-    "br", "hr", "meta", "link", "script", "style"
-};
+// 使用新的Token系统定义的关键字和HTML标签
 
 // ==================== Lexer 实现 ====================
 
@@ -31,7 +15,7 @@ CHTLCompiler::Lexer::Lexer(const std::string& input, size_t start_line)
     : input_(input), position_(0), line_(start_line), column_(1) {
 }
 
-CHTLCompiler::Token CHTLCompiler::Lexer::nextToken() {
+Token CHTLCompiler::Lexer::nextToken() {
     if (peeked_token_.has_value()) {
         Token token = peeked_token_.value();
         peeked_token_.reset();
@@ -41,7 +25,7 @@ CHTLCompiler::Token CHTLCompiler::Lexer::nextToken() {
     skipWhitespace();
     
     if (isAtEnd()) {
-        return Token{Token::EOF_TOKEN, "", line_, column_};
+        return Token{TokenType::EOF_TOKEN, "", line_, column_, position_, position_};
     }
     
     size_t start_line = line_;
@@ -50,28 +34,29 @@ CHTLCompiler::Token CHTLCompiler::Lexer::nextToken() {
     char c = peek();
     
     // 单字符标记
+    size_t start_pos = position_;
     switch (c) {
-        case '{': advance(); return Token{Token::LBRACE, "{", start_line, start_column};
-        case '}': advance(); return Token{Token::RBRACE, "}", start_line, start_column};
-        case '(': advance(); return Token{Token::LPAREN, "(", start_line, start_column};
-        case ')': advance(); return Token{Token::RPAREN, ")", start_line, start_column};
-        case '[': advance(); return Token{Token::LBRACKET, "[", start_line, start_column};
-        case ']': advance(); return Token{Token::RBRACKET, "]", start_line, start_column};
-        case ':': advance(); return Token{Token::COLON, ":", start_line, start_column};
-        case ';': advance(); return Token{Token::SEMICOLON, ";", start_line, start_column};
-        case ',': advance(); return Token{Token::COMMA, ",", start_line, start_column};
-        case '.': advance(); return Token{Token::DOT, ".", start_line, start_column};
-        case '@': advance(); return Token{Token::AT, "@", start_line, start_column};
-        case '&': advance(); return Token{Token::AMPERSAND, "&", start_line, start_column};
-        case '=': advance(); return Token{Token::EQUALS, "=", start_line, start_column};
-        case '!': advance(); return Token{Token::EXCLAMATION, "!", start_line, start_column};
+        case '{': advance(); return Token{TokenType::LBRACE, "{", start_line, start_column, start_pos, position_};
+        case '}': advance(); return Token{TokenType::RBRACE, "}", start_line, start_column, start_pos, position_};
+        case '(': advance(); return Token{TokenType::LPAREN, "(", start_line, start_column, start_pos, position_};
+        case ')': advance(); return Token{TokenType::RPAREN, ")", start_line, start_column, start_pos, position_};
+        case '[': advance(); return Token{TokenType::LBRACKET, "[", start_line, start_column, start_pos, position_};
+        case ']': advance(); return Token{TokenType::RBRACKET, "]", start_line, start_column, start_pos, position_};
+        case ':': advance(); return Token{TokenType::COLON, ":", start_line, start_column, start_pos, position_};
+        case ';': advance(); return Token{TokenType::SEMICOLON, ";", start_line, start_column, start_pos, position_};
+        case ',': advance(); return Token{TokenType::COMMA, ",", start_line, start_column, start_pos, position_};
+        case '.': advance(); return Token{TokenType::DOT, ".", start_line, start_column, start_pos, position_};
+        case '@': advance(); return Token{TokenType::AT, "@", start_line, start_column, start_pos, position_};
+        case '&': advance(); return Token{TokenType::AMPERSAND, "&", start_line, start_column, start_pos, position_};
+        case '=': advance(); return Token{TokenType::EQUALS, "=", start_line, start_column, start_pos, position_};
+
     }
     
     // 多字符标记
     if (c == '-' && peek(1) == '>') {
         advance();
         advance();
-        return Token{Token::ARROW, "->", start_line, start_column};
+        return Token{TokenType::ARROW, "->", start_line, start_column, start_pos, position_};
     }
     
     // 注释
@@ -102,10 +87,10 @@ CHTLCompiler::Token CHTLCompiler::Lexer::nextToken() {
     
     // 未知字符
     advance();
-    return Token{Token::IDENTIFIER, std::string(1, c), start_line, start_column};
+    return Token{TokenType::IDENTIFIER, std::string(1, c), start_line, start_column, start_pos, position_};
 }
 
-CHTLCompiler::Token CHTLCompiler::Lexer::peekToken() {
+Token CHTLCompiler::Lexer::peekToken() {
     if (!peeked_token_.has_value()) {
         peeked_token_ = nextToken();
     }
@@ -157,14 +142,15 @@ void CHTLCompiler::Lexer::skipComment() {
     }
 }
 
-CHTLCompiler::Token CHTLCompiler::Lexer::scanIdentifier() {
+Token CHTLCompiler::Lexer::scanIdentifier() {
     size_t start_line = line_;
     size_t start_column = column_;
+    size_t start_pos = position_;
     std::string value;
     
     // 首字符必须是字母或下划线
     if (!std::isalpha(peek()) && peek() != '_') {
-        return Token{Token::IDENTIFIER, "", start_line, start_column};
+        return Token{TokenType::IDENTIFIER, "", start_line, start_column, start_pos, position_};
     }
     
     while (!isAtEnd() && (std::isalnum(peek()) || peek() == '_' || peek() == '-')) {
@@ -173,16 +159,17 @@ CHTLCompiler::Token CHTLCompiler::Lexer::scanIdentifier() {
     }
     
     // 检查是否是关键字
-    if (CHTL_KEYWORDS.find(value) != CHTL_KEYWORDS.end()) {
-        return Token{Token::KEYWORD, value, start_line, start_column};
+    if (getCHTLKeywords().find(value) != getCHTLKeywords().end()) {
+        return Token{TokenType::KEYWORD, value, start_line, start_column, start_pos, position_};
     }
     
-    return Token{Token::IDENTIFIER, value, start_line, start_column};
+    return Token{TokenType::IDENTIFIER, value, start_line, start_column, start_pos, position_};
 }
 
-CHTLCompiler::Token CHTLCompiler::Lexer::scanString() {
+Token CHTLCompiler::Lexer::scanString() {
     size_t start_line = line_;
     size_t start_column = column_;
+    size_t start_pos = position_;
     char delimiter = peek();
     std::string value;
     value += delimiter;
@@ -223,12 +210,13 @@ CHTLCompiler::Token CHTLCompiler::Lexer::scanString() {
         value += c;
     }
     
-    return Token{Token::STRING, value, start_line, start_column};
+    return Token{TokenType::STRING_LITERAL, value, start_line, start_column, start_pos, position_};
 }
 
-CHTLCompiler::Token CHTLCompiler::Lexer::scanNumber() {
+Token CHTLCompiler::Lexer::scanNumber() {
     size_t start_line = line_;
     size_t start_column = column_;
+    size_t start_pos = position_;
     std::string value;
     
     while (!isAtEnd() && std::isdigit(peek())) {
@@ -245,7 +233,7 @@ CHTLCompiler::Token CHTLCompiler::Lexer::scanNumber() {
         }
     }
     
-    return Token{Token::NUMBER, value, start_line, start_column};
+    return Token{TokenType::NUMBER, value, start_line, start_column, start_pos, position_};
 }
 
 char CHTLCompiler::Lexer::peek(size_t offset) const {
@@ -279,16 +267,16 @@ std::unique_ptr<ASTNode> CHTLCompiler::Parser::parseRoot() {
     while (!lexer_.isAtEnd()) {
         Token token = lexer_.peekToken();
         
-        if (token.type == Token::EOF_TOKEN) {
+        if (token.type == TokenType::EOF_TOKEN) {
             break;
         }
         
         // 处理顶级元素
-        if (token.type == Token::LBRACKET) {
+        if (token.type == TokenType::LBRACKET) {
             lexer_.consumeToken();
             Token next = lexer_.peekToken();
             
-            if (next.type == Token::IDENTIFIER) {
+            if (next.type == TokenType::IDENTIFIER) {
                 if (next.value == "Template") {
                     root->children.push_back(parseTemplate());
                 } else if (next.value == "Custom") {
@@ -302,9 +290,9 @@ std::unique_ptr<ASTNode> CHTLCompiler::Parser::parseRoot() {
                     synchronize();
                 }
             }
-        } else if (token.type == Token::IDENTIFIER && HTML_TAGS.find(token.value) != HTML_TAGS.end()) {
+        } else if (token.type == TokenType::IDENTIFIER && getHTMLTags().find(token.value) != getHTMLTags().end()) {
             root->children.push_back(parseElement());
-        } else if (token.type == Token::KEYWORD && token.value == "style") {
+        } else if (token.type == TokenType::KEYWORD && token.value == "style") {
             // 全局style块
             root->children.push_back(parseStyle());
         } else {
@@ -326,7 +314,7 @@ std::unique_ptr<ASTNode> CHTLCompiler::Parser::parseElement() {
     element->location.start_column = tag.column;
     
     // 期待 {
-    if (!expect(Token::LBRACE)) {
+    if (!expect(TokenType::LBRACE)) {
         return element;
     }
     
@@ -340,25 +328,25 @@ void CHTLCompiler::Parser::parseElementContent(ElementNode* element) {
     while (!lexer_.isAtEnd()) {
         Token token = lexer_.peekToken();
         
-        if (token.type == Token::RBRACE) {
+        if (token.type == TokenType::RBRACE) {
             lexer_.consumeToken();
             break;
         }
         
-        if (token.type == Token::IDENTIFIER) {
+        if (token.type == TokenType::IDENTIFIER) {
             // 查看下一个标记来决定是属性还是子元素
             std::string identifier = token.value;
             lexer_.consumeToken(); // 消费标识符
             
             Token peek = lexer_.peekToken();
-            if (peek.type == Token::COLON || peek.type == Token::EQUALS) {
+            if (peek.type == TokenType::COLON || peek.type == TokenType::EQUALS) {
                 // 是属性
                 lexer_.consumeToken(); // 消费 : 或 =
                 Token value = lexer_.nextToken();
                 
                 // 处理属性值
                 std::string attr_value;
-                if (value.type == Token::STRING && value.value.length() >= 2) {
+                if (value.type == TokenType::STRING_LITERAL && value.value.length() >= 2) {
                     // 去除字符串引号
                     attr_value = value.value.substr(1, value.value.length() - 2);
                 } else {
@@ -369,12 +357,12 @@ void CHTLCompiler::Parser::parseElementContent(ElementNode* element) {
                 element->attributes[identifier] = attr_value;
                 
                 // 可选的分号
-                if (lexer_.peekToken().type == Token::SEMICOLON) {
+                if (lexer_.peekToken().type == TokenType::SEMICOLON) {
                     lexer_.consumeToken();
                 }
-            } else if (peek.type == Token::LBRACE) {
+            } else if (peek.type == TokenType::LBRACE) {
                 // 是子元素
-                if (HTML_TAGS.find(identifier) != HTML_TAGS.end()) {
+                if (getHTMLTags().find(identifier) != getHTMLTags().end()) {
                     // 递归解析子元素
                     auto child = std::make_unique<ElementNode>();
                     child->tag_name = identifier;
@@ -395,15 +383,15 @@ void CHTLCompiler::Parser::parseElementContent(ElementNode* element) {
                     int depth = 1;
                     while (depth > 0 && !lexer_.isAtEnd()) {
                         Token t = lexer_.nextToken();
-                        if (t.type == Token::LBRACE) depth++;
-                        else if (t.type == Token::RBRACE) depth--;
+                        if (t.type == TokenType::LBRACE) depth++;
+                        else if (t.type == TokenType::RBRACE) depth--;
                     }
                 }
             } else {
                 // 可能是一个没有花括号的HTML标签名
                 reportError("Unexpected token after identifier: " + identifier);
             }
-        } else if (token.type == Token::KEYWORD) {
+        } else if (token.type == TokenType::KEYWORD) {
             if (token.value == "style") {
                 element->has_local_style = true;
                 element->children.push_back(parseStyle());
@@ -428,7 +416,7 @@ std::unique_ptr<ASTNode> CHTLCompiler::Parser::parseText() {
     
     lexer_.consumeToken(); // 消费 'text'
     
-    if (!expect(Token::LBRACE)) {
+    if (!expect(TokenType::LBRACE)) {
         return text;
     }
     
@@ -439,17 +427,17 @@ std::unique_ptr<ASTNode> CHTLCompiler::Parser::parseText() {
     while (!lexer_.isAtEnd() && brace_depth > 0) {
         Token token = lexer_.nextToken();
         
-        if (token.type == Token::LBRACE) {
+        if (token.type == TokenType::LBRACE) {
             brace_depth++;
             content += token.value;
-        } else if (token.type == Token::RBRACE) {
+        } else if (token.type == TokenType::RBRACE) {
             brace_depth--;
             if (brace_depth > 0) {
                 content += token.value;
             }
         } else {
             content += token.value;
-            if (token.type != Token::STRING && !content.empty() && content.back() != ' ') {
+            if (token.type != TokenType::STRING_LITERAL && !content.empty() && content.back() != ' ') {
                 content += " ";
             }
         }
@@ -470,7 +458,7 @@ std::unique_ptr<ASTNode> CHTLCompiler::Parser::parseStyle() {
     
     lexer_.consumeToken(); // 消费 'style'
     
-    if (!expect(Token::LBRACE)) {
+    if (!expect(TokenType::LBRACE)) {
         return style;
     }
     
@@ -481,9 +469,9 @@ std::unique_ptr<ASTNode> CHTLCompiler::Parser::parseStyle() {
     while (!lexer_.isAtEnd() && brace_depth > 0) {
         Token token = lexer_.nextToken();
         
-        if (token.type == Token::LBRACE) {
+        if (token.type == TokenType::LBRACE) {
             brace_depth++;
-        } else if (token.type == Token::RBRACE) {
+        } else if (token.type == TokenType::RBRACE) {
             brace_depth--;
             if (brace_depth == 0) {
                 break;
@@ -491,10 +479,10 @@ std::unique_ptr<ASTNode> CHTLCompiler::Parser::parseStyle() {
         }
         
         // 根据token类型决定是否添加空格
-        if (token.type == Token::SEMICOLON || token.type == Token::COLON || 
-            token.type == Token::COMMA || token.type == Token::LBRACE || token.type == Token::RBRACE) {
+        if (token.type == TokenType::SEMICOLON || token.type == TokenType::COLON || 
+            token.type == TokenType::COMMA || token.type == TokenType::LBRACE || token.type == TokenType::RBRACE) {
             content += token.value;
-        } else if (token.type == Token::STRING) {
+        } else if (token.type == TokenType::STRING_LITERAL) {
             content += token.value;
         } else {
             // 其他token前面可能需要空格
@@ -520,7 +508,7 @@ std::unique_ptr<ASTNode> CHTLCompiler::Parser::parseScript() {
     return script;
 }
 
-bool CHTLCompiler::Parser::expect(Token::Type type) {
+bool CHTLCompiler::Parser::expect(TokenType type) {
     Token token = lexer_.peekToken();
     if (token.type != type) {
         reportError("Expected token type but found: " + token.value);
@@ -530,7 +518,7 @@ bool CHTLCompiler::Parser::expect(Token::Type type) {
     return true;
 }
 
-bool CHTLCompiler::Parser::match(Token::Type type) {
+bool CHTLCompiler::Parser::match(TokenType type) {
     if (lexer_.peekToken().type == type) {
         lexer_.consumeToken();
         return true;
@@ -542,10 +530,10 @@ std::unique_ptr<ASTNode> CHTLCompiler::Parser::parseTemplate() {
     auto tmpl = std::make_unique<TemplateNode>();
     
     lexer_.consumeToken(); // 消费 'Template'
-    expect(Token::RBRACKET); // ]
+    expect(TokenType::RBRACKET); // ]
     
     // 读取模板类型 @Style, @Element, @Var
-    expect(Token::AT);
+    expect(TokenType::AT);
     Token type_token = lexer_.nextToken();
     
     if (type_token.value == "Style") {
@@ -563,13 +551,13 @@ std::unique_ptr<ASTNode> CHTLCompiler::Parser::parseTemplate() {
     tmpl->template_name = name_token.value;
     
     // TODO: 实现模板内容解析
-    expect(Token::LBRACE);
+    expect(TokenType::LBRACE);
     // 暂时跳过内容
     int brace_depth = 1;
     while (brace_depth > 0 && !lexer_.isAtEnd()) {
         Token t = lexer_.nextToken();
-        if (t.type == Token::LBRACE) brace_depth++;
-        else if (t.type == Token::RBRACE) brace_depth--;
+        if (t.type == TokenType::LBRACE) brace_depth++;
+        else if (t.type == TokenType::RBRACE) brace_depth--;
     }
     
     return tmpl;
@@ -579,7 +567,7 @@ std::unique_ptr<ASTNode> CHTLCompiler::Parser::parseCustom() {
     auto custom = std::make_unique<ASTNode>(ASTNodeType::CUSTOM_DEF);
     
     lexer_.consumeToken(); // 消费 'Custom'
-    expect(Token::RBRACKET); // ]
+    expect(TokenType::RBRACKET); // ]
     
     // TODO: 实现自定义内容解析
     return custom;
@@ -589,7 +577,7 @@ std::unique_ptr<ASTNode> CHTLCompiler::Parser::parseImport() {
     auto import = std::make_unique<ASTNode>(ASTNodeType::IMPORT);
     
     lexer_.consumeToken(); // 消费 'Import'
-    expect(Token::RBRACKET); // ]
+    expect(TokenType::RBRACKET); // ]
     
     // TODO: 实现导入解析
     return import;
@@ -599,7 +587,7 @@ std::unique_ptr<ASTNode> CHTLCompiler::Parser::parseOrigin() {
     auto origin = std::make_unique<ASTNode>(ASTNodeType::ORIGIN_BLOCK);
     
     lexer_.consumeToken(); // 消费 'Origin'
-    expect(Token::RBRACKET); // ]
+    expect(TokenType::RBRACKET); // ]
     
     // TODO: 实现原始块解析
     return origin;
@@ -609,9 +597,9 @@ void CHTLCompiler::Parser::synchronize() {
     // 错误恢复：跳到下一个顶级结构
     while (!lexer_.isAtEnd()) {
         Token t = lexer_.peekToken();
-        if (t.type == Token::RBRACE || 
-            t.type == Token::LBRACKET ||
-            (t.type == Token::IDENTIFIER && HTML_TAGS.find(t.value) != HTML_TAGS.end())) {
+        if (t.type == TokenType::RBRACE || 
+            t.type == TokenType::LBRACKET ||
+            (t.type == TokenType::IDENTIFIER && getHTMLTags().find(t.value) != getHTMLTags().end())) {
             break;
         }
         lexer_.consumeToken();

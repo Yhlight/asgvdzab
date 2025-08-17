@@ -1,6 +1,8 @@
 file(REMOVE_RECURSE
   "CMakeFiles/chtljs_compiler.dir/src/compiler/chtljs/chtljs_compiler.cpp.o"
   "CMakeFiles/chtljs_compiler.dir/src/compiler/chtljs/chtljs_compiler.cpp.o.d"
+  "CMakeFiles/chtljs_compiler.dir/src/compiler/chtljs/chtljs_preprocessor.cpp.o"
+  "CMakeFiles/chtljs_compiler.dir/src/compiler/chtljs/chtljs_preprocessor.cpp.o.d"
   "libchtljs_compiler.a"
   "libchtljs_compiler.pdb"
 )

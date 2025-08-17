@@ -171,120 +171,6 @@ depend:
 	cd /workspace/chtl-compiler/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
-# Convenience name for target.
-tests/CMakeFiles/test_chtljs.dir/rule:
-	cd /workspace/chtl-compiler/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/CMakeFiles/test_chtljs.dir/rule
-.PHONY : tests/CMakeFiles/test_chtljs.dir/rule
-
-# Convenience name for target.
-test_chtljs: tests/CMakeFiles/test_chtljs.dir/rule
-.PHONY : test_chtljs
-
-# fast build rule for target.
-test_chtljs/fast:
-	cd /workspace/chtl-compiler/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_chtljs.dir/build.make tests/CMakeFiles/test_chtljs.dir/build
-.PHONY : test_chtljs/fast
-
-# Convenience name for target.
-tests/CMakeFiles/test_chtljs_debug.dir/rule:
-	cd /workspace/chtl-compiler/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/CMakeFiles/test_chtljs_debug.dir/rule
-.PHONY : tests/CMakeFiles/test_chtljs_debug.dir/rule
-
-# Convenience name for target.
-test_chtljs_debug: tests/CMakeFiles/test_chtljs_debug.dir/rule
-.PHONY : test_chtljs_debug
-
-# fast build rule for target.
-test_chtljs_debug/fast:
-	cd /workspace/chtl-compiler/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_chtljs_debug.dir/build.make tests/CMakeFiles/test_chtljs_debug.dir/build
-.PHONY : test_chtljs_debug/fast
-
-# Convenience name for target.
-tests/CMakeFiles/test_minimal.dir/rule:
-	cd /workspace/chtl-compiler/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/CMakeFiles/test_minimal.dir/rule
-.PHONY : tests/CMakeFiles/test_minimal.dir/rule
-
-# Convenience name for target.
-test_minimal: tests/CMakeFiles/test_minimal.dir/rule
-.PHONY : test_minimal
-
-# fast build rule for target.
-test_minimal/fast:
-	cd /workspace/chtl-compiler/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_minimal.dir/build.make tests/CMakeFiles/test_minimal.dir/build
-.PHONY : test_minimal/fast
-
-test_chtljs.o: test_chtljs.cpp.o
-.PHONY : test_chtljs.o
-
-# target to build an object file
-test_chtljs.cpp.o:
-	cd /workspace/chtl-compiler/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_chtljs.dir/build.make tests/CMakeFiles/test_chtljs.dir/test_chtljs.cpp.o
-.PHONY : test_chtljs.cpp.o
-
-test_chtljs.i: test_chtljs.cpp.i
-.PHONY : test_chtljs.i
-
-# target to preprocess a source file
-test_chtljs.cpp.i:
-	cd /workspace/chtl-compiler/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_chtljs.dir/build.make tests/CMakeFiles/test_chtljs.dir/test_chtljs.cpp.i
-.PHONY : test_chtljs.cpp.i
-
-test_chtljs.s: test_chtljs.cpp.s
-.PHONY : test_chtljs.s
-
-# target to generate assembly for a file
-test_chtljs.cpp.s:
-	cd /workspace/chtl-compiler/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_chtljs.dir/build.make tests/CMakeFiles/test_chtljs.dir/test_chtljs.cpp.s
-.PHONY : test_chtljs.cpp.s
-
-test_chtljs_debug.o: test_chtljs_debug.cpp.o
-.PHONY : test_chtljs_debug.o
-
-# target to build an object file
-test_chtljs_debug.cpp.o:
-	cd /workspace/chtl-compiler/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_chtljs_debug.dir/build.make tests/CMakeFiles/test_chtljs_debug.dir/test_chtljs_debug.cpp.o
-.PHONY : test_chtljs_debug.cpp.o
-
-test_chtljs_debug.i: test_chtljs_debug.cpp.i
-.PHONY : test_chtljs_debug.i
-
-# target to preprocess a source file
-test_chtljs_debug.cpp.i:
-	cd /workspace/chtl-compiler/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_chtljs_debug.dir/build.make tests/CMakeFiles/test_chtljs_debug.dir/test_chtljs_debug.cpp.i
-.PHONY : test_chtljs_debug.cpp.i
-
-test_chtljs_debug.s: test_chtljs_debug.cpp.s
-.PHONY : test_chtljs_debug.s
-
-# target to generate assembly for a file
-test_chtljs_debug.cpp.s:
-	cd /workspace/chtl-compiler/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_chtljs_debug.dir/build.make tests/CMakeFiles/test_chtljs_debug.dir/test_chtljs_debug.cpp.s
-.PHONY : test_chtljs_debug.cpp.s
-
-test_minimal.o: test_minimal.cpp.o
-.PHONY : test_minimal.o
-
-# target to build an object file
-test_minimal.cpp.o:
-	cd /workspace/chtl-compiler/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_minimal.dir/build.make tests/CMakeFiles/test_minimal.dir/test_minimal.cpp.o
-.PHONY : test_minimal.cpp.o
-
-test_minimal.i: test_minimal.cpp.i
-.PHONY : test_minimal.i
-
-# target to preprocess a source file
-test_minimal.cpp.i:
-	cd /workspace/chtl-compiler/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_minimal.dir/build.make tests/CMakeFiles/test_minimal.dir/test_minimal.cpp.i
-.PHONY : test_minimal.cpp.i
-
-test_minimal.s: test_minimal.cpp.s
-.PHONY : test_minimal.s
-
-# target to generate assembly for a file
-test_minimal.cpp.s:
-	cd /workspace/chtl-compiler/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_minimal.dir/build.make tests/CMakeFiles/test_minimal.dir/test_minimal.cpp.s
-.PHONY : test_minimal.cpp.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -298,18 +184,6 @@ help:
 	@echo "... list_install_components"
 	@echo "... rebuild_cache"
 	@echo "... test"
-	@echo "... test_chtljs"
-	@echo "... test_chtljs_debug"
-	@echo "... test_minimal"
-	@echo "... test_chtljs.o"
-	@echo "... test_chtljs.i"
-	@echo "... test_chtljs.s"
-	@echo "... test_chtljs_debug.o"
-	@echo "... test_chtljs_debug.i"
-	@echo "... test_chtljs_debug.s"
-	@echo "... test_minimal.o"
-	@echo "... test_minimal.i"
-	@echo "... test_minimal.s"
 .PHONY : help
 
 

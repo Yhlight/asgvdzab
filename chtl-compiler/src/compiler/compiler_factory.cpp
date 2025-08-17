@@ -1,6 +1,6 @@
 #include "compiler/compiler_interface.h"
 #include "compiler/chtl/chtl_compiler.h"
-#include "compiler/chtljs/chtljs_compiler.h"
+#include "compiler/chtljs/chtljs_preprocessor.h"
 #include "compiler/css/css_compiler.h"
 #include "compiler/javascript/js_compiler.h"
 
@@ -12,7 +12,7 @@ std::unique_ptr<ICompiler> CompilerFactory::createCompiler(CodeFragmentType type
             return std::make_unique<CHTLCompiler>();
             
         case CodeFragmentType::CHTL_JS:
-            return std::make_unique<CHTLJSCompiler>();
+            return std::make_unique<CHTLJSPreprocessor>();
             
         case CodeFragmentType::CSS:
             return std::make_unique<CSSCompiler>();

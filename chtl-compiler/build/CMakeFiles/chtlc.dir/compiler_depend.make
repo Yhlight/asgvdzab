@@ -236,7 +236,10 @@ CMakeFiles/chtlc.dir/src/compiler/compiler_factory.cpp.o: /workspace/chtl-compil
   /usr/lib/llvm-20/lib/clang/20/include/stddef.h \
   /usr/lib/llvm-20/lib/clang/20/include/stdint.h \
   /workspace/chtl-compiler/include/compiler/chtl/chtl_compiler.h \
-  /workspace/chtl-compiler/include/compiler/chtljs/chtljs_compiler.h \
+  /workspace/chtl-compiler/include/compiler/chtl/chtl_state.h \
+  /workspace/chtl-compiler/include/compiler/chtl/chtl_tokens.h \
+  /workspace/chtl-compiler/include/compiler/chtljs/chtljs_preprocessor.h \
+  /workspace/chtl-compiler/include/compiler/chtljs/chtljs_tokens.h \
   /workspace/chtl-compiler/include/compiler/compiler_interface.h \
   /workspace/chtl-compiler/include/compiler/css/css_compiler.h \
   /workspace/chtl-compiler/include/compiler/javascript/js_compiler.h \
@@ -656,6 +659,12 @@ CMakeFiles/chtlc.dir/src/compiler/compiler_factory.cpp.o:
 
 /usr/include/pthread.h:
 
+/workspace/chtl-compiler/include/compiler/chtljs/chtljs_tokens.h:
+
+/usr/include/c++/14/bits/locale_facets.h:
+
+/usr/include/c++/14/bits/basic_string.h:
+
 /usr/include/c++/14/bits/alloc_traits.h:
 
 /usr/include/c++/14/backward/binders.h:
@@ -842,8 +851,6 @@ CMakeFiles/chtlc.dir/src/compiler/compiler_factory.cpp.o:
 
 /workspace/chtl-compiler/src/compiler/compiler_factory.cpp:
 
-/usr/include/c++/14/bits/predefined_ops.h:
-
 /usr/include/x86_64-linux-gnu/gnu/stubs-64.h:
 
 /usr/include/c++/14/bits/enable_special_members.h:
@@ -888,6 +895,14 @@ CMakeFiles/chtlc.dir/src/compiler/compiler_factory.cpp.o:
 
 /usr/include/linux/stddef.h:
 
+/usr/include/c++/14/bits/ostream.tcc:
+
+/usr/include/c++/14/bits/concept_check.h:
+
+/usr/include/c++/14/bits/align.h:
+
+/usr/include/c++/14/ext/aligned_buffer.h:
+
 /usr/include/c++/14/new:
 
 /usr/include/x86_64-linux-gnu/c++/14/bits/ctype_inline.h:
@@ -905,6 +920,8 @@ CMakeFiles/chtlc.dir/src/compiler/compiler_factory.cpp.o:
 /usr/include/c++/14/bits/shared_ptr_base.h:
 
 /usr/include/c++/14/vector:
+
+/workspace/chtl-compiler/include/compiler/chtl/chtl_state.h:
 
 /usr/include/linux/types.h:
 
@@ -950,17 +967,19 @@ CMakeFiles/chtlc.dir/src/compiler/compiler_factory.cpp.o:
 
 /usr/include/x86_64-linux-gnu/bits/types/time_t.h:
 
-/usr/include/c++/14/bits/basic_string.h:
-
-/usr/include/c++/14/bits/locale_facets.h:
-
 /usr/include/x86_64-linux-gnu/bits/types/__sigset_t.h:
 
 /usr/include/x86_64-linux-gnu/bits/byteswap.h:
 
 /usr/include/x86_64-linux-gnu/c++/14/bits/os_defines.h:
 
+/workspace/chtl-compiler/include/compiler/chtl/chtl_tokens.h:
+
 /usr/include/features-time64.h:
+
+/usr/include/c++/14/bits/predefined_ops.h:
+
+/workspace/chtl-compiler/include/compiler/chtljs/chtljs_preprocessor.h:
 
 /usr/include/x86_64-linux-gnu/bits/struct_rwlock.h:
 
@@ -1015,8 +1034,6 @@ CMakeFiles/chtlc.dir/src/compiler/compiler_factory.cpp.o:
 /usr/include/c++/14/bits/parse_numbers.h:
 
 /usr/include/c++/14/bits/range_access.h:
-
-/workspace/chtl-compiler/include/compiler/chtljs/chtljs_compiler.h:
 
 /usr/include/c++/14/bits/atomic_futex.h:
 
@@ -1114,9 +1131,9 @@ CMakeFiles/chtlc.dir/src/compiler/compiler_factory.cpp.o:
 
 /usr/include/c++/14/bits/istream.tcc:
 
-/usr/include/x86_64-linux-gnu/bits/floatn-common.h:
-
 /usr/include/c++/14/bits/locale_facets.tcc:
+
+/usr/include/x86_64-linux-gnu/bits/floatn-common.h:
 
 /usr/include/c++/14/variant:
 
@@ -1173,14 +1190,6 @@ CMakeFiles/chtlc.dir/src/compiler/compiler_factory.cpp.o:
 /usr/include/c++/14/bit:
 
 /usr/include/c++/14/bits/chrono.h:
-
-/usr/include/c++/14/bits/concept_check.h:
-
-/usr/include/c++/14/bits/align.h:
-
-/usr/include/c++/14/ext/aligned_buffer.h:
-
-/usr/include/c++/14/bits/ostream.tcc:
 
 /usr/include/c++/14/bits/codecvt.h:
 

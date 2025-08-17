@@ -278,11 +278,15 @@ CMakeFiles/chtl_compiler.dir/src/compiler/chtl/chtl_compiler.cpp.o: /workspace/c
   /usr/lib/llvm-20/lib/clang/20/include/stddef.h \
   /usr/lib/llvm-20/lib/clang/20/include/stdint.h \
   /workspace/chtl-compiler/include/compiler/chtl/chtl_compiler.h \
+  /workspace/chtl-compiler/include/compiler/chtl/chtl_state.h \
+  /workspace/chtl-compiler/include/compiler/chtl/chtl_tokens.h \
   /workspace/chtl-compiler/include/compiler/compiler_interface.h \
   /workspace/chtl-compiler/include/utils/common.h
 
 
 /workspace/chtl-compiler/include/compiler/compiler_interface.h:
+
+/workspace/chtl-compiler/include/compiler/chtl/chtl_state.h:
 
 /workspace/chtl-compiler/include/compiler/chtl/chtl_compiler.h:
 
@@ -643,6 +647,8 @@ CMakeFiles/chtl_compiler.dir/src/compiler/chtl/chtl_compiler.cpp.o: /workspace/c
 /usr/include/x86_64-linux-gnu/bits/types/__sigset_t.h:
 
 /usr/include/x86_64-linux-gnu/bits/byteswap.h:
+
+/workspace/chtl-compiler/include/compiler/chtl/chtl_tokens.h:
 
 /usr/include/features-time64.h:
 

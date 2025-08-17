@@ -69,7 +69,7 @@ int main(int argc, char* argv[]) {
         // 创建扫描器
         ScannerConfig scan_config;
         scan_config.enable_intelligent_slicing = true;
-        scan_config.initial_slice_size = 256;
+        scan_config.initial_slice_size = 4096; // 增加初始切片大小
         CHTLUnifiedScanner scanner(scan_config);
         
         // 扫描代码片段
