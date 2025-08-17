@@ -36,6 +36,16 @@ set(CORE_SOURCES
     src/core/ast_visitor.cpp
     src/core/state_context.cpp
     src/core/import_manager.cpp
+    src/core/namespace_manager.cpp
+    src/core/constraint_system.cpp
+)
+
+set(UTILS_SOURCES
+    src/utils/simple_zip.cpp
+)
+
+set(MODULE_SOURCES
+    src/module/module_manager.cpp
 )
 
 set(SCANNER_SOURCES
@@ -67,6 +77,8 @@ endif()
 
 set(ALL_SOURCES
     ${CORE_SOURCES}
+    ${UTILS_SOURCES}
+    ${MODULE_SOURCES}
     ${SCANNER_SOURCES}
     ${COMPILER_SOURCES}
     ${CSS_JS_SOURCES}
