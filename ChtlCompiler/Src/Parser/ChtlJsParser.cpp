@@ -39,12 +39,25 @@ std::vector<ASTNodePtr> ChtlJsParser::parse(const std::string& jsCode) {
             // 检查虚对象声明
             if (line.substr(pos).find("vir ") == 0) {
                 auto node = parseVirtualObject(line, pos);
-                if (node) nodes.push_back(node);
+                if (node) {
+                    nodes.push_back(node);
+                    // parseVirtualObject应该已经更新了currentPos_
+                    pos = currentPos_;
+                    continue;
+                }
             }
             // 检查选择器表达式
             else if (line.substr(pos).find("{{") == 0) {
                 auto node = parseSelectorExpression(line, pos);
-                if (node) nodes.push_back(node);
+                if (node) {
+                    nodes.push_back(node);
+                    // 更新位置到选择器结束
+                    size_t endPos = line.find("}}", pos + 2);
+                    if (endPos != std::string::npos) {
+                        pos = endPos + 2;
+                        continue;
+                    }
+                }
             }
             // 检查箭头访问
             else if (line.find("->", pos) != std::string::npos) {
@@ -63,6 +76,8 @@ std::vector<ASTNodePtr> ChtlJsParser::parse(const std::string& jsCode) {
 }
 
 std::string ChtlJsParser::transform(const std::string& jsCode) {
+    if (jsCode.empty()) return jsCode;
+    
     std::string result = jsCode;
     
     // 先处理虚对象声明
@@ -88,6 +103,9 @@ std::string ChtlJsParser::transform(const std::string& jsCode) {
         
         // 更新位置
         lastPos += match.position() + match.length();
+        if (lastPos >= virProcessed.length()) {
+            break;
+        }
         searchStr = virProcessed.substr(lastPos);
     }
     
@@ -442,8 +460,37 @@ std::string ChtlJsParser::trim(const std::string& str) {
 }
 
 std::string ChtlJsParser::processVirtualObjectDeclarations(const std::string& code) {
-    // 暂时跳过虚对象处理，先确保基本功能工作
-    return code;
+    std::string result = code;
+    
+    // 查找所有虚对象声明: vir name = expression
+    std::regex virRegex(R"(vir\s+(\w+)\s*=\s*)");
+    std::smatch match;
+    
+    while (std::regex_search(result, match, virRegex)) {
+        std::string varName = match[1];
+        size_t virStart = match.position();
+        size_t exprStart = virStart + match.length();
+        
+        // 注册虚对象
+        auto& manager = ChtlJsFunctionRegistry::getInstance().getManager();
+        
+        // 检查表达式类型
+        if (result.substr(exprStart, 6) == "listen") {
+            manager.registerVirtualObject(varName, "listen");
+            // TODO: 解析listen的参数，提取函数键
+        } else if (result.substr(exprStart, 8) == "delegate") {
+            manager.registerVirtualObject(varName, "delegate");
+            // TODO: 解析delegate的参数
+        } else if (result.substr(exprStart, 7) == "animate") {
+            manager.registerVirtualObject(varName, "animate");
+            // TODO: 解析animate的参数
+        }
+        
+        // 移除 "vir name = " 部分，保留后面的表达式
+        result.erase(virStart, exprStart - virStart);
+    }
+    
+    return result;
 }
 
 } // namespace Chtl

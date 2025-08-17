@@ -273,10 +273,9 @@ void HtmlGenerator::visitScriptBlock(ScriptBlockNode* node) {
     
     std::string content = node->getContent();
     
-    // 如果包含CHTL JS语法，进行转换
-    if (node->hasChtlJsSyntax()) {
-        ChtlJsParser jsParser;
-        content = jsParser.transform(content);
+    // 如果包含CHTL JS语法，使用转换后的内容
+    if (node->hasChtlJsSyntax() && !node->getTransformedContent().empty()) {
+        content = node->getTransformedContent();
     }
     
     *currentOutput_ << content << "\n\n";
