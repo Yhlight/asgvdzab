@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHTL Generated Page</title>
+</head>
+<body>
+    // 高级CHTL测试文件 - 包含CHTL JS特殊语法
+    html
+    {
+        <head>
+            CHTL高级特性测试
+        </head>
+    
+        body
+        {
+            <div>
+                style
+                {
+                    .container
+                    {
+                        width: 100%;
+                        padding: 20px;
+                    }
+                }
+    
+                script
+                {
+                    // CHTL JS增强选择器测试
+                    {{.container}}->addEventListener('click', function() {
+                        console.log('Container clicked!');
+                    });
+    
+                    // 箭头操作符测试
+                    {{#header}}->style->display = 'block';
+                    
+                    // 复合选择器测试
+                    {{.container <div>
+                        element->classList->add('processed');
+                    </div>);
+                }
+    
+                这是一个测试容器
+            </div>
+    
+            button
+            {
+                id: testButton;
+                点击测试
+                
+                script
+                {
+                    {{testButton}}->listen({
+                        click: () => {
+                            alert('按钮被点击了！');
+                        },
+                        mouseenter: function() {
+                            {{testButton}}->style->backgroundColor = 'lightblue';
+                        }
+                    });
+                }
+            }
+        }
+    }
+</body>
+</html>
