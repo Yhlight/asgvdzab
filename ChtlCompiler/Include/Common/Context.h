@@ -10,6 +10,9 @@
 
 namespace Chtl {
 
+// 前向声明
+class ImportResolver;
+
 // 源文件信息
 struct SourceInfo {
     std::string fileName;
@@ -130,6 +133,10 @@ public:
     // 生成编译结果
     CompileResult generateResult();
     
+    // 导入解析器
+    ImportResolver* getImportResolver() { return importResolver_.get(); }
+    const ImportResolver* getImportResolver() const { return importResolver_.get(); }
+    
     // 调试输出
     void dump() const;
 
@@ -145,6 +152,9 @@ private:
     
     // 状态管理
     std::unique_ptr<State> state_;
+    
+    // 导入解析器
+    std::unique_ptr<ImportResolver> importResolver_;
     
     // 输出缓冲
     std::string output_;         // 通用输出

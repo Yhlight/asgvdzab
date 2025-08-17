@@ -159,8 +159,7 @@ bool StateManager::isInElement() const {
 }
 
 bool StateManager::isInStyleBlock() const {
-    return state_->isInState(CompilerState::STYLE_BLOCK) ||
-           state_->isInState(CompilerState::LOCAL_STYLE_BLOCK);
+    return state_->isInState(CompilerState::IN_STYLE);
 }
 
 bool StateManager::isInScriptBlock() const {

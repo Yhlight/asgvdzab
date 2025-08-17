@@ -1,4 +1,5 @@
 #include "Common/Context.h"
+#include "Common/ImportResolver.h"
 #include <iostream>
 #include <algorithm>
 #include <filesystem>
@@ -10,6 +11,7 @@ Context::Context()
       currentColumn_(1) {
     globalMap_ = std::make_unique<GlobalMap>();
     state_ = std::make_unique<State>();
+    importResolver_ = std::make_unique<ImportResolver>();
     
     // 添加默认包含路径
     includePaths_.push_back(".");

@@ -20,6 +20,7 @@ file(GLOB_RECURSE COMMON_SOURCES "Src/Common/*.cpp")
 file(GLOB_RECURSE AST_SOURCES "Src/AST/*.cpp")
 file(GLOB_RECURSE PARSER_SOURCES "Src/Parser/*.cpp")
 file(GLOB_RECURSE GENERATOR_SOURCES "Src/Generator/*.cpp")
+file(GLOB_RECURSE MODULE_SOURCES "Src/Module/*.cpp")
 
 # 创建静态库
 add_library(ChtlLexer STATIC ${LEXER_SOURCES})
@@ -27,6 +28,7 @@ add_library(ChtlCommon STATIC ${COMMON_SOURCES})
 add_library(ChtlAST STATIC ${AST_SOURCES})
 add_library(ChtlParser STATIC ${PARSER_SOURCES})
 add_library(ChtlGenerator STATIC ${GENERATOR_SOURCES})
+add_library(ChtlModule STATIC ${MODULE_SOURCES})
 
 # 链接依赖
 target_link_libraries(ChtlLexer PUBLIC ChtlCommon)
@@ -44,6 +46,8 @@ target_link_libraries(Chtlc
     ChtlAST
     ChtlParser
     ChtlGenerator
+    ChtlModule
+    stdc++fs
 )
 
 # 添加测试

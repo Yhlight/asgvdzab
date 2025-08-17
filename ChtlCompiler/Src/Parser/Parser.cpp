@@ -5,6 +5,8 @@
 
 namespace Chtl {
 
+const std::string Parser::emptyError_ = "";
+
 Parser::Parser() 
     : current_(0),
       hasError_(false) {

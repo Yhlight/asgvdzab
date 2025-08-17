@@ -27,6 +27,11 @@ public:
     // 获取错误信息
     bool hasError() const { return hasError_; }
     const std::vector<std::string>& getErrors() const { return errors_; }
+    const std::string& getLastError() const { return errors_.empty() ? emptyError_ : errors_.back(); }
+    
+    // 获取上下文
+    Context* getContext() { return context_.get(); }
+    const Context* getContext() const { return context_.get(); }
     
     // 设置上下文
     void setContext(std::shared_ptr<Context> context) { context_ = context; }
@@ -134,6 +139,7 @@ private:
     // 错误状态
     bool hasError_;
     std::vector<std::string> errors_;
+    static const std::string emptyError_;
 };
 
 } // namespace Chtl

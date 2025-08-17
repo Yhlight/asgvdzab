@@ -45,8 +45,8 @@ struct OriginBlock {
     std::string namespace_;                                   // 所属命名空间
 };
 
-// 导入信息
-struct ImportInfo {
+// 模块导入信息
+struct ModuleImportInfo {
     std::string type;                                         // @Html, @Style, @JavaScript, @Chtl, @CJmod
     std::string path;                                         // 文件路径
     std::string alias;                                        // as别名（可选）
