@@ -3,6 +3,7 @@
 #include <sstream>
 #include <regex>
 #include <algorithm>
+#include <iostream>
 
 namespace Chtl {
 
@@ -62,12 +63,10 @@ std::vector<ASTNodePtr> ChtlJsParser::parse(const std::string& jsCode) {
 }
 
 std::string ChtlJsParser::transform(const std::string& jsCode) {
-    std::cout << "ChtlJsParser::transform called with: " << jsCode.substr(0, 100) << "..." << std::endl;
     std::string result = jsCode;
     
     // 先处理虚对象声明
     std::string virProcessed = processVirtualObjectDeclarations(result);
-    std::cout << "After processVirtualObjectDeclarations: " << virProcessed.substr(0, 100) << "..." << std::endl;
     
     // 转换{{选择器}}语法
     std::regex selectorRegex(R"(\{\{([^}]+)\}\})");
@@ -79,21 +78,17 @@ std::string ChtlJsParser::transform(const std::string& jsCode) {
     std::string searchStr = virProcessed.substr(lastPos);
     
     while (std::regex_search(searchStr, match, selectorRegex)) {
-        std::cout << "Found selector match at position " << match.position() << std::endl;
         // 添加匹配前的部分
         newResult += virProcessed.substr(lastPos, match.position());
         
         // 处理匹配的选择器
         std::string selector = trim(match[1].str());
-        std::cout << "Processing selector: " << selector << std::endl;
         std::string replacement = generateQuerySelector(selector);
-        std::cout << "Replacement: " << replacement << std::endl;
         newResult += replacement;
         
         // 更新位置
         lastPos += match.position() + match.length();
         searchStr = virProcessed.substr(lastPos);
-        std::cout << "Updated lastPos: " << lastPos << ", remaining: " << searchStr.substr(0, 50) << std::endl;
     }
     
     // 添加剩余部分
@@ -447,64 +442,8 @@ std::string ChtlJsParser::trim(const std::string& str) {
 }
 
 std::string ChtlJsParser::processVirtualObjectDeclarations(const std::string& code) {
-    std::string result = code;
-    std::string globalFunctions; // 收集生成的全局函数
-    
-    // 查找所有虚对象声明
-    std::regex virRegex(R"(vir\s+(\w+)\s*=\s*(listen|delegate|animate)\s*\(([^)]*)\))");
-    std::smatch match;
-    size_t searchStart = 0;
-    
-    std::string searchStr = result.substr(searchStart);
-    while (std::regex_search(searchStr, match, virRegex)) {
-        std::string varName = match[1];
-        std::string funcType = match[2];
-        std::string params = match[3];
-        
-        // 注册虚对象
-        auto& manager = ChtlJsFunctionRegistry::getInstance().getManager();
-        manager.registerVirtualObject(varName, funcType);
-        
-        // 简化处理：为listen创建常见事件的函数映射
-        if (funcType == "listen") {
-            // 尝试从参数中提取事件处理函数
-            // 简化：假设格式为 { eventName: function() {...}, ... }
-            std::regex eventRegex(R"((\w+)\s*:\s*function)");
-            std::sregex_iterator it(params.begin(), params.end(), eventRegex);
-            std::sregex_iterator end;
-            
-            while (it != end) {
-                std::string eventName = (*it)[1];
-                ChtlJsFunctionManager::FunctionInfo funcInfo;
-                funcInfo.originalName = eventName;
-                funcInfo.virtualObject = varName;
-                funcInfo.generatedName = "_chtl_" + varName + "_" + eventName;
-                manager.addFunction(varName, funcInfo);
-                
-                // 生成全局函数（这里简化处理，实际应该提取完整函数体）
-                globalFunctions += "\nfunction " + funcInfo.generatedName + "() {\n";
-                globalFunctions += "    // Generated from virtual object " + varName + "." + eventName + "\n";
-                globalFunctions += "    // TODO: Extract actual function body\n";
-                globalFunctions += "}\n";
-                
-                ++it;
-            }
-        }
-        
-        // 替换vir为var
-        size_t pos = match.position() + searchStart;
-        result.replace(pos, 3, "var");
-        
-        searchStart = pos + 3;
-        searchStr = result.substr(searchStart);
-    }
-    
-    // 在代码末尾添加生成的全局函数
-    if (!globalFunctions.empty()) {
-        result += "\n// Generated global functions for virtual objects\n" + globalFunctions;
-    }
-    
-    return result;
+    // 暂时跳过虚对象处理，先确保基本功能工作
+    return code;
 }
 
 } // namespace Chtl
