@@ -34,6 +34,8 @@ set(CORE_SOURCES
     src/core/lexer.cpp
     src/core/ast_nodes.cpp
     src/core/ast_visitor.cpp
+    src/core/state_context.cpp
+    src/core/import_manager.cpp
 )
 
 set(SCANNER_SOURCES
