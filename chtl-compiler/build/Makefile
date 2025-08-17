@@ -275,6 +275,45 @@ chtlc/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtlc.dir/build.make CMakeFiles/chtlc.dir/build
 .PHONY : chtlc/fast
 
+#=============================================================================
+# Target rules for targets named test_chtljs
+
+# Build rule for target.
+test_chtljs: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_chtljs
+.PHONY : test_chtljs
+
+# fast build rule for target.
+test_chtljs/fast:
+	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_chtljs.dir/build.make tests/CMakeFiles/test_chtljs.dir/build
+.PHONY : test_chtljs/fast
+
+#=============================================================================
+# Target rules for targets named test_chtljs_debug
+
+# Build rule for target.
+test_chtljs_debug: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_chtljs_debug
+.PHONY : test_chtljs_debug
+
+# fast build rule for target.
+test_chtljs_debug/fast:
+	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_chtljs_debug.dir/build.make tests/CMakeFiles/test_chtljs_debug.dir/build
+.PHONY : test_chtljs_debug/fast
+
+#=============================================================================
+# Target rules for targets named test_minimal
+
+# Build rule for target.
+test_minimal: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_minimal
+.PHONY : test_minimal
+
+# fast build rule for target.
+test_minimal/fast:
+	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_minimal.dir/build.make tests/CMakeFiles/test_minimal.dir/build
+.PHONY : test_minimal/fast
+
 src/compiler/chtl/chtl_compiler.o: src/compiler/chtl/chtl_compiler.cpp.o
 .PHONY : src/compiler/chtl/chtl_compiler.o
 
@@ -512,6 +551,9 @@ help:
 	@echo "... chtljs_compiler"
 	@echo "... css_compiler"
 	@echo "... js_compiler"
+	@echo "... test_chtljs"
+	@echo "... test_chtljs_debug"
+	@echo "... test_minimal"
 	@echo "... src/compiler/chtl/chtl_compiler.o"
 	@echo "... src/compiler/chtl/chtl_compiler.i"
 	@echo "... src/compiler/chtl/chtl_compiler.s"

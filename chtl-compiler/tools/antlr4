@@ -1,0 +1,2 @@
+#!/bin/bash
+java -jar /workspace/chtl-compiler/tools/antlr-4.13.1-complete.jar "$@"

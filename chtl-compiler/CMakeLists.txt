@@ -6,6 +6,11 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+# ANTLR4运行时路径
+set(ANTLR4_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/antlr4-runtime")
+set(ANTLR4_INCLUDE_DIRS "${ANTLR4_ROOT}/runtime/src")
+set(ANTLR4_LIB_DIR "${ANTLR4_ROOT}/build")
+
 # 设置编译选项
 if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
     add_compile_options(-Wall -Wextra -Wpedantic)
@@ -26,11 +31,10 @@ endif()
 # 添加include目录
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 
-# ANTLR4运行时路径
-set(ANTLR4_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../antlr-prebuilt")
+# ANTLR4运行时已在上面定义
 if(EXISTS ${ANTLR4_ROOT})
-    include_directories(${ANTLR4_ROOT}/include)
-    link_directories(${ANTLR4_ROOT}/lib)
+    include_directories(${ANTLR4_INCLUDE_DIRS})
+    link_directories(${ANTLR4_LIB_DIR})
 endif()
 
 # 收集源文件
@@ -68,12 +72,12 @@ target_link_libraries(chtlc
     chtl_merger
 )
 
-# 如果ANTLR4存在，链接ANTLR4运行时
-if(EXISTS ${ANTLR4_ROOT})
-    target_link_libraries(css_compiler antlr4-runtime)
-    target_link_libraries(js_compiler antlr4-runtime)
-    target_link_libraries(chtlc antlr4-runtime)
-endif()
+# 如果ANTLR4存在，链接ANTLR4运行时（目前暂不使用）
+# if(EXISTS ${ANTLR4_ROOT})
+#     target_link_libraries(css_compiler ${ANTLR4_LIB_DIR}/libantlr4-runtime.a)
+#     target_link_libraries(js_compiler ${ANTLR4_LIB_DIR}/libantlr4-runtime.a)
+#     target_link_libraries(chtlc ${ANTLR4_LIB_DIR}/libantlr4-runtime.a)
+# endif()
 
 # 测试
 enable_testing()

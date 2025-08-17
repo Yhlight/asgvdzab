@@ -5,7 +5,7 @@
 #include <vector>
 #include "scanner/unified_scanner.h"
 #include "dispatcher/compiler_dispatcher.h"
-// #include "merger/result_merger.h" // TODO: 实现后取消注释
+#include "merger/result_merger.h"
 #include "utils/common.h"
 
 using namespace chtl;
@@ -125,109 +125,14 @@ int main(int argc, char* argv[]) {
             return 1;
         }
         
-        // TODO: 实现结果合并器
-        // ResultMerger merger;
-        // std::string final_output = merger.merge(results);
+        // 使用结果合并器
+        ResultMerger merger;
+        MergeOptions merge_options;
+        merge_options.prettify = true;
+        merge_options.inline_styles = true;
+        merge_options.inline_scripts = true;
         
-        // 合并结果
-        std::string html_content;
-        std::vector<std::string> all_styles;
-        std::vector<std::string> all_scripts;
-        
-        // 根据片段类型处理结果
-        for (size_t i = 0; i < results.size(); ++i) {
-            const auto& result = results[i];
-            const auto& fragment = fragments[i];
-            
-            if (result.success) {
-                if (fragment.type == CodeFragmentType::CHTL) {
-                    // CHTL片段的输出是HTML内容
-                    html_content += result.output;
-                    // 收集样式
-                    if (!result.global_styles.empty()) {
-                        all_styles.push_back(result.global_styles);
-                    }
-                } else if (fragment.type == CodeFragmentType::CHTL_JS) {
-                    // CHTL JS片段的输出是JavaScript代码
-                    if (!result.output.empty()) {
-                        all_scripts.push_back(result.output);
-                    }
-                } else if (fragment.type == CodeFragmentType::CSS) {
-                    // CSS片段直接添加到样式
-                    if (!result.output.empty()) {
-                        all_styles.push_back(result.output);
-                    }
-                } else if (fragment.type == CodeFragmentType::JAVASCRIPT) {
-                    // JavaScript片段直接添加到脚本
-                    if (!result.output.empty()) {
-                        all_scripts.push_back(result.output);
-                    }
-                }
-            }
-        }
-        
-        // 构建最终输出
-        std::string final_output;
-        
-        // 检查HTML内容是否已经包含完整结构
-        bool has_html_structure = html_content.find("<html") != std::string::npos;
-        
-        if (has_html_structure) {
-            final_output = html_content;
-            
-            // 插入样式到</head>之前
-            if (!all_styles.empty()) {
-                size_t head_end = final_output.find("</head>");
-                if (head_end != std::string::npos) {
-                    std::string style_block = "<style>\n";
-                    for (const auto& style : all_styles) {
-                        style_block += style + "\n";
-                    }
-                    style_block += "</style>\n";
-                    final_output.insert(head_end, style_block);
-                }
-            }
-            
-            // 插入脚本到</body>之前
-            if (!all_scripts.empty()) {
-                size_t body_end = final_output.find("</body>");
-                if (body_end != std::string::npos) {
-                    std::string script_block = "<script>\n";
-                    for (const auto& script : all_scripts) {
-                        script_block += script + "\n";
-                    }
-                    script_block += "</script>\n";
-                    final_output.insert(body_end, script_block);
-                }
-            }
-        } else {
-            // 创建完整的HTML结构
-            final_output = "<!DOCTYPE html>\n<html>\n<head>\n";
-            final_output += "<meta charset=\"UTF-8\">\n";
-            
-            // 添加样式
-            if (!all_styles.empty()) {
-                final_output += "<style>\n";
-                for (const auto& style : all_styles) {
-                    final_output += style + "\n";
-                }
-                final_output += "</style>\n";
-            }
-            
-            final_output += "</head>\n<body>\n";
-            final_output += html_content;
-            
-            // 添加脚本
-            if (!all_scripts.empty()) {
-                final_output += "<script>\n";
-                for (const auto& script : all_scripts) {
-                    final_output += script + "\n";
-                }
-                final_output += "</script>\n";
-            }
-            
-            final_output += "</body>\n</html>\n";
-        }
+        std::string final_output = merger.merge(fragments, results, merge_options);
         
         // 写入输出文件
         std::cout << "Writing " << output_file << "...\n";

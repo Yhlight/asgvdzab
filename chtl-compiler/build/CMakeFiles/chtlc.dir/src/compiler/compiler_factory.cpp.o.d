@@ -221,4 +221,6 @@ CMakeFiles/chtlc.dir/src/compiler/compiler_factory.cpp.o: \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/stl_stack.h \
   /workspace/chtl-compiler/include/compiler/chtljs/chtljs_compiler.h \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/unordered_set \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/unordered_set.h
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/unordered_set.h \
+  /workspace/chtl-compiler/include/compiler/css/css_compiler.h \
+  /workspace/chtl-compiler/include/compiler/javascript/js_compiler.h

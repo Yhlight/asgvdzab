@@ -11,7 +11,6 @@ chtlc: \
   libcss_compiler.a \
   libjs_compiler.a \
   libchtl_merger.a \
-  /workspace/chtl-compiler/../antlr-prebuilt/lib/libantlr4-runtime.so \
   /usr/lib/gcc/x86_64-linux-gnu/14/libstdc++.so \
   /lib/x86_64-linux-gnu/libm.so \
   /lib/x86_64-linux-gnu/libm.so \
@@ -63,8 +62,6 @@ libcss_compiler.a:
 libjs_compiler.a:
 
 libchtl_merger.a:
-
-/workspace/chtl-compiler/../antlr-prebuilt/lib/libantlr4-runtime.so:
 
 /usr/lib/gcc/x86_64-linux-gnu/14/libstdc++.so:
 

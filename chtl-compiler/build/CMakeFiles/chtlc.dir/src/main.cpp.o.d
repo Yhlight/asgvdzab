@@ -268,4 +268,5 @@ CMakeFiles/chtlc.dir/src/main.cpp.o: \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/deque.tcc \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/stl_heap.h \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/stl_queue.h \
-  /workspace/chtl-compiler/include/compiler/compiler_interface.h
+  /workspace/chtl-compiler/include/compiler/compiler_interface.h \
+  /workspace/chtl-compiler/include/merger/result_merger.h
