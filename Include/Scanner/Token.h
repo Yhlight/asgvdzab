@@ -4,93 +4,91 @@
 #include <string>
 #include <vector>
 #include <variant>
+#include <unordered_set>
 
 namespace Chtl {
 
 /**
- * Token类型枚举
+ * Token类型枚举 - 严格按照CHTL语法文档定义
  */
 enum class TokenType {
-    // 基础类型
-    IDENTIFIER,         // 标识符
-    STRING_LITERAL,     // 字符串字面量
-    NUMBER_LITERAL,     // 数字字面量
-    BOOLEAN_LITERAL,    // 布尔字面量
+    // === 基础字面量类型 ===
+    IDENTIFIER,                 // 标识符
+    UNQUOTED_STRING,           // 无修饰字面量(没有引号的字符串)
+    DOUBLE_QUOTED_STRING,      // 双引号字符串 ""
+    SINGLE_QUOTED_STRING,      // 单引号字符串 ''
     
-    // 分隔符
-    LBRACE,            // {
-    RBRACE,            // }
-    LBRACKET,          // [
-    RBRACKET,          // ]
-    LPAREN,            // (
-    RPAREN,            // )
-    SEMICOLON,         // ;
-    COLON,             // :
-    COMMA,             // ,
-    DOT,               // .
-    ARROW,             // ->
+    // === 分隔符和操作符 ===
+    LBRACE,                    // {
+    RBRACE,                    // }
+    LBRACKET,                  // [
+    RBRACKET,                  // ]
+    LPAREN,                    // (
+    RPAREN,                    // )
+    SEMICOLON,                 // ;
+    COLON,                     // : (CE对等式)
+    ASSIGN,                    // = (CE对等式，与:完全等价)
+    COMMA,                     // ,
+    DOT,                       // .
     
-    // 操作符
-    ASSIGN,            // =
-    PLUS,              // +
-    MINUS,             // -
-    MULTIPLY,          // *
-    DIVIDE,            // /
+    // === CHTL核心关键字 ===
+    TEXT,                      // text (文本节点)
+    STYLE,                     // style (局部样式块)
+    SCRIPT,                    // script (局部脚本块)
     
-    // CHTL关键字
-    TEXT,              // text
-    STYLE,             // style
-    SCRIPT,            // script
-    TEMPLATE,          // [Template]
-    CUSTOM,            // [Custom]
-    ORIGIN,            // [Origin]
-    CONFIGURATION,     // [Configuration]
-    NAMESPACE,         // [Namespace]
-    IMPORT,            // [Import]
+    // === HTML元素标签 ===
+    HTML_ELEMENT,              // 所有HTML元素标签
     
-    // 模板关键字
-    AT_STYLE,          // @Style
-    AT_ELEMENT,        // @Element
-    AT_VAR,            // @Var
-    AT_HTML,           // @Html
-    AT_JAVASCRIPT,     // @JavaScript
-    AT_CHTL,           // @Chtl
-    AT_CJMOD,          // @CJmod
+    // === 注释类型 ===
+    LINE_COMMENT,              // // 注释
+    BLOCK_COMMENT,             // /* */ 多行注释
+    GENERATOR_COMMENT,         // -- 生成器识别的注释
     
-    // 控制关键字
-    INHERIT,           // inherit
-    DELETE,            // delete
-    INSERT,            // insert
-    AFTER,             // after
-    BEFORE,            // before
-    REPLACE,           // replace
-    AT_TOP,            // at top
-    AT_BOTTOM,         // at bottom
-    FROM,              // from
-    AS,                // as
-    EXCEPT,            // except
+    // === 模板系统Token ===
+    TEMPLATE_BRACKET,          // [Template]
+    CUSTOM_BRACKET,            // [Custom]
+    ORIGIN_BRACKET,            // [Origin]
+    CONFIGURATION_BRACKET,     // [Configuration]
+    NAMESPACE_BRACKET,         // [Namespace]
+    IMPORT_BRACKET,            // [Import]
+    INFO_BRACKET,              // [Info] (CMOD专用)
+    EXPORT_BRACKET,            // [Export] (CMOD专用)
     
-    // CHTL JS关键字
-    VIR,               // vir (虚对象)
-    LISTEN,            // listen
-    DELEGATE,          // delegate
-    ANIMATE,           // animate
+    AT_STYLE,                  // @Style
+    AT_ELEMENT,                // @Element
+    AT_VAR,                    // @Var
+    AT_HTML,                   // @Html
+    AT_JAVASCRIPT,             // @JavaScript
+    AT_CHTL,                   // @Chtl
+    AT_CJMOD,                  // @CJmod
     
-    // 特殊Token
-    ENHANCED_SELECTOR, // {{selector}}
-    CSS_SELECTOR,      // .class, #id等
-    AMPERSAND,         // &
+    // === 控制关键字 ===
+    INHERIT,                   // inherit
+    DELETE,                    // delete
+    INSERT,                    // insert
+    AFTER,                     // after
+    BEFORE,                    // before
+    REPLACE,                   // replace
+    AT_TOP,                    // at top
+    AT_BOTTOM,                 // at bottom
+    FROM,                      // from
+    AS,                        // as
+    EXCEPT,                    // except
     
-    // 注释
-    LINE_COMMENT,      // //
-    BLOCK_COMMENT,     // /* */
-    GENERATOR_COMMENT, // --
+    // === CHTL JS特有Token ===
+    ENHANCED_SELECTOR,         // {{CSS选择器}}
+    ARROW_OPERATOR,            // -> (CHTL JS箭头操作符)
+    VIR,                       // vir (虚对象)
+    LISTEN,                    // listen (增强监听器)
+    DELEGATE,                  // delegate (事件委托)
+    ANIMATE,                   // animate (动画)
     
-    // 特殊
-    NEWLINE,           // \n
-    WHITESPACE,        // 空白字符
-    EOF_TOKEN,         // 文件结束
-    UNKNOWN            // 未知Token
+    // === 特殊Token ===
+    AMPERSAND,                 // & (上下文推导)
+    NEWLINE,                   // \n
+    WHITESPACE,                // 空白字符
+    EOF_TOKEN,                 // 文件结束
+    UNKNOWN                    // 未知Token
 };
 
 /**
@@ -126,6 +124,8 @@ public:
     bool IsChtlKeyword() const;
     bool IsChtlJsKeyword() const;
     bool IsTemplateKeyword() const;
+    bool IsHtmlElement() const;
+    bool IsEnhancedSelector() const;
     
     // 值获取
     std::string GetStringValue() const;
@@ -210,6 +210,47 @@ private:
 };
 
 /**
+ * CHTL关键字表 - 严格按照语法文档定义
+ */
+class ChtlKeywords {
+public:
+    // 获取所有HTML元素标签
+    static const std::unordered_set<std::string>& GetHtmlElements();
+    
+    // 获取CHTL核心关键字
+    static const std::unordered_set<std::string>& GetChtlCoreKeywords();
+    
+    // 获取模板系统关键字
+    static const std::unordered_set<std::string>& GetTemplateKeywords();
+    
+    // 获取控制关键字
+    static const std::unordered_set<std::string>& GetControlKeywords();
+    
+    // 获取CHTL JS关键字
+    static const std::unordered_set<std::string>& GetChtlJsKeywords();
+    
+    // 检查函数
+    static bool IsHtmlElement(const std::string& text);
+    static bool IsChtlCoreKeyword(const std::string& text);
+    static bool IsTemplateKeyword(const std::string& text);
+    static bool IsControlKeyword(const std::string& text);
+    static bool IsChtlJsKeyword(const std::string& text);
+    static bool IsEnhancedSelector(const std::string& text);
+    
+    // 获取Token类型
+    static TokenType GetKeywordType(const std::string& text);
+
+private:
+    static void InitializeKeywords();
+    static std::unordered_set<std::string> HtmlElements_;
+    static std::unordered_set<std::string> ChtlCoreKeywords_;
+    static std::unordered_set<std::string> TemplateKeywords_;
+    static std::unordered_set<std::string> ControlKeywords_;
+    static std::unordered_set<std::string> ChtlJsKeywords_;
+    static bool Initialized_;
+};
+
+/**
  * Token工具类
  */
 class TokenUtils {
@@ -217,18 +258,20 @@ public:
     static std::string TokenTypeToString(TokenType type);
     static TokenType StringToTokenType(const std::string& str);
     
-    static bool IsKeyword(const std::string& text);
-    static bool IsChtlKeyword(const std::string& text);
-    static bool IsChtlJsKeyword(const std::string& text);
-    
-    static TokenType GetKeywordType(const std::string& text);
     static bool IsValidIdentifier(const std::string& text);
-    static bool IsValidNumber(const std::string& text);
+    static bool IsValidUnquotedString(const std::string& text);
     
-    // 特殊Token识别
+    // 增强选择器解析
     static bool IsEnhancedSelector(const std::string& text);
-    static bool IsCssSelector(const std::string& text);
     static std::string ExtractSelectorContent(const std::string& text);
+    static bool ValidateEnhancedSelector(const std::string& selector);
+    
+    // 字面量处理
+    static std::string ProcessUnquotedString(const std::string& text);
+    static std::string ProcessQuotedString(const std::string& text, char quote);
+    
+    // CE对等式处理
+    static bool IsColonEqualOperator(TokenType type);
 };
 
 } // namespace Chtl

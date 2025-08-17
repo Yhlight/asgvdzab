@@ -21,26 +21,29 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Lib)
 # 包含目录
 include_directories(${CMAKE_SOURCE_DIR}/Include)
 
-# 查找ANTLR4运行时
-find_package(PkgConfig REQUIRED)
-find_package(antlr4-runtime REQUIRED)
+# 查找ANTLR4运行时 (可选，如果没有则跳过)
+find_package(PkgConfig QUIET)
+find_package(antlr4-runtime QUIET)
 
 # 添加子目录
 add_subdirectory(Src)
 
-# 创建主可执行文件
-add_executable(ChtlCompiler
-    Src/Main.cpp
-)
+# 创建主可执行文件 (暂时注释掉，因为还没有完整实现)
+# add_executable(ChtlCompiler
+#     Src/Main.cpp
+# )
 
 # 链接库
-target_link_libraries(ChtlCompiler
-    ChtlCore
-    antlr4-runtime
-)
+# target_link_libraries(ChtlCompiler
+#     ChtlCore
+# )
+
+# 如果找到ANTLR4，则链接
+# if(antlr4-runtime_FOUND)
+#     target_link_libraries(ChtlCompiler antlr4-runtime)
+# endif()
 
 # 设置包含目录
-target_include_directories(ChtlCompiler PRIVATE
-    ${CMAKE_SOURCE_DIR}/Include
-    ${ANTLR4_INCLUDE_DIRS}
-)
+# target_include_directories(ChtlCompiler PRIVATE
+#     ${CMAKE_SOURCE_DIR}/Include
+# )
