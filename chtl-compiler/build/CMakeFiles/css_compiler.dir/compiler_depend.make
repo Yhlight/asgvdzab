@@ -104,7 +104,6 @@ CMakeFiles/css_compiler.dir/src/compiler/css/css_compiler.cpp.o: /workspace/chtl
   /usr/include/x86_64-linux-gnu/sys/select.h \
   /usr/include/x86_64-linux-gnu/sys/single_threaded.h \
   /usr/include/x86_64-linux-gnu/sys/types.h \
-  /usr/include/c++/14/algorithm \
   /usr/include/c++/14/array \
   /usr/include/c++/14/backward/auto_ptr.h \
   /usr/include/c++/14/backward/binders.h \
@@ -246,7 +245,6 @@ CMakeFiles/css_compiler.dir/src/compiler/css/css_compiler.cpp.o: /workspace/chtl
   /usr/include/c++/14/optional \
   /usr/include/c++/14/ostream \
   /usr/include/c++/14/pstl/execution_defs.h \
-  /usr/include/c++/14/pstl/glue_algorithm_defs.h \
   /usr/include/c++/14/pstl/glue_memory_defs.h \
   /usr/include/c++/14/pstl/pstl_config.h \
   /usr/include/c++/14/regex \
@@ -336,10 +334,6 @@ CMakeFiles/css_compiler.dir/src/compiler/css/css_compiler.cpp.o: /workspace/chtl
 
 /usr/include/c++/14/unordered_map:
 
-/usr/include/c++/14/typeinfo:
-
-/usr/include/c++/14/type_traits:
-
 /usr/include/x86_64-linux-gnu/bits/timesize.h:
 
 /usr/lib/llvm-20/lib/clang/20/include/stddef.h:
@@ -360,12 +354,6 @@ CMakeFiles/css_compiler.dir/src/compiler/css/css_compiler.cpp.o: /workspace/chtl
 
 /usr/include/c++/14/backward/binders.h:
 
-/usr/include/c++/14/algorithm:
-
-/usr/include/stdlib.h:
-
-/usr/include/c++/14/istream:
-
 /usr/include/x86_64-linux-gnu/sys/types.h:
 
 /usr/include/x86_64-linux-gnu/sys/single_threaded.h:
@@ -385,6 +373,8 @@ CMakeFiles/css_compiler.dir/src/compiler/css/css_compiler.cpp.o: /workspace/chtl
 /usr/include/x86_64-linux-gnu/bits/sched.h:
 
 /usr/include/x86_64-linux-gnu/bits/waitstatus.h:
+
+/usr/include/c++/14/type_traits:
 
 /usr/include/c++/14/bits/atomic_lockfree_defines.h:
 
@@ -423,6 +413,8 @@ CMakeFiles/css_compiler.dir/src/compiler/css/css_compiler.cpp.o: /workspace/chtl
 /usr/include/c++/14/cstdlib:
 
 /usr/include/c++/14/system_error:
+
+/usr/include/x86_64-linux-gnu/bits/types/__mbstate_t.h:
 
 /usr/include/c++/14/bits/allocator.h:
 
@@ -492,6 +484,10 @@ CMakeFiles/css_compiler.dir/src/compiler/css/css_compiler.cpp.o: /workspace/chtl
 
 /usr/include/x86_64-linux-gnu/bits/stdint-intn.h:
 
+/usr/include/stdlib.h:
+
+/usr/include/c++/14/istream:
+
 /usr/include/x86_64-linux-gnu/bits/endianness.h:
 
 /usr/lib/llvm-20/lib/clang/20/include/__stddef_nullptr_t.h:
@@ -533,6 +529,10 @@ CMakeFiles/css_compiler.dir/src/compiler/css/css_compiler.cpp.o: /workspace/chtl
 /usr/include/c++/14/bits/stl_iterator.h:
 
 /usr/include/x86_64-linux-gnu/gnu/stubs-64.h:
+
+/usr/include/c++/14/bits/enable_special_members.h:
+
+/usr/include/c++/14/bits/std_function.h:
 
 /usr/include/x86_64-linux-gnu/bits/typesizes.h:
 
@@ -683,10 +683,6 @@ CMakeFiles/css_compiler.dir/src/compiler/css/css_compiler.cpp.o: /workspace/chtl
 /usr/include/x86_64-linux-gnu/c++/14/bits/cpu_defines.h:
 
 /usr/include/x86_64-linux-gnu/bits/struct_mutex.h:
-
-/usr/include/c++/14/bits/std_function.h:
-
-/usr/include/c++/14/bits/enable_special_members.h:
 
 /usr/include/c++/14/bits/exception.h:
 
@@ -864,10 +860,6 @@ CMakeFiles/css_compiler.dir/src/compiler/css/css_compiler.cpp.o: /workspace/chtl
 
 /usr/include/c++/14/pstl/execution_defs.h:
 
-/usr/include/x86_64-linux-gnu/bits/types/__mbstate_t.h:
-
-/usr/include/c++/14/pstl/glue_algorithm_defs.h:
-
 /usr/include/c++/14/bits/stl_algo.h:
 
 /usr/include/c++/14/sstream:
@@ -875,3 +867,5 @@ CMakeFiles/css_compiler.dir/src/compiler/css/css_compiler.cpp.o: /workspace/chtl
 /usr/include/c++/14/string:
 
 /usr/include/c++/14/tuple:
+
+/usr/include/c++/14/typeinfo:

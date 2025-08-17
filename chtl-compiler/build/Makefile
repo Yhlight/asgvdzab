@@ -395,6 +395,78 @@ src/compiler/chtl/chtl_state.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/compiler/chtl/chtl_state.cpp.s
 .PHONY : src/compiler/chtl/chtl_state.cpp.s
 
+src/compiler/chtljs/chtljs_generator.o: src/compiler/chtljs/chtljs_generator.cpp.o
+.PHONY : src/compiler/chtljs/chtljs_generator.o
+
+# target to build an object file
+src/compiler/chtljs/chtljs_generator.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtljs_compiler.dir/build.make CMakeFiles/chtljs_compiler.dir/src/compiler/chtljs/chtljs_generator.cpp.o
+.PHONY : src/compiler/chtljs/chtljs_generator.cpp.o
+
+src/compiler/chtljs/chtljs_generator.i: src/compiler/chtljs/chtljs_generator.cpp.i
+.PHONY : src/compiler/chtljs/chtljs_generator.i
+
+# target to preprocess a source file
+src/compiler/chtljs/chtljs_generator.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtljs_compiler.dir/build.make CMakeFiles/chtljs_compiler.dir/src/compiler/chtljs/chtljs_generator.cpp.i
+.PHONY : src/compiler/chtljs/chtljs_generator.cpp.i
+
+src/compiler/chtljs/chtljs_generator.s: src/compiler/chtljs/chtljs_generator.cpp.s
+.PHONY : src/compiler/chtljs/chtljs_generator.s
+
+# target to generate assembly for a file
+src/compiler/chtljs/chtljs_generator.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtljs_compiler.dir/build.make CMakeFiles/chtljs_compiler.dir/src/compiler/chtljs/chtljs_generator.cpp.s
+.PHONY : src/compiler/chtljs/chtljs_generator.cpp.s
+
+src/compiler/chtljs/chtljs_lexer.o: src/compiler/chtljs/chtljs_lexer.cpp.o
+.PHONY : src/compiler/chtljs/chtljs_lexer.o
+
+# target to build an object file
+src/compiler/chtljs/chtljs_lexer.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtljs_compiler.dir/build.make CMakeFiles/chtljs_compiler.dir/src/compiler/chtljs/chtljs_lexer.cpp.o
+.PHONY : src/compiler/chtljs/chtljs_lexer.cpp.o
+
+src/compiler/chtljs/chtljs_lexer.i: src/compiler/chtljs/chtljs_lexer.cpp.i
+.PHONY : src/compiler/chtljs/chtljs_lexer.i
+
+# target to preprocess a source file
+src/compiler/chtljs/chtljs_lexer.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtljs_compiler.dir/build.make CMakeFiles/chtljs_compiler.dir/src/compiler/chtljs/chtljs_lexer.cpp.i
+.PHONY : src/compiler/chtljs/chtljs_lexer.cpp.i
+
+src/compiler/chtljs/chtljs_lexer.s: src/compiler/chtljs/chtljs_lexer.cpp.s
+.PHONY : src/compiler/chtljs/chtljs_lexer.s
+
+# target to generate assembly for a file
+src/compiler/chtljs/chtljs_lexer.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtljs_compiler.dir/build.make CMakeFiles/chtljs_compiler.dir/src/compiler/chtljs/chtljs_lexer.cpp.s
+.PHONY : src/compiler/chtljs/chtljs_lexer.cpp.s
+
+src/compiler/chtljs/chtljs_parser.o: src/compiler/chtljs/chtljs_parser.cpp.o
+.PHONY : src/compiler/chtljs/chtljs_parser.o
+
+# target to build an object file
+src/compiler/chtljs/chtljs_parser.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtljs_compiler.dir/build.make CMakeFiles/chtljs_compiler.dir/src/compiler/chtljs/chtljs_parser.cpp.o
+.PHONY : src/compiler/chtljs/chtljs_parser.cpp.o
+
+src/compiler/chtljs/chtljs_parser.i: src/compiler/chtljs/chtljs_parser.cpp.i
+.PHONY : src/compiler/chtljs/chtljs_parser.i
+
+# target to preprocess a source file
+src/compiler/chtljs/chtljs_parser.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtljs_compiler.dir/build.make CMakeFiles/chtljs_compiler.dir/src/compiler/chtljs/chtljs_parser.cpp.i
+.PHONY : src/compiler/chtljs/chtljs_parser.cpp.i
+
+src/compiler/chtljs/chtljs_parser.s: src/compiler/chtljs/chtljs_parser.cpp.s
+.PHONY : src/compiler/chtljs/chtljs_parser.s
+
+# target to generate assembly for a file
+src/compiler/chtljs/chtljs_parser.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtljs_compiler.dir/build.make CMakeFiles/chtljs_compiler.dir/src/compiler/chtljs/chtljs_parser.cpp.s
+.PHONY : src/compiler/chtljs/chtljs_parser.cpp.s
+
 src/compiler/chtljs/chtljs_preprocessor.o: src/compiler/chtljs/chtljs_preprocessor.cpp.o
 .PHONY : src/compiler/chtljs/chtljs_preprocessor.o
 
@@ -466,6 +538,30 @@ src/compiler/css/css_compiler.s: src/compiler/css/css_compiler.cpp.s
 src/compiler/css/css_compiler.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/css_compiler.dir/build.make CMakeFiles/css_compiler.dir/src/compiler/css/css_compiler.cpp.s
 .PHONY : src/compiler/css/css_compiler.cpp.s
+
+src/compiler/javascript/javascript_compiler.o: src/compiler/javascript/javascript_compiler.cpp.o
+.PHONY : src/compiler/javascript/javascript_compiler.o
+
+# target to build an object file
+src/compiler/javascript/javascript_compiler.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/js_compiler.dir/build.make CMakeFiles/js_compiler.dir/src/compiler/javascript/javascript_compiler.cpp.o
+.PHONY : src/compiler/javascript/javascript_compiler.cpp.o
+
+src/compiler/javascript/javascript_compiler.i: src/compiler/javascript/javascript_compiler.cpp.i
+.PHONY : src/compiler/javascript/javascript_compiler.i
+
+# target to preprocess a source file
+src/compiler/javascript/javascript_compiler.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/js_compiler.dir/build.make CMakeFiles/js_compiler.dir/src/compiler/javascript/javascript_compiler.cpp.i
+.PHONY : src/compiler/javascript/javascript_compiler.cpp.i
+
+src/compiler/javascript/javascript_compiler.s: src/compiler/javascript/javascript_compiler.cpp.s
+.PHONY : src/compiler/javascript/javascript_compiler.s
+
+# target to generate assembly for a file
+src/compiler/javascript/javascript_compiler.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/js_compiler.dir/build.make CMakeFiles/js_compiler.dir/src/compiler/javascript/javascript_compiler.cpp.s
+.PHONY : src/compiler/javascript/javascript_compiler.cpp.s
 
 src/compiler/javascript/js_compiler.o: src/compiler/javascript/js_compiler.cpp.o
 .PHONY : src/compiler/javascript/js_compiler.o
@@ -623,6 +719,15 @@ help:
 	@echo "... src/compiler/chtl/chtl_state.o"
 	@echo "... src/compiler/chtl/chtl_state.i"
 	@echo "... src/compiler/chtl/chtl_state.s"
+	@echo "... src/compiler/chtljs/chtljs_generator.o"
+	@echo "... src/compiler/chtljs/chtljs_generator.i"
+	@echo "... src/compiler/chtljs/chtljs_generator.s"
+	@echo "... src/compiler/chtljs/chtljs_lexer.o"
+	@echo "... src/compiler/chtljs/chtljs_lexer.i"
+	@echo "... src/compiler/chtljs/chtljs_lexer.s"
+	@echo "... src/compiler/chtljs/chtljs_parser.o"
+	@echo "... src/compiler/chtljs/chtljs_parser.i"
+	@echo "... src/compiler/chtljs/chtljs_parser.s"
 	@echo "... src/compiler/chtljs/chtljs_preprocessor.o"
 	@echo "... src/compiler/chtljs/chtljs_preprocessor.i"
 	@echo "... src/compiler/chtljs/chtljs_preprocessor.s"
@@ -632,6 +737,9 @@ help:
 	@echo "... src/compiler/css/css_compiler.o"
 	@echo "... src/compiler/css/css_compiler.i"
 	@echo "... src/compiler/css/css_compiler.s"
+	@echo "... src/compiler/javascript/javascript_compiler.o"
+	@echo "... src/compiler/javascript/javascript_compiler.i"
+	@echo "... src/compiler/javascript/javascript_compiler.s"
 	@echo "... src/compiler/javascript/js_compiler.o"
 	@echo "... src/compiler/javascript/js_compiler.i"
 	@echo "... src/compiler/javascript/js_compiler.s"

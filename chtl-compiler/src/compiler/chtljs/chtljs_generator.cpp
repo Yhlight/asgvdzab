@@ -223,7 +223,10 @@ void CHTLJSGenerator::visitVirDeclaration(const VirDeclarationNode* node) {
             
             // 函数体
             if (func->getBody()) {
-                func_sig << func->getBody()->getContent();
+                // 生成函数体
+                if (auto* jsBlock = dynamic_cast<const JSCodeBlockNode*>(func->getBody())) {
+                    func_sig << jsBlock->getCode();
+                }
             }
             
             func_sig << "\n}";
@@ -293,7 +296,12 @@ void CHTLJSGenerator::visitFunctionExpression(const FunctionExpressionNode* node
     
     indent();
     if (node->getBody()) {
-        output_ << getIndent() << node->getBody()->getContent();
+        if (auto* jsBlock = dynamic_cast<const JSCodeBlockNode*>(node->getBody())) {
+            output_ << getIndent() << jsBlock->getCode();
+        } else {
+            // 生成其他类型的函数体
+            visit(node->getBody());
+        }
     }
     dedent();
     
@@ -309,17 +317,17 @@ void CHTLJSGenerator::visitFunctionCall(const FunctionCallNode* node) {
     visit(node->getFunction());
     output_ << "(";
     
-    const auto& args = node->getArguments();
+    const auto args = node->getArguments();
     for (size_t i = 0; i < args.size(); ++i) {
         if (i > 0) output_ << ", ";
-        visit(args[i].get());
+        visit(args[i]);
     }
     
     output_ << ")";
 }
 
 void CHTLJSGenerator::visitJSCodeBlock(const JSCodeBlockNode* node) {
-    output_ << node->getContent();
+    output_ << node->getCode();
 }
 
 std::string CHTLJSGenerator::escapeString(const std::string& str) {

@@ -336,7 +336,8 @@ std::unique_ptr<CHTLJSASTNode> CHTLJSParser::parseStringLiteral() {
 
 std::unique_ptr<CHTLJSASTNode> CHTLJSParser::parseNumberLiteral() {
     auto token = consume(CHTLJSTokenType::NUMBER, "Expected number");
-    return std::make_unique<CHTLJSNumberLiteralNode>(token.value, token.line, token.column);
+    double value = std::stod(token.value);
+    return std::make_unique<CHTLJSNumberLiteralNode>(value, token.line, token.column);
 }
 
 std::unique_ptr<CHTLJSASTNode> CHTLJSParser::parseObjectLiteral() {

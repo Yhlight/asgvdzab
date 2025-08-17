@@ -105,7 +105,6 @@ CMakeFiles/css_compiler.dir/src/compiler/css/css_compiler.cpp.o
  /usr/include/x86_64-linux-gnu/sys/select.h
  /usr/include/x86_64-linux-gnu/sys/single_threaded.h
  /usr/include/x86_64-linux-gnu/sys/types.h
- /usr/include/c++/14/algorithm
  /usr/include/c++/14/array
  /usr/include/c++/14/backward/auto_ptr.h
  /usr/include/c++/14/backward/binders.h
@@ -247,7 +246,6 @@ CMakeFiles/css_compiler.dir/src/compiler/css/css_compiler.cpp.o
  /usr/include/c++/14/optional
  /usr/include/c++/14/ostream
  /usr/include/c++/14/pstl/execution_defs.h
- /usr/include/c++/14/pstl/glue_algorithm_defs.h
  /usr/include/c++/14/pstl/glue_memory_defs.h
  /usr/include/c++/14/pstl/pstl_config.h
  /usr/include/c++/14/regex

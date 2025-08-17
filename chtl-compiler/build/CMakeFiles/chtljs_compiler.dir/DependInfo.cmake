@@ -8,6 +8,9 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
+  "/workspace/chtl-compiler/src/compiler/chtljs/chtljs_generator.cpp" "CMakeFiles/chtljs_compiler.dir/src/compiler/chtljs/chtljs_generator.cpp.o" "gcc" "CMakeFiles/chtljs_compiler.dir/src/compiler/chtljs/chtljs_generator.cpp.o.d"
+  "/workspace/chtl-compiler/src/compiler/chtljs/chtljs_lexer.cpp" "CMakeFiles/chtljs_compiler.dir/src/compiler/chtljs/chtljs_lexer.cpp.o" "gcc" "CMakeFiles/chtljs_compiler.dir/src/compiler/chtljs/chtljs_lexer.cpp.o.d"
+  "/workspace/chtl-compiler/src/compiler/chtljs/chtljs_parser.cpp" "CMakeFiles/chtljs_compiler.dir/src/compiler/chtljs/chtljs_parser.cpp.o" "gcc" "CMakeFiles/chtljs_compiler.dir/src/compiler/chtljs/chtljs_parser.cpp.o.d"
   "/workspace/chtl-compiler/src/compiler/chtljs/chtljs_preprocessor.cpp" "CMakeFiles/chtljs_compiler.dir/src/compiler/chtljs/chtljs_preprocessor.cpp.o" "gcc" "CMakeFiles/chtljs_compiler.dir/src/compiler/chtljs/chtljs_preprocessor.cpp.o.d"
   )
 

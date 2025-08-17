@@ -68,10 +68,10 @@ private:
     std::string generateSelector(const std::string& selector);
     
     // 生成辅助函数
-    std::string generateQueryHelper();
-    std::string generateListenHelper();
-    std::string generateDelegateHelper();
-    std::string generateAnimateHelper();
+    std::string generateQueryHelper() const;
+    std::string generateListenHelper() const;
+    std::string generateDelegateHelper() const;
+    std::string generateAnimateHelper() const;
 };
 
 } // namespace chtl

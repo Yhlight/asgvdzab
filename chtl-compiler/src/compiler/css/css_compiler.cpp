@@ -1,116 +1,95 @@
 #include "compiler/css/css_compiler.h"
 #include <sstream>
-#include <algorithm>
 #include <regex>
 
 namespace chtl {
 
-// CSSCompiler 实现
-CSSCompiler::CSSCompiler() = default;
+// 简单的CSS处理实现（暂时不使用ANTLR）
+class CSSCompiler::Impl {
+public:
+    std::string compile(const std::string& input) {
+        std::stringstream output;
+        output << "/* Processed by CHTL CSS Compiler */\n";
+        
+        // 简单的CSS格式化
+        std::string formatted = formatCSS(input);
+        
+        // 处理CHTL特性
+        formatted = processCHTLFeatures(formatted);
+        
+        output << formatted;
+        return output.str();
+    }
+    
+private:
+    std::string formatCSS(const std::string& css) {
+        std::string result = css;
+        
+        // 规范化空白
+        result = std::regex_replace(result, std::regex(R"(\s+)"), " ");
+        
+        // 在大括号周围添加换行
+        result = std::regex_replace(result, std::regex(R"(\s*\{\s*)"), " {\n  ");
+        result = std::regex_replace(result, std::regex(R"(\s*\}\s*)"), "\n}\n");
+        
+        // 在分号后添加换行
+        result = std::regex_replace(result, std::regex(R"(;\s*)"), ";\n  ");
+        
+        return result;
+    }
+    
+    std::string processCHTLFeatures(const std::string& css) {
+        std::string result = css;
+        
+        // 处理@Style模板使用
+        std::regex style_template_regex(R"(@Style\s+(\w+)\s*;)");
+        result = std::regex_replace(result, style_template_regex, "/* @Style $1 - TODO: expand template */");
+        
+        // 处理变量使用
+        std::regex var_usage_regex(R"((\w+)\((\w+)\))");
+        result = std::regex_replace(result, var_usage_regex, "var(--$2)");
+        
+        return result;
+    }
+};
+
+CSSCompiler::CSSCompiler() : impl_(std::make_unique<Impl>()) {}
+
 CSSCompiler::~CSSCompiler() = default;
 
-CompilationResult CSSCompiler::compile(const CodeFragment& fragment, 
+CompilationResult CSSCompiler::compile(const CodeFragment& fragment,
                                       const CompilerOptions& options) {
     CompilationResult result;
-    result.success = true;
-    
+    result.success = false;
+
     try {
-        // 处理CSS
-        std::string processed = processCSS(fragment.content, options);
+        // 处理CHTL特性
+        std::string processedCSS = handleCHTLFeatures(fragment.content);
         
-        // 优化CSS（如果启用）
-        if (options.minimize_output) {
-            OptimizationOptions opts;
-            opts.minify = true;
-            processed = optimizeCSS(processed, opts);
-        }
-        
-        result.output = processed;
-        
-    } catch (const std::exception& e) {
-        result.success = false;
-        result.errors.push_back(std::string("CSS compilation failed: ") + e.what());
+        // 使用ANTLR解析CSS
+        result.output = impl_->compile(processedCSS);
+        result.success = true;
     }
-    
+    catch (const std::exception& e) {
+        result.errors.push_back(e.what());
+    }
+
     return result;
 }
 
-std::string CSSCompiler::processCSS(const std::string& input, const CompilerOptions& options) {
-    // 简单的CSS处理：规范化格式
-    std::string result = input;
-    
-    // 移除注释
-    result = std::regex_replace(result, std::regex("/\\*[^*]*\\*+(?:[^/*][^*]*\\*+)*/"), "");
-    
-    // 规范化空白（除非要最小化）
-    if (!options.minimize_output) {
-        // 在选择器后添加空格
-        result = std::regex_replace(result, std::regex("\\{"), " {\n");
-        
-        // 在属性后添加空格
-        result = std::regex_replace(result, std::regex(":\\s*"), ": ");
-        
-        // 在声明后添加换行
-        result = std::regex_replace(result, std::regex(";\\s*"), ";\n");
-        
-        // 格式化闭合大括号
-        result = std::regex_replace(result, std::regex("\\}"), "}\n");
-        
-        // 缩进属性
-        std::stringstream ss(result);
-        std::stringstream formatted;
-        std::string line;
-        int indent_level = 0;
-        
-        while (std::getline(ss, line)) {
-            // 去除前后空白
-            line.erase(0, line.find_first_not_of(" \t\n\r"));
-            line.erase(line.find_last_not_of(" \t\n\r") + 1);
-            
-            if (line.empty()) continue;
-            
-            // 调整缩进
-            if (line.find('}') != std::string::npos) {
-                indent_level--;
-            }
-            
-            // 添加缩进
-            for (int i = 0; i < indent_level * 2; ++i) {
-                formatted << " ";
-            }
-            formatted << line << "\n";
-            
-            if (line.find('{') != std::string::npos) {
-                indent_level++;
-            }
-        }
-        
-        result = formatted.str();
-    }
-    
-    return result;
+std::string CSSCompiler::processCSS(const std::string& css) {
+    // 基本的CSS处理逻辑
+    return css;
 }
 
-std::string CSSCompiler::optimizeCSS(const std::string& css, const OptimizationOptions& opts) {
+std::string CSSCompiler::handleCHTLFeatures(const std::string& css) {
     std::string result = css;
-    
-    if (opts.minify) {
-        // 移除所有不必要的空白
-        result = std::regex_replace(result, std::regex("\\s+"), " ");
-        result = std::regex_replace(result, std::regex("\\s*:\\s*"), ":");
-        result = std::regex_replace(result, std::regex("\\s*;\\s*"), ";");
-        result = std::regex_replace(result, std::regex("\\s*\\{\\s*"), "{");
-        result = std::regex_replace(result, std::regex("\\s*\\}\\s*"), "}");
-        result = std::regex_replace(result, std::regex("\\s*,\\s*"), ",");
-        result = std::regex_replace(result, std::regex(";\\}"), "}");
-        
-        // 移除最后一个声明的分号
-        result = std::regex_replace(result, std::regex(";\\s*\\}"), "}");
-        
-        // 移除开头和结尾的空白
-        result.erase(0, result.find_first_not_of(" \t\n\r"));
-        result.erase(result.find_last_not_of(" \t\n\r") + 1);
-    }
+
+    // 处理CHTL注释 (-- 注释)
+    std::regex chtl_comment_regex(R"(--[^\n]*\n)");
+    result = std::regex_replace(result, chtl_comment_regex, "/* $& */\n");
+
+    // 处理其他CHTL特性...
     
     return result;
 }

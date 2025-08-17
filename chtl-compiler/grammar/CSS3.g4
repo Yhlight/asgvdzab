@@ -1,585 +1,309 @@
 grammar CSS3;
 
-// Parser Rules
+// CSS3 Grammar with CHTL Support
+
 stylesheet
-    : ws* charSet? (ws* imports)* (ws* namespace_)* (ws* nestedStatement)* ws* EOF
+    : ws* styleRule* ws* EOF
     ;
 
-charSet
-    : CharSet ws* String_ ws* ';'
-    ;
-
-imports
-    : Import ws* (String_ | Uri) ws* mediaQueryList? ';' ws*
-    ;
-
-namespace_
-    : Namespace ws* (namespacePrefix ws*)? (String_ | Uri) ws* ';' ws*
-    ;
-
-namespacePrefix
-    : ident
-    ;
-
-mediaQueryList
-    : (mediaQuery (ws* ',' ws* mediaQuery)*)?
-    ;
-
-mediaQuery
-    : (MediaOnly | Not)? ws* mediaType ws* (And ws* mediaExpression)*
-    | mediaExpression (ws* And ws* mediaExpression)*
-    ;
-
-mediaType
-    : ident
-    ;
-
-mediaExpression
-    : '(' ws* mediaFeature (ws* ':' ws* expr)? ws* ')'
-    ;
-
-mediaFeature
-    : ident
-    ;
-
-nestedStatement
-    : ruleset
-    | media
-    | page
-    | fontFaceRule
-    | keyframesRule
-    | supportsRule
-    | viewport
-    | counterStyle
-    | fontFeatureValuesRule
+styleRule
+    : ruleSet
     | atRule
+    | chtlTemplateUsage
+    | chtlCustomUsage
+    | chtlVariableUsage
+    | chtlOriginEmbed
     ;
 
-groupRuleBody
-    : ws* '{' ws* nestedStatement* '}' ws*
+ruleSet
+    : selectorList ws* '{' ws* declarationList? ws* '}'
     ;
 
-ruleset
-    : selectorGroup ws* '{' ws* declarationList? '}' ws*
-    ;
-
-selectorGroup
+selectorList
     : selector (ws* ',' ws* selector)*
     ;
 
 selector
-    : simpleSelectorSequence ws* (combinator simpleSelectorSequence ws*)*
+    : simpleSelector (combinator simpleSelector)*
     ;
 
 combinator
-    : Plus ws* | Greater ws* | Tilde ws* | ws+
+    : ws* ('+' | '>' | '~' | '||') ws*
+    | ws+
     ;
 
-simpleSelectorSequence
-    : (typeSelector | universal) (Hash | className | attrib | pseudo | negation)*
-    | (Hash | className | attrib | pseudo | negation)+
+simpleSelector
+    : typeSelector qualifiers*
+    | qualifiers+
     ;
 
 typeSelector
-    : typeNamespacePrefix? elementName
+    : tagName
+    | '*'
     ;
 
-typeNamespacePrefix
-    : (ident | '*')? '|'
-    ;
-
-elementName
+tagName
     : ident
     ;
 
-universal
-    : typeNamespacePrefix? '*'
+qualifiers
+    : hashSelector
+    | classSelector
+    | attributeSelector
+    | pseudoClass
+    | pseudoElement
     ;
 
-className
+hashSelector
+    : '#' ident
+    ;
+
+classSelector
     : '.' ident
     ;
 
-attrib
-    : '[' ws* typeNamespacePrefix? ident ws* (attribOperator ws* (ident | String_) ws*)? ']'
+attributeSelector
+    : '[' ws* ident ws* (attributeOperator ws* attributeValue ws*)? ']'
     ;
 
-attribOperator
-    : '=' | '~=' | '|=' | '^=' | '$=' | '*='
+attributeOperator
+    : '='
+    | '~='
+    | '|='
+    | '^='
+    | '$='
+    | '*='
     ;
 
-pseudo
-    : ':' ':'? (ident | functionalPseudo)
+attributeValue
+    : ident
+    | string
     ;
 
-functionalPseudo
-    : Function_ ws* expression ')'
+pseudoClass
+    : ':' ident ('(' ws* expression ws* ')')?
     ;
 
-expression
-    : (Plus | Minus | Dimension | UnknownDimension | Number | String_ | ident) ws*
-    ;
-
-negation
-    : PseudoNot ws* negationArg ws* ')'
-    ;
-
-negationArg
-    : typeSelector | universal | Hash | className | attrib | pseudo
+pseudoElement
+    : '::' ident
     ;
 
 declarationList
-    : (declaration? ';' ws*)* declaration?
+    : declaration (ws* ';' ws* declaration)* ws* ';'?
     ;
 
 declaration
-    : property ':' ws* expr prio?
-    | property ':' ws* value
-    ;
-
-prio
-    : Important ws*
-    ;
-
-value
-    : (any | block | atKeyword ws*)+
-    ;
-
-expr
-    : term (operator? term)*
-    ;
-
-term
-    : number ws*
-    | percentage ws*
-    | dimension ws*
-    | String_ ws*
-    | Uri ws*
-    | ident ws*
-    | var
-    | hexcolor
-    | calc
-    | function_
-    ;
-
-function_
-    : Function_ ws* expr ')' ws*
-    ;
-
-var
-    : Var ws* Variable ws* (ws* ',' ws* expr)? ')' ws*
-    ;
-
-calc
-    : Calc ws* calcSum ')' ws*
-    ;
-
-calcSum
-    : calcProduct (ws* (Plus | Minus) ws* calcProduct)*
-    ;
-
-calcProduct
-    : calcValue (ws* ('*' | '/') ws* calcValue)*
-    ;
-
-calcValue
-    : number ws* | dimension ws* | percentage ws* | '(' ws* calcSum ws* ')' | var | calc
-    ;
-
-operator
-    : '/' ws* | ',' ws* | ws+
+    : property ws* ':' ws* valueList prio?
+    | chtlStyleGroupUsage
+    | chtlDeleteProperty
+    | chtlInherit
     ;
 
 property
-    : (ident | Variable) ws*
+    : ident
+    | var
     ;
 
-any
-    : (ident | number | percentage | dimension | String_ | Uri | Hash | UnicodeRange | Includes | 
-       DashMatch | ':' | Function_ ws* (any | unused)* ')' | '(' ws* (any | unused)* ')' | '[' ws* (any | unused)* ']'
-      ) ws*
+valueList
+    : value (ws+ value)*
     ;
 
+value
+    : number unit?
+    | percentage
+    | dimension
+    | string
+    | ident
+    | uri
+    | hexcolor
+    | calc
+    | var
+    | chtlVariableReference
+    | function_
+    ;
+
+calc
+    : 'calc(' ws* expression ws* ')'
+    ;
+
+function_
+    : ident '(' ws* expressionList? ws* ')'
+    ;
+
+expressionList
+    : expression (ws* ',' ws* expression)*
+    ;
+
+expression
+    : term (('+' | '-') ws* term)*
+    ;
+
+term
+    : factor (('*' | '/') ws* factor)*
+    ;
+
+factor
+    : number unit?
+    | percentage
+    | dimension
+    | '(' ws* expression ws* ')'
+    | value
+    ;
+
+prio
+    : ws* '!' ws* 'important' ws*
+    ;
+
+// CHTL Extensions
+chtlTemplateUsage
+    : '@' ('Style' | 'style' | 'CSS' | 'Css' | 'css') ws+ ident ws* chtlSpecialization? ws* ';'
+    ;
+
+chtlCustomUsage
+    : '@' ('Style' | 'style' | 'CSS' | 'Css' | 'css') ws+ ident ws* chtlSpecialization? ws* ';'
+    ;
+
+chtlSpecialization
+    : '{' ws* declarationList? ws* '}'
+    ;
+
+chtlVariableUsage
+    : ident '(' ident ')' ws* ';'
+    ;
+
+chtlVariableReference
+    : ident '(' ident ')'
+    ;
+
+chtlStyleGroupUsage
+    : '@' ('Style' | 'style' | 'CSS' | 'Css' | 'css') ws+ ident ws* chtlSpecialization?
+    ;
+
+chtlDeleteProperty
+    : 'delete' ws+ property ws*
+    ;
+
+chtlInherit
+    : 'inherit' ws+ '@' ('Style' | 'style' | 'CSS' | 'Css' | 'css') ws+ ident ws*
+    ;
+
+chtlOriginEmbed
+    : '[Origin]' ws* '@' ('Style' | 'style' | 'CSS' | 'Css' | 'css') ws+ ident ws* ';'
+    ;
+
+// At-rules
 atRule
-    : atKeyword ws* any* (block | ';' ws*)
+    : '@' ident ws* (atRuleBlock | ';')
     ;
 
-unused
-    : block | atKeyword ws* | ';' ws* | CDO ws* | CDC ws*
+atRuleBlock
+    : '{' ws* (styleRule | declaration)* ws* '}'
+    | valueList '{' ws* styleRule* ws* '}'
     ;
 
-block
-    : '{' ws* ((declarationList | nestedStatement | any | block | atKeyword ws* | ';' ws*) ws*)* '}' ws*
-    ;
-
-atKeyword
-    : '@' ident
-    ;
-
-media
-    : Media ws* mediaQueryList groupRuleBody
-    ;
-
-page
-    : Page ws* pseudoPage? '{' ws* declaration? (';' ws* declaration?)* '}' ws*
-    ;
-
-pseudoPage
-    : ':' ident ws*
-    ;
-
-fontFaceRule
-    : FontFace ws* '{' ws* fontFaceDeclaration? (';' ws* fontFaceDeclaration?)* '}' ws*
-    ;
-
-fontFaceDeclaration
-    : property ':' ws* expr
-    ;
-
-keyframesRule
-    : Keyframes ws* ident ws* '{' ws* keyframeBlock* '}' ws*
-    ;
-
-keyframeBlock
-    : keyframeSelector '{' ws* declarationList? '}' ws*
-    ;
-
-keyframeSelector
-    : (From | To | percentage) (ws* ',' ws* (From | To | percentage))*
-    ;
-
-viewport
-    : Viewport ws* '{' ws* declarationList? '}' ws*
-    ;
-
-counterStyle
-    : CounterStyle ws* ident ws* '{' ws* declarationList? '}' ws*
-    ;
-
-fontFeatureValuesRule
-    : FontFeatureValues ws* fontFamilyNameList ws* '{' ws* featureValueBlock* '}' ws*
-    ;
-
-fontFamilyNameList
-    : fontFamilyName (ws* ',' ws* fontFamilyName)*
-    ;
-
-fontFamilyName
-    : String_ | ident+
-    ;
-
-featureValueBlock
-    : featureType ws* '{' ws* featureValueDefinition? (ws* ';' ws* featureValueDefinition?)* '}' ws*
-    ;
-
-featureType
-    : atKeyword
-    ;
-
-featureValueDefinition
-    : ident ws* ':' ws* number (ws+ number)*
-    ;
-
-supportsRule
-    : Supports ws* supportsCondition ws* groupRuleBody
-    ;
-
-supportsCondition
-    : supportsConditionInParens (ws+ supportsConjunction)*
-    | supportsConditionInParens (ws+ supportsDisjunction)*
-    ;
-
-supportsConditionInParens
-    : '(' ws* supportsCondition ws* ')'
-    | supportsDeclarationCondition
-    | generalEnclosed
-    ;
-
-supportsConjunction
-    : And ws+ supportsConditionInParens
-    ;
-
-supportsDisjunction
-    : Or ws+ supportsConditionInParens
-    ;
-
-supportsDeclarationCondition
-    : '(' ws* declaration ws* ')'
-    ;
-
-generalEnclosed
-    : Function_ (any | unused)* ')'
-    | '(' (any | unused)* ')'
-    ;
-
-// Numbers and dimensions
-number
-    : (Plus | Minus)? (Number | Percentage)
-    ;
-
-percentage
-    : (Plus | Minus)? Percentage
-    ;
-
-dimension
-    : (Plus | Minus)? Dimension
-    ;
-
-// Basic units
-ident
-    : Ident
-    | MediaOnly
-    | Not
-    | And
-    | Or
-    | From
-    | To
+// Tokens
+var
+    : 'var(' ws* '--' ident ws* (',' ws* value)? ws* ')'
     ;
 
 hexcolor
-    : Hash
+    : '#' hexdigit+
     ;
 
-// Whitespace handling
+number
+    : NUMBER
+    ;
+
+percentage
+    : number '%'
+    ;
+
+dimension
+    : number unit
+    ;
+
+unit
+    : '%'
+    | 'em' | 'ex' | 'ch' | 'rem' 
+    | 'vw' | 'vh' | 'vmin' | 'vmax'
+    | 'cm' | 'mm' | 'in' | 'px' | 'pt' | 'pc'
+    | 'deg' | 'rad' | 'grad' | 'turn'
+    | 's' | 'ms'
+    | 'Hz' | 'kHz'
+    | 'dpi' | 'dpcm' | 'dppx'
+    ;
+
+uri
+    : 'url(' ws* (string | URL_CONTENT) ws* ')'
+    ;
+
+string
+    : STRING
+    ;
+
+ident
+    : IDENT
+    ;
+
+hexdigit
+    : HEXDIGIT
+    ;
+
 ws
-    : (Space | Newline)+
+    : WS
     ;
 
-// Lexer Rules
-fragment Hex
-    : [0-9a-fA-F]
-    ;
-
-fragment NonAscii
-    : ~[\u0000-\u007F]
-    ;
-
-fragment Unicode
-    : '\\' Hex Hex? Hex? Hex? Hex? Hex? ('\r\n' | [ \t\r\n\f])?
-    ;
-
-fragment Escape
-    : Unicode | '\\' ~[\r\n\f0-9a-fA-F]
-    ;
-
-fragment Nmstart
-    : [_a-zA-Z] | NonAscii | Escape
-    ;
-
-fragment Nmchar
-    : [_a-zA-Z0-9-] | NonAscii | Escape
-    ;
-
-fragment Url
-    : ([!#$%&*-~] | NonAscii | Escape)*
-    ;
-
-fragment Whitespace
-    : Space | '\t' | '\r' | '\n' | '\f'
-    ;
-
-Comment
-    : '/*' ~[*]* '*'+ (~[/*] ~[*]* '*'+)* '/' -> skip
-    ;
-
-CDO
-    : '<!--'
-    ;
-
-CDC
-    : '-->'
-    ;
-
-Includes
-    : '~='
-    ;
-
-DashMatch
-    : '|='
-    ;
-
-Hash
-    : '#' Nmchar+
-    ;
-
-Import
-    : '@' I M P O R T
-    ;
-
-Page
-    : '@' P A G E
-    ;
-
-Media
-    : '@' M E D I A
-    ;
-
-Namespace
-    : '@' N A M E S P A C E
-    ;
-
-CharSet
-    : '@charset'
-    ;
-
-Important
-    : '!' (Space | Comment)* I M P O R T A N T
-    ;
-
-FontFace
-    : '@' F O N T '-' F A C E
-    ;
-
-Supports
-    : '@' S U P P O R T S
-    ;
-
-Or
-    : O R
-    ;
-
-Keyframes
-    : '@' K E Y F R A M E S
-    | '@' '-' W E B K I T '-' K E Y F R A M E S
-    | '@' '-' M O Z '-' K E Y F R A M E S
-    | '@' '-' M S '-' K E Y F R A M E S
-    ;
-
-From
-    : F R O M
-    ;
-
-To
-    : T O
-    ;
-
-Calc
-    : C A L C
-    ;
-
-Viewport
-    : '@' V I E W P O R T
-    ;
-
-CounterStyle
-    : '@' C O U N T E R '-' S T Y L E
-    ;
-
-FontFeatureValues
-    : '@' F O N T '-' F E A T U R E '-' V A L U E S
-    ;
-
-Var
-    : V A R
-    ;
-
-MediaOnly
-    : O N L Y
-    ;
-
-Not
-    : N O T
-    ;
-
-And
-    : A N D
-    ;
-
-Dimension
-    : Number (E M | E X | P X | C M | M M | I N | P T | P C | C H | R E M | V W | V H | V M I N | V M A X | '%')
-    ;
-
-UnknownDimension
-    : Number Ident
-    ;
-
-Percentage
-    : Number '%'
-    ;
-
-Number
+// Lexer rules
+NUMBER
     : [0-9]+ ('.' [0-9]+)?
     | '.' [0-9]+
     ;
 
-Uri
-    : U R L '(' Whitespace* (String_ | Url) Whitespace* ')'
+STRING
+    : '"' (~["\n\r])* '"'
+    | '\'' (~['\n\r])* '\''
     ;
 
-String_
-    : '"' (~["\\\r\n\f] | '\\' (Newline | ~[\r\n\f]))* '"'
-    | '\'' (~['\\\r\n\f] | '\\' (Newline | ~[\r\n\f]))* '\''
+IDENT
+    : '-'? NMSTART NMCHAR*
     ;
 
-Function_
-    : Ident '('
+fragment NMSTART
+    : [a-zA-Z_]
+    | NONASCII
+    | ESCAPE
     ;
 
-UnicodeRange
-    : 'u+' (Hex '?'* | Hex Hex '?'* | Hex Hex Hex '?'* | Hex Hex Hex Hex '?'* | Hex Hex Hex Hex Hex '?'* | Hex Hex Hex Hex Hex Hex '?'*)
-    | 'u+' Hex+ '-' Hex+
+fragment NMCHAR
+    : [a-zA-Z0-9_-]
+    | NONASCII
+    | ESCAPE
     ;
 
-Ident
-    : Nmstart Nmchar*
+HEXDIGIT
+    : [0-9a-fA-F]
     ;
 
-Variable
-    : '--' Nmchar+
+WS
+    : [ \t\r\n\f]+
     ;
 
-Plus
-    : '+'
+NONASCII
+    : ~[\u0000-\u007F]
     ;
 
-Minus
-    : '-'
+ESCAPE
+    : '\\' (~[\r\n\f] | HEXDIGIT HEXDIGIT? HEXDIGIT? HEXDIGIT? HEXDIGIT? HEXDIGIT? WS?)
     ;
 
-Greater
-    : '>'
+URL_CONTENT
+    : (~[)])+
     ;
 
-Tilde
-    : '~'
+COMMENT
+    : '/*' .*? '*/' -> skip
     ;
 
-PseudoNot
-    : ':' N O T '('
+LINE_COMMENT
+    : '//' ~[\r\n]* -> skip
     ;
-
-Space
-    : [ \t]+
-    ;
-
-Newline
-    : '\r\n' | '\n' | '\r' | '\f'
-    ;
-
-// Case-insensitive letters
-fragment A : [aA];
-fragment B : [bB];
-fragment C : [cC];
-fragment D : [dD];
-fragment E : [eE];
-fragment F : [fF];
-fragment G : [gG];
-fragment H : [hH];
-fragment I : [iI];
-fragment J : [jJ];
-fragment K : [kK];
-fragment L : [lL];
-fragment M : [mM];
-fragment N : [nN];
-fragment O : [oO];
-fragment P : [pP];
-fragment Q : [qQ];
-fragment R : [rR];
-fragment S : [sS];
-fragment T : [tT];
-fragment U : [uU];
-fragment V : [vV];
-fragment W : [wW];
-fragment X : [xX];
-fragment Y : [yY];
-fragment Z : [zZ];

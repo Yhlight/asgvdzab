@@ -72,10 +72,24 @@ include CMakeFiles/js_compiler.dir/flags.make
 CMakeFiles/js_compiler.dir/codegen:
 .PHONY : CMakeFiles/js_compiler.dir/codegen
 
+CMakeFiles/js_compiler.dir/src/compiler/javascript/javascript_compiler.cpp.o: CMakeFiles/js_compiler.dir/flags.make
+CMakeFiles/js_compiler.dir/src/compiler/javascript/javascript_compiler.cpp.o: /workspace/chtl-compiler/src/compiler/javascript/javascript_compiler.cpp
+CMakeFiles/js_compiler.dir/src/compiler/javascript/javascript_compiler.cpp.o: CMakeFiles/js_compiler.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/chtl-compiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/js_compiler.dir/src/compiler/javascript/javascript_compiler.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/js_compiler.dir/src/compiler/javascript/javascript_compiler.cpp.o -MF CMakeFiles/js_compiler.dir/src/compiler/javascript/javascript_compiler.cpp.o.d -o CMakeFiles/js_compiler.dir/src/compiler/javascript/javascript_compiler.cpp.o -c /workspace/chtl-compiler/src/compiler/javascript/javascript_compiler.cpp
+
+CMakeFiles/js_compiler.dir/src/compiler/javascript/javascript_compiler.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/js_compiler.dir/src/compiler/javascript/javascript_compiler.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/chtl-compiler/src/compiler/javascript/javascript_compiler.cpp > CMakeFiles/js_compiler.dir/src/compiler/javascript/javascript_compiler.cpp.i
+
+CMakeFiles/js_compiler.dir/src/compiler/javascript/javascript_compiler.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/js_compiler.dir/src/compiler/javascript/javascript_compiler.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/chtl-compiler/src/compiler/javascript/javascript_compiler.cpp -o CMakeFiles/js_compiler.dir/src/compiler/javascript/javascript_compiler.cpp.s
+
 CMakeFiles/js_compiler.dir/src/compiler/javascript/js_compiler.cpp.o: CMakeFiles/js_compiler.dir/flags.make
 CMakeFiles/js_compiler.dir/src/compiler/javascript/js_compiler.cpp.o: /workspace/chtl-compiler/src/compiler/javascript/js_compiler.cpp
 CMakeFiles/js_compiler.dir/src/compiler/javascript/js_compiler.cpp.o: CMakeFiles/js_compiler.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/chtl-compiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/js_compiler.dir/src/compiler/javascript/js_compiler.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/chtl-compiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/js_compiler.dir/src/compiler/javascript/js_compiler.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/js_compiler.dir/src/compiler/javascript/js_compiler.cpp.o -MF CMakeFiles/js_compiler.dir/src/compiler/javascript/js_compiler.cpp.o.d -o CMakeFiles/js_compiler.dir/src/compiler/javascript/js_compiler.cpp.o -c /workspace/chtl-compiler/src/compiler/javascript/js_compiler.cpp
 
 CMakeFiles/js_compiler.dir/src/compiler/javascript/js_compiler.cpp.i: cmake_force
@@ -88,15 +102,17 @@ CMakeFiles/js_compiler.dir/src/compiler/javascript/js_compiler.cpp.s: cmake_forc
 
 # Object files for target js_compiler
 js_compiler_OBJECTS = \
+"CMakeFiles/js_compiler.dir/src/compiler/javascript/javascript_compiler.cpp.o" \
 "CMakeFiles/js_compiler.dir/src/compiler/javascript/js_compiler.cpp.o"
 
 # External object files for target js_compiler
 js_compiler_EXTERNAL_OBJECTS =
 
+libjs_compiler.a: CMakeFiles/js_compiler.dir/src/compiler/javascript/javascript_compiler.cpp.o
 libjs_compiler.a: CMakeFiles/js_compiler.dir/src/compiler/javascript/js_compiler.cpp.o
 libjs_compiler.a: CMakeFiles/js_compiler.dir/build.make
 libjs_compiler.a: CMakeFiles/js_compiler.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/workspace/chtl-compiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX static library libjs_compiler.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/workspace/chtl-compiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX static library libjs_compiler.a"
 	$(CMAKE_COMMAND) -P CMakeFiles/js_compiler.dir/cmake_clean_target.cmake
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/js_compiler.dir/link.txt --verbose=$(VERBOSE)
 

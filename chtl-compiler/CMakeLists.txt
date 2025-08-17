@@ -7,9 +7,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 # ANTLR4运行时路径
-set(ANTLR4_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/antlr4-runtime")
-set(ANTLR4_INCLUDE_DIRS "${ANTLR4_ROOT}/runtime/src")
-set(ANTLR4_LIB_DIR "${ANTLR4_ROOT}/build")
+set(ANTLR4_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/third_party/antlr4")
+set(ANTLR4_INCLUDE_DIRS "${ANTLR4_ROOT}/include/antlr4-runtime")
+set(ANTLR4_LIB_DIR "${ANTLR4_ROOT}/lib")
 
 # 设置编译选项
 if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
@@ -51,13 +51,16 @@ set(CHTL_COMPILER_SOURCES
 # CHTL JS编译器源文件
 set(CHTLJS_COMPILER_SOURCES
     "src/compiler/chtljs/chtljs_preprocessor.cpp"
-    # 暂时注释掉新文件，待完善后再加入
-    # "src/compiler/chtljs/chtljs_lexer.cpp"
-    # "src/compiler/chtljs/chtljs_parser.cpp"
-    # "src/compiler/chtljs/chtljs_generator.cpp"
+    "src/compiler/chtljs/chtljs_lexer.cpp"
+    "src/compiler/chtljs/chtljs_parser.cpp"
+    "src/compiler/chtljs/chtljs_generator.cpp"
 )
+# CSS编译器源文件
 file(GLOB_RECURSE CSS_COMPILER_SOURCES "src/compiler/css/*.cpp")
+
+# JavaScript编译器源文件
 file(GLOB_RECURSE JS_COMPILER_SOURCES "src/compiler/javascript/*.cpp")
+
 file(GLOB_RECURSE MERGER_SOURCES "src/merger/*.cpp")
 
 # 编译器工厂
@@ -86,11 +89,10 @@ target_link_libraries(chtlc
     chtl_merger
 )
 
-# 如果ANTLR4存在，链接ANTLR4运行时（目前暂不使用）
+# 链接ANTLR4运行时（暂时禁用）
 # if(EXISTS ${ANTLR4_ROOT})
 #     target_link_libraries(css_compiler ${ANTLR4_LIB_DIR}/libantlr4-runtime.a)
 #     target_link_libraries(js_compiler ${ANTLR4_LIB_DIR}/libantlr4-runtime.a)
-#     target_link_libraries(chtlc ${ANTLR4_LIB_DIR}/libantlr4-runtime.a)
 # endif()
 
 # 测试

@@ -211,34 +211,140 @@ public:
 // delegate函数节点
 class DelegateFunctionNode : public CHTLJSASTNode {
 public:
-    DelegateFunctionNode(std::unique_ptr<CHTLJSASTNode> parent,
-                        std::unique_ptr<CHTLJSASTNode> config,
-                        size_t line = 0, size_t column = 0)
-        : CHTLJSASTNode(CHTLJSASTNodeType::DELEGATE_FUNCTION, line, column) {
-        addChild(std::move(parent));   // 父元素
-        addChild(std::move(config));   // 配置对象
+    DelegateFunctionNode(size_t line = 0, size_t column = 0)
+        : CHTLJSASTNode(CHTLJSASTNodeType::DELEGATE_FUNCTION, line, column) {}
+    
+    void setParent(std::unique_ptr<CHTLJSASTNode> parent) {
+        if (children_.empty()) {
+            addChild(std::move(parent));
+        } else {
+            children_[0] = std::move(parent);
+        }
+    }
+    
+    void setChild(std::unique_ptr<CHTLJSASTNode> child) {
+        if (children_.size() < 2) {
+            addChild(std::move(child));
+        } else {
+            children_[1] = std::move(child);
+        }
+    }
+    
+    void setEvent(std::unique_ptr<CHTLJSASTNode> event) {
+        if (children_.size() < 3) {
+            while (children_.size() < 2) {
+                addChild(nullptr);
+            }
+            addChild(std::move(event));
+        } else {
+            children_[2] = std::move(event);
+        }
+    }
+    
+    void setHandler(std::unique_ptr<CHTLJSASTNode> handler) {
+        if (children_.size() < 4) {
+            while (children_.size() < 3) {
+                addChild(nullptr);
+            }
+            addChild(std::move(handler));
+        } else {
+            children_[3] = std::move(handler);
+        }
     }
     
     CHTLJSASTNode* getParent() const {
         return children_.empty() ? nullptr : children_[0].get();
     }
     
-    CHTLJSASTNode* getConfig() const {
+    CHTLJSASTNode* getChild() const {
         return children_.size() < 2 ? nullptr : children_[1].get();
+    }
+    
+    CHTLJSASTNode* getEvent() const {
+        return children_.size() < 3 ? nullptr : children_[2].get();
+    }
+    
+    CHTLJSASTNode* getHandler() const {
+        return children_.size() < 4 ? nullptr : children_[3].get();
     }
 };
 
 // animate函数节点
 class AnimateFunctionNode : public CHTLJSASTNode {
 public:
-    AnimateFunctionNode(std::unique_ptr<CHTLJSASTNode> config,
-                       size_t line = 0, size_t column = 0)
-        : CHTLJSASTNode(CHTLJSASTNodeType::ANIMATE_FUNCTION, line, column) {
-        addChild(std::move(config));   // 动画配置对象
+    AnimateFunctionNode(size_t line = 0, size_t column = 0)
+        : CHTLJSASTNode(CHTLJSASTNodeType::ANIMATE_FUNCTION, line, column) {}
+    
+    void setSelector(std::unique_ptr<CHTLJSASTNode> selector) {
+        if (children_.empty()) {
+            addChild(std::move(selector));
+        } else {
+            children_[0] = std::move(selector);
+        }
     }
     
-    CHTLJSASTNode* getConfig() const {
+    void setProperties(std::unique_ptr<CHTLJSASTNode> properties) {
+        if (children_.size() < 2) {
+            while (children_.size() < 1) {
+                addChild(nullptr);
+            }
+            addChild(std::move(properties));
+        } else {
+            children_[1] = std::move(properties);
+        }
+    }
+    
+    void setDuration(std::unique_ptr<CHTLJSASTNode> duration) {
+        if (children_.size() < 3) {
+            while (children_.size() < 2) {
+                addChild(nullptr);
+            }
+            addChild(std::move(duration));
+        } else {
+            children_[2] = std::move(duration);
+        }
+    }
+    
+    void setEasing(std::unique_ptr<CHTLJSASTNode> easing) {
+        if (children_.size() < 4) {
+            while (children_.size() < 3) {
+                addChild(nullptr);
+            }
+            addChild(std::move(easing));
+        } else {
+            children_[3] = std::move(easing);
+        }
+    }
+    
+    void setCallback(std::unique_ptr<CHTLJSASTNode> callback) {
+        if (children_.size() < 5) {
+            while (children_.size() < 4) {
+                addChild(nullptr);
+            }
+            addChild(std::move(callback));
+        } else {
+            children_[4] = std::move(callback);
+        }
+    }
+    
+    CHTLJSASTNode* getSelector() const {
         return children_.empty() ? nullptr : children_[0].get();
+    }
+    
+    CHTLJSASTNode* getProperties() const {
+        return children_.size() < 2 ? nullptr : children_[1].get();
+    }
+    
+    CHTLJSASTNode* getDuration() const {
+        return children_.size() < 3 ? nullptr : children_[2].get();
+    }
+    
+    CHTLJSASTNode* getEasing() const {
+        return children_.size() < 4 ? nullptr : children_[3].get();
+    }
+    
+    CHTLJSASTNode* getCallback() const {
+        return children_.size() < 5 ? nullptr : children_[4].get();
     }
 };
 
@@ -246,16 +352,21 @@ public:
 class VirDeclarationNode : public CHTLJSASTNode {
 public:
     VirDeclarationNode(const std::string& name,
-                      std::unique_ptr<CHTLJSASTNode> value,
                       size_t line = 0, size_t column = 0)
         : CHTLJSASTNode(CHTLJSASTNodeType::VIR_DECLARATION, line, column),
-          name_(name) {
-        addChild(std::move(value));
-    }
+          name_(name) {}
     
     const std::string& getName() const { return name_; }
     
-    CHTLJSASTNode* getValue() const {
+    void setObject(std::unique_ptr<CHTLJSASTNode> object) {
+        if (children_.empty()) {
+            addChild(std::move(object));
+        } else {
+            children_[0] = std::move(object);
+        }
+    }
+    
+    CHTLJSASTNode* getObject() const {
         return children_.empty() ? nullptr : children_[0].get();
     }
     
@@ -277,17 +388,17 @@ private:
 class VirAccessNode : public CHTLJSASTNode {
 public:
     VirAccessNode(const std::string& vir_name,
-                 const std::string& function_name,
+                 const std::string& method_name,
                  size_t line = 0, size_t column = 0)
         : CHTLJSASTNode(CHTLJSASTNodeType::VIR_ACCESS, line, column),
-          vir_name_(vir_name), function_name_(function_name) {}
+          vir_name_(vir_name), method_name_(method_name) {}
     
     const std::string& getVirName() const { return vir_name_; }
-    const std::string& getFunctionName() const { return function_name_; }
+    const std::string& getMethodName() const { return method_name_; }
     
 private:
     std::string vir_name_;
-    std::string function_name_;
+    std::string method_name_;
 };
 
 // 标识符节点
@@ -358,28 +469,45 @@ public:
     void addElement(std::unique_ptr<CHTLJSASTNode> element) {
         addChild(std::move(element));
     }
+    
+    const std::vector<std::unique_ptr<CHTLJSASTNode>>& getElements() const {
+        return children_;
+    }
 };
 
 // 函数表达式节点
 class FunctionExpressionNode : public CHTLJSASTNode {
 public:
-    FunctionExpressionNode(const std::vector<std::string>& params,
-                          std::unique_ptr<CHTLJSASTNode> body,
-                          bool is_arrow = false,
-                          size_t line = 0, size_t column = 0)
+    FunctionExpressionNode(size_t line = 0, size_t column = 0)
         : CHTLJSASTNode(CHTLJSASTNodeType::FUNCTION_EXPRESSION, line, column),
-          parameters_(params), is_arrow_(is_arrow) {
-        addChild(std::move(body));
+          is_arrow_(false) {}
+    
+    void setName(const std::string& name) { name_ = name; }
+    const std::string& getName() const { return name_; }
+    
+    void addParameter(const std::string& param) {
+        parameters_.push_back(param);
     }
     
     const std::vector<std::string>& getParameters() const { return parameters_; }
-    bool isArrowFunction() const { return is_arrow_; }
+    
+    void setBody(std::unique_ptr<CHTLJSASTNode> body) {
+        if (children_.empty()) {
+            addChild(std::move(body));
+        } else {
+            children_[0] = std::move(body);
+        }
+    }
     
     CHTLJSASTNode* getBody() const {
         return children_.empty() ? nullptr : children_[0].get();
     }
     
+    void setIsArrow(bool is_arrow) { is_arrow_ = is_arrow; }
+    bool isArrowFunction() const { return is_arrow_; }
+    
 private:
+    std::string name_;
     std::vector<std::string> parameters_;
     bool is_arrow_;
 };
@@ -387,31 +515,43 @@ private:
 // 成员访问节点
 class MemberAccessNode : public CHTLJSASTNode {
 public:
-    MemberAccessNode(std::unique_ptr<CHTLJSASTNode> object,
-                    const std::string& property,
-                    size_t line = 0, size_t column = 0)
-        : CHTLJSASTNode(CHTLJSASTNodeType::MEMBER_ACCESS, line, column),
-          property_(property) {
-        addChild(std::move(object));
+    MemberAccessNode(size_t line = 0, size_t column = 0)
+        : CHTLJSASTNode(CHTLJSASTNodeType::MEMBER_ACCESS, line, column) {}
+    
+    void setObject(std::unique_ptr<CHTLJSASTNode> object) {
+        if (children_.empty()) {
+            addChild(std::move(object));
+        } else {
+            children_[0] = std::move(object);
+        }
+    }
+    
+    void setMember(const std::string& member) {
+        member_ = member;
     }
     
     CHTLJSASTNode* getObject() const {
         return children_.empty() ? nullptr : children_[0].get();
     }
     
-    const std::string& getProperty() const { return property_; }
+    const std::string& getMember() const { return member_; }
     
 private:
-    std::string property_;
+    std::string member_;
 };
 
 // 函数调用节点
 class FunctionCallNode : public CHTLJSASTNode {
 public:
-    FunctionCallNode(std::unique_ptr<CHTLJSASTNode> function,
-                    size_t line = 0, size_t column = 0)
-        : CHTLJSASTNode(CHTLJSASTNodeType::FUNCTION_CALL, line, column) {
-        addChild(std::move(function));
+    FunctionCallNode(size_t line = 0, size_t column = 0)
+        : CHTLJSASTNode(CHTLJSASTNodeType::FUNCTION_CALL, line, column) {}
+    
+    void setFunction(std::unique_ptr<CHTLJSASTNode> function) {
+        if (children_.empty()) {
+            addChild(std::move(function));
+        } else {
+            children_[0] = std::move(function);
+        }
     }
     
     void addArgument(std::unique_ptr<CHTLJSASTNode> arg) {
