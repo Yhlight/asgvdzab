@@ -102,9 +102,11 @@ CMakeFiles/chtl_compiler.dir/src/main.cpp.o
  /usr/include/x86_64-linux-gnu/sys/select.h
  /usr/include/x86_64-linux-gnu/sys/single_threaded.h
  /usr/include/x86_64-linux-gnu/sys/types.h
+ /usr/include/c++/14/algorithm
  /usr/include/c++/14/backward/auto_ptr.h
  /usr/include/c++/14/backward/binders.h
  /usr/include/c++/14/bit
+ /usr/include/c++/14/bits/algorithmfwd.h
  /usr/include/c++/14/bits/align.h
  /usr/include/c++/14/bits/alloc_traits.h
  /usr/include/c++/14/bits/allocated_ptr.h
@@ -159,10 +161,12 @@ CMakeFiles/chtl_compiler.dir/src/main.cpp.o
  /usr/include/c++/14/bits/shared_ptr_atomic.h
  /usr/include/c++/14/bits/shared_ptr_base.h
  /usr/include/c++/14/bits/std_abs.h
+ /usr/include/c++/14/bits/stl_algo.h
  /usr/include/c++/14/bits/stl_algobase.h
  /usr/include/c++/14/bits/stl_bvector.h
  /usr/include/c++/14/bits/stl_construct.h
  /usr/include/c++/14/bits/stl_function.h
+ /usr/include/c++/14/bits/stl_heap.h
  /usr/include/c++/14/bits/stl_iterator.h
  /usr/include/c++/14/bits/stl_iterator_base_funcs.h
  /usr/include/c++/14/bits/stl_iterator_base_types.h
@@ -175,6 +179,7 @@ CMakeFiles/chtl_compiler.dir/src/main.cpp.o
  /usr/include/c++/14/bits/streambuf_iterator.h
  /usr/include/c++/14/bits/string_view.tcc
  /usr/include/c++/14/bits/stringfwd.h
+ /usr/include/c++/14/bits/uniform_int_dist.h
  /usr/include/c++/14/bits/unique_ptr.h
  /usr/include/c++/14/bits/unordered_map.h
  /usr/include/c++/14/bits/unordered_set.h
@@ -212,6 +217,7 @@ CMakeFiles/chtl_compiler.dir/src/main.cpp.o
  /usr/include/c++/14/new
  /usr/include/c++/14/ostream
  /usr/include/c++/14/pstl/execution_defs.h
+ /usr/include/c++/14/pstl/glue_algorithm_defs.h
  /usr/include/c++/14/pstl/glue_memory_defs.h
  /usr/include/c++/14/pstl/pstl_config.h
  /usr/include/c++/14/stdexcept
@@ -255,4 +261,31 @@ CMakeFiles/chtl_compiler.dir/src/main.cpp.o
  /workspace/src/dispatcher/CompilerDispatcher.h
  /workspace/src/scanner/CHTLUnifiedScanner.h
  /workspace/src/scanner/CodeFragment.h
+
+bin/chtl_compiler
+ /lib/x86_64-linux-gnu/Scrt1.o
+ /lib/x86_64-linux-gnu/crti.o
+ /lib/x86_64-linux-gnu/crtn.o
+ /lib/x86_64-linux-gnu/libc.so
+ /lib/x86_64-linux-gnu/libc.so.6
+ /lib/x86_64-linux-gnu/libgcc_s.so.1
+ /lib/x86_64-linux-gnu/libm.so
+ /lib/x86_64-linux-gnu/libm.so.6
+ /lib/x86_64-linux-gnu/libmvec.so.1
+ /lib64/ld-linux-x86-64.so.2
+ /usr/lib/gcc/x86_64-linux-gnu/14/crtbeginS.o
+ /usr/lib/gcc/x86_64-linux-gnu/14/crtendS.o
+ /usr/lib/gcc/x86_64-linux-gnu/14/libgcc.a
+ /usr/lib/gcc/x86_64-linux-gnu/14/libgcc_s.so
+ /usr/lib/gcc/x86_64-linux-gnu/14/libstdc++.so
+ /usr/lib/x86_64-linux-gnu/libc_nonshared.a
+ /workspace/antlr-prebuilt/lib/libantlr4-runtime.so
+ /workspace/build/CMakeFiles/chtl_compiler.dir/src/main.cpp.o
+ /workspace/build/src/libchtl_compiler_core.a
+ /workspace/build/src/libchtl_compiler_dispatcher.a
+ /workspace/build/src/libchtl_js_compiler.a
+ /workspace/build/src/libchtl_unified_scanner.a
+ /workspace/build/src/libcss_compiler.a
+ /workspace/build/src/libjs_compiler.a
+ /workspace/build/src/libresult_merger.a
 

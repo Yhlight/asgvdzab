@@ -6,7 +6,8 @@
 
 namespace CHTL {
 
-CHTLUnifiedScanner::CHTLUnifiedScanner() : debugMode_(false) {
+CHTLUnifiedScanner::CHTLUnifiedScanner() 
+    : debugMode_(false), initialSliceSize_(1024), maxExpansions_(5), expansionFactor_(1.5) {
     initializeKeywords();
 }
 
@@ -46,28 +47,92 @@ FragmentList CHTLUnifiedScanner::scan(const std::string& sourceCode, const std::
 }
 
 FragmentList CHTLUnifiedScanner::scanImpl(const std::string& sourceCode) {
-    FragmentList fragments;
-    ScanContext ctx;
+    debugOutput("使用新的可变长度切片扫描机制");
+    return scanWithVariableSlicing(sourceCode);
+}
+
+FragmentList CHTLUnifiedScanner::scanWithVariableSlicing(const std::string& sourceCode) {
+    debugOutput("开始可变长度切片扫描，初始切片大小: " + std::to_string(initialSliceSize_));
     
-    while (ctx.position < sourceCode.length()) {
-        skipWhitespaceAndComments(sourceCode, ctx);
+    // 第一步：创建初始切片
+    std::vector<std::string> initialSlices = createInitialSlices(sourceCode);
+    debugOutput("创建了 " + std::to_string(initialSlices.size()) + " 个初始切片");
+    
+    // 第二步：检查完整性并扩增切片
+    std::vector<std::string> expandedSlices;
+    for (size_t i = 0; i < initialSlices.size(); ++i) {
+        std::string slice = initialSlices[i];
+        std::string nextSlice = (i + 1 < initialSlices.size()) ? initialSlices[i + 1] : "";
         
-        if (ctx.position >= sourceCode.length()) {
-            break;
+        size_t expansions = 0;
+        std::string expandedSlice = expandSliceIfNeeded(slice, nextSlice, expansions);
+        
+        if (expansions > 0) {
+            debugOutput("切片 " + std::to_string(i) + " 经过 " + std::to_string(expansions) + " 次扩增");
+            // 需要合并后续切片
+            for (size_t j = 0; j < expansions && i + 1 + j < initialSlices.size(); ++j) {
+                i++; // 跳过已合并的切片
+            }
         }
         
-        // 识别并扫描代码块
-        FragmentPtr fragment = scanBlock(sourceCode, ctx);
-        if (fragment) {
-            fragments.push_back(fragment);
-            debugOutput("扫描到片段: " + fragment->getTypeName() + 
-                       " (行: " + std::to_string(fragment->position.startLine) + ")");
+        expandedSlices.push_back(expandedSlice);
+    }
+    
+    // 第三步：识别片段类型并进行二次切割
+    FragmentList allFragments;
+    size_t currentOffset = 0;
+    size_t currentLine = 1;
+    size_t currentColumn = 1;
+    
+    for (const auto& slice : expandedSlices) {
+        // 分析片段类型
+        FragmentType type = analyzeBlockContentType(slice, "");
+        
+        // 创建基础位置信息
+        FragmentPosition basePos(currentLine, currentLine, currentColumn, 
+                                currentColumn + slice.length(), currentOffset, 
+                                currentOffset + slice.length());
+        
+        if (type == FragmentType::CHTL || type == FragmentType::CHTL_JS) {
+            // 对CHTL和CHTL JS进行二次切割
+            FragmentList subFragments = performSecondarySlicing(slice, type, basePos);
+            allFragments.insert(allFragments.end(), subFragments.begin(), subFragments.end());
+        } else {
+            // 其他类型直接创建片段
+            FragmentPtr fragment;
+            switch (type) {
+                case FragmentType::CSS:
+                    fragment = std::make_shared<CSSFragment>(slice, basePos);
+                    break;
+                case FragmentType::JAVASCRIPT:
+                    fragment = std::make_shared<JSFragment>(slice, basePos);
+                    break;
+                default:
+                    fragment = std::make_shared<CHTLFragment>(slice, basePos);
+                    break;
+            }
+            allFragments.push_back(fragment);
+        }
+        
+        // 更新位置信息
+        currentOffset += slice.length();
+        // 简化的行列号更新
+        for (char ch : slice) {
+            if (ch == '\n') {
+                currentLine++;
+                currentColumn = 1;
+            } else {
+                currentColumn++;
+            }
         }
     }
     
-    debugOutput("扫描完成，共找到 " + std::to_string(fragments.size()) + " 个代码片段");
+    // 第四步：上下文感知的片段合并
+    FragmentList finalFragments = mergeRelatedFragments(allFragments);
     
-    return fragments;
+    debugOutput("扫描完成，最终生成 " + std::to_string(finalFragments.size()) + " 个代码片段");
+    
+    return finalFragments;
 }
 
 void CHTLUnifiedScanner::skipWhitespaceAndComments(const std::string& source, ScanContext& ctx) {
@@ -353,7 +418,7 @@ FragmentPtr CHTLUnifiedScanner::scanTemplateOrCustomBlock(const std::string& sou
         type = FragmentType::HTML;
     }
     
-    FragmentPtr fragment = std::make_shared<CodeFragment>(type, content,
+    FragmentPtr fragment = std::make_shared<CodeFragment>(type, FragmentLevel::BLOCK, content,
         createPosition(startPos, endPos, startLine, ctx.line, startCol, ctx.column));
     
     return fragment;
@@ -532,6 +597,311 @@ void CHTLUnifiedScanner::updatePosition(ScanContext& ctx, char ch) {
         ctx.column++;
     }
     ctx.position++;
+}
+
+std::vector<std::string> CHTLUnifiedScanner::createInitialSlices(const std::string& sourceCode) {
+    std::vector<std::string> slices;
+    size_t pos = 0;
+    
+    while (pos < sourceCode.length()) {
+        size_t sliceSize = std::min(initialSliceSize_, sourceCode.length() - pos);
+        std::string slice = sourceCode.substr(pos, sliceSize);
+        slices.push_back(slice);
+        pos += sliceSize;
+    }
+    
+    return slices;
+}
+
+std::string CHTLUnifiedScanner::expandSliceIfNeeded(const std::string& slice, const std::string& nextSlice, 
+                                                   size_t& expansions) {
+    std::string currentSlice = slice;
+    expansions = 0;
+    
+    // 检查当前切片是否可能包含不完整的CHTL或CHTL JS代码
+    while (expansions < maxExpansions_ && !nextSlice.empty()) {
+        // 检查是否需要扩增
+        bool needsExpansion = false;
+        
+        // 检查大括号平衡
+        int braceCount = 0;
+        bool inString = false;
+        char stringChar = 0;
+        
+        for (char ch : currentSlice) {
+            if (!inString) {
+                if (ch == '"' || ch == '\'') {
+                    inString = true;
+                    stringChar = ch;
+                } else if (ch == '{') {
+                    braceCount++;
+                } else if (ch == '}') {
+                    braceCount--;
+                }
+            } else if (ch == stringChar) {
+                inString = false;
+            }
+        }
+        
+        // 如果大括号不平衡，需要扩增
+        if (braceCount > 0) {
+            needsExpansion = true;
+        }
+        
+        // 检查是否在CHTL JS特殊语法中间截断
+        if (currentSlice.find("{{") != std::string::npos) {
+            size_t lastDoubleOpen = currentSlice.rfind("{{");
+            size_t lastDoubleClose = currentSlice.rfind("}}", lastDoubleOpen);
+            if (lastDoubleClose == std::string::npos) {
+                needsExpansion = true;
+            }
+        }
+        
+        // 检查是否在箭头操作符中间截断
+        if (currentSlice.length() > 0 && currentSlice.back() == '-') {
+            needsExpansion = true;
+        }
+        
+        if (!needsExpansion) {
+            break;
+        }
+        
+        // 执行扩增
+        size_t expansionSize = static_cast<size_t>(initialSliceSize_ * expansionFactor_);
+        size_t actualExpansionSize = std::min(expansionSize, nextSlice.length());
+        
+        currentSlice += nextSlice.substr(0, actualExpansionSize);
+        expansions++;
+        
+        debugOutput("扩增切片，新长度: " + std::to_string(currentSlice.length()));
+    }
+    
+    return currentSlice;
+}
+
+bool CHTLUnifiedScanner::isFragmentComplete(const std::string& fragment, FragmentType type) {
+    if (type == FragmentType::CHTL || type == FragmentType::CHTL_JS) {
+        // 检查大括号平衡
+        int braceCount = 0;
+        bool inString = false;
+        char stringChar = 0;
+        
+        for (char ch : fragment) {
+            if (!inString) {
+                if (ch == '"' || ch == '\'') {
+                    inString = true;
+                    stringChar = ch;
+                } else if (ch == '{') {
+                    braceCount++;
+                } else if (ch == '}') {
+                    braceCount--;
+                }
+            } else if (ch == stringChar) {
+                inString = false;
+            }
+        }
+        
+        return braceCount == 0 && !inString;
+    }
+    
+    return true; // 其他类型暂时认为总是完整的
+}
+
+FragmentList CHTLUnifiedScanner::performSecondarySlicing(const std::string& content, FragmentType type, 
+                                                        const FragmentPosition& basePosition) {
+    FragmentList fragments;
+    
+    if (type == FragmentType::CHTL) {
+        // CHTL二次切割
+        std::vector<std::string> units = identifyCHTLMinimalUnits(content);
+        
+        size_t offset = 0;
+        for (const auto& unit : units) {
+            FragmentPosition pos(
+                basePosition.startLine,
+                basePosition.startLine, // 简化：假设单行
+                basePosition.startColumn + offset,
+                basePosition.startColumn + offset + unit.length(),
+                basePosition.startOffset + offset,
+                basePosition.startOffset + offset + unit.length()
+            );
+            
+            auto fragment = std::make_shared<CHTLFragment>(unit, pos, FragmentLevel::TOKEN);
+            fragments.push_back(fragment);
+            
+            offset += unit.length();
+        }
+    } else if (type == FragmentType::CHTL_JS) {
+        // CHTL JS二次切割
+        std::vector<std::string> units = identifyCHTLJSMinimalUnits(content);
+        
+        size_t offset = 0;
+        for (const auto& unit : units) {
+            FragmentPosition pos(
+                basePosition.startLine,
+                basePosition.startLine,
+                basePosition.startColumn + offset,
+                basePosition.startColumn + offset + unit.length(),
+                basePosition.startOffset + offset,
+                basePosition.startOffset + offset + unit.length()
+            );
+            
+            auto fragment = std::make_shared<CHTLJSFragment>(unit, pos, FragmentLevel::TOKEN);
+            fragments.push_back(fragment);
+            
+            offset += unit.length();
+        }
+    }
+    
+    return fragments;
+}
+
+std::vector<std::string> CHTLUnifiedScanner::identifyCHTLMinimalUnits(const std::string& content) {
+    std::vector<std::string> units;
+    std::string currentUnit;
+    
+    size_t i = 0;
+    while (i < content.length()) {
+        char ch = content[i];
+        
+        // 处理文本块
+        if (i + 4 <= content.length() && content.substr(i, 4) == "text") {
+            if (!currentUnit.empty()) {
+                units.push_back(currentUnit);
+                currentUnit.clear();
+            }
+            
+            // 查找text块的完整结构
+            size_t textStart = i;
+            i += 4; // 跳过"text"
+            
+            // 跳过空白
+            while (i < content.length() && std::isspace(content[i])) {
+                i++;
+            }
+            
+            // 查找大括号
+            if (i < content.length() && content[i] == '{') {
+                size_t braceEnd = findMatchingBrace(content, i);
+                if (braceEnd != std::string::npos) {
+                    units.push_back(content.substr(textStart, braceEnd - textStart + 1));
+                    i = braceEnd + 1;
+                    continue;
+                }
+            }
+        }
+        
+        currentUnit += ch;
+        i++;
+    }
+    
+    if (!currentUnit.empty()) {
+        units.push_back(currentUnit);
+    }
+    
+    return units;
+}
+
+std::vector<std::string> CHTLUnifiedScanner::identifyCHTLJSMinimalUnits(const std::string& content) {
+    std::vector<std::string> units;
+    std::string currentUnit;
+    
+    size_t i = 0;
+    while (i < content.length()) {
+        char ch = content[i];
+        
+        // 处理增强选择器 {{...}}
+        if (i + 1 < content.length() && content.substr(i, 2) == "{{") {
+            if (!currentUnit.empty()) {
+                units.push_back(currentUnit);
+                currentUnit.clear();
+            }
+            
+            size_t selectorStart = i;
+            i += 2; // 跳过"{{"
+            
+            // 查找结束标记
+            while (i + 1 < content.length() && content.substr(i, 2) != "}}") {
+                i++;
+            }
+            
+            if (i + 1 < content.length()) {
+                i += 2; // 跳过"}}"
+                units.push_back(content.substr(selectorStart, i - selectorStart));
+                continue;
+            }
+        }
+        
+        // 处理箭头操作符 ->
+        if (i + 1 < content.length() && content.substr(i, 2) == "->") {
+            if (!currentUnit.empty()) {
+                units.push_back(currentUnit);
+                currentUnit.clear();
+            }
+            
+            units.push_back("->");
+            i += 2;
+            continue;
+        }
+        
+        currentUnit += ch;
+        i++;
+    }
+    
+    if (!currentUnit.empty()) {
+        units.push_back(currentUnit);
+    }
+    
+    return units;
+}
+
+FragmentList CHTLUnifiedScanner::mergeRelatedFragments(const FragmentList& fragments) {
+    FragmentList mergedFragments;
+    
+    if (fragments.empty()) {
+        return mergedFragments;
+    }
+    
+    // 简化的合并策略：连续的相同类型TOKEN级片段合并为COMPOSITE级片段
+    FragmentPtr currentComposite = nullptr;
+    std::string compositeContent;
+    
+    for (const auto& fragment : fragments) {
+        if (fragment->level == FragmentLevel::TOKEN) {
+            if (currentComposite == nullptr || currentComposite->type != fragment->type) {
+                // 开始新的复合片段
+                if (currentComposite != nullptr) {
+                    currentComposite->content = compositeContent;
+                    mergedFragments.push_back(currentComposite);
+                }
+                
+                currentComposite = std::make_shared<CodeFragment>(
+                    fragment->type, FragmentLevel::COMPOSITE, "", fragment->position);
+                compositeContent = fragment->content;
+            } else {
+                // 合并到当前复合片段
+                compositeContent += fragment->content;
+            }
+        } else {
+            // 非TOKEN级片段直接添加
+            if (currentComposite != nullptr) {
+                currentComposite->content = compositeContent;
+                mergedFragments.push_back(currentComposite);
+                currentComposite = nullptr;
+                compositeContent.clear();
+            }
+            
+            mergedFragments.push_back(fragment);
+        }
+    }
+    
+    // 处理最后的复合片段
+    if (currentComposite != nullptr) {
+        currentComposite->content = compositeContent;
+        mergedFragments.push_back(currentComposite);
+    }
+    
+    return mergedFragments;
 }
 
 } // namespace CHTL

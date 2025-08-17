@@ -19,6 +19,17 @@ enum class FragmentType {
 };
 
 /**
+ * 片段切割级别
+ */
+enum class FragmentLevel {
+    BLOCK,          // 块级片段（完整的代码块）
+    STATEMENT,      // 语句级片段（单个语句）
+    EXPRESSION,     // 表达式级片段（单个表达式）
+    TOKEN,          // 词法单元级片段（最小单元）
+    COMPOSITE       // 复合片段（多个相关片段的组合）
+};
+
+/**
  * 代码片段位置信息
  */
 struct FragmentPosition {
@@ -43,12 +54,15 @@ struct FragmentPosition {
 class CodeFragment {
 public:
     FragmentType type;          // 片段类型
+    FragmentLevel level;        // 切割级别
     std::string content;        // 片段内容
     FragmentPosition position;  // 位置信息
     std::string context;        // 上下文信息（如所属的HTML元素）
+    bool isComplete;            // 是否为完整片段
+    std::vector<std::string> dependencies; // 依赖的其他片段
     
-    CodeFragment(FragmentType t, const std::string& c, const FragmentPosition& pos)
-        : type(t), content(c), position(pos) {}
+    CodeFragment(FragmentType t, FragmentLevel l, const std::string& c, const FragmentPosition& pos)
+        : type(t), level(l), content(c), position(pos), isComplete(true) {}
     
     virtual ~CodeFragment() = default;
     
@@ -63,6 +77,18 @@ public:
             default: return "UNKNOWN";
         }
     }
+    
+    // 获取级别名称
+    std::string getLevelName() const {
+        switch (level) {
+            case FragmentLevel::BLOCK: return "BLOCK";
+            case FragmentLevel::STATEMENT: return "STATEMENT";
+            case FragmentLevel::EXPRESSION: return "EXPRESSION";
+            case FragmentLevel::TOKEN: return "TOKEN";
+            case FragmentLevel::COMPOSITE: return "COMPOSITE";
+            default: return "UNKNOWN";
+        }
+    }
 };
 
 /**
@@ -74,8 +100,8 @@ public:
     bool hasLocalScript;        // 是否包含局部脚本
     std::string elementType;    // 元素类型（如div, span等）
     
-    CHTLFragment(const std::string& content, const FragmentPosition& pos)
-        : CodeFragment(FragmentType::CHTL, content, pos), 
+    CHTLFragment(const std::string& content, const FragmentPosition& pos, FragmentLevel level = FragmentLevel::BLOCK)
+        : CodeFragment(FragmentType::CHTL, level, content, pos), 
           hasLocalStyle(false), hasLocalScript(false) {}
 };
 
@@ -87,8 +113,8 @@ public:
     bool isLocalScript;         // 是否为局部脚本
     std::string parentElement;  // 父元素信息
     
-    CHTLJSFragment(const std::string& content, const FragmentPosition& pos)
-        : CodeFragment(FragmentType::CHTL_JS, content, pos), isLocalScript(false) {}
+    CHTLJSFragment(const std::string& content, const FragmentPosition& pos, FragmentLevel level = FragmentLevel::BLOCK)
+        : CodeFragment(FragmentType::CHTL_JS, level, content, pos), isLocalScript(false) {}
 };
 
 /**
@@ -99,8 +125,8 @@ public:
     bool isGlobal;              // 是否为全局样式
     std::string selector;       // 选择器信息
     
-    CSSFragment(const std::string& content, const FragmentPosition& pos)
-        : CodeFragment(FragmentType::CSS, content, pos), isGlobal(true) {}
+    CSSFragment(const std::string& content, const FragmentPosition& pos, FragmentLevel level = FragmentLevel::BLOCK)
+        : CodeFragment(FragmentType::CSS, level, content, pos), isGlobal(true) {}
 };
 
 /**
@@ -110,8 +136,8 @@ class JSFragment : public CodeFragment {
 public:
     bool isGlobal;              // 是否为全局脚本
     
-    JSFragment(const std::string& content, const FragmentPosition& pos)
-        : CodeFragment(FragmentType::JAVASCRIPT, content, pos), isGlobal(true) {}
+    JSFragment(const std::string& content, const FragmentPosition& pos, FragmentLevel level = FragmentLevel::BLOCK)
+        : CodeFragment(FragmentType::JAVASCRIPT, level, content, pos), isGlobal(true) {}
 };
 
 /**
@@ -121,8 +147,8 @@ class HTMLFragment : public CodeFragment {
 public:
     std::string originType;     // 原始类型（@Html, @Vue等）
     
-    HTMLFragment(const std::string& content, const FragmentPosition& pos)
-        : CodeFragment(FragmentType::HTML, content, pos) {}
+    HTMLFragment(const std::string& content, const FragmentPosition& pos, FragmentLevel level = FragmentLevel::BLOCK)
+        : CodeFragment(FragmentType::HTML, level, content, pos) {}
 };
 
 using FragmentPtr = std::shared_ptr<CodeFragment>;

@@ -11,6 +11,7 @@ namespace CHTL {
 /**
  * CHTL统一扫描器 - 精准代码切割器
  * 负责将CHTL源代码精确切分为不同类型的代码片段
+ * 使用可变长度切片机制，支持智能扩增和二次切割
  */
 class CHTLUnifiedScanner {
 public:
@@ -30,6 +31,18 @@ public:
      * @param debug 是否启用调试模式
      */
     void setDebugMode(bool debug) { debugMode_ = debug; }
+    
+    /**
+     * 设置初始切片大小
+     * @param size 初始切片大小（字符数）
+     */
+    void setInitialSliceSize(size_t size) { initialSliceSize_ = size; }
+    
+    /**
+     * 设置最大扩增次数
+     * @param maxExpansions 最大扩增次数
+     */
+    void setMaxExpansions(size_t maxExpansions) { maxExpansions_ = maxExpansions; }
 
     /**
      * 获取扫描错误信息
@@ -83,12 +96,43 @@ private:
     
     // 当前扫描的文件名
     std::string currentFilename_;
+    
+    // 可变长度切片参数
+    size_t initialSliceSize_;       // 初始切片大小
+    size_t maxExpansions_;          // 最大扩增次数
+    double expansionFactor_;        // 扩增因子
 
     // 初始化HTML元素和关键字
     void initializeKeywords();
     
-    // 扫描主循环
+    // 扫描主循环（新的可变长度切片实现）
     FragmentList scanImpl(const std::string& sourceCode);
+    
+    // 可变长度切片扫描
+    FragmentList scanWithVariableSlicing(const std::string& sourceCode);
+    
+    // 创建初始切片
+    std::vector<std::string> createInitialSlices(const std::string& sourceCode);
+    
+    // 检查切片完整性并扩增
+    std::string expandSliceIfNeeded(const std::string& slice, const std::string& nextSlice, 
+                                   size_t& expansions);
+    
+    // 检查CHTL/CHTL JS片段完整性
+    bool isFragmentComplete(const std::string& fragment, FragmentType type);
+    
+    // 二次切割：将片段切分为最小单元
+    FragmentList performSecondarySlicing(const std::string& content, FragmentType type, 
+                                        const FragmentPosition& basePosition);
+    
+    // 上下文感知的片段合并
+    FragmentList mergeRelatedFragments(const FragmentList& fragments);
+    
+    // CHTL最小单元识别
+    std::vector<std::string> identifyCHTLMinimalUnits(const std::string& content);
+    
+    // CHTL JS最小单元识别
+    std::vector<std::string> identifyCHTLJSMinimalUnits(const std::string& content);
     
     // 跳过空白字符和注释
     void skipWhitespaceAndComments(const std::string& source, ScanContext& ctx);

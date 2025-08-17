@@ -1,0 +1,59 @@
+// 高级CHTL测试文件 - 包含CHTL JS特殊语法
+html
+{
+    head
+    {
+        text { "CHTL高级特性测试" }
+    }
+
+    body
+    {
+        div
+        {
+            style
+            {
+                .container
+                {
+                    width: 100%;
+                    padding: 20px;
+                }
+            }
+
+            script
+            {
+                // CHTL JS增强选择器测试
+                {{.container}}->addEventListener('click', function() {
+                    console.log('Container clicked!');
+                });
+
+                // 箭头操作符测试
+                {{#header}}->style->display = 'block';
+                
+                // 复合选择器测试
+                {{.container div}}->forEach(element => {
+                    element->classList->add('processed');
+                });
+            }
+
+            text { "这是一个测试容器" }
+        }
+
+        button
+        {
+            id: testButton;
+            text { "点击测试" }
+            
+            script
+            {
+                {{testButton}}->listen({
+                    click: () => {
+                        alert('按钮被点击了！');
+                    },
+                    mouseenter: function() {
+                        {{testButton}}->style->backgroundColor = 'lightblue';
+                    }
+                });
+            }
+        }
+    }
+}
