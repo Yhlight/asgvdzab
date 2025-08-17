@@ -1,72 +1,216 @@
-# C++ target for ANTLR 4
+# CHTL (C++ HyperText Language) 编译器
 
-This folder contains the C++ runtime support for ANTLR.  See [the canonical antlr4 repository](https://github.com/antlr/antlr4) for in depth detail about how to use ANTLR 4.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![C++17](https://img.shields.io/badge/C%2B%2B-17-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B17)
+[![CMake](https://img.shields.io/badge/CMake-3.15+-green.svg)](https://cmake.org/)
 
-## Authors and major contributors
+CHTL是一种现代的超文本语言，提供更符合开发者编写习惯的HTML生成方式。本项目实现了完整的CHTL编译器，支持编译CHTL代码到HTML、CSS和JavaScript。
 
-ANTLR 4 is the result of substantial effort of the following people:
+## 🚀 特性
 
-* [Terence Parr](http://www.cs.usfca.edu/~parrt/), parrt@cs.usfca.edu
-  ANTLR project lead and supreme dictator for life
-  [University of San Francisco](http://www.usfca.edu/)
-* [Sam Harwell](http://tunnelvisionlabs.com/)
-  Tool co-author, Java and C# target)
+### CHTL编译器
+- **现代语法**：类似CSS的嵌套语法，支持无引号字面量
+- **模板系统**：`[Template] @Style`、`@Element`、`@Var`支持
+- **自定义组件**：`[Custom]`系统，支持参数化和特例化
+- **命名空间**：`[Namespace]`系统，支持模块化开发
+- **导入系统**：灵活的`[Import]`语法，支持文件和模块导入
+- **样式增强**：局部样式块、自动类名/ID、上下文推导
+- **约束系统**：`except`关键字，支持精确的语法约束
 
-The C++ target has been the work of the following people:
+### CHTL JS编译器
+- **增强选择器**：`{{选择器}}`语法
+- **链式操作**：`->`操作符支持
+- **事件系统**：`listen`、`delegate`语法
+- **动画支持**：`animate`语法
+- **模块扩展**：CJMOD系统，支持C++扩展
 
-* Dan McLaughlin, dan.mclaughlin@gmail.com (initial port, got code to compile)
-* David Sisson, dsisson@google.com (initial port, made the runtime C++ tests runnable)
-* [Mike Lischke](www.soft-gems.net), mike@lischke-online.de (brought the initial port to a working library, made most runtime tests passing)
+## 📁 项目结构
 
-## Other contributors
+```
+CHTL-Compiler/
+├── Include/              # 统一头文件目录
+│   ├── CHTL/            # CHTL编译器头文件
+│   └── CHTLJS/          # CHTL JS编译器头文件
+│
+├── CHTL/                # CHTL编译器实现
+│   ├── Common/          # 通用组件
+│   ├── Lexer/           # 词法分析器
+│   ├── Parser/          # 语法分析器
+│   ├── Generator/       # 代码生成器
+│   └── Loader/          # 模块加载器
+│
+├── CHTLJS/              # CHTL JS编译器实现
+│   ├── Common/          # 通用组件
+│   ├── Lexer/           # 词法分析器
+│   ├── Parser/          # 语法分析器
+│   ├── Generator/       # 代码生成器
+│   └── Loader/          # 模块加载器
+│
+├── Tests/               # 测试代码
+├── Examples/            # 示例代码
+├── Documentation/       # 项目文档
+├── Tools/              # 开发工具
+└── ThirdParty/         # 第三方依赖
+```
 
-* Marcin Szalowicz, mszalowicz@mailplus.pl (cmake build setup)
-* Tim O'Callaghan, timo@linux.com (additional superbuild cmake pattern script)
+## 🛠️ 构建要求
 
-## Project Status
+- **C++17** 或更高版本
+- **CMake 3.15** 或更高版本
+- **支持的编译器**：
+  - GCC 7.0+
+  - Clang 6.0+
+  - MSVC 2017+
 
-* Building on macOS, Windows, Android and Linux
-* No errors and warnings
-* Library linking
-* Some unit tests in the macOS project, for important base classes with almost 100% code coverage.
-* All memory allocations checked
-* Simple command line demo application working on all supported platforms.
-* All runtime tests pass.
+## 📦 快速开始
 
-### Build + Usage Notes
+### 1. 克隆仓库
+```bash
+git clone https://github.com/your-org/chtl-compiler.git
+cd chtl-compiler
+```
 
-The minimum C++ version to compile the ANTLR C++ runtime with is C++11. The supplied projects can built the runtime either as static or dynamic library, as both 32bit and 64bit arch. The macOS project contains a target for iOS and can also be built using cmake (instead of XCode).
+### 2. 构建项目
+```bash
+mkdir build && cd build
+cmake ..
+make -j$(nproc)
+```
 
-Include the antlr4-runtime.h umbrella header in your target application to get everything needed to use the library.
+### 3. 运行测试
+```bash
+ctest --verbose
+```
 
-If you are compiling with cmake, the minimum version required is cmake 2.8.
-By default, the libraries produced by the CMake build target C++11. If you want to target a different C++ standard, you can explicitly pass the standard - e.g. `-DCMAKE_CXX_STANDARD=17`.
+### 4. 编译CHTL文件
+```bash
+./chtlc input.chtl -o output.html
+```
 
-#### Compiling on Windows with Visual Studio using he Visual Studio projects
-Simply open the VS project from the runtime folder (VS 2013+) and build it.
+## 📖 语法示例
 
-#### Compiling on Windows using cmake with Visual Studio VS2017 and later
-Use the "Open Folder" Feature from the File->Open->Folder menu to open the runtime/Cpp directory.
-It will automatically use the CMake description to open up a Visual Studio Solution.
+### 基础HTML结构
+```chtl
+html {
+    head {
+        title { "CHTL示例" }
+    }
+    
+    body {
+        div {
+            id: container;
+            class: main-content;
+            
+            text { "Hello, CHTL!" }
+            
+            style {
+                width: 100%;
+                .highlighted {
+                    background: yellow;
+                }
+                
+                &:hover {
+                    opacity: 0.8;
+                }
+            }
+        }
+    }
+}
+```
 
-#### Compiling on macOS
-Either open the included XCode project and build that or use the cmake compilation as described for linux.
+### 模板系统
+```chtl
+[Template] @Style ButtonStyle {
+    background: blue;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 4px;
+}
 
-#### Compiling on Android
-Try run cmake -DCMAKE_ANDROID_NDK=/folder/of/android_ndkr17_and_above -DCMAKE_SYSTEM_NAME=Android -DCMAKE_ANDROID_API=14 -DCMAKE_ANDROID_ARCH_ABI=x86 -DCMAKE_ANDROID_STL_TYPE=c++_shared -DCMAKE_ANDROID_NDK_TOOLCHAIN_VERSION=clang -DCMAKE_BUILD_TYPE=Release /folder/antlr4_src_dir -G Ninja.
+[Template] @Element Button {
+    button {
+        @Style ButtonStyle;
+        text { "点击我" }
+    }
+}
 
-#### Compiling on Linux
-- cd \<antlr4-dir\>/runtime/Cpp (this is where this readme is located)
-- mkdir build && mkdir run && cd build
-- cmake .. -DANTLR_JAR_LOCATION=full/path/to/antlr4-4.5.4-SNAPSHOT.jar -DWITH_DEMO=True
-- make
-- DESTDIR=\<antlr4-dir\>/runtime/Cpp/run make install
+body {
+    @Element Button;
+}
+```
 
-If you don't want to build the demo then simply run cmake without parameters.
-There is another cmake script available in the subfolder cmake/ for those who prefer the superbuild cmake pattern.
+### 命名空间和导入
+```chtl
+[Namespace] ui.components {
+    [Import] @Style from "theme.chtl" as theme;
+    
+    [Template] @Element Card {
+        div {
+            class: card;
+            style {
+                @Style theme.cardStyle;
+            }
+        }
+    }
+}
+```
 
-#### CMake Package support
-If the CMake variable 'ANTLR4_INSTALL' is set, CMake Packages will be build and installed during the install step.
-They expose two packages: antlr4_runtime and antlr4_generator which can be referenced to ease up the use of the
-ANTLR Generator and runtime.
-Use and Sample can be found [here](cmake/Antlr4Package.md)
+## 🔧 开发指南
+
+### 添加新功能
+1. 在相应的模块目录中添加头文件和源文件
+2. 更新CMakeLists.txt
+3. 添加相应的测试
+4. 更新文档
+
+### 测试
+```bash
+# 运行所有测试
+cd build && ctest
+
+# 运行特定测试
+./Tests/CHTL/test_lexer
+./Tests/CHTL/test_parser
+```
+
+### 调试
+```bash
+# 启用调试模式构建
+cmake -DCMAKE_BUILD_TYPE=Debug ..
+make
+```
+
+## 📚 文档
+
+- [语言参考](Documentation/LanguageReference/) - CHTL语法完整参考
+- [编译器指南](Documentation/CompilerGuide/) - 编译器架构和实现
+- [API参考](Documentation/APIReference/) - C++ API文档
+
+## 🤝 贡献
+
+欢迎贡献代码！请遵循以下步骤：
+
+1. Fork本项目
+2. 创建功能分支 (`git checkout -b feature/amazing-feature`)
+3. 提交更改 (`git commit -m 'Add amazing feature'`)
+4. 推送到分支 (`git push origin feature/amazing-feature`)
+5. 创建Pull Request
+
+## 📄 许可证
+
+本项目采用MIT许可证 - 查看 [LICENSE.txt](LICENSE.txt) 文件了解详情。
+
+## 🙏 致谢
+
+- ANTLR项目 - 用于CSS和JavaScript解析
+- 所有贡献者和测试者
+
+## 📞 联系
+
+- 项目主页：https://github.com/your-org/chtl-compiler
+- 问题反馈：https://github.com/your-org/chtl-compiler/issues
+- 文档：https://chtl-compiler.readthedocs.io/
+
+---
+
+**CHTL编译器** - 让HTML编写更加直观和高效！

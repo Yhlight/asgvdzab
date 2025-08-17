@@ -1,50 +1,230 @@
-# CHTL项目 .gitignore
+# CHTL编译器项目 .gitignore
 
-# 构建目录
+# ===== 构建产物 =====
+# CMake构建目录
 build/
-dist/
+Build/
+builds/
+cmake-build-*/
+
+# Make产物
 *.o
-*.so
 *.a
-*.lib
+*.so
+*.dylib
 *.dll
-*.exe
 
-# ANTLR下载和构建文件
-antlr-quick/antlr4.jar
-antlr-quick/antlr4
-antlr-manual-build/
-antlr-manual-install/
+# 可执行文件
+chtlc
+chtl-compiler
+test_*
+*_test
+debug_test
+core
 
-# ANTLR预编译包中的二进制文件
-antlr-prebuilt/bin/antlr4.jar
-antlr-prebuilt/lib/*.a
-antlr-prebuilt/lib/*.so
-antlr-prebuilt/test_example.cpp
+# ===== IDE和编辑器 =====
+# Visual Studio
+.vs/
+*.vcxproj.user
+*.vcxproj.filters
+*.sln.docstates
+*.suo
+*.user
 
-# IDE和编辑器文件
+# Visual Studio Code
 .vscode/
+*.code-workspace
+
+# CLion
 .idea/
+cmake-build-debug/
+cmake-build-release/
+
+# Xcode
+*.pbxuser
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+xcuserdata/
+*.xcworkspace/
+build/
+DerivedData/
+
+# Qt Creator
+*.pro.user*
+
+# Vim
 *.swp
 *.swo
 *~
 
-# 系统文件
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+
+# ===== 编译器特定 =====
+# ANTLR生成的文件
+*.interp
+*.tokens
+*BaseListener.h
+*BaseListener.cpp
+*Listener.h
+*Listener.cpp
+*BaseVisitor.h
+*BaseVisitor.cpp
+*Visitor.h
+*Visitor.cpp
+*Lexer.h
+*Lexer.cpp
+*Parser.h
+*Parser.cpp
+
+# 生成的代码
+generated/
+Generated/
+gen/
+
+# ===== 系统文件 =====
+# macOS
 .DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+
+# Windows
 Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+.directory
+.Trash-*
+
+# ===== 临时文件 =====
+# 日志文件
+*.log
+*.out
+*.err
 
 # 临时文件
 *.tmp
 *.temp
-*.log
+*~
+.#*
 
-# 压缩文件
-*.zip
+# 核心转储
+core.*
+vgcore.*
+
+# ===== 测试相关 =====
+# 测试输出
+test_output/
+test_results/
+coverage/
+*.gcov
+*.gcno
+*.gcda
+
+# ===== 包管理 =====
+# Conan
+conandata.yml
+conanfile.txt
+conanbuildinfo.*
+
+# vcpkg
+vcpkg_installed/
+
+# ===== 文档生成 =====
+# Doxygen
+html/
+latex/
+rtf/
+man/
+
+# Sphinx
+_build/
+_static/
+_templates/
+
+# ===== 部署和发布 =====
+# 打包文件
 *.tar.gz
 *.tar.bz2
+*.tar.xz
+*.zip
+*.7z
+*.rar
 
-# C++编译产生的文件
-*.obj
-*.pdb
-*.ilk
-*.idb
+# 安装包
+*.deb
+*.rpm
+*.pkg
+*.dmg
+*.msi
+
+# ===== 开发工具 =====
+# Profiler输出
+gmon.out
+*.prof
+
+# 静态分析
+*.plist
+
+# Clang工具
+compile_commands.json
+.clangd/
+
+# ===== 项目特定 =====
+# CHTL编译产物
+*.html.generated
+*.css.generated
+*.js.generated
+
+# 模块文件
+*.cmod
+*.cjmod
+
+# 配置文件（本地）
+config.local.json
+settings.local.ini
+
+# 第三方下载
+downloads/
+vendor/
+
+# 基准测试结果
+benchmark_results/
+*.benchmark
+
+# ===== 环境变量 =====
+.env
+.env.local
+.env.production
+
+# ===== 备份文件 =====
+*.bak
+*.backup
+*.orig
+
+# ===== Node.js (如果需要) =====
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ===== Python (如果有Python工具) =====
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+
+# ===== 保持空目录 =====
+!.gitkeep
