@@ -40,6 +40,7 @@ set(CORE_SOURCES
     src/core/constraint_system.cpp
     src/core/chtl_parser.cpp
     src/core/style_block_parser.cpp
+    src/core/template_parser.cpp
 )
 
 set(UTILS_SOURCES
