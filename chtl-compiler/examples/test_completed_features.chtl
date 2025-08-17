@@ -1,0 +1,144 @@
+// 测试已完成的功能
+
+// 1. 模板定义和使用
+[Template] @Style ButtonStyle
+{
+    padding: 10px 20px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+}
+
+[Template] @Element Button
+{
+    button
+    {
+        class: btn;
+        style
+        {
+            @Style ButtonStyle;
+            background-color: #007bff;
+            color: white;
+        }
+        text { "Click Me" }
+    }
+}
+
+// 2. 原始嵌入
+[Origin] @Html header
+{
+    <header class="site-header">
+        <h1>CHTL Test Site</h1>
+    </header>
+}
+
+// 主文档
+html
+{
+    head
+    {
+        title { text { "CHTL Completed Features Test" } }
+    }
+    
+    body
+    {
+        // 使用原始HTML
+        @Html header;
+        
+        // 3. 局部样式块测试
+        div
+        {
+            class: container;
+            
+            style
+            {
+                // 直接样式
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 20px;
+                
+                // 4. 样式规则解析测试
+                .content
+                {
+                    background-color: #f8f9fa;
+                    padding: 15px;
+                }
+                
+                #main-title
+                {
+                    color: #333;
+                    font-size: 24px;
+                }
+                
+                &:hover
+                {
+                    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+                }
+                
+                p
+                {
+                    line-height: 1.6;
+                }
+            }
+            
+            h2
+            {
+                id: main-title;
+                text { "Feature Showcase" }
+            }
+            
+            div
+            {
+                class: content;
+                
+                p { text { "This demonstrates completed CHTL features." } }
+                
+                // 使用元素模板
+                @Element Button;
+                
+                // 5. CHTL JS功能测试
+                script
+                {
+                    // 增强选择器
+                    {{.btn}}->addEventListener('click', function() {
+                        alert('Button clicked!');
+                    });
+                    
+                    // listen函数
+                    listen({{#main-title}}, 'mouseover', function(e) {
+                        e.target.style.color = '#007bff';
+                    });
+                    
+                    // delegate函数
+                    delegate({{.container}}, 'click', '.content', function(e) {
+                        console.log('Content clicked');
+                    });
+                    
+                    // animate函数
+                    animate({{.btn}}, {
+                        opacity: [0, 1],
+                        transform: ['scale(0.8)', 'scale(1)']
+                    }, {
+                        duration: 300,
+                        easing: 'ease-out'
+                    });
+                    
+                    // vir对象
+                    let utils = vir {
+                        formatDate: function(date) {
+                            return date.toLocaleDateString();
+                        },
+                        
+                        log: function(msg) {
+                            console.log('[CHTL]:', msg);
+                        }
+                    };
+                    
+                    // 使用vir方法
+                    utils->log('Page loaded');
+                    console.log(utils->formatDate(new Date()));
+                }
+            }
+        }
+    }
+}

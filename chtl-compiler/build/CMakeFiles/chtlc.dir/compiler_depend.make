@@ -205,6 +205,7 @@ CMakeFiles/chtlc.dir/src/compiler/compiler_factory.cpp.o: /workspace/chtl-compil
   /usr/include/c++/14/pstl/glue_memory_defs.h \
   /usr/include/c++/14/pstl/pstl_config.h \
   /usr/include/c++/14/stack \
+  /usr/include/c++/14/stdexcept \
   /usr/include/c++/14/string \
   /usr/include/c++/14/string_view \
   /usr/include/c++/14/tuple \
@@ -536,6 +537,66 @@ CMakeFiles/chtlc.dir/src/main.cpp.o: /workspace/chtl-compiler/src/main.cpp \
   /workspace/chtl-compiler/include/scanner/unified_scanner.h \
   /workspace/chtl-compiler/include/utils/common.h
 
+chtlc: /lib/x86_64-linux-gnu/Scrt1.o \
+  /lib/x86_64-linux-gnu/crti.o \
+  /lib/x86_64-linux-gnu/crtn.o \
+  /lib/x86_64-linux-gnu/libc.so \
+  /lib/x86_64-linux-gnu/libc.so.6 \
+  /lib/x86_64-linux-gnu/libgcc_s.so.1 \
+  /lib/x86_64-linux-gnu/libm.so \
+  /lib/x86_64-linux-gnu/libm.so.6 \
+  /lib/x86_64-linux-gnu/libmvec.so.1 \
+  /lib64/ld-linux-x86-64.so.2 \
+  /usr/lib/gcc/x86_64-linux-gnu/14/crtbeginS.o \
+  /usr/lib/gcc/x86_64-linux-gnu/14/crtendS.o \
+  /usr/lib/gcc/x86_64-linux-gnu/14/libgcc.a \
+  /usr/lib/gcc/x86_64-linux-gnu/14/libgcc_s.so \
+  /usr/lib/gcc/x86_64-linux-gnu/14/libstdc++.so \
+  /usr/lib/x86_64-linux-gnu/libc_nonshared.a \
+  CMakeFiles/chtlc.dir/src/compiler/compiler_factory.cpp.o \
+  CMakeFiles/chtlc.dir/src/main.cpp.o \
+  libchtl_compiler.a \
+  libchtl_dispatcher.a \
+  libchtl_merger.a \
+  libchtl_scanner.a \
+  libchtljs_compiler.a \
+  libcss_compiler.a \
+  libjs_compiler.a
+
+
+libjs_compiler.a:
+
+libcss_compiler.a:
+
+libchtl_scanner.a:
+
+libchtl_merger.a:
+
+libchtl_dispatcher.a:
+
+libchtl_compiler.a:
+
+CMakeFiles/chtlc.dir/src/main.cpp.o:
+
+CMakeFiles/chtlc.dir/src/compiler/compiler_factory.cpp.o:
+
+/usr/lib/x86_64-linux-gnu/libc_nonshared.a:
+
+/usr/lib/gcc/x86_64-linux-gnu/14/libgcc.a:
+
+/usr/lib/gcc/x86_64-linux-gnu/14/crtendS.o:
+
+/usr/lib/gcc/x86_64-linux-gnu/14/crtbeginS.o:
+
+/lib64/ld-linux-x86-64.so.2:
+
+/lib/x86_64-linux-gnu/libgcc_s.so.1:
+
+/lib/x86_64-linux-gnu/libc.so:
+
+/lib/x86_64-linux-gnu/crtn.o:
+
+/lib/x86_64-linux-gnu/crti.o:
 
 /workspace/chtl-compiler/include/scanner/unified_scanner.h:
 
@@ -550,8 +611,6 @@ CMakeFiles/chtlc.dir/src/main.cpp.o: /workspace/chtl-compiler/src/main.cpp \
 /usr/include/c++/14/thread:
 
 /usr/include/c++/14/streambuf:
-
-/usr/include/c++/14/stdexcept:
 
 /usr/include/c++/14/queue:
 
@@ -587,7 +646,13 @@ CMakeFiles/chtlc.dir/src/main.cpp.o: /workspace/chtl-compiler/src/main.cpp \
 
 /usr/include/c++/14/bits/locale_classes.tcc:
 
+/lib/x86_64-linux-gnu/Scrt1.o:
+
 /usr/include/c++/14/bits/locale_classes.h:
+
+libchtljs_compiler.a:
+
+/usr/include/c++/14/bits/ios_base.h:
 
 /usr/include/c++/14/bits/char_traits.h:
 
@@ -608,6 +673,8 @@ CMakeFiles/chtlc.dir/src/main.cpp.o: /workspace/chtl-compiler/src/main.cpp \
 /usr/include/c++/14/bits/functexcept.h:
 
 /usr/include/pthread.h:
+
+/usr/include/c++/14/stdexcept:
 
 /workspace/chtl-compiler/include/compiler/chtljs/chtljs_tokens.h:
 
@@ -687,6 +754,8 @@ CMakeFiles/chtlc.dir/src/main.cpp.o: /workspace/chtl-compiler/src/main.cpp \
 
 /usr/include/x86_64-linux-gnu/bits/types/struct_timespec.h:
 
+/lib/x86_64-linux-gnu/libc.so.6:
+
 /usr/include/c++/14/pstl/glue_memory_defs.h:
 
 /usr/include/c++/14/bits/charconv.h:
@@ -723,6 +792,8 @@ CMakeFiles/chtlc.dir/src/main.cpp.o: /workspace/chtl-compiler/src/main.cpp \
 
 /usr/include/x86_64-linux-gnu/gnu/stubs.h:
 
+/lib/x86_64-linux-gnu/libm.so:
+
 /usr/include/linux/sched/types.h:
 
 /usr/include/c++/14/bits/std_abs.h:
@@ -751,9 +822,13 @@ CMakeFiles/chtlc.dir/src/main.cpp.o: /workspace/chtl-compiler/src/main.cpp \
 
 /usr/include/c++/14/debug/debug.h:
 
+/lib/x86_64-linux-gnu/libmvec.so.1:
+
 /usr/include/stdlib.h:
 
 /usr/lib/llvm-20/lib/clang/20/include/sanitizer/tsan_interface.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/14/libstdc++.so:
 
 /usr/include/c++/14/algorithm:
 
@@ -1041,6 +1116,8 @@ CMakeFiles/chtlc.dir/src/main.cpp.o: /workspace/chtl-compiler/src/main.cpp \
 
 /usr/include/c++/14/initializer_list:
 
+/lib/x86_64-linux-gnu/libm.so.6:
+
 /usr/include/c++/14/iosfwd:
 
 /usr/include/c++/14/bits/streambuf_iterator.h:
@@ -1129,6 +1206,8 @@ CMakeFiles/chtlc.dir/src/main.cpp.o: /workspace/chtl-compiler/src/main.cpp \
 
 /usr/include/c++/14/bits/algorithmfwd.h:
 
+/usr/lib/gcc/x86_64-linux-gnu/14/libgcc_s.so:
+
 /usr/include/c++/14/bit:
 
 /usr/include/c++/14/bits/chrono.h:
@@ -1138,5 +1217,3 @@ CMakeFiles/chtlc.dir/src/main.cpp.o: /workspace/chtl-compiler/src/main.cpp \
 /usr/include/c++/14/bits/codecvt.h:
 
 /usr/include/c++/14/bits/fstream.tcc:
-
-/usr/include/c++/14/bits/ios_base.h:

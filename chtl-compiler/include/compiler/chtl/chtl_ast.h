@@ -5,6 +5,7 @@
 #include <vector>
 #include <memory>
 #include <variant>
+#include <stdexcept>
 #include "compiler/chtl/chtl_tokens.h"
 
 namespace chtl {
@@ -44,6 +45,7 @@ enum class ASTNodeType {
     // 模板相关
     TEMPLATE_DEFINITION,     // 模板定义
     TEMPLATE_USAGE,          // 模板使用
+    VAR_PROPERTY,           // 变量属性（用于变量组）
     
     // 自定义相关
     CUSTOM_DEFINITION,       // 自定义定义
@@ -79,9 +81,6 @@ enum class ASTNodeType {
     // 索引访问
     INDEX_ACCESS,          // 索引访问（如div[1]）
     
-    // 变量组
-    VAR_PROPERTY,          // 变量属性
-    
     // 全缀名
     QUALIFIED_NAME,        // 全缀名（如[Custom] @Element Box）
     
@@ -97,6 +96,13 @@ public:
         : type_(type), line_(line), column_(column) {}
     
     virtual ~ASTNode() = default;
+    
+    // 深拷贝方法（子类应该重写此方法）
+    virtual std::unique_ptr<ASTNode> clone() const {
+        // 默认实现：创建一个相同类型的空节点
+        // 警告：这个默认实现不会复制任何数据！
+        throw std::runtime_error("Clone not implemented for node type: " + std::to_string(static_cast<int>(type_)));
+    }
     
     ASTNodeType getType() const { return type_; }
     size_t getLine() const { return line_; }
@@ -126,6 +132,14 @@ protected:
 class RootNode : public ASTNode {
 public:
     RootNode() : ASTNode(ASTNodeType::ROOT) {}
+    
+    std::unique_ptr<ASTNode> clone() const override {
+        auto cloned = std::make_unique<RootNode>();
+        for (const auto& child : children_) {
+            cloned->addChild(child->clone());
+        }
+        return cloned;
+    }
 };
 
 // 文本节点
@@ -135,6 +149,10 @@ public:
         : ASTNode(ASTNodeType::TEXT, line, column), content_(content) {}
     
     const std::string& getContent() const { return content_; }
+    
+    std::unique_ptr<ASTNode> clone() const override {
+        return std::make_unique<TextNode>(content_, line_, column_);
+    }
     
 private:
     std::string content_;
@@ -163,6 +181,18 @@ public:
     bool has_local_script;
     std::string generated_class_name;
     
+    std::unique_ptr<ASTNode> clone() const override {
+        auto cloned = std::make_unique<ElementNode>(tag_name_, line_, column_);
+        cloned->attributes_ = attributes_;
+        cloned->has_local_style = has_local_style;
+        cloned->has_local_script = has_local_script;
+        cloned->generated_class_name = generated_class_name;
+        for (const auto& child : children_) {
+            cloned->addChild(child->clone());
+        }
+        return cloned;
+    }
+    
 private:
     std::string tag_name_;
     std::vector<std::pair<std::string, std::string>> attributes_;
@@ -189,6 +219,14 @@ class StyleBlockNode : public ASTNode {
 public:
     StyleBlockNode(size_t line = 0, size_t column = 0)
         : ASTNode(ASTNodeType::STYLE_BLOCK, line, column) {}
+    
+    std::unique_ptr<ASTNode> clone() const override {
+        auto cloned = std::make_unique<StyleBlockNode>(line_, column_);
+        for (const auto& child : children_) {
+            cloned->addChild(child->clone());
+        }
+        return cloned;
+    }
 };
 
 // 样式规则节点
@@ -198,6 +236,14 @@ public:
         : ASTNode(ASTNodeType::STYLE_RULE, line, column), selector_(selector) {}
     
     const std::string& getSelector() const { return selector_; }
+    
+    std::unique_ptr<ASTNode> clone() const override {
+        auto cloned = std::make_unique<StyleRuleNode>(selector_, line_, column_);
+        for (const auto& child : children_) {
+            cloned->addChild(child->clone());
+        }
+        return cloned;
+    }
     
 private:
     std::string selector_;
@@ -214,6 +260,10 @@ public:
     const std::string& getProperty() const { return property_; }
     const std::string& getValue() const { return value_; }
     
+    std::unique_ptr<ASTNode> clone() const override {
+        return std::make_unique<StylePropertyNode>(property_, value_, line_, column_);
+    }
+    
 private:
     std::string property_;
     std::string value_;
@@ -226,6 +276,10 @@ public:
         : ASTNode(ASTNodeType::SCRIPT_BLOCK, line, column), content_(content) {}
     
     const std::string& getContent() const { return content_; }
+    
+    std::unique_ptr<ASTNode> clone() const override {
+        return std::make_unique<ScriptBlockNode>(content_, line_, column_);
+    }
     
 private:
     std::string content_;
@@ -242,9 +296,37 @@ public:
     TemplateType getTemplateType() const { return template_type_; }
     const std::string& getName() const { return name_; }
     
+    std::unique_ptr<ASTNode> clone() const override {
+        auto cloned = std::make_unique<TemplateDefinitionNode>(template_type_, name_, line_, column_);
+        for (const auto& child : children_) {
+            cloned->addChild(child->clone());
+        }
+        return cloned;
+    }
+    
 private:
     TemplateType template_type_;
     std::string name_;
+};
+
+// 变量属性节点（用于模板和自定义变量组）
+class VarPropertyNode : public ASTNode {
+public:
+    VarPropertyNode(const std::string& name, const std::string& value,
+                   size_t line = 0, size_t column = 0)
+        : ASTNode(ASTNodeType::VAR_PROPERTY, line, column),
+          name_(name), value_(value) {}
+    
+    const std::string& getName() const { return name_; }
+    const std::string& getValue() const { return value_; }
+    
+    std::unique_ptr<ASTNode> clone() const override {
+        return std::make_unique<VarPropertyNode>(name_, value_, line_, column_);
+    }
+    
+private:
+    std::string name_;
+    std::string value_;
 };
 
 // 模板使用节点

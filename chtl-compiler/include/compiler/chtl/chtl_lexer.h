@@ -24,6 +24,12 @@ public:
     size_t getCurrentLine() const { return line_; }
     size_t getCurrentColumn() const { return column_; }
     size_t getCurrentPosition() const { return position_; }
+    size_t getPosition() const { return position_; }
+    
+    // 原始文本处理（用于[Origin]块）
+    char peekChar(size_t offset = 0) const;
+    void skipChar();
+    bool isAtEnd() const { return position_ >= input_.size(); }
     
     // 错误处理
     bool hasErrors() const { return !errors_.empty(); }

@@ -115,6 +115,9 @@ void CHTLGenerator::visit(const ASTNode* node) {
         case ASTNodeType::IMPORT_STATEMENT:
             visitImport(static_cast<const ImportStatementNode*>(node));
             break;
+        case ASTNodeType::VAR_PROPERTY:
+            visitVarProperty(static_cast<const VarPropertyNode*>(node));
+            break;
         default:
             // 其他节点类型暂不处理
             for (const auto& child : node->getChildren()) {
@@ -203,10 +206,65 @@ void CHTLGenerator::visitTemplateDefinition(const TemplateDefinitionNode* node) 
 }
 
 void CHTLGenerator::visitTemplateUsage(const TemplateUsageNode* node) {
-    // TODO: 实现模板使用的展开
+    // 实现模板使用的展开
     auto* tmpl = state_.getGlobalMap().getTemplate(node->getName(), node->getTemplateType());
-    if (tmpl && tmpl->content) {
-        visit(tmpl->content.get());
+    if (!tmpl) {
+        state_.addError("Template not found: " + node->getName());
+        return;
+    }
+    
+    if (!tmpl->content) {
+        state_.addError("Template has no content: " + node->getName());
+        return;
+    }
+    
+    switch (node->getTemplateType()) {
+        case TemplateType::ELEMENT:
+            // 元素模板：直接展开内容
+            visit(tmpl->content.get());
+            break;
+            
+        case TemplateType::STYLE:
+            // 样式模板：生成CSS变量或直接展开样式
+            if (tmpl->content->getType() == ASTNodeType::TEMPLATE_DEFINITION) {
+                auto* def = static_cast<const TemplateDefinitionNode*>(tmpl->content.get());
+                for (const auto& child : def->getChildren()) {
+                    visit(child.get());
+                }
+            }
+            break;
+            
+        case TemplateType::VAR:
+            // 变量模板：根据参数获取特定值
+            if (!node->getParameters().empty()) {
+                const auto& params = node->getParameters();
+                if (params[0].first == "property") {
+                    // 查找特定属性
+                    const std::string& prop_name = params[0].second;
+                    if (tmpl->content->getType() == ASTNodeType::TEMPLATE_DEFINITION) {
+                        auto* def = static_cast<const TemplateDefinitionNode*>(tmpl->content.get());
+                        for (const auto& child : def->getChildren()) {
+                            if (child->getType() == ASTNodeType::VAR_PROPERTY) {
+                                auto* var_prop = static_cast<const VarPropertyNode*>(child.get());
+                                if (var_prop->getName() == prop_name) {
+                                    output_ << var_prop->getValue();
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                    state_.addError("Property not found in template: " + prop_name);
+                }
+            } else {
+                // 没有参数时，展开所有变量
+                if (tmpl->content->getType() == ASTNodeType::TEMPLATE_DEFINITION) {
+                    auto* def = static_cast<const TemplateDefinitionNode*>(tmpl->content.get());
+                    for (const auto& child : def->getChildren()) {
+                        visit(child.get());
+                    }
+                }
+            }
+            break;
     }
 }
 
@@ -251,6 +309,11 @@ void CHTLGenerator::visitOrigin(const OriginBlockNode* node) {
 
 void CHTLGenerator::visitImport(const ImportStatementNode* node) {
     // 导入语句不生成输出
+}
+
+void CHTLGenerator::visitVarProperty(const VarPropertyNode* node) {
+    // 变量属性作为CSS自定义属性输出
+    output_ << "--" << node->getName() << ": " << node->getValue() << ";\n";
 }
 
 std::string CHTLGenerator::escapeHtml(const std::string& text) {
@@ -319,6 +382,23 @@ void CHTLGenerator::collectLocalStyles(const StyleBlockNode* style_block,
             if (has_inline_styles) inline_styles << "; ";
             inline_styles << prop->getProperty() << ": " << prop->getValue();
             has_inline_styles = true;
+        } else if (child->getType() == ASTNodeType::TEMPLATE_USAGE) {
+            // 处理模板使用 - 展开样式模板的属性
+            auto* usage = static_cast<const TemplateUsageNode*>(child.get());
+            if (usage->getTemplateType() == TemplateType::STYLE) {
+                auto* tmpl = state_.getGlobalMap().getTemplate(usage->getName(), usage->getTemplateType());
+                if (tmpl && tmpl->content) {
+                    auto* def = static_cast<const TemplateDefinitionNode*>(tmpl->content.get());
+                    for (const auto& tmpl_child : def->getChildren()) {
+                        if (tmpl_child->getType() == ASTNodeType::STYLE_PROPERTY) {
+                            auto* prop = static_cast<const StylePropertyNode*>(tmpl_child.get());
+                            if (has_inline_styles) inline_styles << "; ";
+                            inline_styles << prop->getProperty() << ": " << prop->getValue();
+                            has_inline_styles = true;
+                        }
+                    }
+                }
+            }
         } else if (child->getType() == ASTNodeType::STYLE_RULE) {
             auto* rule = static_cast<const StyleRuleNode*>(child.get());
             std::string selector = generateSelector(rule->getSelector(), class_name);

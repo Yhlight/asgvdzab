@@ -2,6 +2,7 @@
 #include <sstream>
 #include <cctype>
 #include <algorithm>
+#include <iostream>
 
 namespace chtl {
 
@@ -65,6 +66,7 @@ Token CHTLLexer::nextToken() {
     
     // 特殊块处理 [...]
     if (c == '[') {
+        advance();  // 消费 '['
         return scanSpecialBlock();
     }
     
@@ -201,23 +203,37 @@ Token CHTLLexer::scanUnquotedLiteral() {
 }
 
 Token CHTLLexer::scanSpecialBlock() {
-    size_t start = position_;
-    std::string value;
+    size_t start = position_ - 1;  // 我们已经读取了'['
+    std::string value = "[";
     
-    // 读取 [...]
-    if (peek() == '[') {
+    // 读取内容直到 ']'
+    while (peek() != ']' && peek() != '\0') {
         value += advance();
-        while (peek() != ']' && peek() != '\0') {
-            value += advance();
-        }
-        if (peek() == ']') {
-            value += advance();
-        }
     }
+    if (peek() == ']') {
+        value += advance();
+    }
+    
+    // DEBUG: 输出value的内容
+    // std::cerr << "scanSpecialBlock: value='" << value << "'" << std::endl;
     
     // 检查是否是特殊块
     if (getSpecialBlocks().count(value) > 0) {
         return makeToken(TokenType::IDENTIFIER, value, start, position_);
+    }
+    
+    // 如果不是特殊块，回退到'['之后
+    position_ = start + 1;
+    // 重新计算行列位置
+    line_ = 1;
+    column_ = 1;
+    for (size_t i = 0; i < position_; ++i) {
+        if (input_[i] == '\n') {
+            line_++;
+            column_ = 1;
+        } else {
+            column_++;
+        }
     }
     
     return makeToken(TokenType::LBRACKET, "[", start, start + 1);
@@ -281,7 +297,7 @@ bool CHTLLexer::isAlphaNumeric(char c) const {
 }
 
 bool CHTLLexer::isIdentifierStart(char c) const {
-    return isAlpha(c) || c == '_' || c == '@';
+    return isAlpha(c) || c == '_';
 }
 
 bool CHTLLexer::isIdentifierChar(char c) const {
@@ -294,6 +310,22 @@ char CHTLLexer::peek(size_t offset) const {
         return '\0';
     }
     return input_[pos];
+}
+
+char CHTLLexer::peekChar(size_t offset) const {
+    return peek(offset);
+}
+
+void CHTLLexer::skipChar() {
+    if (position_ < input_.size()) {
+        if (input_[position_] == '\n') {
+            line_++;
+            column_ = 1;
+        } else {
+            column_++;
+        }
+        position_++;
+    }
 }
 
 char CHTLLexer::advance() {

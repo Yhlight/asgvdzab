@@ -1,0 +1,12 @@
+[Origin] @Html test
+{
+<p>Hello from Origin</p>
+}
+
+html
+{
+    body
+    {
+        @Html test;
+    }
+}

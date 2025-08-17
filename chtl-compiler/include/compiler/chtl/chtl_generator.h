@@ -57,6 +57,7 @@ private:
     void visitNamespace(const NamespaceBlockNode* node);
     void visitOrigin(const OriginBlockNode* node);
     void visitImport(const ImportStatementNode* node);
+    void visitVarProperty(const VarPropertyNode* node);
     
     // 辅助方法
     std::string escapeHtml(const std::string& text);

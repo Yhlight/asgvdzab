@@ -113,9 +113,25 @@ std::unique_ptr<ASTNode> CHTLParser::parseTopLevel() {
 }
 
 std::unique_ptr<ASTNode> CHTLParser::parseStatement() {
-    // 模板使用
-    if (isTemplateUsage()) {
-        return parseTemplateUsage();
+    // 模板使用或原始嵌入使用
+    if (current_.type == TokenType::AT) {
+        // 查看@后面的标识符
+        Token next = lexer_.peekToken();
+        if (next.type == TokenType::IDENTIFIER) {
+            if (next.value == "Element" || next.value == "Style" || next.value == "Var") {
+                return parseTemplateUsage();
+            } else if (next.value == "Html" || next.value == "JavaScript" || next.value == "Css") {
+                // 这是原始嵌入使用
+                advance(); // 跳过 @
+                std::string type_name = consume(TokenType::IDENTIFIER, "Expected origin type").value;
+                std::string name = consume(TokenType::IDENTIFIER, "Expected origin name").value;
+                match(TokenType::SEMICOLON);
+                
+                auto origin = std::make_unique<OriginBlockNode>("@" + type_name, name, current_.line, current_.column);
+                origin->setUsageMode(true);
+                return origin;
+            }
+        }
     }
     
     // 自定义使用
@@ -303,19 +319,28 @@ std::unique_ptr<ASTNode> CHTLParser::parseTemplate() {
             match(TokenType::SEMICOLON);
             
             // 创建变量属性节点
-            // TODO: 需要创建专门的VarPropertyNode
-            // 暂时跳过
+            auto var_prop = std::make_unique<VarPropertyNode>(var_name, value, current_.line, current_.column);
+            tmpl->addChild(std::move(var_prop));
         }
     }
     
     consume(TokenType::RBRACE, "Expected '}' after template");
     
-    // 添加到GlobalMap
+    // 创建模板定义的深拷贝用于GlobalMap
     auto def = std::make_unique<TemplateDefinition>();
     def->type = type;
     def->name = name;
     def->namespace_path = global_map_.getCurrentNamespace();
-    // TODO: 复制AST内容
+    
+    // 创建内容的深拷贝
+    auto content_copy = std::make_unique<TemplateDefinitionNode>(type, name, tmpl->getLine(), tmpl->getColumn());
+    for (const auto& child : tmpl->getChildren()) {
+        // 这里应该实现深拷贝，暂时只是移动子节点的指针
+        // 实际使用时会从GlobalMap中获取完整定义
+        content_copy->addChild(child->clone());
+    }
+    def->content = std::move(content_copy);
+    
     global_map_.addTemplate(name, std::move(def));
     
     return tmpl;
@@ -410,8 +435,16 @@ std::unique_ptr<ASTNode> CHTLParser::parseStyleBlock() {
     consume(TokenType::LBRACE, "Expected '{' after 'style'");
     
     while (!check(TokenType::RBRACE) && !isAtEnd()) {
+        // 检查是否是模板使用
+        if (current_.type == TokenType::AT) {
+            // 处理 @Style TemplateName;
+            auto usage = parseTemplateUsage();
+            if (usage) {
+                style_block->addChild(std::move(usage));
+            }
+        }
         // 检查是否是选择器（.class, #id, &:hover, 元素选择器等）
-        if (current_.type == TokenType::DOT || 
+        else if (current_.type == TokenType::DOT || 
             (current_.type == TokenType::IDENTIFIER && current_.value[0] == '#') ||
             current_.type == TokenType::AMPERSAND ||
             (current_.type == TokenType::IDENTIFIER && lexer_.peekToken().type == TokenType::LBRACE)) {
@@ -565,28 +598,45 @@ std::unique_ptr<ASTNode> CHTLParser::parseOrigin() {
     // 否则是定义，需要解析内容
     consume(TokenType::LBRACE, "Expected '{' after origin name");
     
-    // 读取原始内容直到找到匹配的 }
-    std::string content;
-    int brace_count = 1;
+    // 对于原始内容，我们需要读取原始文本而不是通过词法分析器
+    // 保存当前位置
+    size_t start_pos = lexer_.getPosition();
     
-    while (brace_count > 0 && !isAtEnd()) {
-        if (check(TokenType::LBRACE)) {
-            brace_count++;
-        } else if (check(TokenType::RBRACE)) {
-            brace_count--;
-            if (brace_count == 0) {
-                advance();
-                break;
-            }
+    // 跳过空白
+    while (!isAtEnd() && isWhitespace(lexer_.peekChar())) {
+        lexer_.skipChar();
+    }
+    
+    // 读取原始内容直到找到行首的 }
+    std::string content;
+    int brace_depth = 0;
+    bool at_line_start = true;
+    
+    while (!lexer_.isAtEnd()) {
+        char c = lexer_.peekChar();
+        
+        if (at_line_start && c == '}' && brace_depth == 0) {
+            // 找到了结束的 }
+            lexer_.skipChar(); // 跳过 }
+            // 重新同步词法分析器
+            advance();
+            break;
         }
         
-        content += current_.value;
-        if (check(TokenType::SEMICOLON) || check(TokenType::COLON) || 
-            check(TokenType::COMMA) || check(TokenType::RBRACE)) {
-            // 保留原始格式
-            content += " ";
+        if (c == '{') {
+            brace_depth++;
+        } else if (c == '}') {
+            brace_depth--;
         }
-        advance();
+        
+        content += c;
+        lexer_.skipChar();
+        
+        if (c == '\n') {
+            at_line_start = true;
+        } else if (!isWhitespace(c)) {
+            at_line_start = false;
+        }
     }
     
     origin->setContent(content);
@@ -620,8 +670,51 @@ std::unique_ptr<ASTNode> CHTLParser::parseScriptBlock() {
 }
 
 std::unique_ptr<ASTNode> CHTLParser::parseTemplateUsage() {
-    // TODO: 实现模板使用解析
-    return nullptr;
+    // 解析模板使用 @Element, @Style, @Var
+    advance(); // 跳过 @
+    std::string type_name = consume(TokenType::IDENTIFIER, "Expected template type after @").value;
+    
+    TemplateType type;
+    if (type_name == "Element") {
+        type = TemplateType::ELEMENT;
+    } else if (type_name == "Style") {
+        type = TemplateType::STYLE;
+    } else if (type_name == "Var") {
+        type = TemplateType::VAR;
+    } else {
+        error("Unknown template usage type: @" + type_name);
+        return nullptr;
+    }
+    
+    // 获取模板名称
+    std::string template_name = consume(TokenType::IDENTIFIER, "Expected template name").value;
+    
+    auto usage = std::make_unique<TemplateUsageNode>(type, template_name, current_.line, current_.column);
+    
+    // 对于变量组模板，可能有参数
+    if (type == TemplateType::VAR && match(TokenType::DOT)) {
+        // 处理 @Var TemplateName.propertyName 形式
+        std::string property_name = consume(TokenType::IDENTIFIER, "Expected property name").value;
+        usage->addParameter("property", property_name);
+    } else if (type == TemplateType::VAR && match(TokenType::LPAREN)) {
+        // 处理 @Var TemplateName(param1: value1, param2: value2) 形式
+        while (!check(TokenType::RPAREN) && !isAtEnd()) {
+            std::string param_name = consume(TokenType::IDENTIFIER, "Expected parameter name").value;
+            matchColonOrEquals();
+            std::string param_value = parseLiteralValue();
+            usage->addParameter(param_name, param_value);
+            
+            if (!match(TokenType::COMMA)) {
+                break;
+            }
+        }
+        consume(TokenType::RPAREN, "Expected ')' after parameters");
+    }
+    
+    // 消费结束分号
+    match(TokenType::SEMICOLON);
+    
+    return usage;
 }
 
 std::unique_ptr<ASTNode> CHTLParser::parseCustomUsage() {
