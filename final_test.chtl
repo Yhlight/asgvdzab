@@ -1,0 +1,86 @@
+html
+{
+    body
+    {
+        div
+        {
+            id: main;
+            class: container;
+            
+            h1
+            {
+                text
+                {
+                    "CHTL编译器成功运行！"
+                }
+            }
+            
+            p
+            {
+                text
+                {
+                    "这证明了CHTL编译器的各个组件都工作正常："
+                }
+            }
+            
+            ul
+            {
+                li
+                {
+                    text
+                    {
+                        "✅ CHTLUnifiedScanner - 精准代码切割器"
+                    }
+                }
+                
+                li
+                {
+                    text
+                    {
+                        "✅ CompilerDispatcher - 编译器调度器"
+                    }
+                }
+                
+                li
+                {
+                    text
+                    {
+                        "✅ CHTL手写编译器"
+                    }
+                }
+                
+                li
+                {
+                    text
+                    {
+                        "✅ CHTL JS手写编译器"
+                    }
+                }
+                
+                li
+                {
+                    text
+                    {
+                        "✅ CSS编译器"
+                    }
+                }
+                
+                li
+                {
+                    text
+                    {
+                        "✅ JavaScript编译器"
+                    }
+                }
+                
+                li
+                {
+                    text
+                    {
+                        "✅ ResultMerger - 编译结果合并器"
+                    }
+                }
+            }
+        }
+    }
+}
