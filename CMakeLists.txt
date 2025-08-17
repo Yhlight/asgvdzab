@@ -41,6 +41,7 @@ set(CORE_SOURCES
     src/core/chtl_parser.cpp
     src/core/style_block_parser.cpp
     src/core/template_parser.cpp
+    src/core/custom_parser.cpp
 )
 
 set(UTILS_SOURCES
