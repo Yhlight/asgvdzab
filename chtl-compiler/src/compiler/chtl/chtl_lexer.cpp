@@ -241,6 +241,16 @@ Token CHTLLexer::scanOperator() {
         case '.': return makeToken(TokenType::DOT, ".", start, position_);
         case '@': return makeToken(TokenType::AT, "@", start, position_);
         case '&': return makeToken(TokenType::AMPERSAND, "&", start, position_);
+        case '#':
+            // # 后面跟着标识符表示ID选择器
+            if (isIdentifierStart(peek())) {
+                std::string id = "#";
+                while (isIdentifierChar(peek())) {
+                    id += advance();
+                }
+                return makeToken(TokenType::IDENTIFIER, id, start, position_);
+            }
+            return makeToken(TokenType::IDENTIFIER, "#", start, position_);
         case '-':
             if (peek() == '>') {
                 advance();

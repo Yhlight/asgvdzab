@@ -369,7 +369,7 @@ std::unique_ptr<ASTNode> CHTLParser::parseElement() {
     // 如果有局部样式，生成类名
     if (element->has_local_style) {
         element->generated_class_name = state_.generateClassName();
-        element->addAttribute("class", element->generated_class_name);
+        // 不要在这里添加class属性，让生成器处理
     }
     
     state_.popLocalStyleContext();
@@ -410,10 +410,11 @@ std::unique_ptr<ASTNode> CHTLParser::parseStyleBlock() {
     consume(TokenType::LBRACE, "Expected '{' after 'style'");
     
     while (!check(TokenType::RBRACE) && !isAtEnd()) {
-        // 检查是否是选择器（.class, #id, &:hover等）
+        // 检查是否是选择器（.class, #id, &:hover, 元素选择器等）
         if (current_.type == TokenType::DOT || 
-            current_.type == TokenType::IDENTIFIER && current_.value[0] == '#' ||
-            current_.type == TokenType::AMPERSAND) {
+            (current_.type == TokenType::IDENTIFIER && current_.value[0] == '#') ||
+            current_.type == TokenType::AMPERSAND ||
+            (current_.type == TokenType::IDENTIFIER && lexer_.peekToken().type == TokenType::LBRACE)) {
             
             auto rule = parseStyleRule();
             if (rule) {
@@ -440,13 +441,7 @@ std::unique_ptr<ASTNode> CHTLParser::parseStyleProperty() {
     std::string property = consume(TokenType::IDENTIFIER, "Expected style property").value;
     matchColonOrEquals();
     
-    std::string value;
-    // 收集属性值直到分号
-    while (!check(TokenType::SEMICOLON) && !check(TokenType::RBRACE) && !isAtEnd()) {
-        if (!value.empty()) value += " ";
-        value += current_.value;
-        advance();
-    }
+    std::string value = parseLiteralValue();
     
     match(TokenType::SEMICOLON);
     
@@ -552,8 +547,58 @@ std::unique_ptr<ASTNode> CHTLParser::parseCustom() {
 }
 
 std::unique_ptr<ASTNode> CHTLParser::parseOrigin() {
-    // TODO: 实现原始嵌入解析
-    return nullptr;
+    // 解析原始类型 @Html, @Style, @JavaScript或自定义
+    consume(TokenType::AT, "Expected '@' after [Origin]");
+    std::string origin_type = "@" + consume(TokenType::IDENTIFIER, "Expected origin type").value;
+    
+    // 解析原始块名称
+    std::string name = consume(TokenType::IDENTIFIER, "Expected origin block name").value;
+    
+    auto origin = std::make_unique<OriginBlockNode>(origin_type, name, current_.line, current_.column);
+    
+    // 如果是声明式使用（以分号结尾）
+    if (match(TokenType::SEMICOLON)) {
+        origin->setUsageMode(true);
+        return origin;
+    }
+    
+    // 否则是定义，需要解析内容
+    consume(TokenType::LBRACE, "Expected '{' after origin name");
+    
+    // 读取原始内容直到找到匹配的 }
+    std::string content;
+    int brace_count = 1;
+    
+    while (brace_count > 0 && !isAtEnd()) {
+        if (check(TokenType::LBRACE)) {
+            brace_count++;
+        } else if (check(TokenType::RBRACE)) {
+            brace_count--;
+            if (brace_count == 0) {
+                advance();
+                break;
+            }
+        }
+        
+        content += current_.value;
+        if (check(TokenType::SEMICOLON) || check(TokenType::COLON) || 
+            check(TokenType::COMMA) || check(TokenType::RBRACE)) {
+            // 保留原始格式
+            content += " ";
+        }
+        advance();
+    }
+    
+    origin->setContent(content);
+    
+    // 添加到GlobalMap
+    auto origin_def = std::make_unique<OriginDefinition>();
+    origin_def->type = origin_type;
+    origin_def->name = name;
+    origin_def->content = content;
+    global_map_.addOrigin(name + "_" + origin_type, std::move(origin_def));
+    
+    return origin;
 }
 
 std::unique_ptr<ASTNode> CHTLParser::parseImport() {
@@ -605,8 +650,53 @@ std::unique_ptr<ASTNode> CHTLParser::parseExceptClause() {
 }
 
 std::unique_ptr<ASTNode> CHTLParser::parseStyleRule() {
-    // TODO: 实现样式规则解析
-    return nullptr;
+    // 解析选择器
+    std::string selector;
+    
+    // 处理不同类型的选择器
+    if (match(TokenType::DOT)) {
+        // 类选择器 .class
+        selector = ".";
+        selector += consume(TokenType::IDENTIFIER, "Expected class name after '.'").value;
+    } else if (match(TokenType::AMPERSAND)) {
+        // & 符号（引用父选择器）
+        selector = "&";
+        
+        // 可能跟着伪类或伪元素
+        if (match(TokenType::COLON)) {
+            selector += ":";
+            selector += consume(TokenType::IDENTIFIER, "Expected pseudo-class/element after ':'").value;
+            
+            // 处理双冒号伪元素
+            if (match(TokenType::COLON)) {
+                selector = "&::";
+                selector += previous_.value;
+            }
+        }
+    } else if (current_.type == TokenType::IDENTIFIER && current_.value[0] == '#') {
+        // ID选择器 #id
+        selector = current_.value;
+        advance();
+    } else {
+        // 其他选择器（元素选择器等）
+        selector = consume(TokenType::IDENTIFIER, "Expected selector").value;
+    }
+    
+    auto rule = std::make_unique<StyleRuleNode>(selector, current_.line, current_.column);
+    
+    consume(TokenType::LBRACE, "Expected '{' after selector");
+    
+    // 解析样式属性
+    while (!check(TokenType::RBRACE) && !isAtEnd()) {
+        auto prop = parseStyleProperty();
+        if (prop) {
+            rule->addChild(std::move(prop));
+        }
+    }
+    
+    consume(TokenType::RBRACE, "Expected '}' after style rule");
+    
+    return rule;
 }
 
 std::unique_ptr<ASTNode> CHTLParser::parseExpression() {

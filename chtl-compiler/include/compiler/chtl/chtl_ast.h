@@ -309,18 +309,23 @@ private:
 class OriginBlockNode : public ASTNode {
 public:
     OriginBlockNode(const std::string& type, const std::string& name,
-                   const std::string& content, size_t line = 0, size_t column = 0)
+                   size_t line = 0, size_t column = 0)
         : ASTNode(ASTNodeType::ORIGIN_BLOCK, line, column),
-          type_(type), name_(name), content_(content) {}
+          type_(type), name_(name), is_usage_(false) {}
     
     const std::string& getOriginType() const { return type_; }
     const std::string& getName() const { return name_; }
     const std::string& getContent() const { return content_; }
     
+    void setContent(const std::string& content) { content_ = content; }
+    void setUsageMode(bool usage) { is_usage_ = usage; }
+    bool isUsage() const { return is_usage_; }
+    
 private:
     std::string type_;    // @Html, @Style, @JavaScript或自定义
-    std::string name_;    // 可选的名称
-    std::string content_;
+    std::string name_;    // 名称
+    std::string content_; // 内容（定义时使用）
+    bool is_usage_;       // 是否是使用模式（分号结尾）
 };
 
 // 导入语句节点

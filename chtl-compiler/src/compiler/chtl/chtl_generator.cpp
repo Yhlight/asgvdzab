@@ -308,9 +308,17 @@ bool CHTLGenerator::isSelfClosingTag(const std::string& tag) {
 
 void CHTLGenerator::collectLocalStyles(const StyleBlockNode* style_block, 
                                       const std::string& class_name) {
+    // 首先收集直接的样式属性作为元素的样式
+    std::stringstream inline_styles;
+    bool has_inline_styles = false;
+    
     for (const auto& child : style_block->getChildren()) {
         if (child->getType() == ASTNodeType::STYLE_PROPERTY) {
-            // 内联样式已经在解析时处理
+            // 内联样式属性
+            auto* prop = static_cast<const StylePropertyNode*>(child.get());
+            if (has_inline_styles) inline_styles << "; ";
+            inline_styles << prop->getProperty() << ": " << prop->getValue();
+            has_inline_styles = true;
         } else if (child->getType() == ASTNodeType::STYLE_RULE) {
             auto* rule = static_cast<const StyleRuleNode*>(child.get());
             std::string selector = generateSelector(rule->getSelector(), class_name);
@@ -329,6 +337,15 @@ void CHTLGenerator::collectLocalStyles(const StyleBlockNode* style_block,
             rule_output << "}";
             state_.addGlobalStyle(rule_output.str());
         }
+    }
+    
+    // 如果有内联样式，创建一个类规则
+    if (has_inline_styles) {
+        std::stringstream class_rule;
+        class_rule << "." << class_name << " {\n";
+        class_rule << "  " << inline_styles.str() << ";\n";
+        class_rule << "}";
+        state_.addGlobalStyle(class_rule.str());
     }
 }
 

@@ -348,11 +348,13 @@ CMakeFiles/chtlc.dir/src/main.cpp.o: /workspace/chtl-compiler/src/main.cpp \
   /usr/include/x86_64-linux-gnu/sys/select.h \
   /usr/include/x86_64-linux-gnu/sys/single_threaded.h \
   /usr/include/x86_64-linux-gnu/sys/types.h \
+  /usr/include/c++/14/algorithm \
   /usr/include/c++/14/array \
   /usr/include/c++/14/atomic \
   /usr/include/c++/14/backward/auto_ptr.h \
   /usr/include/c++/14/backward/binders.h \
   /usr/include/c++/14/bit \
+  /usr/include/c++/14/bits/algorithmfwd.h \
   /usr/include/c++/14/bits/align.h \
   /usr/include/c++/14/bits/alloc_traits.h \
   /usr/include/c++/14/bits/allocated_ptr.h \
@@ -415,6 +417,7 @@ CMakeFiles/chtlc.dir/src/main.cpp.o: /workspace/chtl-compiler/src/main.cpp \
   /usr/include/c++/14/bits/std_function.h \
   /usr/include/c++/14/bits/std_mutex.h \
   /usr/include/c++/14/bits/std_thread.h \
+  /usr/include/c++/14/bits/stl_algo.h \
   /usr/include/c++/14/bits/stl_algobase.h \
   /usr/include/c++/14/bits/stl_bvector.h \
   /usr/include/c++/14/bits/stl_construct.h \
@@ -435,6 +438,7 @@ CMakeFiles/chtlc.dir/src/main.cpp.o: /workspace/chtl-compiler/src/main.cpp \
   /usr/include/c++/14/bits/string_view.tcc \
   /usr/include/c++/14/bits/stringfwd.h \
   /usr/include/c++/14/bits/this_thread_sleep.h \
+  /usr/include/c++/14/bits/uniform_int_dist.h \
   /usr/include/c++/14/bits/unique_lock.h \
   /usr/include/c++/14/bits/unique_ptr.h \
   /usr/include/c++/14/bits/unordered_map.h \
@@ -482,6 +486,7 @@ CMakeFiles/chtlc.dir/src/main.cpp.o: /workspace/chtl-compiler/src/main.cpp \
   /usr/include/c++/14/optional \
   /usr/include/c++/14/ostream \
   /usr/include/c++/14/pstl/execution_defs.h \
+  /usr/include/c++/14/pstl/glue_algorithm_defs.h \
   /usr/include/c++/14/pstl/glue_memory_defs.h \
   /usr/include/c++/14/pstl/pstl_config.h \
   /usr/include/c++/14/queue \
@@ -576,8 +581,6 @@ CMakeFiles/chtlc.dir/src/compiler/compiler_factory.cpp.o:
 
 /usr/lib/x86_64-linux-gnu/libc_nonshared.a:
 
-/usr/lib/gcc/x86_64-linux-gnu/14/libstdc++.so:
-
 /usr/lib/gcc/x86_64-linux-gnu/14/libgcc.a:
 
 /usr/lib/gcc/x86_64-linux-gnu/14/crtendS.o:
@@ -610,8 +613,6 @@ CMakeFiles/chtlc.dir/src/compiler/compiler_factory.cpp.o:
 
 /usr/include/c++/14/stdexcept:
 
-/usr/include/c++/14/sstream:
-
 /usr/include/c++/14/queue:
 
 /usr/include/c++/14/istream:
@@ -636,11 +637,19 @@ CMakeFiles/chtlc.dir/src/compiler/compiler_factory.cpp.o:
 
 /usr/include/c++/14/bits/stl_queue.h:
 
+/usr/include/c++/14/sstream:
+
+/usr/include/c++/14/bits/stl_algo.h:
+
 /usr/include/c++/14/bits/std_mutex.h:
 
 /usr/include/c++/14/bits/sstream.tcc:
 
 /usr/include/c++/14/bits/locale_classes.tcc:
+
+/lib/x86_64-linux-gnu/Scrt1.o:
+
+/usr/include/c++/14/bits/locale_classes.h:
 
 /usr/include/c++/14/bits/char_traits.h:
 
@@ -728,9 +737,13 @@ CMakeFiles/chtlc.dir/src/compiler/compiler_factory.cpp.o:
 
 /usr/include/c++/14/cstdlib:
 
+/usr/include/c++/14/pstl/glue_algorithm_defs.h:
+
 /usr/include/x86_64-linux-gnu/bits/types/__mbstate_t.h:
 
 /usr/include/c++/14/bits/allocator.h:
+
+/usr/include/c++/14/bits/uniform_int_dist.h:
 
 /usr/include/x86_64-linux-gnu/bits/stdint-uintn.h:
 
@@ -809,6 +822,10 @@ CMakeFiles/chtlc.dir/src/compiler/compiler_factory.cpp.o:
 /usr/include/stdlib.h:
 
 /usr/lib/llvm-20/lib/clang/20/include/sanitizer/tsan_interface.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/14/libstdc++.so:
+
+/usr/include/c++/14/algorithm:
 
 /workspace/chtl-compiler/include/utils/common.h:
 
@@ -951,10 +968,6 @@ CMakeFiles/chtlc.dir/src/compiler/compiler_factory.cpp.o:
 /usr/include/x86_64-linux-gnu/bits/time.h:
 
 /usr/include/x86_64-linux-gnu/bits/select.h:
-
-/lib/x86_64-linux-gnu/Scrt1.o:
-
-/usr/include/c++/14/bits/locale_classes.h:
 
 /usr/include/c++/14/bits/exception_defines.h:
 
@@ -1128,8 +1141,6 @@ CMakeFiles/chtlc.dir/src/compiler/compiler_factory.cpp.o:
 
 /usr/include/c++/14/unordered_set:
 
-/usr/include/c++/14/bits/istream.tcc:
-
 /usr/include/c++/14/bits/locale_facets.tcc:
 
 /usr/include/x86_64-linux-gnu/bits/floatn-common.h:
@@ -1186,13 +1197,17 @@ CMakeFiles/chtlc.dir/src/compiler/compiler_factory.cpp.o:
 
 /usr/include/c++/14/atomic:
 
-/usr/include/c++/14/bits/basic_ios.h:
+/usr/include/c++/14/bits/istream.tcc:
+
+/usr/include/c++/14/bits/algorithmfwd.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/14/libgcc_s.so:
 
 /usr/include/c++/14/bit:
 
 /usr/include/c++/14/bits/chrono.h:
+
+/usr/include/c++/14/bits/basic_ios.h:
 
 /usr/include/c++/14/bits/codecvt.h:
 

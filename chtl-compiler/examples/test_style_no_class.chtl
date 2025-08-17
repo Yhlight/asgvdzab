@@ -1,0 +1,10 @@
+div
+{
+    style
+    {
+        background-color: red;
+        padding: 10px;
+    }
+    
+    text { "Red background" }
+}

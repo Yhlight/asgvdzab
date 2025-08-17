@@ -1,0 +1,96 @@
+// 测试局部样式功能
+
+html
+{
+    head
+    {
+        title { text { "Local Styles Test" } }
+    }
+    
+    body
+    {
+        div
+        {
+            id: container;
+            class: main;
+            
+            style
+            {
+                width: 100%;
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 20px;
+                
+                // 类选择器
+                .content
+                {
+                    background-color: #f5f5f5;
+                    border-radius: 8px;
+                    padding: 15px;
+                }
+                
+                // ID选择器
+                #header
+                {
+                    font-size: 24px;
+                    color: #333;
+                    margin-bottom: 20px;
+                }
+                
+                // & 伪类
+                &:hover
+                {
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                }
+                
+                // 嵌套元素
+                p
+                {
+                    line-height: 1.6;
+                    color: #666;
+                }
+            }
+            
+            h1
+            {
+                id: header;
+                text { "Welcome to CHTL" }
+            }
+            
+            div
+            {
+                class: content;
+                
+                p { text { "This is a paragraph with local styles." } }
+                p { text { "Local styles are scoped to their parent element." } }
+            }
+        }
+        
+        // 另一个带局部样式的元素
+        div
+        {
+            class: footer;
+            
+            style
+            {
+                background-color: #333;
+                color: white;
+                padding: 20px;
+                text-align: center;
+                
+                a
+                {
+                    color: #4CAF50;
+                    text-decoration: none;
+                    
+                    &:hover
+                    {
+                        text-decoration: underline;
+                    }
+                }
+            }
+            
+            text { "© 2024 CHTL Compiler" }
+        }
+    }
+}

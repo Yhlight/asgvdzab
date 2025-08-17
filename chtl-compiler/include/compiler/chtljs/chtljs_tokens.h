@@ -17,7 +17,14 @@ enum class CHTLJSTokenType {
     // CHTL JS特有标记
     SELECTOR_START,      // {{
     SELECTOR_END,        // }}
+    ENHANCED_SELECTOR,   // {{ ... }} 完整的增强选择器
     ARROW,               // ->
+    
+    // 特殊函数标记
+    LISTEN,              // listen函数
+    DELEGATE,            // delegate函数
+    ANIMATE,             // animate函数
+    VIR,                 // vir关键字
     
     // JavaScript标记（用于传递给JS编译器的部分）
     JS_CODE,             // 纯JavaScript代码块
@@ -34,6 +41,13 @@ enum class CHTLJSTokenType {
     COMMA,               // ,
     DOT,                 // .
     EQUALS,              // =
+    PLUS,                // +
+    MINUS,               // -
+    STAR,                // *
+    SLASH,               // /
+    
+    // 其他
+    UNKNOWN,             // 未知token
     
     // 特殊标记
     WHITESPACE,          // 空白

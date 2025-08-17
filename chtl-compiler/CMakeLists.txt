@@ -48,7 +48,14 @@ set(CHTL_COMPILER_SOURCES
     "src/compiler/chtl/chtl_generator.cpp"
     "src/compiler/chtl/chtl_compiler_v2.cpp"
 )
-file(GLOB_RECURSE CHTLJS_COMPILER_SOURCES "src/compiler/chtljs/*.cpp")
+# CHTL JS编译器源文件
+set(CHTLJS_COMPILER_SOURCES
+    "src/compiler/chtljs/chtljs_preprocessor.cpp"
+    # 暂时注释掉新文件，待完善后再加入
+    # "src/compiler/chtljs/chtljs_lexer.cpp"
+    # "src/compiler/chtljs/chtljs_parser.cpp"
+    # "src/compiler/chtljs/chtljs_generator.cpp"
+)
 file(GLOB_RECURSE CSS_COMPILER_SOURCES "src/compiler/css/*.cpp")
 file(GLOB_RECURSE JS_COMPILER_SOURCES "src/compiler/javascript/*.cpp")
 file(GLOB_RECURSE MERGER_SOURCES "src/merger/*.cpp")

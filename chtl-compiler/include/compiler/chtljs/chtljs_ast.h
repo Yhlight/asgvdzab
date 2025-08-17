@@ -132,12 +132,26 @@ private:
 // 箭头访问节点 ->
 class ArrowAccessNode : public CHTLJSASTNode {
 public:
-    ArrowAccessNode(std::unique_ptr<CHTLJSASTNode> left,
-                   std::unique_ptr<CHTLJSASTNode> right,
-                   size_t line = 0, size_t column = 0)
-        : CHTLJSASTNode(CHTLJSASTNodeType::ARROW_ACCESS, line, column) {
-        addChild(std::move(left));
-        addChild(std::move(right));
+    ArrowAccessNode(size_t line = 0, size_t column = 0)
+        : CHTLJSASTNode(CHTLJSASTNodeType::ARROW_ACCESS, line, column) {}
+    
+    void setLeft(std::unique_ptr<CHTLJSASTNode> left) {
+        if (!children_.empty()) {
+            children_[0] = std::move(left);
+        } else {
+            addChild(std::move(left));
+        }
+    }
+    
+    void setRight(std::unique_ptr<CHTLJSASTNode> right) {
+        if (children_.size() > 1) {
+            children_[1] = std::move(right);
+        } else {
+            while (children_.size() < 1) {
+                addChild(nullptr);
+            }
+            addChild(std::move(right));
+        }
     }
     
     CHTLJSASTNode* getLeft() const { 
@@ -152,20 +166,45 @@ public:
 // listen函数节点
 class ListenFunctionNode : public CHTLJSASTNode {
 public:
-    ListenFunctionNode(std::unique_ptr<CHTLJSASTNode> target,
-                      std::unique_ptr<CHTLJSASTNode> events,
-                      size_t line = 0, size_t column = 0)
-        : CHTLJSASTNode(CHTLJSASTNodeType::LISTEN_FUNCTION, line, column) {
-        addChild(std::move(target));   // 目标元素
-        addChild(std::move(events));   // 事件对象
+    ListenFunctionNode(size_t line = 0, size_t column = 0)
+        : CHTLJSASTNode(CHTLJSASTNodeType::LISTEN_FUNCTION, line, column) {}
+    
+    void setSelector(std::unique_ptr<CHTLJSASTNode> selector) {
+        if (children_.size() > 0) {
+            children_[0] = std::move(selector);
+        } else {
+            addChild(std::move(selector));
+        }
     }
     
-    CHTLJSASTNode* getTarget() const {
+    void setEvent(std::unique_ptr<CHTLJSASTNode> event) {
+        while (children_.size() < 1) addChild(nullptr);
+        if (children_.size() > 1) {
+            children_[1] = std::move(event);
+        } else {
+            addChild(std::move(event));
+        }
+    }
+    
+    void setHandler(std::unique_ptr<CHTLJSASTNode> handler) {
+        while (children_.size() < 2) addChild(nullptr);
+        if (children_.size() > 2) {
+            children_[2] = std::move(handler);
+        } else {
+            addChild(std::move(handler));
+        }
+    }
+    
+    CHTLJSASTNode* getSelector() const {
         return children_.empty() ? nullptr : children_[0].get();
     }
     
-    CHTLJSASTNode* getEvents() const {
+    CHTLJSASTNode* getEvent() const {
         return children_.size() < 2 ? nullptr : children_[1].get();
+    }
+    
+    CHTLJSASTNode* getHandler() const {
+        return children_.size() < 3 ? nullptr : children_[2].get();
     }
 };
 

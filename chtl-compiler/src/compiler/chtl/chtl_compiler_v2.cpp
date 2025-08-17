@@ -52,7 +52,13 @@ CompilationResult CHTLCompilerV2::compile(const CodeFragment& fragment,
             // 查找</head>标签位置，插入样式
             size_t head_end = html_output.find("</head>");
             if (head_end != std::string::npos && !global_styles.empty()) {
-                html_output.insert(head_end, global_styles + "\n");
+                html_output.insert(head_end, "\n" + global_styles);
+            } else if (head_end == std::string::npos && !global_styles.empty()) {
+                // 如果没有head标签，在body前插入
+                size_t body_start = html_output.find("<body>");
+                if (body_start != std::string::npos) {
+                    html_output.insert(body_start, "<head>\n" + global_styles + "</head>\n");
+                }
             }
             
             // 查找</body>标签位置，插入脚本

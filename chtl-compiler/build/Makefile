@@ -395,30 +395,6 @@ src/compiler/chtl/chtl_state.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/src/compiler/chtl/chtl_state.cpp.s
 .PHONY : src/compiler/chtl/chtl_state.cpp.s
 
-src/compiler/chtljs/chtljs_compiler.o: src/compiler/chtljs/chtljs_compiler.cpp.o
-.PHONY : src/compiler/chtljs/chtljs_compiler.o
-
-# target to build an object file
-src/compiler/chtljs/chtljs_compiler.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtljs_compiler.dir/build.make CMakeFiles/chtljs_compiler.dir/src/compiler/chtljs/chtljs_compiler.cpp.o
-.PHONY : src/compiler/chtljs/chtljs_compiler.cpp.o
-
-src/compiler/chtljs/chtljs_compiler.i: src/compiler/chtljs/chtljs_compiler.cpp.i
-.PHONY : src/compiler/chtljs/chtljs_compiler.i
-
-# target to preprocess a source file
-src/compiler/chtljs/chtljs_compiler.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtljs_compiler.dir/build.make CMakeFiles/chtljs_compiler.dir/src/compiler/chtljs/chtljs_compiler.cpp.i
-.PHONY : src/compiler/chtljs/chtljs_compiler.cpp.i
-
-src/compiler/chtljs/chtljs_compiler.s: src/compiler/chtljs/chtljs_compiler.cpp.s
-.PHONY : src/compiler/chtljs/chtljs_compiler.s
-
-# target to generate assembly for a file
-src/compiler/chtljs/chtljs_compiler.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtljs_compiler.dir/build.make CMakeFiles/chtljs_compiler.dir/src/compiler/chtljs/chtljs_compiler.cpp.s
-.PHONY : src/compiler/chtljs/chtljs_compiler.cpp.s
-
 src/compiler/chtljs/chtljs_preprocessor.o: src/compiler/chtljs/chtljs_preprocessor.cpp.o
 .PHONY : src/compiler/chtljs/chtljs_preprocessor.o
 
@@ -647,9 +623,6 @@ help:
 	@echo "... src/compiler/chtl/chtl_state.o"
 	@echo "... src/compiler/chtl/chtl_state.i"
 	@echo "... src/compiler/chtl/chtl_state.s"
-	@echo "... src/compiler/chtljs/chtljs_compiler.o"
-	@echo "... src/compiler/chtljs/chtljs_compiler.i"
-	@echo "... src/compiler/chtljs/chtljs_compiler.s"
 	@echo "... src/compiler/chtljs/chtljs_preprocessor.o"
 	@echo "... src/compiler/chtljs/chtljs_preprocessor.i"
 	@echo "... src/compiler/chtljs/chtljs_preprocessor.s"
