@@ -42,6 +42,7 @@ set(CORE_SOURCES
     src/core/style_block_parser.cpp
     src/core/template_parser.cpp
     src/core/custom_parser.cpp
+    src/core/namespace_config_parser.cpp
 )
 
 set(UTILS_SOURCES
