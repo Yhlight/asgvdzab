@@ -1,0 +1,14 @@
+file(REMOVE_RECURSE
+  "CMakeFiles/chtlc.dir/link.d"
+  "CMakeFiles/chtlc.dir/src/compiler/compiler_factory.cpp.o"
+  "CMakeFiles/chtlc.dir/src/compiler/compiler_factory.cpp.o.d"
+  "CMakeFiles/chtlc.dir/src/main.cpp.o"
+  "CMakeFiles/chtlc.dir/src/main.cpp.o.d"
+  "chtlc"
+  "chtlc.pdb"
+)
+
+# Per-language clean rules from dependency scanning.
+foreach(lang CXX)
+  include(CMakeFiles/chtlc.dir/cmake_clean_${lang}.cmake OPTIONAL)
+endforeach()
