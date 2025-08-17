@@ -10,6 +10,15 @@
 
 namespace chtl {
 
+// 源代码位置信息
+struct SourceLocation {
+    std::string file_path;
+    int start_line = 1;
+    int start_column = 1;
+    int end_line = 1;
+    int end_column = 1;
+};
+
 // 代码片段类型
 enum class CodeFragmentType {
     CHTL,       // CHTL标记语言片段
@@ -23,9 +32,7 @@ enum class CodeFragmentType {
 struct CodeFragment {
     CodeFragmentType type;
     std::string content;
-    size_t start_line;
-    size_t end_line;
-    std::string source_file;
+    SourceLocation location;
     
     // 额外的上下文信息
     std::unordered_map<std::string, std::string> metadata;
@@ -53,12 +60,7 @@ struct CompilerOptions {
     std::unordered_map<std::string, std::string> custom_options;
 };
 
-// 位置信息
-struct SourceLocation {
-    size_t line;
-    size_t column;
-    std::string file;
-};
+
 
 // 错误信息
 struct CompilerError {
@@ -70,7 +72,9 @@ struct CompilerError {
     
     Severity severity;
     std::string message;
-    SourceLocation location;
+    std::string file;
+    int line = 0;
+    int column = 0;
     std::string suggestion; // 修复建议
 };
 

@@ -322,8 +322,8 @@ std::unique_ptr<ASTNode> CHTLCompiler::Parser::parseElement() {
     Token tag = lexer_.nextToken();
     element->tag_name = tag.value;
     element->name = tag.value;
-    element->location.line = tag.line;
-    element->location.column = tag.column;
+    element->location.start_line = tag.line;
+    element->location.start_column = tag.column;
     
     // 期待 {
     if (!expect(Token::LBRACE)) {
@@ -379,8 +379,8 @@ void CHTLCompiler::Parser::parseElementContent(ElementNode* element) {
                     auto child = std::make_unique<ElementNode>();
                     child->tag_name = identifier;
                     child->name = identifier;
-                    child->location.line = token.line;
-                    child->location.column = token.column;
+                    child->location.start_line = token.line;
+                    child->location.start_column = token.column;
                     
                     lexer_.consumeToken(); // 消费 {
                     
@@ -622,8 +622,8 @@ void CHTLCompiler::Parser::reportError(const std::string& message) {
     CompilerError error;
     error.severity = CompilerError::ERROR;
     error.message = message;
-    error.location.line = lexer_.peekToken().line;
-    error.location.column = lexer_.peekToken().column;
+    error.line = lexer_.peekToken().line;
+    error.column = lexer_.peekToken().column;
     context_.errors.push_back(error);
 }
 

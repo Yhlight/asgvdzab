@@ -33,22 +33,24 @@ public:
     
 protected:
     // 错误处理
-    void reportError(const std::string& message, const SourceLocation& location) {
+    void reportError(const std::string& message, int line = 0, int column = 0) {
         CompilerError error;
         error.severity = CompilerError::ERROR;
         error.message = message;
-        error.location = location;
+        error.line = line;
+        error.column = column;
         
         if (error_handler_) {
             error_handler_(error);
         }
     }
     
-    void reportWarning(const std::string& message, const SourceLocation& location) {
+    void reportWarning(const std::string& message, int line = 0, int column = 0) {
         CompilerError warning;
         warning.severity = CompilerError::WARNING;
         warning.message = message;
-        warning.location = location;
+        warning.line = line;
+        warning.column = column;
         
         if (error_handler_) {
             error_handler_(warning);

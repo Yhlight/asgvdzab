@@ -797,8 +797,8 @@ void CHTLJSCompiler::Parser::reportError(const std::string& message) {
     CompilerError error;
     error.severity = CompilerError::ERROR;
     error.message = message;
-    error.location.line = lexer_.peekToken().line;
-    error.location.column = lexer_.peekToken().column;
+    error.line = lexer_.peekToken().line;
+    error.column = lexer_.peekToken().column;
     context_.errors.push_back(error);
 }
 

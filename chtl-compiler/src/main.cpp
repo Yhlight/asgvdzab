@@ -66,21 +66,18 @@ int main(int argc, char* argv[]) {
         std::string input_content = readFile(input_file);
         
         // 创建扫描器
-        ScannerConfig scanner_config;
-        scanner_config.preserve_comments = false;
-        CHTLUnifiedScanner scanner(scanner_config);
+        // 创建扫描器
+        ScannerConfig scan_config;
+        scan_config.enable_intelligent_slicing = true;
+        scan_config.initial_slice_size = 256;
+        CHTLUnifiedScanner scanner(scan_config);
         
         // 扫描代码片段
         std::cout << "Scanning code fragments...\n";
-        auto fragments = scanner.scan(input_content, input_file);
+        auto fragments = scanner.scan(input_content);
         
-        if (!scanner.getErrors().empty()) {
-            std::cerr << "Scanner errors:\n";
-            for (const auto& error : scanner.getErrors()) {
-                std::cerr << "  " << error.location.file << ":" 
-                         << error.location.line << ":" << error.location.column 
-                         << " " << error.message << "\n";
-            }
+        if (fragments.empty()) {
+            std::cerr << "No code fragments found!\n";
             return 1;
         }
         
@@ -88,11 +85,26 @@ int main(int argc, char* argv[]) {
         
         // 调试：打印片段信息
         for (size_t i = 0; i < fragments.size(); ++i) {
-            std::cout << "Fragment " << i << ": type=" 
-                     << static_cast<int>(fragments[i].type) 
-                     << ", lines " << fragments[i].start_line 
-                     << "-" << fragments[i].end_line 
+            const char* type_name = "UNKNOWN";
+            switch (fragments[i].type) {
+                case CodeFragmentType::CHTL: type_name = "CHTL"; break;
+                case CodeFragmentType::CHTL_JS: type_name = "CHTL_JS"; break;
+                case CodeFragmentType::CSS: type_name = "CSS"; break;
+                case CodeFragmentType::JAVASCRIPT: type_name = "JAVASCRIPT"; break;
+                case CodeFragmentType::HTML_RAW: type_name = "HTML_RAW"; break;
+            }
+            
+            std::cout << "Fragment " << i << ": type=" << type_name
+                     << ", lines " << fragments[i].location.start_line 
+                     << "-" << fragments[i].location.end_line 
                      << ", content length=" << fragments[i].content.length() << "\n";
+            
+            // 打印片段内容的前50个字符
+            if (fragments[i].content.length() > 0) {
+                std::cout << "  Content: " 
+                         << fragments[i].content.substr(0, std::min(size_t(50), fragments[i].content.length())) 
+                         << (fragments[i].content.length() > 50 ? "..." : "") << "\n";
+            }
         }
         
         // 创建编译器调度器
