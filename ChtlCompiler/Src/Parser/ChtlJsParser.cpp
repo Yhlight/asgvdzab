@@ -185,25 +185,36 @@ ASTNodePtr ChtlJsParser::parseVirtualObject(const std::string& code, size_t pos)
     auto node = std::make_shared<VirtualObjectNode>(token);
     node->setName(name);
     
-    // 解析初始化表达式
+    // 解析初始化表达式 - 虚对象只是语法糖，需要分析右侧表达式来确定函数映射
+    // 简化处理：暂时只支持 listen、delegate、animate
     if (code.find("listen(", pos) == pos) {
         auto listenNode = parseListenCall(code, pos);
         node->setInitExpression(listenNode);
         
-        // 注册虚对象
+        // 注册虚对象 - 用于后续查找
         auto& manager = ChtlJsFunctionRegistry::getInstance().getManager();
         manager.registerVirtualObject(name, "listen");
         
-        // 注册listen中的函数
-        if (auto listen = std::dynamic_pointer_cast<ListenCallNode>(listenNode)) {
-            for (const auto& config : listen->getEventConfigs()) {
-                ChtlJsFunctionManager::FunctionInfo funcInfo;
-                funcInfo.originalName = config.eventName;
-                funcInfo.virtualObject = name;
-                funcInfo.generatedName = manager.generateUniqueFunctionName(config.eventName);
-                manager.addFunction(name, funcInfo);
-            }
-        }
+        // TODO: 解析listen的参数对象，提取函数键名
+        // 暂时使用简化处理，实际应该解析JavaScript对象字面量
+    }
+    else if (code.find("delegate(", pos) == pos) {
+        auto delegateNode = parseDelegateCall(code, pos);
+        node->setInitExpression(delegateNode);
+        
+        auto& manager = ChtlJsFunctionRegistry::getInstance().getManager();
+        manager.registerVirtualObject(name, "delegate");
+        
+        // TODO: 解析delegate的参数对象
+    }
+    else if (code.find("animate(", pos) == pos) {
+        auto animateNode = parseAnimateCall(code, pos);
+        node->setInitExpression(animateNode);
+        
+        auto& manager = ChtlJsFunctionRegistry::getInstance().getManager();
+        manager.registerVirtualObject(name, "animate");
+        
+        // TODO: 解析animate的参数对象
     }
 
     
