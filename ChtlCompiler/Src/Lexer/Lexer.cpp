@@ -376,8 +376,7 @@ Token Lexer::readOperator() {
         case ',': return makeToken(TokenType::COMMA, ",");
         case '.': return makeToken(TokenType::DOT, ".");
         case '&': return makeToken(TokenType::AMPERSAND, "&");
-        case '<': return makeToken(TokenType::LESS_THAN, "<");
-        case '>': return makeToken(TokenType::GREATER_THAN, ">");
+
         default:
             // 如果不是操作符，可能是无引号字面量的一部分
             currentPos_--; // 回退

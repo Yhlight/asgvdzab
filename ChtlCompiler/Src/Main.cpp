@@ -26,7 +26,15 @@ int handleCompile(int argc, char* argv[]) {
     }
     
     std::string inputFile = argv[1];
-    std::string outputFile = argc >= 3 ? argv[2] : "output.html";
+    std::string outputFile = "output.html";
+    
+    // 处理命令行选项
+    for (int i = 2; i < argc; i++) {
+        if (std::string(argv[i]) == "-o" && i + 1 < argc) {
+            outputFile = argv[i + 1];
+            i++; // 跳过输出文件名
+        }
+    }
     
     // 创建解析器
     Parser parser;

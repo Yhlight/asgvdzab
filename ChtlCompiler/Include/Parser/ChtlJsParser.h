@@ -25,6 +25,9 @@ public:
     
     // 转换CHTL JS到标准JavaScript
     std::string transform(const std::string& jsCode);
+    
+    // 生成JavaScript代码（公开给HtmlGenerator使用）
+    std::string generateQuerySelector(const std::string& selector, bool multiple = false);
 
 private:
     // 解析选择器表达式 {{selector}}
@@ -57,7 +60,6 @@ private:
     SelectorExpressionNode::SelectorType determineSelectorType(const std::string& selector);
     
     // 生成JavaScript代码
-    std::string generateQuerySelector(const std::string& selector, bool multiple = false);
     std::string generateListenCode(const ListenCallNode* node);
     std::string generateDelegateCode(const DelegateCallNode* node);
     std::string generateAnimateCode(const AnimateCallNode* node);
@@ -66,6 +68,7 @@ private:
     std::string trim(const std::string& str);
     bool startsWith(const std::string& str, const std::string& prefix);
     std::string replaceAll(const std::string& str, const std::string& from, const std::string& to);
+    std::string processVirtualObjectDeclarations(const std::string& code);
     
 private:
     // 当前解析位置

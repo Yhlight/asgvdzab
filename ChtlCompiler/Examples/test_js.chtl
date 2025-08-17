@@ -1,0 +1,14 @@
+[Name] JS Test
+
+html {
+    body {
+        button {
+            id: myButton;
+            text { "Click Me" }
+        }
+        
+        script {
+            console.log('Hello from CHTL');
+        }
+    }
+}

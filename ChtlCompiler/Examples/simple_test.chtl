@@ -1,0 +1,9 @@
+[Name] Simple Test
+
+html {
+    body {
+        h1 {
+            text { "Hello World" }
+        }
+    }
+}

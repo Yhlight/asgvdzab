@@ -62,49 +62,68 @@ std::vector<ASTNodePtr> ChtlJsParser::parse(const std::string& jsCode) {
 }
 
 std::string ChtlJsParser::transform(const std::string& jsCode) {
+    std::cout << "ChtlJsParser::transform called with: " << jsCode.substr(0, 100) << "..." << std::endl;
     std::string result = jsCode;
+    
+    // 先处理虚对象声明
+    std::string virProcessed = processVirtualObjectDeclarations(result);
+    std::cout << "After processVirtualObjectDeclarations: " << virProcessed.substr(0, 100) << "..." << std::endl;
     
     // 转换{{选择器}}语法
     std::regex selectorRegex(R"(\{\{([^}]+)\}\})");
-    std::smatch match;
-    std::string temp = result;
     
-    while (std::regex_search(temp, match, selectorRegex)) {
+    // 使用regex_replace避免位置问题
+    size_t lastPos = 0;
+    std::smatch match;
+    std::string newResult;
+    std::string searchStr = virProcessed.substr(lastPos);
+    
+    while (std::regex_search(searchStr, match, selectorRegex)) {
+        std::cout << "Found selector match at position " << match.position() << std::endl;
+        // 添加匹配前的部分
+        newResult += virProcessed.substr(lastPos, match.position());
+        
+        // 处理匹配的选择器
         std::string selector = trim(match[1].str());
+        std::cout << "Processing selector: " << selector << std::endl;
         std::string replacement = generateQuerySelector(selector);
+        std::cout << "Replacement: " << replacement << std::endl;
+        newResult += replacement;
         
-        size_t pos = result.find(match[0].str());
-        if (pos != std::string::npos) {
-            result.replace(pos, match[0].length(), replacement);
-        }
-        
-        temp = match.suffix().str();
+        // 更新位置
+        lastPos += match.position() + match.length();
+        searchStr = virProcessed.substr(lastPos);
+        std::cout << "Updated lastPos: " << lastPos << ", remaining: " << searchStr.substr(0, 50) << std::endl;
     }
+    
+    // 添加剩余部分
+    newResult += virProcessed.substr(lastPos);
+    virProcessed = newResult;
     
     // 转换箭头语法 -> 为 .
     size_t pos = 0;
-    while ((pos = result.find("->", pos)) != std::string::npos) {
+    while ((pos = virProcessed.find("->", pos)) != std::string::npos) {
         // 检查是否是虚对象调用
         size_t nameStart = pos;
-        while (nameStart > 0 && (std::isalnum(result[nameStart-1]) || result[nameStart-1] == '_')) {
+        while (nameStart > 0 && (std::isalnum(virProcessed[nameStart-1]) || virProcessed[nameStart-1] == '_')) {
             nameStart--;
         }
-        std::string objName = result.substr(nameStart, pos - nameStart);
+        std::string objName = virProcessed.substr(nameStart, pos - nameStart);
         
         auto& manager = ChtlJsFunctionRegistry::getInstance().getManager();
         if (manager.hasVirtualObject(objName)) {
             // 虚对象调用，需要转换为全局函数调用
-            size_t funcEnd = result.find('(', pos + 2);
+            size_t funcEnd = virProcessed.find('(', pos + 2);
             if (funcEnd != std::string::npos) {
-                std::string funcCall = result.substr(pos + 2, funcEnd - pos - 2);
+                std::string funcCall = virProcessed.substr(pos + 2, funcEnd - pos - 2);
                 
                 std::string funcName = funcCall;
                 auto funcInfo = manager.findFunction(objName, funcName);
                 if (funcInfo) {
                     // 替换为生成的全局函数名
-                    result = result.substr(0, nameStart) + 
+                    virProcessed = virProcessed.substr(0, nameStart) + 
                             funcInfo->generatedName + 
-                            result.substr(funcEnd);
+                            virProcessed.substr(funcEnd);
                     pos = nameStart + funcInfo->generatedName.length();
                     continue;
                 }
@@ -112,12 +131,12 @@ std::string ChtlJsParser::transform(const std::string& jsCode) {
         }
         
         // 普通箭头访问，替换为点
-        result[pos] = '.';
-        result.erase(pos + 1, 1);
+        virProcessed[pos] = '.';
+        virProcessed.erase(pos + 1, 1);
         pos++;
     }
     
-    return result;
+    return virProcessed;
 }
 
 ASTNodePtr ChtlJsParser::parseSelectorExpression(const std::string& code, size_t pos) {
@@ -425,6 +444,67 @@ std::string ChtlJsParser::trim(const std::string& str) {
     if (first == std::string::npos) return "";
     size_t last = str.find_last_not_of(" \t\n\r");
     return str.substr(first, (last - first + 1));
+}
+
+std::string ChtlJsParser::processVirtualObjectDeclarations(const std::string& code) {
+    std::string result = code;
+    std::string globalFunctions; // 收集生成的全局函数
+    
+    // 查找所有虚对象声明
+    std::regex virRegex(R"(vir\s+(\w+)\s*=\s*(listen|delegate|animate)\s*\(([^)]*)\))");
+    std::smatch match;
+    size_t searchStart = 0;
+    
+    std::string searchStr = result.substr(searchStart);
+    while (std::regex_search(searchStr, match, virRegex)) {
+        std::string varName = match[1];
+        std::string funcType = match[2];
+        std::string params = match[3];
+        
+        // 注册虚对象
+        auto& manager = ChtlJsFunctionRegistry::getInstance().getManager();
+        manager.registerVirtualObject(varName, funcType);
+        
+        // 简化处理：为listen创建常见事件的函数映射
+        if (funcType == "listen") {
+            // 尝试从参数中提取事件处理函数
+            // 简化：假设格式为 { eventName: function() {...}, ... }
+            std::regex eventRegex(R"((\w+)\s*:\s*function)");
+            std::sregex_iterator it(params.begin(), params.end(), eventRegex);
+            std::sregex_iterator end;
+            
+            while (it != end) {
+                std::string eventName = (*it)[1];
+                ChtlJsFunctionManager::FunctionInfo funcInfo;
+                funcInfo.originalName = eventName;
+                funcInfo.virtualObject = varName;
+                funcInfo.generatedName = "_chtl_" + varName + "_" + eventName;
+                manager.addFunction(varName, funcInfo);
+                
+                // 生成全局函数（这里简化处理，实际应该提取完整函数体）
+                globalFunctions += "\nfunction " + funcInfo.generatedName + "() {\n";
+                globalFunctions += "    // Generated from virtual object " + varName + "." + eventName + "\n";
+                globalFunctions += "    // TODO: Extract actual function body\n";
+                globalFunctions += "}\n";
+                
+                ++it;
+            }
+        }
+        
+        // 替换vir为var
+        size_t pos = match.position() + searchStart;
+        result.replace(pos, 3, "var");
+        
+        searchStart = pos + 3;
+        searchStr = result.substr(searchStart);
+    }
+    
+    // 在代码末尾添加生成的全局函数
+    if (!globalFunctions.empty()) {
+        result += "\n// Generated global functions for virtual objects\n" + globalFunctions;
+    }
+    
+    return result;
 }
 
 } // namespace Chtl

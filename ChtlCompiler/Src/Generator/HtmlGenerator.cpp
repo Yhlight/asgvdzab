@@ -715,11 +715,18 @@ void HtmlGenerator::visitChtlJsExpression(ChtlJsExpressionNode* node) {
 }
 
 void HtmlGenerator::visitVirtualObject(VirtualObjectNode* node) {
-    // 虚对象不直接生成代码，而是注册到函数管理器
-    // 初始化表达式会生成对应的代码
+    switchToJs();
+    
+    // 虚对象声明实际上就是普通的变量声明
+    // 只是编译器会记住这是一个虚对象，用于后续的->访问
+    jsOutput_ << "var " << node->getName() << " = ";
+    
+    // 生成初始化表达式（listen、delegate、animate等的调用）
     if (node->getInitExpression()) {
         node->getInitExpression()->accept(this);
     }
+    
+    jsOutput_ << ";\n";
 }
 
 
@@ -745,11 +752,26 @@ void HtmlGenerator::visitVirtualCall(VirtualCallNode* node) {
         
         jsOutput_ << ")";
     } else {
-        // 错误：找不到对应的函数
-        jsOutput_ << "/* ERROR: Virtual function not found: " 
-                  << node->getObjectName() << "->" 
-                  << node->getFunctionName()
-                  << " */";
+        // 如果找不到函数信息，检查是否是虚对象
+        auto objInfo = manager.getVirtualObject(node->getObjectName());
+        if (objInfo) {
+            // 生成基于虚对象类型的函数调用
+            // 这些函数应该在listen/delegate/animate的实现中被创建
+            jsOutput_ << "_chtl_" << node->getObjectName() << "_" << node->getFunctionName() << "(";
+            
+            // 参数列表
+            const auto& args = node->getArguments();
+            for (size_t i = 0; i < args.size(); ++i) {
+                if (i > 0) jsOutput_ << ", ";
+                args[i]->accept(this);
+            }
+            
+            jsOutput_ << ")";
+        } else {
+            // 错误：找不到虚对象
+            jsOutput_ << "/* ERROR: Virtual object not found: " 
+                      << node->getObjectName() << " */";
+        }
     }
 }
 

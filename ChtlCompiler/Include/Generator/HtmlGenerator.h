@@ -50,6 +50,16 @@ public:
     // 原始嵌入
     void visitOriginBlock(OriginBlockNode* node) override;
     
+    // CHTL JS相关
+    void visitSelectorExpression(SelectorExpressionNode* node) override;
+    void visitArrowAccess(ArrowAccessNode* node) override;
+    void visitListenCall(ListenCallNode* node) override;
+    void visitDelegateCall(DelegateCallNode* node) override;
+    void visitAnimateCall(AnimateCallNode* node) override;
+    void visitChtlJsExpression(ChtlJsExpressionNode* node) override;
+    void visitVirtualObject(VirtualObjectNode* node) override;
+    void visitVirtualCall(VirtualCallNode* node) override;
+    
 private:
     // 输出流
     std::stringstream htmlOutput_;
