@@ -11,7 +11,6 @@ HtmlGenerator::HtmlGenerator()
     : currentOutput_(&htmlOutput_),
       context_(nullptr),
       indentLevel_(0),
-      inLocalStyleBlock_(false),
       autoClassCounter_(0) {
 }
 
@@ -31,6 +30,9 @@ std::string HtmlGenerator::generate(ASTNodePtr ast, Context* context) {
     context_ = context;
     indentLevel_ = 0;
     autoClassCounter_ = 0;
+    
+    // 创建生成器上下文助手
+    genHelper_ = std::make_unique<GenerateContextHelper>(context_);
     
     // 访问AST
     if (ast) {
@@ -175,21 +177,17 @@ void HtmlGenerator::visitAttribute(AttributeNode* node) {
 void HtmlGenerator::visitStyleBlock(StyleBlockNode* node) {
     // 这个方法通常不会直接调用，而是通过processLocalStyles处理
     // 但为了完整性还是实现
-    inLocalStyleBlock_ = true;
     
     for (const auto& child : node->getChildren()) {
         if (child) {
             child->accept(this);
         }
     }
-    
-    inLocalStyleBlock_ = false;
 }
 
 void HtmlGenerator::processLocalStyles(StyleBlockNode* node, const std::string& elementClass) {
-    // 保存当前输出流
-    auto savedOutput = currentOutput_;
-    currentOutput_ = &cssOutput_;
+    // 切换到CSS输出
+    switchToCss();
     
     // 处理样式规则
     for (const auto& child : node->getChildren()) {
@@ -218,6 +216,9 @@ void HtmlGenerator::processLocalStyles(StyleBlockNode* node, const std::string& 
                         // 这里应该更新元素的类列表，但现在先生成CSS
                     }
                     
+                    // 使用生成器助手处理局部样式上下文
+                    genHelper_->processLocalStyleContext(actualSelector);
+                    
                     // 输出CSS规则
                     *currentOutput_ << actualSelector << " {\n";
                     indentLevel_++;
@@ -236,13 +237,13 @@ void HtmlGenerator::processLocalStyles(StyleBlockNode* node, const std::string& 
         }
     }
     
-    // 恢复输出流
-    currentOutput_ = savedOutput;
+    // 切换回HTML输出
+    switchToHtml();
 }
 
 void HtmlGenerator::visitStyleRule(StyleRuleNode* node) {
     // 在CSS输出中处理
-    if (currentOutput_ == &cssOutput_) {
+    if (genHelper_->getCurrentTarget() == GenerateContextHelper::OutputTarget::CSS) {
         // 选择器已经在processLocalStyles中处理
         // 这里只处理属性
         for (const auto& child : node->getChildren()) {
@@ -254,20 +255,19 @@ void HtmlGenerator::visitStyleRule(StyleRuleNode* node) {
 }
 
 void HtmlGenerator::visitStyleSelector(StyleSelectorNode* node) {
-    currentSelector_ = node->getSelector();
+    // 选择器处理在StyleRule中完成
 }
 
 void HtmlGenerator::visitStyleProperty(StylePropertyNode* node) {
-    if (currentOutput_ == &cssOutput_) {
+    if (genHelper_->getCurrentTarget() == GenerateContextHelper::OutputTarget::CSS) {
         writeIndent();
         *currentOutput_ << node->getProperty() << ": " << node->getValue() << ";\n";
     }
 }
 
 void HtmlGenerator::visitScriptBlock(ScriptBlockNode* node) {
-    // 保存当前输出流
-    auto savedOutput = currentOutput_;
-    currentOutput_ = &jsOutput_;
+    // 切换到JS输出
+    switchToJs();
     
     std::string content = node->getContent();
     
@@ -279,8 +279,8 @@ void HtmlGenerator::visitScriptBlock(ScriptBlockNode* node) {
     
     *currentOutput_ << content << "\n\n";
     
-    // 恢复输出流
-    currentOutput_ = savedOutput;
+    // 切换回HTML输出
+    switchToHtml();
 }
 
 void HtmlGenerator::visitComment(CommentNode* node) {
@@ -293,38 +293,26 @@ void HtmlGenerator::visitComment(CommentNode* node) {
 }
 
 void HtmlGenerator::visitOriginBlock(OriginBlockNode* node) {
-    switch (node->getOriginType()) {
-        case OriginBlockNode::HTML:
-            // 直接输出到HTML
+    // 使用生成器助手确定输出目标
+    auto target = genHelper_->determineOriginTarget(
+        node->getOriginType() == OriginBlockNode::CUSTOM ? 
+        node->getCustomTypeName() : 
+        (node->getOriginType() == OriginBlockNode::HTML ? "@Html" :
+         node->getOriginType() == OriginBlockNode::STYLE ? "@Style" :
+         "@JavaScript")
+    );
+    
+    switch (target) {
+        case GenerateContextHelper::OutputTarget::HTML:
             *currentOutput_ << node->getContent() << "\n";
             break;
             
-        case OriginBlockNode::STYLE:
-            // 输出到CSS
+        case GenerateContextHelper::OutputTarget::CSS:
             cssOutput_ << node->getContent() << "\n";
             break;
             
-        case OriginBlockNode::JAVASCRIPT:
-            // 输出到JS
+        case GenerateContextHelper::OutputTarget::JAVASCRIPT:
             jsOutput_ << node->getContent() << "\n";
-            break;
-            
-        case OriginBlockNode::CUSTOM:
-            // 自定义类型 - 根据配置处理
-            if (context_) {
-                auto& config = context_->getGlobalMap().getConfiguration();
-                auto it = config.originTypes.find(node->getCustomTypeName());
-                if (it != config.originTypes.end()) {
-                    // 根据映射类型处理
-                    if (it->second == "@Html") {
-                        *currentOutput_ << node->getContent() << "\n";
-                    } else if (it->second == "@Style") {
-                        cssOutput_ << node->getContent() << "\n";
-                    } else if (it->second == "@JavaScript") {
-                        jsOutput_ << node->getContent() << "\n";
-                    }
-                }
-            }
             break;
     }
 }
@@ -338,9 +326,18 @@ void HtmlGenerator::visitTemplateUse(TemplateUseNode* node) {
 }
 
 void HtmlGenerator::visitVarUse(VarUseNode* node) {
-    // 变量使用应该在解析时就展开了
-    // 这里输出原始值作为备份
-    *currentOutput_ << node->getVarGroupName() << "(" << node->getVariableName() << ")";
+    // 使用生成器助手解析变量
+    std::string resolvedValue = genHelper_->resolveVariable(
+        node->getVarGroupName(), 
+        node->getVariableName()
+    );
+    
+    if (!resolvedValue.empty()) {
+        *currentOutput_ << resolvedValue;
+    } else {
+        // 变量未找到，输出原始值
+        *currentOutput_ << node->getVarGroupName() << "(" << node->getVariableName() << ")";
+    }
 }
 
 // 辅助方法实现
@@ -382,9 +379,27 @@ std::string HtmlGenerator::generateUniqueClassName() {
     return "chtl-" + std::to_string(++autoClassCounter_);
 }
 
+void HtmlGenerator::switchToHtml() {
+    currentOutput_ = &htmlOutput_;
+    genHelper_->setOutputTarget(GenerateContextHelper::OutputTarget::HTML);
+}
+
+void HtmlGenerator::switchToCss() {
+    currentOutput_ = &cssOutput_;
+    genHelper_->setOutputTarget(GenerateContextHelper::OutputTarget::CSS);
+}
+
+void HtmlGenerator::switchToJs() {
+    currentOutput_ = &jsOutput_;
+    genHelper_->setOutputTarget(GenerateContextHelper::OutputTarget::JAVASCRIPT);
+}
+
 void HtmlGenerator::expandStyleTemplate(const std::string& templateName, 
                                        const std::unordered_map<std::string, ASTNodePtr>& params) {
     if (!context_) return;
+    
+    // 标记开始模板展开
+    genHelper_->beginTemplateExpansion(templateName);
     
     auto styleOpt = context_->getGlobalMap().getStyleGroup(templateName);
     if (styleOpt.has_value()) {
@@ -407,31 +422,25 @@ void HtmlGenerator::expandStyleTemplate(const std::string& templateName,
             }
         }
     }
+    
+    // 标记结束模板展开
+    genHelper_->endTemplateExpansion();
 }
 
 void HtmlGenerator::expandElementTemplate(const std::string& templateName) {
     if (!context_) return;
+    
+    // 标记开始模板展开
+    genHelper_->beginTemplateExpansion(templateName);
     
     auto elementOpt = context_->getGlobalMap().getElementGroup(templateName);
     if (elementOpt.has_value()) {
         // TODO: 实现元素模板展开
         // 需要重新解析模板内容并生成
     }
-}
-
-std::string HtmlGenerator::expandVarUse(const std::string& groupName, const std::string& varName) {
-    if (!context_) return "";
     
-    auto varOpt = context_->getGlobalMap().getVarGroup(groupName);
-    if (varOpt.has_value()) {
-        auto& varGroup = varOpt.value();
-        auto it = varGroup.variables.find(varName);
-        if (it != varGroup.variables.end()) {
-            return it->second;
-        }
-    }
-    
-    return "";
+    // 标记结束模板展开
+    genHelper_->endTemplateExpansion();
 }
 
 // 其他访问方法的默认实现

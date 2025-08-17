@@ -8,6 +8,7 @@
 #include "AST/ASTVisitor.h"
 #include "AST/ASTNode.h"
 #include "Common/Context.h"
+#include "Common/StateManager.h"
 
 namespace Chtl {
 
@@ -60,6 +61,7 @@ private:
     
     // 上下文
     Context* context_;
+    std::unique_ptr<GenerateContextHelper> genHelper_;
     
     // 缩进管理
     int indentLevel_;
@@ -77,8 +79,6 @@ private:
     
     // 样式管理
     std::string currentElementAutoClass_;
-    bool inLocalStyleBlock_;
-    std::string currentSelector_;
     
     // 生成唯一类名
     std::string generateUniqueClassName();
@@ -87,11 +87,15 @@ private:
     // 处理局部样式
     void processLocalStyles(StyleBlockNode* node, const std::string& elementClass);
     
+    // 切换输出目标
+    void switchToHtml();
+    void switchToCss();
+    void switchToJs();
+    
     // 处理模板展开
     void expandStyleTemplate(const std::string& templateName, 
                            const std::unordered_map<std::string, ASTNodePtr>& params);
     void expandElementTemplate(const std::string& templateName);
-    std::string expandVarUse(const std::string& groupName, const std::string& varName);
 };
 
 } // namespace Chtl

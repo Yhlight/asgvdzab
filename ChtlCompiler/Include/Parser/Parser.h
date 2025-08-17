@@ -11,6 +11,7 @@
 #include "AST/TemplateNodes.h"
 #include "AST/ConfigNodes.h"
 #include "Common/Context.h"
+#include "Common/StateManager.h"
 
 namespace Chtl {
 
@@ -126,15 +127,13 @@ private:
     // 上下文
     std::shared_ptr<Context> context_;
     
+    // RAII状态管理
+    std::unique_ptr<StateManager> stateManager_;
+    std::unique_ptr<ParseContextHelper> parseHelper_;
+    
     // 错误状态
     bool hasError_;
     std::vector<std::string> errors_;
-    
-    // 解析状态
-    bool inStyleBlock_;
-    bool inScriptBlock_;
-    bool inTemplate_;
-    int braceDepth_;
 };
 
 } // namespace Chtl

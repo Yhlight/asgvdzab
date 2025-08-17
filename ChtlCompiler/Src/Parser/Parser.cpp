@@ -7,13 +7,11 @@ namespace Chtl {
 
 Parser::Parser() 
     : current_(0),
-      hasError_(false),
-      inStyleBlock_(false),
-      inScriptBlock_(false),
-      inTemplate_(false),
-      braceDepth_(0) {
+      hasError_(false) {
     lexer_ = std::make_unique<Lexer>();
     context_ = std::make_shared<Context>();
+    stateManager_ = std::make_unique<StateManager>(context_.get());
+    parseHelper_ = std::make_unique<ParseContextHelper>(stateManager_.get(), context_.get());
 }
 
 Parser::~Parser() {
@@ -25,6 +23,9 @@ ASTNodePtr Parser::parse(const std::string& source, const std::string& fileName)
     hasError_ = false;
     errors_.clear();
     tokens_.clear();
+    
+    // 重置上下文
+    context_->reset();
     
     // 词法分析
     lexer_->setSource(source, fileName);
@@ -55,6 +56,7 @@ ASTNodePtr Parser::parseFile(const std::string& filePath) {
 void Parser::advance() {
     if (!isAtEnd()) {
         current_++;
+        parseHelper_->updatePosition(peek());
     }
 }
 
@@ -86,7 +88,7 @@ Token Parser::consume(TokenType type, const std::string& message) {
         return token;
     }
     
-    error(message + " at line " + std::to_string(peek().line));
+    parseHelper_->reportError(message, peek());
     return peek();
 }
 
@@ -98,6 +100,9 @@ bool Parser::isAtEnd() {
 ASTNodePtr Parser::parseProgram() {
     auto program = std::make_shared<ProgramNode>();
     
+    // 进入程序作用域
+    auto scopeGuard = stateManager_->enterScope("program");
+    
     while (!isAtEnd()) {
         auto node = parseTopLevel();
         if (node) {
@@ -106,6 +111,7 @@ ASTNodePtr Parser::parseProgram() {
         
         if (hasError_) {
             synchronize();
+            stateManager_->recoverToStableState();
         }
     }
     
@@ -190,6 +196,9 @@ ASTNodePtr Parser::parseElement() {
     Token tagName = consume(TokenType::IDENTIFIER, "Expected element name");
     auto element = std::make_shared<ElementNode>(tagName);
     
+    // 使用RAII元素守卫
+    auto elementGuard = stateManager_->enterElement(tagName.value);
+    
     consume(TokenType::LBRACE, "Expected '{' after element name");
     
     // 解析元素内容
@@ -199,24 +208,43 @@ ASTNodePtr Parser::parseElement() {
             Token next = peek(1);
             if (next.type == TokenType::COLON || next.type == TokenType::EQUALS) {
                 element->addChild(parseAttribute());
+                
+                // 更新元素状态
+                auto attr = element->getAttributes().back();
+                if (attr) {
+                    auto attrNode = std::static_pointer_cast<AttributeNode>(attr);
+                    if (attrNode->getName() == "id") {
+                        elementGuard.getElement().id = attrNode->getValue();
+                    } else if (attrNode->getName() == "class") {
+                        // 分割类名
+                        std::stringstream ss(attrNode->getValue());
+                        std::string className;
+                        while (ss >> className) {
+                            elementGuard.getElement().classes.push_back(className);
+                        }
+                    }
+                }
                 continue;
             }
         }
         
         // text块
         if (check(TokenType::TEXT)) {
+            auto textGuard = parseHelper_->enterTextBlock();
             element->addChild(parseText());
             continue;
         }
         
         // style块
         if (check(TokenType::STYLE)) {
+            auto styleGuard = parseHelper_->enterStyleBlock(true);
             element->addChild(parseStyleBlock());
             continue;
         }
         
         // script块
         if (check(TokenType::SCRIPT)) {
+            auto scriptGuard = parseHelper_->enterScriptBlock(true);
             element->addChild(parseScriptBlock());
             continue;
         }
@@ -330,7 +358,8 @@ ASTNodePtr Parser::parseStyleBlock() {
     
     consume(TokenType::LBRACE, "Expected '{' after 'style'");
     
-    inStyleBlock_ = true;
+    // 检查是否需要生成自动类名
+    bool needsAutoClass = false;
     
     while (!isAtEnd() && !check(TokenType::RBRACE)) {
         // 内联样式属性 (property: value;)
@@ -346,6 +375,18 @@ ASTNodePtr Parser::parseStyleBlock() {
         if (check(TokenType::DOT) || 
             check(TokenType::IDENTIFIER) ||  // #id会被识别为IDENTIFIER
             check(TokenType::AMPERSAND)) {
+            
+            // 检查是否需要自动类名
+            if (!needsAutoClass) {
+                Token selectorStart = peek();
+                if (selectorStart.type == TokenType::DOT || 
+                    selectorStart.type == TokenType::AMPERSAND) {
+                    needsAutoClass = true;
+                    std::string autoClass = parseHelper_->generateAutoClassIfNeeded();
+                    parseHelper_->setAutoClassName(autoClass);
+                }
+            }
+            
             styleBlock->addChild(parseStyleRule());
             continue;
         }
@@ -359,8 +400,6 @@ ASTNodePtr Parser::parseStyleBlock() {
         error("Unexpected token in style block: " + peek().value);
         advance();
     }
-    
-    inStyleBlock_ = false;
     
     consume(TokenType::RBRACE, "Expected '}' after style content");
     
@@ -376,6 +415,11 @@ ASTNodePtr Parser::parseStyleRule() {
     rule->setSelector(selector);
     rule->addChild(selector);
     
+    // 通知上下文开始CSS规则
+    parseHelper_->beginCSSRule(
+        std::static_pointer_cast<StyleSelectorNode>(selector)->getSelector()
+    );
+    
     consume(TokenType::LBRACE, "Expected '{' after selector");
     
     // 解析属性列表
@@ -384,6 +428,8 @@ ASTNodePtr Parser::parseStyleRule() {
     }
     
     consume(TokenType::RBRACE, "Expected '}' after style rule");
+    
+    parseHelper_->endCSSRule();
     
     return rule;
 }
@@ -458,6 +504,11 @@ ASTNodePtr Parser::parseStyleSelector() {
     auto selectorNode = std::make_shared<StyleSelectorNode>(selectorToken, type);
     selectorNode->setSelector(selector);
     
+    // 处理局部样式上下文
+    if (stateManager_->isInLocalContext()) {
+        parseHelper_->processLocalStyleContext(selector);
+    }
+    
     return selectorNode;
 }
 
@@ -489,8 +540,36 @@ ASTNodePtr Parser::parseStyleProperty() {
                     parenDepth--;
                     value += ")";
                 } else {
-                    value += peek().value;
-                    advance();
+                    // 检查变量使用
+                    if (check(TokenType::IDENTIFIER) && peek(1).type == TokenType::LPAREN) {
+                        // 可能是变量使用 ThemeColor(tableColor)
+                        std::string varGroupName = peek().value;
+                        advance();
+                        advance(); // 跳过 (
+                        
+                        if (check(TokenType::IDENTIFIER)) {
+                            std::string varName = peek().value;
+                            advance();
+                            
+                            if (match(TokenType::RPAREN)) {
+                                // 确实是变量使用，进行替换
+                                std::string resolvedValue = 
+                                    parseHelper_->resolveVariable(varGroupName, varName);
+                                if (!resolvedValue.empty()) {
+                                    value += resolvedValue;
+                                } else {
+                                    value += varGroupName + "(" + varName + ")";
+                                }
+                                continue;
+                            }
+                        }
+                        
+                        // 不是变量使用，回退
+                        value += varGroupName + "(";
+                    } else {
+                        value += peek().value;
+                        advance();
+                    }
                 }
             }
         } else {
@@ -528,10 +607,7 @@ std::string Parser::parseStringValue() {
 void Parser::error(const std::string& message) {
     hasError_ = true;
     errors_.push_back(message);
-    
-    if (context_) {
-        context_->addError(message, peek().line, peek().column);
-    }
+    parseHelper_->reportError(message, peek());
 }
 
 void Parser::synchronize() {
