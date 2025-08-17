@@ -1,0 +1,46 @@
+// 这是一个简单的CHTL测试文件
+html
+{
+    head
+    {
+        text
+        {
+            "CHTL测试页面"
+        }
+    }
+
+    body
+    {
+        div
+        {
+            text
+            {
+                "欢迎使用CHTL编译器！"
+            }
+        }
+
+        p
+        {
+            text
+            {
+                "这是一个由CHTL语言编译生成的HTML页面。"
+            }
+        }
+
+        div
+        {
+            h1
+            {
+                text
+                {
+                    "CHTL特性演示"
+                }
+            }
+
+            text
+            {
+                "CHTL支持嵌套的HTML元素结构，让代码更加清晰易读。"
+            }
+        }
+    }
+}

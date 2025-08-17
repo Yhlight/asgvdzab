@@ -1,0 +1,2 @@
+/usr/bin/ar qc libresult_merger.a CMakeFiles/result_merger.dir/merger/ResultMerger.cpp.o CMakeFiles/result_merger.dir/merger/HTMLOutput.cpp.o
+/usr/bin/ranlib libresult_merger.a

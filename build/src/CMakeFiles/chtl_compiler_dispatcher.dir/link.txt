@@ -1,0 +1,2 @@
+/usr/bin/ar qc libchtl_compiler_dispatcher.a CMakeFiles/chtl_compiler_dispatcher.dir/dispatcher/CompilerDispatcher.cpp.o
+/usr/bin/ranlib libchtl_compiler_dispatcher.a
