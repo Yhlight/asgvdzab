@@ -185,10 +185,15 @@ public:
     void addInfo(const std::string& key, const std::string& value);
     const std::unordered_map<std::string, std::string>& getInfo() const { return info_; }
     
+    // 简单内容支持（用于[Name]等）
+    void setContent(const std::string& content) { content_ = content; }
+    const std::string& getContent() const { return content_; }
+    
     void accept(class ASTVisitor* visitor) override;
 
 private:
     std::unordered_map<std::string, std::string> info_;
+    std::string content_;
 };
 
 } // namespace Chtl

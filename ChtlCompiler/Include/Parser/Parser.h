@@ -95,6 +95,7 @@ private:
     
     // 配置相关
     ASTNodePtr parseConfiguration();
+    ASTNodePtr parseInfo();  // 处理 [Name] 和 [Info]
     ASTNodePtr parseName();
     ASTNodePtr parseOriginType();
     

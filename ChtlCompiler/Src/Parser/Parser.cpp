@@ -142,9 +142,9 @@ ASTNodePtr Parser::parseTopLevel() {
         return parseConfiguration();
     }
     
-    // [Name]
-    if (check(TokenType::CONFIGURATION_MARK)) {  // [Configuration]也包含name配置
-        return parseName();
+    // [Name] 和 [Info]
+    if (check(TokenType::INFO_MARK)) {
+        return parseInfo();
     }
     
     // [OriginType]
@@ -191,6 +191,35 @@ ASTNodePtr Parser::parseTopLevel() {
     error("Unexpected token: " + peek().value);
     advance();
     return nullptr;
+}
+
+// 信息块解析 [Name] 或 [Info]
+ASTNodePtr Parser::parseInfo() {
+    Token infoToken = peek();
+    advance(); // 消费 [Name] 或 [Info]
+    auto infoNode = std::make_shared<InfoBlockNode>(infoToken);
+    
+    // 读取信息内容（简化处理：读取到下一个顶层标记或元素）
+    std::string content;
+    while (!isAtEnd() && 
+           !check(TokenType::TEMPLATE_MARK) &&
+           !check(TokenType::CUSTOM_MARK) &&
+           !check(TokenType::ORIGIN_MARK) &&
+           !check(TokenType::CONFIGURATION_MARK) &&
+           !check(TokenType::INFO_MARK) &&
+           !check(TokenType::IMPORT_MARK) &&
+           !check(TokenType::EXPORT_MARK) &&
+           !check(TokenType::NAMESPACE_MARK) &&
+           !(check(TokenType::IDENTIFIER) && peek(1).type == TokenType::LBRACE)) {
+        content += peek().value;
+        if (peek().type != TokenType::EOF_TOKEN) {
+            content += " ";
+        }
+        advance();
+    }
+    
+    infoNode->setContent(content.substr(0, content.length() > 0 ? content.length() - 1 : 0)); // 移除末尾空格
+    return infoNode;
 }
 
 // 元素解析

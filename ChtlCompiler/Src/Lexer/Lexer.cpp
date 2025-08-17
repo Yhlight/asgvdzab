@@ -32,6 +32,7 @@ const std::unordered_map<std::string, TokenType> Lexer::markKeywords_ = {
     {"[Namespace]", TokenType::NAMESPACE_MARK},
     {"[Configuration]", TokenType::CONFIGURATION_MARK},
     {"[Info]", TokenType::INFO_MARK},
+    {"[Name]", TokenType::INFO_MARK},  // [Name] 也是信息标记
     {"[Export]", TokenType::EXPORT_MARK}
 };
 
