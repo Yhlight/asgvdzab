@@ -1,2 +1,0 @@
-/usr/bin/ar qc Lib/libChtlCommon.a CMakeFiles/ChtlCommon.dir/Src/Common/Context.cpp.o CMakeFiles/ChtlCommon.dir/Src/Common/GlobalMap.cpp.o CMakeFiles/ChtlCommon.dir/Src/Common/State.cpp.o
-/usr/bin/ranlib Lib/libChtlCommon.a
