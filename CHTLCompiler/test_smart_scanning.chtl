@@ -1,0 +1,157 @@
+// 测试智能扫描和切割功能
+// 这个文件包含各种CHTL和CHTL JS语法，用于测试扫描器的智能切割能力
+
+html
+{
+    head
+    {
+        title
+        {
+            text
+            {
+                智能扫描测试
+            }
+        }
+    }
+    
+    body
+    {
+        // 测试CHTL JS的智能切割
+        script
+        {
+            // 测试增强选择器的切割
+            {{box}}->click();
+            {{.container}}->addEventListener('click', function() {
+                console.log('Container clicked');
+            });
+            
+            // 测试方法链的切割
+            {{button}}->listen({
+                click: function() {
+                    {{.modal}}->show();
+                }
+            });
+            
+            // 测试事件委托的切割
+            {{.parent}}->delegate({
+                target: {{.child}},
+                click: function() {
+                    console.log('Child clicked');
+                }
+            });
+            
+            // 测试动画的切割
+            animate({
+                duration: 1000,
+                easing: ease-in-out,
+                begin: {
+                    opacity: 0
+                },
+                end: {
+                    opacity: 1
+                }
+            });
+        }
+        
+        // 测试CHTL元素的智能切割
+        div
+        {
+            class: container;
+            
+            div
+            {
+                class: header;
+                
+                h1
+                {
+                    text
+                    {
+                        智能切割测试
+                    }
+                }
+            }
+            
+            div
+            {
+                class: content;
+                
+                p
+                {
+                    text
+                    {
+                        这个测试验证扫描器能够：
+                    }
+                }
+                
+                ul
+                {
+                    li
+                    {
+                        text
+                        {
+                            基于可变长度切片进行工作
+                        }
+                    }
+                    
+                    li
+                    {
+                        text
+                        {
+                            智能检测片段完整性
+                        }
+                    }
+                    
+                    li
+                    {
+                        text
+                        {
+                            自动扩增不完整的片段
+                        }
+                    }
+                    
+                    li
+                    {
+                        text
+                        {
+                            基于最小单元进行二次切割
+                        }
+                    }
+                }
+            }
+        }
+        
+        // 测试CSS片段的识别
+        style
+        {
+            .container {
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 20px;
+            }
+            
+            .header {
+                background-color: #f8f9fa;
+                border-bottom: 1px solid #dee2e6;
+                padding: 20px;
+            }
+            
+            .content {
+                padding: 20px 0;
+            }
+        }
+        
+        // 测试JavaScript片段的识别
+        script
+        {
+            function handleClick() {
+                console.log('Button clicked');
+                document.querySelector('.content').style.display = 'none';
+            }
+            
+            const button = document.querySelector('button');
+            if (button) {
+                button.addEventListener('click', handleClick);
+            }
+        }
+    }
+}

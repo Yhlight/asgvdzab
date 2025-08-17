@@ -1,0 +1,108 @@
+[Configuration]
+{
+    // 索引的起始计数
+    INDEX_INITIAL_COUNT = 0;
+    // 是否禁用Name配置组(即是否允许自定义关键字名称)
+    DISABLE_NAME_GROUP = false;
+    // DEBUG模式
+    DEBUG_MODE = true;
+    
+    // Name配置块，存放关键字名称用
+    [Name]
+    {
+        // 这里可以定义关键字的名称，无需改动源码即可实现支持
+        // 组选项，即CUSTOM_STYLE具有多个值
+        CUSTOM_STYLE = [@Style, @style, @CSS, @Css, @css];
+        CUSTOM_ELEMENT = @Element;
+        CUSTOM_VAR = @Var;
+        TEMPLATE_STYLE = @Style;
+        TEMPLATE_ELEMENT = @Element;
+        TEMPLATE_VAR = @Var;
+        KEYWORD_NAMESPACE = [Namespace];
+        
+        // 组选项的数量限制，避免在大型项目中对性能的过高消耗
+        OPTION_COUNT = 3;
+    }
+}
+
+[Namespace] ui
+{
+    [Custom] @Element Button
+    {
+        <button class="btn btn-primary">
+            {{ text }}
+        </button>
+        
+        [Style]
+        {
+            .btn {
+                padding: 10px 20px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 16px;
+            }
+            
+            .btn-primary {
+                background-color: #007bff;
+                color: white;
+            }
+            
+            .btn-primary:hover {
+                background-color: #0056b3;
+            }
+        }
+        
+        [Script]
+        {
+            listen('click', function() {
+                console.log('Button clicked!');
+            });
+        }
+    }
+}
+
+[Import] @Style from "styles.css" as main_styles
+[Import] @Chtl from "components.chtl"
+[Import] [Custom] @Element Button from "ui.chtl" as CustomButton
+
+<div class="container">
+    <h1>CHTL编译器测试</h1>
+    <p>这是一个完整的CHTL文件测试，包含了所有已实现的系统功能。</p>
+    
+    <CustomButton text="点击我！" />
+    
+    <div class="content">
+        <p>配置组系统：已实现</p>
+        <p>导入系统：已实现</p>
+        <p>命名空间系统：已实现</p>
+        <p>模块系统：已实现</p>
+    </div>
+</div>
+
+[Style]
+{
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        font-family: Arial, sans-serif;
+    }
+    
+    .content {
+        margin-top: 20px;
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-radius: 5px;
+    }
+    
+    h1 {
+        color: #333;
+        text-align: center;
+    }
+    
+    p {
+        line-height: 1.6;
+        color: #666;
+    }
+}

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHTL编译结果</title>
+    <style>
+
+    
+    {{box}}->click();
+    
+    
+    {{.container}}->addEventListener('click', function() {
+        {{.modal}}->show();
+        {{.overlay}}->fadeIn();
+    });
+    
+    
+    {{button}}->listen({
+        click: function() {
+            console.log('Button clicked');
+            {{.content}}->slideDown();
+        },
+        mouseenter: function() {
+            {{.tooltip}}->show();
+        },
+        mouseleave: function() {
+            {{.tooltip}}->hide();
+        }
+    });
+    
+    
+    {{.parent}}->delegate({
+        target: {{.child}},
+        click: function() {
+            {{.modal}}->open();
+        },
+        mouseenter: function() {
+            {{.highlight}}->add();
+        }
+    });
+    
+    
+    animate({
+        duration: 1000,
+        easing: ease-in-out,
+        begin: {
+            opacity: 0,
+            transform: 'translateY(20px)'
+        },
+        when: [
+            {
+                at: 0.5,
+                opacity: 0.5,
+                transform:
+    </style>
+</head>
+<body>
+
+    
+    {{box}}->click();
+    
+    
+    {{.container}}->addEventListener('click', function() {
+        {{.modal}}->show();
+        {{.overlay}}->fadeIn();
+    });
+    
+    
+    {{button}}->listen({
+        click: function() {
+            console.log('Button clicked');
+            {{.content}}->slideDown();
+        },
+        mouseenter: function() {
+            {{.tooltip}}->show();
+        },
+        mouseleave: function() {
+            {{.tooltip}}->hide();
+        }
+    });
+    
+    
+    {{.parent}}->delegate({
+        target: {{.child}},
+        click: function() {
+            {{.modal}}->open();
+        },
+        mouseenter: function() {
+            {{.highlight}}->add();
+        }
+    });
+    
+    
+    animate({
+        duration: 1000,
+        easing: ease-in-out,
+        begin: {
+            opacity: 0,
+            transform: 'translateY(20px)'
+        },
+        when: [
+            {
+                at: 0.5,
+                opacity: 0.5,
+                transform:
+    <script>
+
+    
+    {{box}}->click();
+    
+    
+    {{.container}}->addEventListener('click', function() {
+        {{.modal}}->show();
+        {{.overlay}}->fadeIn();
+    });
+    
+    
+    {{button}}->listen({
+        click: function() {
+            console.log('Button clicked');
+            {{.content}}->slideDown();
+        },
+        mouseenter: function() {
+            {{.tooltip}}->show();
+        },
+        mouseleave: function() {
+            {{.tooltip}}->hide();
+        }
+    });
+    
+    
+    {{.parent}}->delegate({
+        target: {{.child}},
+        click: function() {
+            {{.modal}}->open();
+        },
+        mouseenter: function() {
+            {{.highlight}}->add();
+        }
+    });
+    
+    
+    animate({
+        duration: 1000,
+        easing: ease-in-out,
+        begin: {
+            opacity: 0,
+            transform: 'translateY(20px)'
+        },
+        when: [
+            {
+                at: 0.5,
+                opacity: 0.5,
+                transform:
+    </script>
+</body>
+</html>

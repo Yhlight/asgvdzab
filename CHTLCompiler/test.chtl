@@ -1,0 +1,229 @@
+// 这是一个测试CHTL文件
+// 演示CHTL的各种语法特性
+
+html
+{
+    head
+    {
+        title
+        {
+            text
+            {
+                CHTL测试页面
+            }
+        }
+        
+        meta
+        {
+            charset: UTF-8;
+        }
+        
+        meta
+        {
+            name: viewport;
+            content: width=device-width, initial-scale=1.0;
+        }
+    }
+    
+    body
+    {
+        // 使用局部样式块
+        style
+        {
+            .container
+            {
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 20px;
+            }
+            
+            .header
+            {
+                background-color: #f8f9fa;
+                padding: 20px;
+                border-bottom: 1px solid #dee2e6;
+            }
+            
+            .content
+            {
+                padding: 20px 0;
+            }
+            
+            .footer
+            {
+                background-color: #f8f9fa;
+                padding: 20px;
+                border-top: 1px solid #dee2e6;
+                text-align: center;
+            }
+        }
+        
+        div
+        {
+            class: container;
+            
+            div
+            {
+                class: header;
+                
+                h1
+                {
+                    text
+                    {
+                        CHTL编译器测试
+                    }
+                }
+                
+                p
+                {
+                    text
+                    {
+                        这是一个演示CHTL各种语法特性的测试页面
+                    }
+                }
+            }
+            
+            div
+            {
+                class: content;
+                
+                h2
+                {
+                    text
+                    {
+                        功能特性演示
+                    }
+                }
+                
+                div
+                {
+                    style
+                    {
+                        .feature-card
+                        {
+                            border: 1px solid #dee2e6;
+                            border-radius: 8px;
+                            padding: 20px;
+                            margin: 20px 0;
+                            background-color: white;
+                        }
+                        
+                        .feature-title
+                        {
+                            color: #007bff;
+                            font-size: 18px;
+                            font-weight: bold;
+                            margin-bottom: 10px;
+                        }
+                        
+                        .feature-description
+                        {
+                            color: #6c757d;
+                            line-height: 1.6;
+                        }
+                    }
+                    
+                    div
+                    {
+                        class: feature-card;
+                        
+                        div
+                        {
+                            class: feature-title;
+                            
+                            text
+                            {
+                                局部样式块
+                            }
+                        }
+                        
+                        div
+                        {
+                            class: feature-description;
+                            
+                            text
+                            {
+                                支持在元素内部嵌套style{}，实现局部样式定义
+                            }
+                        }
+                    }
+                    
+                    div
+                    {
+                        class: feature-card;
+                        
+                        div
+                        {
+                            class: feature-title;
+                            
+                            text
+                            {
+                                自动化类名/ID
+                            }
+                        }
+                        
+                        div
+                        {
+                            class: feature-description;
+                            
+                            text
+                            {
+                                无需手动编写class/id，CHTL会自动为元素添加类名
+                            }
+                        }
+                    }
+                }
+                
+                // 使用CHTL JS语法
+                script
+                {
+                    // 增强选择器
+                    {{.feature-card}}.addEventListener('click', function() {
+                        console.log('Feature card clicked!');
+                        this.style.transform = 'scale(1.05)';
+                    });
+                    
+                    // 使用listen快捷绑定
+                    {{.header}}->listen({
+                        click: function() {
+                            console.log('Header clicked!');
+                        },
+                        mouseenter: function() {
+                            this.style.backgroundColor = '#e9ecef';
+                        },
+                        mouseleave: function() {
+                            this.style.backgroundColor = '#f8f9fa';
+                        }
+                    });
+                    
+                    // 使用animate简化动画
+                    animate({
+                        duration: 1000,
+                        easing: ease-in-out,
+                        begin: {
+                            opacity: 0,
+                            transform: 'translateY(20px)'
+                        },
+                        end: {
+                            opacity: 1,
+                            transform: 'translateY(0)'
+                        }
+                    });
+                }
+            }
+            
+            div
+            {
+                class: footer;
+                
+                p
+                {
+                    text
+                    {
+                        © 2024 CHTL编译器 - 基于C++17实现
+                    }
+                }
+            }
+        }
+    }
+}
